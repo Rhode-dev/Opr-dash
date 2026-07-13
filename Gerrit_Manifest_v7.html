@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Operator Load Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto+Mono:wght@400;500;600&display=swap');
+:root{
+  --bg:#0f172a;--surface:#1e293b;--surface2:#243044;--border:#334155;
+  --border-soft:rgba(51,65,85,0.6);--accent:#3b82f6;--accent-glow:rgba(59,130,246,0.3);
+  --accent2:#06b6d4;--accent3:#8b5cf6;--full:#06b6d4;--empty:#f97316;
+  --green:#10b981;--yellow:#f59e0b;--red:#ef4444;--text:#e2e8f0;
+  --text-soft:#94a3b8;--muted:#64748b;--white:#fff;
+  --ui:'Inter',system-ui,sans-serif;--mono:'Roboto Mono',monospace;
+  --r-sm:8px;--r-md:14px;--r-lg:20px;
+  --shadow:0 4px 24px rgba(0,0,0,0.4);--glow:0 0 20px var(--accent-glow);
+  --drawer-w:300px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-tap-highlight-color:transparent}
+body{font-family:var(--mono);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;line-height:1.5}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(59,130,246,.025)1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,.025)1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0}
+
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 6px var(--green)}50%{opacity:.5;box-shadow:0 0 14px var(--green)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes drawerSlide{from{transform:translateX(-100%)}to{transform:translateX(0)}}
+
+/* ── LAYOUT ── */
+.container{max-width:1440px;margin:0 auto;padding:0 20px;position:relative;z-index:1}
+@media(min-width:768px){.container{padding:0 28px}}
+
+/* ── VESSEL BANNER ── */
+#vesselBanner{
+  display:none;
+  background:linear-gradient(90deg,rgba(59,130,246,.12),rgba(6,182,212,.07),rgba(139,92,246,.08));
+  border-bottom:1px solid rgba(59,130,246,.25);padding:12px 20px;
+  position:relative;z-index:10;animation:fadeIn .4s ease-out both;
+}
+.vb-inner{max-width:1440px;margin:0 auto;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.vb-field{display:flex;flex-direction:column;gap:1px}
+.vb-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:2px}
+.vb-val{font-family:var(--ui);font-size:14px;font-weight:700;color:var(--white)}
+.vb-div{width:1px;height:32px;background:var(--border-soft);flex-shrink:0}
+.vb-badge{margin-left:auto;display:flex;align-items:center;gap:7px;font-size:10px;color:var(--muted);background:rgba(15,23,42,.5);border:1px solid var(--border-soft);padding:5px 12px;border-radius:100px}
+.vb-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s ease-in-out infinite}
+
+/* ── HEADER ── */
+header{padding:18px 0 16px;border-bottom:1px solid var(--border-soft);position:relative;z-index:10;animation:fadeIn .5s ease-out both}
+.header-inner{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-icon{width:42px;height:42px;min-width:42px;background:linear-gradient(135deg,var(--accent),var(--accent3));border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:var(--glow);transition:transform .3s,box-shadow .3s;cursor:default}
+.brand-icon:hover{transform:rotate(8deg) scale(1.08);box-shadow:0 0 28px var(--accent-glow)}
+h1{font-family:var(--ui);font-size:18px;font-weight:800;letter-spacing:-.5px;color:var(--white);line-height:1.2}
+h1 span{color:var(--accent)}
+.subtitle{font-size:9px;color:var(--muted);letter-spacing:2.5px;text-transform:uppercase;margin-top:2px}
+.header-right{display:flex;align-items:center;gap:8px}
+.status-pill{display:flex;align-items:center;gap:7px;background:rgba(30,41,59,.8);backdrop-filter:blur(12px);border:1px solid var(--border-soft);padding:7px 14px;border-radius:100px;font-size:11px;color:var(--muted)}
+.status-dot{width:7px;height:7px;border-radius:50%;background:var(--muted);flex-shrink:0;transition:background .3s}
+.status-dot.active{background:var(--green);animation:pulse 2s ease-in-out infinite}
+
+/* ── HAMBURGER BUTTON ── */
+#menuBtn{
+  display:none;
+  align-items:center;justify-content:center;gap:6px;
+  background:rgba(30,41,59,.9);border:1px solid var(--border-soft);
+  color:var(--text);padding:8px 14px;border-radius:var(--r-sm);
+  font-family:var(--mono);font-size:11px;cursor:pointer;transition:all .2s;
+  -webkit-tap-highlight-color:transparent;
+}
+#menuBtn:active{background:rgba(59,130,246,.15);border-color:var(--accent)}
+.burger-icon{display:flex;flex-direction:column;gap:4px;width:18px}
+.burger-line{width:100%;height:2px;background:currentColor;border-radius:2px;transition:all .25s}
+#menuBtn.open .burger-line:nth-child(1){transform:translateY(6px) rotate(45deg)}
+#menuBtn.open .burger-line:nth-child(2){opacity:0;transform:scaleX(0)}
+#menuBtn.open .burger-line:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+.active-badge{background:var(--accent);color:var(--white);border-radius:100px;padding:1px 7px;font-size:10px;font-weight:700;min-width:18px;text-align:center;display:none}
+.active-badge.show{display:inline-block}
+
+/* ── DRAWER OVERLAY ── */
+#drawerOverlay{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;
+  animation:fadeIn .2s ease-out;
+}
+#drawerOverlay.active{display:block}
+
+/* ── DRAWER ── */
+#drawer{
+  position:fixed;top:0;left:0;width:var(--drawer-w);max-width:92vw;height:100%;
+  background:var(--surface);border-right:1px solid var(--border-soft);
+  z-index:201;display:flex;flex-direction:column;
+  transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+  overflow:hidden;
+}
+#drawer.open{transform:translateX(0)}
+.drawer-head{padding:16px 16px 12px;border-bottom:1px solid var(--border-soft);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.drawer-title{font-family:var(--ui);font-size:13px;font-weight:700;color:var(--white);letter-spacing:-.2px}
+.drawer-close{background:none;border:1px solid var(--border-soft);color:var(--muted);width:30px;height:30px;border-radius:6px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;-webkit-tap-highlight-color:transparent}
+.drawer-close:active{background:var(--surface2);color:var(--text)}
+.drawer-body{flex:1;overflow-y:auto;overflow-x:hidden;padding:14px 16px;-webkit-overflow-scrolling:touch}
+.drawer-body::-webkit-scrollbar{width:4px}
+.drawer-body::-webkit-scrollbar-track{background:transparent}
+.drawer-body::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.filter-group{margin-bottom:14px}
+.filter-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:5px;display:block}
+.drawer-select{
+  width:100%;background:rgba(15,23,42,.8);border:1px solid var(--border-soft);
+  color:var(--text);padding:10px 32px 10px 12px;border-radius:var(--r-sm);
+  font-family:var(--mono);font-size:12px;cursor:pointer;outline:none;
+  appearance:none;transition:border-color .2s,background .2s;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 10px center;
+}
+.drawer-select:focus,.drawer-select:hover{border-color:var(--accent);background-color:rgba(59,130,246,.06)}
+.drawer-select option{background:#1e293b;color:var(--text)}
+.drawer-divider{height:1px;background:var(--border-soft);margin:14px 0}
+.drawer-footer{padding:14px 16px;border-top:1px solid var(--border-soft);display:flex;flex-direction:column;gap:8px;flex-shrink:0}
+.btn-reset,.btn-export{
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  width:100%;padding:11px 16px;border-radius:var(--r-sm);
+  font-family:var(--mono);font-size:12px;cursor:pointer;
+  transition:all .2s;-webkit-tap-highlight-color:transparent;
+  border:1px solid var(--border-soft);background:transparent;color:var(--muted);
+}
+.btn-reset:active,.btn-export:active{transform:scale(.97)}
+.btn-reset:hover,.btn-reset:active{border-color:var(--empty);color:var(--empty);background:rgba(249,115,22,.07)}
+.btn-export:hover,.btn-export:active{border-color:var(--green);color:var(--green);background:rgba(16,185,129,.07)}
+.filter-stat{font-size:10px;color:var(--muted);text-align:center;padding-top:4px}
+
+/* ── MAIN ── */
+main{padding:20px 0;position:relative;z-index:1}
+@media(min-width:768px){main{padding:28px 0}}
+
+/* ── UPLOAD ── */
+.upload-zone{
+  border:2px dashed var(--border);border-radius:var(--r-lg);padding:48px 28px;
+  text-align:center;cursor:pointer;transition:border-color .3s,background .3s,transform .3s;
+  background:rgba(30,41,59,.5);position:relative;overflow:hidden;
+  margin-bottom:32px;animation:fadeUp .5s ease-out both;
+}
+.upload-zone::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 80%,rgba(59,130,246,.06),transparent 65%);pointer-events:none}
+.upload-zone:hover,.upload-zone.drag-over{border-color:var(--accent);background:rgba(59,130,246,.05);transform:translateY(-2px)}
+.upload-zone:hover .u-icon{transform:translateY(-5px) scale(1.1)}
+.u-icon{font-size:40px;margin-bottom:14px;display:block;transition:transform .3s}
+.u-title{font-family:var(--ui);font-size:17px;font-weight:700;color:var(--white);margin-bottom:6px}
+.u-sub{font-size:10px;color:var(--muted);margin-bottom:20px;letter-spacing:.5px}
+.u-btn{display:inline-block;background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--white);font-family:var(--ui);font-weight:600;font-size:13px;padding:10px 28px;border-radius:var(--r-sm);cursor:pointer;box-shadow:0 4px 16px rgba(59,130,246,.3);transition:opacity .2s,transform .2s}
+.u-btn:hover{opacity:.9;transform:translateY(-1px)}
+#fileInput{display:none}
+
+/* ── LOADING ── */
+#loading{display:none;text-align:center;padding:60px 20px;color:var(--muted);font-size:13px}
+.loading-inner{display:inline-flex;align-items:center;gap:10px}
+.spin{width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
+
+/* ── TOOLBAR ── */
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:20px;flex-wrap:wrap;animation:fadeUp .3s ease-out both}
+.toolbar-left{display:flex;align-items:center;gap:8px}
+
+/* ── VALIDATION BANNER ── */
+#valBanner{
+  display:none;margin-bottom:18px;border-radius:var(--r-md);
+  border:1px solid rgba(239,68,68,.35);background:rgba(239,68,68,.07);
+  padding:12px 16px;animation:fadeUp .3s ease-out both;
+}
+.val-title{font-family:var(--ui);font-size:12px;font-weight:700;color:#fca5a5;margin-bottom:7px}
+.val-chips{display:flex;flex-wrap:wrap;gap:5px;max-height:72px;overflow-y:auto}
+.val-chip{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:100px;font-size:10px}
+.val-chip.inv{background:rgba(239,68,68,.15);color:#fca5a5;border:1px solid rgba(239,68,68,.3)}
+.val-chip.warn{background:rgba(249,115,22,.15);color:#fdba74;border:1px solid rgba(249,115,22,.3)}
+.val-more{background:none;border:none;color:var(--muted);font-size:10px;cursor:pointer;margin-top:5px;padding:0;font-family:var(--mono)}
+.val-more:hover{color:var(--text)}
+
+/* ── KPI ROW ── */
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:12px;margin-bottom:24px}
+@media(max-width:480px){.kpi-row{grid-template-columns:1fr 1fr;gap:10px}}
+.kpi{
+  background:rgba(30,41,59,.75);backdrop-filter:blur(16px);
+  border:1px solid var(--border-soft);border-radius:var(--r-md);
+  padding:18px 18px 16px;position:relative;overflow:hidden;
+  transition:transform .3s,border-color .3s,box-shadow .3s;cursor:default;
+}
+.kpi:nth-child(1){animation:fadeUp .4s .05s ease-out both}
+.kpi:nth-child(2){animation:fadeUp .4s .10s ease-out both}
+.kpi:nth-child(3){animation:fadeUp .4s .15s ease-out both}
+.kpi:nth-child(4){animation:fadeUp .4s .20s ease-out both}
+.kpi:nth-child(5){animation:fadeUp .4s .25s ease-out both}
+.kpi:nth-child(6){animation:fadeUp .4s .28s ease-out both}
+.kpi:nth-child(7){animation:fadeUp .4s .31s ease-out both}
+.kpi:nth-child(8){animation:fadeUp .4s .34s ease-out both}
+.kpi:nth-child(9){animation:fadeUp .4s .37s ease-out both}
+.kpi::before{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.03),transparent);transition:left .5s;pointer-events:none}
+.kpi:hover::before{left:150%}
+.kpi::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--accent);border-radius:0 0 var(--r-md) var(--r-md);opacity:.7;transition:height .3s,opacity .3s}
+.kpi:hover{transform:translateY(-4px);border-color:var(--accent);box-shadow:0 12px 28px rgba(0,0,0,.35)}
+.kpi.c-full::after{background:var(--full)}
+.kpi.c-empty::after{background:var(--empty)}
+.kpi.c-teu::after{background:var(--yellow)}
+.kpi.c-tons::after{background:#a78bfa}
+.kpi.c-reefer::after{background:var(--full)}
+.kpi.c-tank::after{background:var(--accent3)}
+.kpi.c-ops::after{background:var(--accent3)}
+.kpi.c-sizes::after{background:var(--green)}
+.kpi-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:2.5px;margin-bottom:10px}
+.kpi-val{font-family:var(--ui);font-size:28px;font-weight:800;color:var(--white);line-height:1;letter-spacing:-1.2px;transition:color .3s}
+@media(max-width:480px){.kpi-val{font-size:24px}}
+.kpi:hover .kpi-val{color:var(--accent)}
+.kpi.c-full:hover .kpi-val{color:var(--full)}
+.kpi.c-empty:hover .kpi-val{color:var(--empty)}
+.kpi.c-teu:hover .kpi-val{color:var(--yellow)}
+.kpi.c-tons:hover .kpi-val{color:#a78bfa}
+.kpi.c-reefer:hover .kpi-val{color:var(--full)}
+.kpi.c-tank:hover .kpi-val{color:var(--accent3)}
+.kpi.c-ops:hover .kpi-val{color:var(--accent3)}
+.kpi.c-sizes:hover .kpi-val{color:var(--green)}
+.kpi-sub{font-size:10px;color:var(--muted);margin-top:6px}
+
+/* ── INDICATORS ── */
+.indicators{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:24px;padding:20px;background:rgba(30,41,59,.6);border:1px solid var(--border-soft);border-radius:var(--r-lg);animation:fadeUp .4s ease-out both}
+.ind-title{width:100%;font-family:var(--ui);font-size:11px;font-weight:600;color:var(--text-soft);text-transform:uppercase;letter-spacing:2px;margin-bottom:2px}
+.ind-item{display:flex;flex-direction:column;align-items:center;gap:8px;flex:1;min-width:80px}
+.conic-wrap{position:relative;width:68px;height:68px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:transform .3s,filter .3s}
+.conic-wrap:hover{transform:scale(1.1);filter:drop-shadow(0 0 8px var(--accent-glow))}
+.conic-inner{position:absolute;width:50px;height:50px;border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-direction:column}
+.conic-pct{font-family:var(--ui);font-size:13px;font-weight:700;color:var(--white);line-height:1}
+.conic-sub{font-size:8px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:1px}
+.ind-name{font-size:10px;color:var(--text-soft);text-align:center;letter-spacing:.3px}
+
+/* ── CHARTS ── */
+.charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:22px}
+@media(max-width:700px){.charts-grid{grid-template-columns:1fr}}
+.chart-card{background:rgba(30,41,59,.75);border:1px solid var(--border-soft);border-radius:var(--r-lg);padding:22px;transition:border-color .3s,transform .3s,box-shadow .3s;animation:fadeUp .4s ease-out both}
+.chart-card:hover{border-color:rgba(59,130,246,.4);transform:translateY(-2px);box-shadow:var(--shadow)}
+.chart-card.wide{grid-column:1/-1}
+.card-title{font-family:var(--ui);font-size:12px;font-weight:700;color:var(--white);margin-bottom:3px;display:flex;align-items:center;gap:7px}
+.cdot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.card-desc{font-size:10px;color:var(--muted);margin-bottom:18px;letter-spacing:.2px}
+.chart-wrap{position:relative;height:240px}
+.chart-wrap.tall{height:300px}
+
+/* ── TABLE ── */
+.tbl-section{margin-bottom:36px;animation:fadeUp .4s ease-out both}
+.tbl-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.tbl-title{font-family:var(--ui);font-size:15px;font-weight:700;color:var(--white)}
+.tbl-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.search-input{background:rgba(30,41,59,.8);border:1px solid var(--border-soft);color:var(--text);padding:8px 12px;border-radius:var(--r-sm);font-family:var(--mono);font-size:11px;outline:none;width:240px;transition:border-color .2s}
+@media(max-width:600px){.search-input{width:100%}}
+.search-input::placeholder{color:var(--muted)}
+.search-input:focus{border-color:var(--accent)}
+.row-count{font-size:10px;color:var(--muted);background:var(--surface2);padding:4px 12px;border-radius:100px;border:1px solid var(--border-soft);white-space:nowrap}
+.tbl-wrap{overflow-x:auto;border-radius:var(--r-md);border:1px solid var(--border-soft);background:rgba(30,41,59,.6);-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;font-size:12px}
+thead tr{background:rgba(36,48,68,.95);position:sticky;top:0;z-index:2}
+th{padding:11px 14px;text-align:left;font-family:var(--ui);font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:1.8px;color:var(--muted);white-space:nowrap;cursor:pointer;user-select:none;transition:color .2s,background .2s;border-bottom:1px solid var(--border-soft)}
+th:hover{color:var(--accent);background:rgba(59,130,246,.05)}
+th .si{opacity:.5;margin-left:3px}
+th:hover .si{opacity:1}
+tbody tr{border-top:1px solid rgba(51,65,85,.35);transition:background .15s}
+tbody tr:hover{background:rgba(59,130,246,.05)}
+tbody tr.inv-row{background:rgba(239,68,68,.04)}
+tbody tr.inv-row:hover{background:rgba(239,68,68,.08)}
+td{padding:10px 14px;color:var(--text);white-space:nowrap;font-family:var(--mono);font-size:11px}
+td.td-opr{font-family:var(--ui);font-weight:700;color:var(--white);font-size:12px}
+.badge-ctnr{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--accent2);letter-spacing:.8px}
+.badge-ctnr.inv{color:var(--red);text-decoration:underline wavy rgba(239,68,68,.5)}
+.badge-slot{display:inline-block;padding:2px 8px;border-radius:var(--r-sm);font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text-soft);background:rgba(148,163,184,.08);border:1px solid var(--border-soft)}
+.fe-chip{display:inline-block;padding:2px 9px;border-radius:100px;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase}
+.fe-chip.full{background:rgba(6,182,212,.12);color:var(--full);border:1px solid rgba(6,182,212,.25)}
+.fe-chip.empty{background:rgba(249,115,22,.12);color:var(--empty);border:1px solid rgba(249,115,22,.25)}
+.spec-flag{margin-left:4px;font-size:10px}
+.wt-cell{color:var(--text-soft)}
+
+/* ── DIVIDER ── */
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:4px 0 24px}
+
+/* ── EMPTY STATE ── */
+.empty-state{text-align:center;padding:64px 20px;color:var(--muted);display:none}
+.empty-state.show{display:block}
+.empty-icon{font-size:40px;margin-bottom:14px;opacity:.3}
+.empty-state h3{font-family:var(--ui);color:var(--text);margin-bottom:6px;font-size:14px;font-weight:600}
+.empty-state p{font-size:11px}
+
+/* ── FOOTER ── */
+footer{border-top:1px solid var(--border-soft);padding:20px 0;text-align:center;font-size:10px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;animation:fadeIn .6s .5s ease-out both}
+footer strong{color:var(--accent);font-weight:500}
+
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+
+<!-- VESSEL BANNER -->
+<div id="vesselBanner" role="banner">
+  <div class="vb-inner">
+    <div class="vb-field"><span class="vb-label">Vessel</span><span class="vb-val" id="bVessel">—</span></div>
+    <div class="vb-div"></div>
+    <div class="vb-field"><span class="vb-label">Voyage</span><span class="vb-val" id="bVoyage">—</span></div>
+    <div class="vb-div"></div>
+    <div class="vb-field"><span class="vb-label">Call Sign</span><span class="vb-val" id="bCallSign">—</span></div>
+    <div class="vb-div"></div>
+    <div class="vb-field"><span class="vb-label">POL</span><span class="vb-val" id="bPOL">—</span></div>
+    <div class="vb-div"></div>
+    <div class="vb-field"><span class="vb-label">Date</span><span class="vb-val" id="bDate">—</span></div>
+    <div class="vb-badge"><div class="vb-dot"></div><span id="bLoaded">—</span></div>
+  </div>
+</div>
+
+<!-- DRAWER OVERLAY -->
+<div id="drawerOverlay" onclick="closeDrawer()"></div>
+
+<!-- DRAWER -->
+<div id="drawer" role="dialog" aria-label="Filters" aria-hidden="true">
+  <div class="drawer-head">
+    <span class="drawer-title">⚙ Filters &amp; Actions</span>
+    <button class="drawer-close" onclick="closeDrawer()" aria-label="Close">✕</button>
+  </div>
+  <div class="drawer-body">
+    <div class="filter-group">
+      <label class="filter-label" for="fOPR">Operator</label>
+      <select class="drawer-select" id="fOPR"><option value="">All Operators</option></select>
+    </div>
+    <div class="filter-group">
+      <label class="filter-label" for="fSzTp">Size / Type</label>
+      <select class="drawer-select" id="fSzTp"><option value="">All Size/Types</option></select>
+    </div>
+    <div class="filter-group">
+      <label class="filter-label" for="fFE">Full / Empty</label>
+      <select class="drawer-select" id="fFE">
+        <option value="">All</option>
+        <option value="F">Full</option>
+        <option value="E">Empty</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label class="filter-label" for="fPOL">Port of Loading</label>
+      <select class="drawer-select" id="fPOL"><option value="">All POL</option></select>
+    </div>
+    <div class="filter-group">
+      <label class="filter-label" for="fPOD">Port of Discharge</label>
+      <select class="drawer-select" id="fPOD"><option value="">All POD</option></select>
+    </div>
+    <div class="divider"></div>
+    <p class="filter-stat" id="filterStat">Showing all records</p>
+  </div>
+  <div class="drawer-footer">
+    <button class="btn-export" id="exportBtn">⬇ Export Filtered Data</button>
+    <button class="btn-reset"  id="resetBtn">↺ Reset All Filters</button>
+  </div>
+</div>
+
+<div class="container">
+  <!-- HEADER -->
+  <header>
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-icon" aria-hidden="true">🚢</div>
+        <div>
+          <h1>OPR <span>Load</span> Dashboard</h1>
+
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="status-pill" role="status" aria-live="polite">
+          <div class="status-dot" id="statusDot"></div>
+          <span id="statusText">Awaiting upload</span>
+        </div>
+        <button id="menuBtn" aria-label="Open filters">
+          <div class="burger-icon">
+            <div class="burger-line"></div>
+            <div class="burger-line"></div>
+            <div class="burger-line"></div>
+          </div>
+          <span class="active-badge" id="activeBadge">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- UPLOAD -->
+    <div id="uploadSection">
+      <div class="upload-zone" id="uploadZone" role="button" tabindex="0">
+        <span class="u-icon">📂</span>
+        <div class="u-title">Drop your manifest file here</div>
+        <div class="u-sub">Supports .xlsx · .xls · .csv · .tsv · .asc · .txt · .edi · .baplie</div>
+        <label class="u-btn" for="fileInput">Choose File</label>
+        <input type="file" id="fileInput" accept=".xlsx,.xls,.csv,.tsv,.asc,.txt,.edi,.baplie">
+      </div>
+    </div>
+
+    <!-- LOADING -->
+    <div id="loading" aria-live="assertive">
+      <div class="loading-inner"><div class="spin"></div><span>Processing manifest…</span></div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="dashboard" style="display:none">
+
+      <!-- TOOLBAR -->
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <button id="menuBtnDash" class="btn-reset" style="display:flex;align-items:center;gap:7px;padding:9px 14px;margin:0;width:auto;justify-content:flex-start" onclick="openDrawer()">
+            <div class="burger-icon" style="width:16px"><div class="burger-line"></div><div class="burger-line"></div><div class="burger-line"></div></div>
+            Filters &amp; Export
+            <span class="active-badge" id="activeBadge2">0</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- VALIDATION BANNER -->
+      <div id="valBanner" role="alert" aria-live="polite">
+        <div class="val-title" id="valTitle">⚠ Validation Warnings</div>
+        <div class="val-chips" id="valChips"></div>
+        <button class="val-more" id="valMoreBtn">Show all</button>
+      </div>
+
+      <!-- KPI ROW -->
+      <div class="kpi-row" role="region" aria-label="KPIs">
+        <div class="kpi c-full">
+          <div class="kpi-label">Total Full</div>
+          <div class="kpi-val" id="kFull">0</div>
+          <div class="kpi-sub">loaded containers</div>
+        </div>
+        <div class="kpi c-empty">
+          <div class="kpi-label">Total Empty</div>
+          <div class="kpi-val" id="kEmpty">0</div>
+          <div class="kpi-sub">empty containers</div>
+        </div>
+        <div class="kpi c-teu">
+          <div class="kpi-label">Total TEU</div>
+          <div class="kpi-val" id="kTEU">0</div>
+          <div class="kpi-sub">twenty-ft equivalents</div>
+        </div>
+        <div class="kpi c-tons">
+          <div class="kpi-label">Gross Weight</div>
+          <div class="kpi-val" id="kTons">0</div>
+          <div class="kpi-sub">gross weight in tonnes</div>
+        </div>
+        <div class="kpi c-reefer">
+          <div class="kpi-label">Reefer Units</div>
+          <div class="kpi-val" id="kReefer">0</div>
+          <div class="kpi-sub">temp-controlled</div>
+        </div>
+        <div class="kpi c-tank">
+          <div class="kpi-label">ISO Tanks</div>
+          <div class="kpi-val" id="kTank">0</div>
+          <div class="kpi-sub">liquid bulk</div>
+        </div>
+        <div class="kpi c-ops">
+          <div class="kpi-label">Operators</div>
+          <div class="kpi-val" id="kOPR">0</div>
+          <div class="kpi-sub">unique operators</div>
+        </div>
+        <div class="kpi c-sizes">
+          <div class="kpi-label">Size Types</div>
+          <div class="kpi-val" id="kSzTp">0</div>
+          <div class="kpi-sub">container types</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Total Boxes</div>
+          <div class="kpi-val" id="kTotal">0</div>
+          <div class="kpi-sub">containers total</div>
+        </div>
+      </div>
+
+      <!-- INDICATORS -->
+      <div class="indicators" id="indicators" role="region" aria-label="Load distribution">
+        <div class="ind-title">Load Distribution · Top Operators</div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- CHARTS -->
+      <div class="charts-grid" role="region" aria-label="Charts">
+        <div class="chart-card wide">
+          <div class="card-title"><span class="cdot" style="background:var(--accent)"></span>Operator Load by Size Type</div>
+          <div class="card-desc">Full + Empty containers per operator and type</div>
+          <div class="chart-wrap tall"><canvas id="cOprSzTp"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="card-title"><span class="cdot" style="background:var(--full)"></span>Full vs Empty per Operator</div>
+          <div class="card-desc">Stacked comparison across operators</div>
+          <div class="chart-wrap"><canvas id="cFE"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="card-title"><span class="cdot" style="background:var(--accent3)"></span>Container Type Mix</div>
+          <div class="card-desc">Size type distribution</div>
+          <div class="chart-wrap"><canvas id="cSzTpPie"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="card-title"><span class="cdot" style="background:var(--green)"></span>Operator Share</div>
+          <div class="card-desc">Total boxes per operator</div>
+          <div class="chart-wrap"><canvas id="cOprShare"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="card-title"><span class="cdot" style="background:var(--empty)"></span>POD Distribution</div>
+          <div class="card-desc">Container share per discharge port</div>
+          <div class="chart-wrap"><canvas id="cPOD"></canvas></div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- TABLE -->
+      <div class="tbl-section" role="region">
+        <div class="tbl-head">
+          <div class="tbl-title">Manifest — Container Line Items</div>
+          <div class="tbl-meta">
+            <input type="search" class="search-input" id="tableSearch" placeholder="Search container, slot, operator…">
+            <div class="row-count" id="tableCount" aria-live="polite">0 rows</div>
+          </div>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th data-col="Container">Container No. <span class="si">↕</span></th>
+                <th data-col="Slot">Slot <span class="si">↕</span></th>
+                <th data-col="OPR">Operator <span class="si">↕</span></th>
+                <th data-col="SzTp">Size/Type <span class="si">↕</span></th>
+                <th data-col="FE">F/E <span class="si">↕</span></th>
+                <th data-col="POL">POL <span class="si">↕</span></th>
+                <th data-col="POD">POD <span class="si">↕</span></th>
+                <th data-col="VGM">VGM (T) <span class="si">↕</span></th>
+              </tr>
+            </thead>
+            <tbody id="tBody"></tbody>
+          </table>
+          <div class="empty-state" id="emptyState">
+            <div class="empty-icon">🔍</div>
+            <h3>No matching records</h3>
+            <p>Adjust filters or search query</p>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /#dashboard -->
+  </main>
+</div><!-- /.container -->
+
+<footer>
+  <div class="container">
+    Credits &nbsp;·&nbsp; <strong>Rhoderick Ngonzi</strong><br>&copy; 2026
+  </div>
+</footer>
+
+<script>
+/* ════════════════════════════════════════════════════════════
+   STATE
+════════════════════════════════════════════════════════════ */
+let allData = [];
+let charts  = {};
+let sortState = { col:'Slot', dir:1 };
+let vesselMeta = {};
+let valCache = { invalidCtnrs:[], emptyWarnings:[] };
+let activeFilterCount = 0;
+
+/* ════════════════════════════════════════════════════════════
+   COLOUR PALETTE
+════════════════════════════════════════════════════════════ */
+const PAL = ['#3b82f6','#06b6d4','#8b5cf6','#10b981','#f59e0b','#ec4899','#f97316','#84cc16','#0ea5e9','#a855f7','#14b8a6','#ef4444'];
+const POD_COLORS = {SGP:'#00ff00',PTP:'#0000ff',MWA:'#00ffff',QND:'#ff00ff',CMB:'#ffa500',SHG:'#115e59',PKL:'#800000',DFQ:'#60a5fa',UVC:'#f59e0b',JBA:'#34d399',NXV:'#c084fc',TZ:'#fb7185'};
+const POD_FALL  = ['#ff007f','#33ff33','#3333ff','#ffff33','#ff33ff','#ff9900','#9900ff','#00ff99','#ff00aa','#00eeff'];
+function podColor(pod,i){ return POD_COLORS[String(pod).toUpperCase().trim()] || POD_FALL[i%POD_FALL.length]; }
+
+/* ════════════════════════════════════════════════════════════
+   HELPERS
+════════════════════════════════════════════════════════════ */
+function nFE(v){
+  if(!v) return '';
+  const s = String(v).trim().toUpperCase();
+  if(s==='F'||s==='FULL'||s==='5') return 'F';
+  if(s==='E'||s==='EMPTY'||s==='4') return 'E';
+  return s;
+}
+function cf(row, keys){ for(const k of keys) if(row[k]!==undefined) return row[k]; return ''; }
+function calcTEU(sztp){
+  if(!sztp) return 1;
+  const f = String(sztp).trim()[0];
+  if(f==='2') return 1;
+  if(f==='4'||f==='L'||f==='P') return 2;
+  const n = parseInt(f,10); return isNaN(n)?1:n>=4?2:1;
+}
+function isReefer(s){ s=String(s).toUpperCase(); return /R[0-9A-Z]$/.test(s)||/H[0-9]$/.test(s); }
+function isISOTank(s){ s=String(s).toUpperCase(); return /T[0-9]$/.test(s); }
+function getVGM(row){
+  const v = cf(row,['VGM','VGM_T','Gross Weight','GrossWeight','Weight','weight','wt']);
+  if(v===''||v===null||v===undefined) return null;
+  const n = parseFloat(String(v).replace(/[^\d.]/g,''));
+  return isNaN(n)?null:n;
+}
+
+/* ════════════════════════════════════════════════════════════
+   ISO 6346 CHECK-DIGIT VALIDATOR
+════════════════════════════════════════════════════════════ */
+const ISO_ALPHA = {A:10,B:12,C:13,D:14,E:15,F:16,G:17,H:18,I:19,J:20,K:21,L:23,M:24,N:25,O:26,P:27,Q:28,R:29,S:30,T:31,U:32,V:34,W:35,X:36,Y:37,Z:38};
+function isValidISO6346(ctnr){
+  if(!ctnr||typeof ctnr!=='string') return false;
+  const c = ctnr.replace(/\s/g,'').toUpperCase();
+  if(!/^[A-Z]{4}\d{7}$/.test(c)) return false;
+  let sum = 0;
+  for(let i=0;i<10;i++){
+    const ch = c[i];
+    const val = isNaN(ch) ? (ISO_ALPHA[ch]??0) : parseInt(ch,10);
+    sum += val * Math.pow(2,i);
+  }
+  const cd = (sum % 11) === 10 ? 0 : (sum % 11);
+  return cd === parseInt(c[10],10);
+}
+
+/* ════════════════════════════════════════════════════════════
+   FILTER-SENSITIVE VALIDATION
+   Runs on the currently FILTERED dataset, not allData
+════════════════════════════════════════════════════════════ */
+function runValidation(filteredRows){
+  const invalidCtnrs = [];
+  const emptyWarnings = [];
+  filteredRows.forEach(r => {
+    const ctnr = String(cf(r,['Container','container','CONTAINER','CTR','Ctnr'])||'').trim();
+    if(ctnr && ctnr.length >= 4 && !isValidISO6346(ctnr)) invalidCtnrs.push(ctnr);
+    // Empty stowage inconsistency checks
+    const fe  = nFE(cf(r,['F/E','FE','fe','f/e','Full/Empty']));
+    const vgm = getVGM(r);
+    const slot = String(cf(r,['Slot','slot','SLOT','Cell','cell'])||'').trim();
+    if(fe==='E' && vgm!==null && vgm>5.0){
+      emptyWarnings.push({ctnr,slot,reason:`Empty declared but VGM=${vgm.toFixed(2)}T`});
+    }
+    if(fe==='E' && slot && slot.length>=5){
+      const tier = parseInt(slot.slice(-2),10);
+      if(!isNaN(tier)&&tier<10&&tier>0) emptyWarnings.push({ctnr,slot,reason:`Empty in low-tier slot (tier ${String(tier).padStart(2,'0')})`});
+    }
+  });
+  valCache = { invalidCtnrs:[...new Set(invalidCtnrs)], emptyWarnings };
+  renderValBanner();
+}
+
+function renderValBanner(){
+  const { invalidCtnrs } = valCache;
+  const banner = document.getElementById('valBanner');
+  const chips  = document.getElementById('valChips');
+  const moreBtn= document.getElementById('valMoreBtn');
+  const total  = invalidCtnrs.length;
+  if(!total){ banner.style.display='none'; return; }
+  banner.style.display='block';
+  const expanded = moreBtn.dataset.expanded==='true';
+  const mc = expanded ? invalidCtnrs.length : Math.min(invalidCtnrs.length,8);
+  let h = '';
+  invalidCtnrs.slice(0,mc).forEach(c=>{ h+=`<span class="val-chip inv" title="ISO 6346 check-digit failed">⚠ ${c}</span>`; });
+  chips.innerHTML = h;
+  const hidden = total - mc;
+  if(hidden>0&&!expanded){ moreBtn.textContent=`+${hidden} more — show all`; moreBtn.style.display='block'; }
+  else if(expanded&&total>8){ moreBtn.textContent='Collapse'; moreBtn.style.display='block'; }
+  else { moreBtn.style.display='none'; }
+  document.getElementById('valTitle').textContent =
+    `⚠ ${invalidCtnrs.length} invalid container${invalidCtnrs.length!==1?'s':''} — current filter view`;
+}
+document.getElementById('valMoreBtn').addEventListener('click',function(){
+  this.dataset.expanded = this.dataset.expanded==='true'?'false':'true';
+  renderValBanner();
+});
+
+/* ════════════════════════════════════════════════════════════
+   ASC FIXED-WIDTH PARSER WITH TONNAGE EXTRACTION
+   Column map (0-based, confirmed from BRAC_115E_MWA_PL3.ASC):
+     [0:6]   = Slot position
+     [7:18]  = Container number
+     [19:22] = Operator code
+     [27:30] = POL (port of loading)
+     [30:33] = POD (port of discharge)
+     [43:47] = Size/Type (strip leading spaces/C prefix for customs)
+     [47:53] = Weight+FE  e.g. " 021E" or " 280F"
+                  numeric part (3 digits) × 100 = weight in KGS
+                  letter suffix = F (Full) or E (Empty)
+     Weight in file is in tenths of tonnes, e.g. "021" = 2100 KGS = 2.1 T
+     ACTUAL confirmed: 5-digit weight at positions 83:88 e.g. "02120" = 2120 KGS = 2.120 T
+     Header $604: CALLSIGN/VESSEL/VOYAGE/./POL:xxx/DATE
+════════════════════════════════════════════════════════════ */
+function parseASC(text){
+  const lines = text.replace(/\r\n/g,'\n').replace(/\r/g,'\n').split('\n');
+  const rows  = [];
+  let meta = {};
+
+  for(const raw of lines){
+    const line = raw.trimEnd();
+    if(!line) continue;
+
+    // Header line
+    if(line.startsWith('$604')){
+      const parts = line.slice(4).split('/');
+      meta.callSign  = (parts[0]||'').trim();
+      meta.vesselName= (parts[1]||'').trim();
+      meta.voyage    = (parts[2]||'').trim();
+      // POL:MWA style
+      const polPart  = parts.find(p=>p.startsWith('POL:'));
+      if(polPart) meta.pol = polPart.slice(4).trim();
+      // Date
+      const datePart = parts.find(p=>/^\d{8}$/.test(p.trim()));
+      if(datePart){
+        const d = datePart.trim();
+        meta.date = `${d.slice(0,4)}-${d.slice(4,6)}-${d.slice(6,8)}`;
+      }
+      continue;
+    }
+    if(line.startsWith('$')) continue;
+
+    // Data line: must start with 6-digit slot
+    if(line.length < 50 || !/^\d{6}/.test(line)) continue;
+
+    const slot  = line.slice(0,6).trim();
+    const ctnr  = line.slice(7,18).trim();
+    const opr   = line.slice(19,22).trim();
+    const pol   = line.slice(27,30).trim();
+    const pod   = line.slice(30,33).trim();
+
+    // SzTp: strip leading spaces and leading 'C' (customs-flagged prefix)
+    let sztp = line.slice(43,47).trim();
+    if(sztp.startsWith('C') && sztp.length>1) sztp = sztp.slice(1);
+
+    // Weight + F/E field at [47:53] e.g. " 280F " or " 021E "
+    const feArea = line.slice(47,53);
+    const feMatch = feArea.match(/(\d{3})([EF])/);
+    const feChar  = feMatch ? feMatch[2] : '';
+
+    // 5-digit weight in KGS at approx position 83-95 (confirmed)
+    // Find first 5-digit number between positions 80 and 100
+    let vgmKg = null;
+    const wSection = line.length > 80 ? line.slice(80, 100) : '';
+    const wMatch   = wSection.match(/(\d{5})/);
+    if(wMatch){
+      const raw5 = parseInt(wMatch[1], 10);
+      if(raw5 > 0) vgmKg = raw5; // KGS
+    }
+    // Fallback: derive from 3-digit prefix × 100
+    if(vgmKg === null && feMatch){
+      const raw3 = parseInt(feMatch[1], 10);
+      if(raw3 > 0) vgmKg = raw3 * 100; // 021 → 2100 KGS
+    }
+
+    const vgmT = vgmKg !== null ? +(vgmKg / 1000).toFixed(3) : null; // KGS → TONNES
+
+    if(!opr && !ctnr && !sztp) continue;
+
+    rows.push({
+      Slot: slot, Container: ctnr, OPR: opr,
+      SzTp: sztp, 'F/E': feChar,
+      POL: pol, POD: pod,
+      VGM: vgmT,   // stored in TONNES
+      _vgmKg: vgmKg
+    });
+  }
+  return { rows, meta };
+}
+
+/* ════════════════════════════════════════════════════════════
+   VESSEL BANNER
+════════════════════════════════════════════════════════════ */
+function showVesselBanner(m){
+  if(!m||(!m.vesselName&&!m.voyage&&!m.callSign)) return;
+  vesselMeta = m;
+  document.getElementById('bVessel').textContent   = m.vesselName||'—';
+  document.getElementById('bVoyage').textContent   = m.voyage    ||'—';
+  document.getElementById('bCallSign').textContent = m.callSign  ||'—';
+  document.getElementById('bPOL').textContent      = m.pol       ||'—';
+  document.getElementById('bDate').textContent     = m.date      ||'—';
+  document.getElementById('bLoaded').textContent   = `Loaded ${new Date().toLocaleTimeString()}`;
+  document.getElementById('vesselBanner').style.display='block';
+}
+
+/* ════════════════════════════════════════════════════════════
+   UPLOAD / DRAG
+════════════════════════════════════════════════════════════ */
+const fileInput  = document.getElementById('fileInput');
+const uploadZone = document.getElementById('uploadZone');
+
+uploadZone.addEventListener('dragover', e=>{e.preventDefault();uploadZone.classList.add('drag-over');});
+uploadZone.addEventListener('dragleave',()=>uploadZone.classList.remove('drag-over'));
+uploadZone.addEventListener('drop',e=>{e.preventDefault();uploadZone.classList.remove('drag-over');const f=e.dataTransfer.files[0];if(f)processFile(f);});
+uploadZone.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();fileInput.click();}});
+fileInput.addEventListener('change',e=>{if(e.target.files[0])processFile(e.target.files[0]);});
+
+function processFile(file){
+  document.getElementById('loading').style.display='block';
+  document.getElementById('dashboard').style.display='none';
+  const ext    = file.name.split('.').pop().toLowerCase();
+  const isXL   = ext==='xlsx'||ext==='xls';
+  const reader = new FileReader();
+
+  reader.onload = e => {
+    try{
+      let raw=[], meta={};
+      if(isXL){
+        const wb = XLSX.read(e.target.result,{type:'binary'});
+        const ws = wb.Sheets[wb.SheetNames[0]];
+        raw = XLSX.utils.sheet_to_json(ws,{defval:''});
+        // Attempt vessel meta from first 20 rows of XLSX
+        meta = parseVesselMetaXLSX(raw);
+      } else {
+        const text = e.target.result;
+        if(ext==='asc'||/^\d{6}\s/.test(text.trim())||text.includes('$604')){
+          const result = parseASC(text);
+          raw  = result.rows;
+          meta = result.meta;
+        } else if(ext==='edi'||ext==='baplie'||text.trim().startsWith('UNB')||text.includes('BAPLIE')){
+          raw  = parseEDI(text);
+          meta = parseEDIMeta(text);
+        } else {
+          raw = parseDelimited(text,ext);
+        }
+      }
+
+      // Normalise keys
+      allData = raw.map(row=>{
+        const m={};
+        for(const k in row) m[k.trim()]=typeof row[k]==='string'?row[k].trim():row[k];
+        return m;
+      }).filter(row=>{
+        const opr  = String(cf(row,['OPR','Opr','opr'])||'').trim();
+        const sztp = String(cf(row,['SzTp','SZTP','SzTP','Size Type','SizeType'])||'').trim();
+        return opr!==''&&opr.toUpperCase()!=='UNKNOWN'&&sztp!==''&&sztp.toUpperCase()!=='UNKNOWN';
+      });
+
+      document.getElementById('loading').style.display='none';
+      document.getElementById('dashboard').style.display='block';
+      document.getElementById('uploadSection').style.display='none';
+      document.getElementById('menuBtn').style.display='flex';
+      document.getElementById('statusDot').classList.add('active');
+      document.getElementById('statusText').textContent=`${allData.length.toLocaleString()} records · ${file.name}`;
+      showVesselBanner(meta);
+      populateFilters();
+      renderAll();
+    } catch(err){
+      document.getElementById('loading').style.display='none';
+      alert('Error parsing file:\n'+err.message);
+      console.error(err);
+    }
+  };
+  isXL ? reader.readAsBinaryString(file) : reader.readAsText(file);
+}
+
+/* ════════════════════════════════════════════════════════════
+   OTHER PARSERS
+════════════════════════════════════════════════════════════ */
+function parseEDI(text){
+  let segs = text.includes("'")?text.split("'"):text.replace(/\r\n/g,'\n').replace(/\r/g,'\n').split('\n');
+  const rows=[];
+  let opr='',sztp='',fe='',pol='',pod='',slot='',ctnr='',vgm=null;
+  for(let s of segs){
+    s=s.trim(); if(!s) continue;
+    const el=s.split('+'),tag=el[0];
+    if(tag==='LOC'&&el[1]==='147'){
+      if(ctnr||slot) rows.push({OPR:opr,SzTp:sztp,'F/E':fe,POL:pol,POD:pod,Slot:slot,Container:ctnr,VGM:vgm});
+      slot=el[2]?el[2].split(':')[0]:''; opr='';sztp='';fe='';ctnr='';vgm=null;
+    } else if(tag==='EQD'&&(el[1]==='CN'||el[1]==='CC')){
+      ctnr=el[2]?el[2].split(':')[0]:''; if(el[3])sztp=el[3].split(':')[0]; if(el[6])fe=el[6];
+    } else if(tag==='EQA'&&el[1]==='ST'){ fe=el[2]||'';
+    } else if(tag==='LOC'&&el[1]==='190'){ pol=el[2]?el[2].split(':')[0]:'';
+    } else if(tag==='LOC'&&el[1]==='11'){  pod=el[2]?el[2].split(':')[0]:'';
+    } else if(tag==='NAD'&&el[1]==='CF'){  opr=el[2]?el[2].split(':')[0]:'';
+    } else if(tag==='MEA'&&(el[1]==='AAE'||el[1]==='VGM')){
+      const w=(el[3]||el[2]||'').match(/[\d.]+/);
+      if(w) vgm=parseFloat(w[0])/1000; // assume KGS, convert to T
+    }
+  }
+  if(ctnr||slot) rows.push({OPR:opr,SzTp:sztp,'F/E':fe,POL:pol,POD:pod,Slot:slot,Container:ctnr,VGM:vgm});
+  return rows;
+}
+function parseEDIMeta(text){
+  const meta={};
+  const tdt=text.match(/TDT\+20\+([^+]+)\+[^+]*\+[^+]*\+[^+]*\+[^+]*\+([^:+':]+):?([^+']*)?/);
+  if(tdt){meta.voyage=(tdt[1]||'').trim();meta.callSign=(tdt[2]||'').trim();meta.vesselName=(tdt[3]||'').trim();}
+  const l5=text.match(/LOC\+5\+([^:+']+)/);if(l5)meta.pol=l5[1].trim();
+  return meta;
+}
+function parseVesselMetaXLSX(raw){
+  const m={};
+  for(const row of raw.slice(0,20)){
+    for(const k of Object.keys(row)){
+      const kl=k.toLowerCase(),v=String(row[k]).trim();if(!v)continue;
+      if(kl.includes('vessel')||kl.includes('ship'))m.vesselName=m.vesselName||v;
+      if(kl.includes('voyage')||kl.includes('voy'))m.voyage=m.voyage||v;
+      if(kl.includes('call'))m.callSign=m.callSign||v;
+      if(kl.includes('pol')||kl.includes('loading'))m.pol=m.pol||v;
+    }
+  }
+  return m;
+}
+function parseDelimited(text,ext){
+  const lines=text.replace(/\r\n/g,'\n').replace(/\r/g,'\n').split('\n');
+  const delim=ext==='tsv'?'\t':detectDelim(lines);
+  const ne=lines.filter(l=>l.trim());
+  if(ne.length<2)return[];
+  const hdr=splitCSV(ne[0],delim);
+  return ne.slice(1).map(l=>{const vs=splitCSV(l,delim),r={};hdr.forEach((h,i)=>{r[h]=vs[i]!==undefined?vs[i]:'';});return r;});
+}
+function detectDelim(lines){
+  const s=lines.find(l=>l.trim())||'';
+  const c={',':(s.match(/,/g)||[]).length,'\t':(s.match(/\t/g)||[]).length,'|':(s.match(/\|/g)||[]).length};
+  return Object.entries(c).sort((a,b)=>b[1]-a[1])[0][0];
+}
+function splitCSV(line,d){
+  if(d!==',')return line.split(d).map(v=>v.trim().replace(/^["']|["']$/g,''));
+  const r=[];let cur='',inQ=false;
+  for(let i=0;i<line.length;i++){const c=line[i];if(c==='"'&&!inQ){inQ=true;continue;}if(c==='"'&&inQ){if(line[i+1]==='"'){cur+='"';i++;}else inQ=false;continue;}if(c===','&&!inQ){r.push(cur.trim());cur='';continue;}cur+=c;}
+  r.push(cur.trim());return r;
+}
+
+/* ════════════════════════════════════════════════════════════
+   FILTERS
+════════════════════════════════════════════════════════════ */
+function populateFilters(){
+  const get = (keys,data=allData) => [...new Set(data.map(r=>String(cf(r,keys)||'').trim()).filter(Boolean))].sort();
+  fillSel('fOPR', 'All Operators',  get(['OPR','Opr','opr']));
+  fillSel('fSzTp','All Size/Types', get(['SzTp','SZTP','SzTP','Size Type','SizeType']));
+  fillSel('fPOL', 'All POL',        get(['POL','Pol','pol']));
+  fillSel('fPOD', 'All POD',        get(['POD','Pod','pod']));
+}
+function fillSel(id,ph,opts){
+  const sel=document.getElementById(id);
+  sel.innerHTML=`<option value="">${ph}</option>`;
+  opts.forEach(o=>{const op=document.createElement('option');op.value=o;op.textContent=o;sel.appendChild(op);});
+}
+['fOPR','fSzTp','fFE','fPOL','fPOD'].forEach(id=>{
+  document.getElementById(id).addEventListener('change',()=>{ renderAll(); updateActiveBadge(); });
+});
+document.getElementById('resetBtn').addEventListener('click',()=>{
+  ['fOPR','fSzTp','fFE','fPOL','fPOD'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('tableSearch').value='';
+  renderAll();
+  updateActiveBadge();
+});
+document.getElementById('tableSearch').addEventListener('input',renderTable);
+
+function updateActiveBadge(){
+  const n = ['fOPR','fSzTp','fFE','fPOL','fPOD'].filter(id=>document.getElementById(id).value!=='').length;
+  activeFilterCount = n;
+  ['activeBadge','activeBadge2'].forEach(id=>{
+    const el=document.getElementById(id);
+    el.textContent=n;
+    el.classList.toggle('show',n>0);
+  });
+  document.getElementById('filterStat').textContent =
+    n>0 ? `${n} filter${n!==1?'s':''} active — ${getFiltered().length.toLocaleString()} of ${allData.length.toLocaleString()} records` : `Showing all ${allData.length.toLocaleString()} records`;
+}
+
+function getFiltered(){
+  const opr  = document.getElementById('fOPR').value;
+  const sztp = document.getElementById('fSzTp').value;
+  const fe   = document.getElementById('fFE').value;
+  const pol  = document.getElementById('fPOL').value;
+  const pod  = document.getElementById('fPOD').value;
+  return allData.filter(r=>{
+    if(opr  && String(cf(r,['OPR','Opr','opr'])||'').trim()!==opr)  return false;
+    if(sztp && String(cf(r,['SzTp','SZTP','SzTP','Size Type','SizeType'])||'').trim()!==sztp) return false;
+    if(fe   && nFE(cf(r,['F/E','FE','fe','f/e','Full/Empty']))!==fe) return false;
+    if(pol  && String(cf(r,['POL','Pol','pol'])||'').trim()!==pol)   return false;
+    if(pod  && String(cf(r,['POD','Pod','pod'])||'').trim()!==pod)   return false;
+    return true;
+  });
+}
+
+/* ════════════════════════════════════════════════════════════
+   DRAWER
+════════════════════════════════════════════════════════════ */
+function openDrawer(){
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('drawerOverlay').classList.add('active');
+  document.getElementById('drawer').setAttribute('aria-hidden','false');
+  document.getElementById('menuBtn').classList.add('open');
+  document.body.style.overflow='hidden';
+  updateActiveBadge();
+}
+function closeDrawer(){
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('drawerOverlay').classList.remove('active');
+  document.getElementById('drawer').setAttribute('aria-hidden','true');
+  document.getElementById('menuBtn').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.getElementById('menuBtn').addEventListener('click',()=>{
+  document.getElementById('drawer').classList.contains('open') ? closeDrawer() : openDrawer();
+});
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeDrawer(); });
+
+/* ════════════════════════════════════════════════════════════
+   RENDER ALL
+════════════════════════════════════════════════════════════ */
+function renderAll(){
+  const filtered = getFiltered();
+  const agg      = aggregate(filtered);
+  // ⚡ Filter-sensitive validation — runs only on current filtered set
+  runValidation(filtered);
+  renderKPIs(filtered, agg);
+  renderIndicators(agg);
+  renderCharts(agg);
+  renderTable(filtered);
+  updateActiveBadge();
+}
+
+/* ════════════════════════════════════════════════════════════
+   KPI RENDER (filter-reactive, weight in KGS)
+════════════════════════════════════════════════════════════ */
+function renderKPIs(filtered, agg){
+  const full   = filtered.filter(r=>nFE(cf(r,['F/E','FE','fe','f/e','Full/Empty']))==='F').length;
+  const empty  = filtered.filter(r=>nFE(cf(r,['F/E','FE','fe','f/e','Full/Empty']))==='E').length;
+  const oprs   = new Set(agg.map(r=>r.OPR)).size;
+  const sztps  = new Set(agg.map(r=>r.SzTp)).size;
+
+  const teu = filtered.reduce((s,r)=>{
+    const sztp=String(cf(r,['SzTp','SZTP','SzTP','Size Type','SizeType'])||'').trim();
+    return s+calcTEU(sztp);
+  },0);
+
+  const reefer = filtered.filter(r=>isReefer(String(cf(r,['SzTp','SZTP','SzTP','Size Type','SizeType'])||'').trim())).length;
+  const tank   = filtered.filter(r=>isISOTank(String(cf(r,['SzTp','SZTP','SzTP','Size Type','SizeType'])||'').trim())).length;
+
+  // Weight: sum VGM in tonnes
+  let tons = 0;
+  filtered.forEach(r=>{ const v=getVGM(r); if(v!==null) tons+=v; });
+  const tonsDisplay = tons>0 ? (tons>=1000?`${(tons/1000).toFixed(1)}K`:tons.toFixed(2)) : '—';
+
+  document.getElementById('kFull').textContent   = full.toLocaleString();
+  document.getElementById('kEmpty').textContent  = empty.toLocaleString();
+  document.getElementById('kTEU').textContent    = teu.toLocaleString();
+  document.getElementById('kTons').textContent   = tonsDisplay;
+  document.getElementById('kReefer').textContent = reefer.toLocaleString();
+  document.getElementById('kTank').textContent   = tank.toLocaleString();
+  document.getElementById('kOPR').textContent    = oprs;
+  document.getElementById('kSzTp').textContent   = sztps;
+  document.getElementById('kTotal').textContent  = filtered.length.toLocaleString();
+}
+
+/* ── AGGREGATE ── */
+function aggregate(data){
+  const map={};
+  data.forEach(r=>{
+    const opr  = String(cf(r,['OPR','Opr','opr'])||'').trim();
+    const sztp = String(cf(r,['SzTp','SZTP','SzTP','Size Type','SizeType'])||'').trim();
+    const pod  = String(cf(r,['POD','Pod','pod'])||'BLANK').trim();
+    const fe   = nFE(cf(r,['F/E','FE','fe','f/e','Full/Empty']));
+    const key  = `${opr}|||${sztp}|||${pod}`;
+    if(!map[key]) map[key]={OPR:opr,SzTp:sztp,POD:pod,Full:0,Empty:0};
+    if(fe==='F') map[key].Full++; else if(fe==='E') map[key].Empty++; else map[key].Full++;
+  });
+  return Object.values(map).map(v=>({...v,Total:v.Full+v.Empty}));
+}
+
+/* ── CIRCULAR INDICATORS ── */
+function renderIndicators(agg){
+  const row   = document.getElementById('indicators');
+  const title = row.querySelector('.ind-title');
+  row.innerHTML=''; row.appendChild(title);
+  const oprMap={};
+  agg.forEach(r=>{if(!oprMap[r.OPR])oprMap[r.OPR]={Full:0,Empty:0,Total:0};oprMap[r.OPR].Full+=r.Full;oprMap[r.OPR].Empty+=r.Empty;oprMap[r.OPR].Total+=r.Total;});
+  const top = Object.entries(oprMap).sort((a,b)=>b[1].Total-a[1].Total).slice(0,8);
+  top.forEach(([opr,data],idx)=>{
+    const pct   = data.Total>0?Math.round((data.Full/data.Total)*100):0;
+    const color = PAL[idx%PAL.length];
+    const bg    = `conic-gradient(${color} ${pct*3.6}deg,#0f172a ${pct*3.6}deg)`;
+    const el    = document.createElement('div');
+    el.className='ind-item';
+    el.setAttribute('role','img');
+    el.setAttribute('aria-label',`${opr}: ${pct}% full`);
+    el.innerHTML=`
+      <div class="conic-wrap" style="background:${bg}" title="${opr}: ${pct}% Full, ${data.Full}F/${data.Empty}E">
+        <div class="conic-inner">
+          <span class="conic-pct">${pct}%</span>
+          <span class="conic-sub">FULL</span>
+        </div>
+      </div>
+      <div class="ind-name">${opr}<br><span style="color:var(--muted);font-size:9px">${data.Total.toLocaleString()} boxes</span></div>`;
+    row.appendChild(el);
+  });
+  if(!top.length){const m=document.createElement('div');m.style.cssText='color:var(--muted);font-size:11px;padding:8px';m.textContent='No data.';row.appendChild(m);}
+}
+
+/* ── CHARTS ── */
+function dChart(id){if(charts[id]){charts[id].destroy();delete charts[id];}}
+const CD = ()=>({
+  color:'#94a3b8',
+  plugins:{
+    legend:{labels:{color:'#94a3b8',font:{family:'Roboto Mono',size:10},boxWidth:10,padding:12}},
+    tooltip:{backgroundColor:'#1e293b',borderColor:'#334155',borderWidth:1,titleColor:'#fff',bodyColor:'#94a3b8',titleFont:{family:'Inter',size:11,weight:'600'},bodyFont:{family:'Roboto Mono',size:10},padding:10,cornerRadius:8}
+  },
+  scales:{
+    x:{grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#64748b',font:{family:'Roboto Mono',size:10}}},
+    y:{grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#64748b',font:{family:'Roboto Mono',size:10}},beginAtZero:true}
+  }
+});
+
+function renderCharts(agg){
+  const oprs  = [...new Set(agg.map(r=>r.OPR))].sort();
+  const sztps = [...new Set(agg.map(r=>r.SzTp))].sort();
+  const pods  = [...new Set(agg.map(r=>r.POD))].sort();
+
+  dChart('oprSzTp');
+  const ctx1=document.getElementById('cOprSzTp').getContext('2d');
+  const fDS=sztps.map((st,i)=>({label:st+'(F)',data:oprs.map(o=>agg.filter(x=>x.OPR===o&&x.SzTp===st).reduce((s,x)=>s+x.Full,0)),backgroundColor:PAL[i%PAL.length]+'cc',borderColor:PAL[i%PAL.length],borderWidth:1,stack:'f'}));
+  const eDS=sztps.map((st,i)=>({label:st+'(E)',data:oprs.map(o=>agg.filter(x=>x.OPR===o&&x.SzTp===st).reduce((s,x)=>s+x.Empty,0)),backgroundColor:PAL[i%PAL.length]+'44',borderColor:PAL[i%PAL.length],borderWidth:1,stack:'e'}));
+  charts.oprSzTp=new Chart(ctx1,{type:'bar',data:{labels:oprs,datasets:[...fDS,...eDS]},options:{...CD(),responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true},y:{stacked:true}},plugins:{...CD().plugins,tooltip:{...CD().plugins.tooltip,mode:'index',intersect:false}}}});
+
+  dChart('fe');
+  const ctx2=document.getElementById('cFE').getContext('2d');
+  charts.fe=new Chart(ctx2,{type:'bar',data:{labels:oprs,datasets:[
+    {label:'Full',data:oprs.map(o=>agg.filter(r=>r.OPR===o).reduce((s,r)=>s+r.Full,0)),backgroundColor:'rgba(6,182,212,.65)',borderColor:'#06b6d4',borderWidth:1,stack:'s',borderRadius:3},
+    {label:'Empty',data:oprs.map(o=>agg.filter(r=>r.OPR===o).reduce((s,r)=>s+r.Empty,0)),backgroundColor:'rgba(249,115,22,.65)',borderColor:'#f97316',borderWidth:1,stack:'s',borderRadius:3}
+  ]},options:{...CD(),responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true},y:{stacked:true}}}});
+
+  dChart('szTpPie');
+  const ctx3=document.getElementById('cSzTpPie').getContext('2d');
+  charts.szTpPie=new Chart(ctx3,{type:'doughnut',data:{labels:sztps,datasets:[{data:sztps.map(st=>agg.filter(r=>r.SzTp===st).reduce((s,r)=>s+r.Total,0)),backgroundColor:PAL.slice(0,sztps.length),borderColor:'#0f172a',borderWidth:3,hoverOffset:10}]},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'right',labels:{color:'#94a3b8',font:{family:'Roboto Mono',size:10},padding:10,boxWidth:9}},tooltip:{...CD().plugins.tooltip}}}});
+
+  dChart('oprShare');
+  const ctx4=document.getElementById('cOprShare').getContext('2d');
+  const sOpr=oprs.map(o=>({o,t:agg.filter(r=>r.OPR===o).reduce((s,r)=>s+r.Total,0)})).sort((a,b)=>b.t-a.t);
+  charts.oprShare=new Chart(ctx4,{type:'bar',data:{labels:sOpr.map(x=>x.o),datasets:[{label:'Boxes',data:sOpr.map(x=>x.t),backgroundColor:PAL.slice(0,sOpr.length).map(c=>c+'bb'),borderColor:PAL.slice(0,sOpr.length),borderWidth:1,borderRadius:3}]},options:{indexAxis:'y',...CD(),responsive:true,maintainAspectRatio:false,plugins:{...CD().plugins,legend:{display:false}}}});
+
+  dChart('pod');
+  const ctx5=document.getElementById('cPOD').getContext('2d');
+  const sPOD=pods.map((p,i)=>({p,t:agg.filter(r=>r.POD===p).reduce((s,r)=>s+r.Total,0),i})).sort((a,b)=>b.t-a.t).slice(0,10);
+  charts.pod=new Chart(ctx5,{type:'bar',data:{labels:sPOD.map(x=>x.p),datasets:[{data:sPOD.map(x=>x.t),backgroundColor:sPOD.map(x=>podColor(x.p,x.i)),borderRadius:3}]},options:{...CD(),responsive:true,maintainAspectRatio:false,plugins:{...CD().plugins,legend:{display:false}}}});
+}
+
+/* ── TABLE ── */
+let lastRows = [];
+function renderTable(input){
+  const rows = Array.isArray(input) ? input : lastRows;
+  if(Array.isArray(input)) lastRows = rows;
+  const invalidSet = new Set(valCache.invalidCtnrs);
+  const q = document.getElementById('tableSearch').value.toLowerCase().trim();
+
+  const view = rows.map(r=>({
+    Container: String(cf(r,['Container','container','CONTAINER','CTR','Ctnr'])||'').trim(),
+    Slot:      String(cf(r,['Slot','slot','SLOT','Cell','cell'])||'').trim(),
+    OPR:       String(cf(r,['OPR','Opr','opr'])||'').trim(),
+    SzTp:      String(cf(r,['SzTp','SZTP','SzTP','Size Type','SizeType'])||'').trim(),
+    FE:        nFE(cf(r,['F/E','FE','fe','f/e','Full/Empty'])),
+    POL:       String(cf(r,['POL','Pol','pol'])||'').trim(),
+    POD:       String(cf(r,['POD','Pod','pod'])||'BLANK').trim(),
+    VGM:       getVGM(r)
+  })).filter(v=>!q||[v.Container,v.Slot,v.OPR,v.SzTp,v.FE,v.POL,v.POD].some(s=>s.toLowerCase().includes(q)));
+
+  const sorted = view.slice().sort((a,b)=>{
+    const av=a[sortState.col]??'', bv=b[sortState.col]??'';
+    if(typeof av==='number'&&typeof bv==='number') return (av-bv)*sortState.dir;
+    return String(av).localeCompare(String(bv))*sortState.dir;
+  });
+
+  const body  = document.getElementById('tBody');
+  const empty = document.getElementById('emptyState');
+  document.getElementById('tableCount').textContent=`${sorted.length.toLocaleString()} rows`;
+  empty.classList.toggle('show',!sorted.length);
+
+  body.innerHTML = sorted.map(v=>{
+    const isInv  = v.Container && invalidSet.has(v.Container);
+    const feC    = v.FE==='F'?'full':v.FE==='E'?'empty':'';
+    const feL    = v.FE==='F'?'Full':v.FE==='E'?'Empty':(v.FE||'—');
+    const rflag  = isReefer(v.SzTp)   ? '<span class="spec-flag" title="Reefer">❄</span>' : '';
+    const tflag  = isISOTank(v.SzTp)  ? '<span class="spec-flag" title="ISO Tank">🛢</span>' : '';
+    const cDisp  = v.Container
+      ? `<span class="badge-ctnr${isInv?' inv':''}" title="${isInv?'⚠ ISO 6346 invalid':''}">${v.Container}${isInv?'<span style="color:var(--red);margin-left:3px;font-size:9px">⚠</span>':''}</span>`
+      : `<span style="color:var(--muted)">—</span>`;
+    const sDisp  = v.Slot ? `<span class="badge-slot">${v.Slot}</span>` : `<span style="color:var(--muted)">—</span>`;
+    const vDisp  = v.VGM!==null ? `<span class="wt-cell">${v.VGM.toFixed(3)} T</span>` : `<span style="color:var(--muted)">—</span>`;
+    return `<tr${isInv?' class="inv-row"':''}>
+      <td>${cDisp}</td>
+      <td>${sDisp}</td>
+      <td class="td-opr">${v.OPR||'—'}</td>
+      <td><span style="font-family:var(--ui);font-weight:600;color:var(--accent3)">${v.SzTp||'—'}</span>${rflag}${tflag}</td>
+      <td><span class="fe-chip ${feC}">${feL}</span></td>
+      <td style="color:var(--text-soft)">${v.POL||'—'}</td>
+      <td><span style="font-family:var(--ui);font-weight:600;color:var(--accent)">${v.POD}</span></td>
+      <td>${vDisp}</td>
+    </tr>`;
+  }).join('');
+}
+
+document.querySelectorAll('th[data-col]').forEach(th=>{
+  th.addEventListener('click',()=>{
+    const col=th.dataset.col;
+    sortState.dir=sortState.col===col?-sortState.dir:1;
+    sortState.col=col;
+    renderTable();
+  });
+});
+
+/* ════════════════════════════════════════════════════════════
+   EXPORT (filter + search sensitive, weight in KGS)
+════════════════════════════════════════════════════════════ */
+document.getElementById('exportBtn').addEventListener('click',()=>{
+  const filtered=getFiltered();
+  if(!filtered.length){alert('No data to export.');return;}
+  const q=document.getElementById('tableSearch').value.toLowerCase().trim();
+  const rows=filtered.map(r=>{
+    const ctnr=String(cf(r,['Container','container','CONTAINER','CTR','Ctnr'])||'').trim();
+    const sztp=String(cf(r,['SzTp','SZTP','SzTP','Size Type','SizeType'])||'').trim();
+    const fe=nFE(cf(r,['F/E','FE','fe','f/e','Full/Empty']));
+    const vgm=getVGM(r);
+    return{
+      'Container No.': ctnr,
+      'Slot':          String(cf(r,['Slot','slot','SLOT','Cell','cell'])||'').trim(),
+      'Operator':      String(cf(r,['OPR','Opr','opr'])||'').trim(),
+      'Size/Type':     sztp,
+      'TEU':           calcTEU(sztp),
+      'F/E':           fe==='F'?'Full':fe==='E'?'Empty':fe,
+      'POL':           String(cf(r,['POL','Pol','pol'])||'').trim(),
+      'POD':           String(cf(r,['POD','Pod','pod'])||'').trim(),
+      'VGM (KGS)':     vgm!==null?+(vgm*1000).toFixed(0):'',
+      'ISO Valid':     ctnr?(isValidISO6346(ctnr)?'Yes':'INVALID'):'',
+      'Reefer':        isReefer(sztp)?'Yes':'No',
+      'ISO Tank':      isISOTank(sztp)?'Yes':'No'
+    };
+  }).filter(row=>!q||Object.values(row).some(v=>String(v).toLowerCase().includes(q)));
+
+  const ws=XLSX.utils.json_to_sheet(rows);
+  ws['!cols']=[{wch:14},{wch:8},{wch:10},{wch:10},{wch:5},{wch:8},{wch:6},{wch:6},{wch:11},{wch:10},{wch:8},{wch:9}];
+  const wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,ws,'Filtered Manifest');
+
+  // VGM summary by OPR+POD (in KGS)
+  const vmap={};
+  filtered.forEach(r=>{
+    const opr=String(cf(r,['OPR','Opr','opr'])||'').trim();
+    const pod=String(cf(r,['POD','Pod','pod'])||'BLANK').trim();
+    const vgm=getVGM(r);const key=`${opr}|||${pod}`;
+    if(!vmap[key])vmap[key]={Operator:opr,POD:pod,'Total VGM (KGS)':0,'Boxes w/ VGM':0,'Total Boxes':0};
+    vmap[key]['Total Boxes']++;
+    if(vgm!==null){vmap[key]['Total VGM (KGS)']+=+(vgm*1000).toFixed(0);vmap[key]['Boxes w/ VGM']++;}
+  });
+  const vsum=Object.values(vmap).sort((a,b)=>b['Total VGM (KGS)']-a['Total VGM (KGS)']);
+  if(vsum.length){
+    const wsV=XLSX.utils.json_to_sheet(vsum);wsV['!cols']=[{wch:10},{wch:6},{wch:14},{wch:12},{wch:12}];
+    XLSX.utils.book_append_sheet(wb,wsV,'VGM by OPR-POD');
+  }
+  // Vessel info
+  if(vesselMeta.vesselName||vesselMeta.voyage){
+    const vmeta=[{Field:'Vessel',Value:vesselMeta.vesselName||'—'},{Field:'Voyage',Value:vesselMeta.voyage||'—'},{Field:'Call Sign',Value:vesselMeta.callSign||'—'},{Field:'POL',Value:vesselMeta.pol||'—'},{Field:'Date',Value:vesselMeta.date||'—'},{Field:'Export',Value:new Date().toISOString().slice(0,10)},{Field:'Records',Value:rows.length}];
+    const wsM=XLSX.utils.json_to_sheet(vmeta);wsM['!cols']=[{wch:12},{wch:30}];
+    XLSX.utils.book_append_sheet(wb,wsM,'Vessel Info');
+  }
+  // Derive filename from vessel name + voyage
+  const vName=(vesselMeta.vesselName||'').replace(/[^a-zA-Z0-9]/g,'_').replace(/_+/g,'_').replace(/^_|_$/g,'');
+  const vVoy=(vesselMeta.voyage||'').replace(/[^a-zA-Z0-9]/g,'_').replace(/_+/g,'_').replace(/^_|_$/g,'');
+  const fName=vName&&vVoy?`${vName}_${vVoy}`:vName||vVoy?`${vName||vVoy}`:`manifest_export_${new Date().toISOString().slice(0,10)}`;
+  XLSX.writeFile(wb,`${fName}.xlsx`);
+  closeDrawer();
+});
+</script>
+</body>
+</html>
