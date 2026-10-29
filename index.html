@@ -131,6 +131,69 @@ h1 span{color:var(--accent)}
 .btn-export:hover,.btn-export:active{border-color:var(--green);color:var(--green);background:rgba(16,185,129,.07)}
 .filter-stat{font-size:10px;color:var(--muted);text-align:center;padding-top:4px}
 
+/* ── SAVE ASC BUTTON ── */
+.btn-save-asc{
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  width:100%;padding:11px 16px;border-radius:var(--r-sm);
+  font-family:var(--mono);font-size:12px;cursor:pointer;
+  transition:all .2s;-webkit-tap-highlight-color:transparent;
+  border:1px solid var(--border-soft);background:transparent;color:var(--muted);
+}
+.btn-save-asc:active{transform:scale(.97)}
+.btn-save-asc:hover,.btn-save-asc:active{border-color:var(--accent2);color:var(--accent2);background:rgba(6,182,212,.07)}
+
+/* ── ADD CONTAINER BUTTON ── */
+.btn-add-ctnr{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.35);
+  color:var(--accent);font-family:var(--ui);font-weight:600;font-size:11px;
+  padding:6px 12px;border-radius:100px;cursor:pointer;transition:all .2s;
+  white-space:nowrap;-webkit-tap-highlight-color:transparent;
+}
+.btn-add-ctnr:hover,.btn-add-ctnr:active{background:rgba(59,130,246,.2);border-color:var(--accent);transform:translateY(-1px)}
+
+/* ── ROW EDIT BUTTON ── */
+.btn-row-edit{
+  background:rgba(148,163,184,.1);border:1px solid var(--border-soft);color:var(--muted);
+  width:26px;height:26px;border-radius:6px;font-size:12px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:all .2s;
+  -webkit-tap-highlight-color:transparent;
+}
+.btn-row-edit:hover,.btn-row-edit:active{background:rgba(59,130,246,.15);border-color:var(--accent);color:var(--accent)}
+
+/* ── MODAL (Add Container) ── */
+#modalOverlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:300;animation:fadeIn .2s ease-out;align-items:center;justify-content:center;padding:20px}
+#modalOverlay.active{display:flex}
+#addCtnrModal{
+  width:100%;max-width:420px;max-height:90vh;overflow-y:auto;
+  background:var(--surface);border:1px solid var(--border-soft);border-radius:var(--r-lg);
+  box-shadow:var(--shadow);animation:fadeUp .25s ease-out both;
+}
+.modal-head{padding:16px 18px;border-bottom:1px solid var(--border-soft);display:flex;align-items:center;justify-content:space-between}
+.modal-title{font-family:var(--ui);font-size:14px;font-weight:700;color:var(--white)}
+.modal-close{background:none;border:1px solid var(--border-soft);color:var(--muted);width:28px;height:28px;border-radius:6px;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.modal-close:hover{background:var(--surface2);color:var(--text)}
+.modal-body{padding:16px 18px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.modal-body .full{grid-column:1/-1}
+.mf-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:5px;display:block}
+.mf-input{
+  width:100%;background:rgba(15,23,42,.8);border:1px solid var(--border-soft);
+  color:var(--text);padding:9px 10px;border-radius:var(--r-sm);
+  font-family:var(--mono);font-size:12px;outline:none;transition:border-color .2s;
+}
+.mf-input:focus{border-color:var(--accent)}
+.mf-input option{background:#1e293b}
+.modal-hint{grid-column:1/-1;font-size:10px;color:var(--muted);margin-top:-4px}
+.modal-foot{padding:14px 18px;border-top:1px solid var(--border-soft);display:flex;gap:10px}
+.btn-modal-cancel,.btn-modal-save{
+  flex:1;padding:11px 16px;border-radius:var(--r-sm);font-family:var(--mono);
+  font-size:12px;cursor:pointer;transition:all .2s;border:1px solid var(--border-soft);
+}
+.btn-modal-cancel{background:transparent;color:var(--muted)}
+.btn-modal-cancel:hover{color:var(--text);background:var(--surface2)}
+.btn-modal-save{background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--white);border:none;font-weight:600}
+.btn-modal-save:hover{opacity:.9}
+
 /* ── MAIN ── */
 main{padding:20px 0;position:relative;z-index:1}
 @media(min-width:768px){main{padding:28px 0}}
@@ -152,6 +215,68 @@ main{padding:20px 0;position:relative;z-index:1}
 .u-btn:hover{opacity:.9;transform:translateY(-1px)}
 #fileInput{display:none}
 
+/* ── BASKETBALL UPLOAD ── */
+.upload-zone{--hoop:#f97316;padding:36px 28px 24px}
+.upload-zone .u-sub{margin-bottom:6px}
+.u-icon{font-size:0;line-height:0;margin-bottom:10px}
+.u-icon svg{width:26px;height:26px;stroke:var(--text-soft);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.upload-zone.drag-over,.upload-zone.is-hot{border-color:var(--hoop);background:rgba(249,115,22,.07)}
+.upload-zone.is-busy{cursor:default;transform:none}
+
+.hz-count{position:absolute;top:14px;right:16px;z-index:4;display:flex;align-items:center;gap:6px;font-family:var(--ui);font-size:10px;color:var(--text-soft);background:rgba(15,23,42,.6);border:1px solid var(--border-soft);padding:3px 10px;border-radius:100px}
+.hz-count b{display:inline-block;min-width:8px;text-align:center;color:var(--white)}
+.hz-count.bump b{animation:hzBump .45s cubic-bezier(.3,1.6,.5,1)}
+@keyframes hzBump{0%{transform:scale(1)}40%{transform:scale(1.8);color:var(--hoop)}100%{transform:scale(1)}}
+
+.hz-stage{position:relative;width:176px;height:168px;margin:6px auto 12px}
+.hz-back,.hz-front{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.hz-back{z-index:1}
+.hz-front{z-index:3}
+.hz-net{transform-box:fill-box;transform-origin:50% 0}
+.hz-net.swish{animation:hzSwish .8s ease-in-out}
+@keyframes hzSwish{
+  0%{transform:scale(1,1) skewX(0)}
+  18%{transform:scale(1.08,1.16) skewX(-3deg)}
+  38%{transform:scale(.95,.92) skewX(2.5deg)}
+  58%{transform:scale(1.03,1.06) skewX(-1.5deg)}
+  78%{transform:scale(.99,.98) skewX(.8deg)}
+  100%{transform:scale(1,1) skewX(0)}
+}
+
+.hz-fly{position:absolute;inset:0;z-index:2;pointer-events:none}
+.hz-trail{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.hz-trail circle{transition:opacity .2s}
+.hz-file{position:absolute;left:0;top:0;width:44px;height:56px;margin:-28px 0 0 -22px;opacity:0;will-change:transform,opacity;filter:drop-shadow(0 6px 10px rgba(0,0,0,.4))}
+.hz-file svg{display:block;width:100%;height:100%}
+.hz-ext{position:absolute;left:5px;bottom:7px;padding:1px 4px;border-radius:3px;background:#ef4444;color:#fff;font:700 8px/1.3 var(--ui);letter-spacing:.4px}
+.hz-plus{position:absolute;opacity:0;font:800 20px/1 var(--ui);color:var(--hoop);text-shadow:0 0 14px rgba(249,115,22,.5);transform-origin:0 100%}
+.hz-plus.go{animation:hzPlus 1s ease-out forwards}
+@keyframes hzPlus{
+  0%{opacity:0;transform:translateY(8px) scale(.4)}
+  22%{opacity:1;transform:translateY(0) scale(1.3)}
+  40%{transform:translateY(0) scale(1)}
+  80%{opacity:1;transform:translateY(-10px) scale(1)}
+  100%{opacity:0;transform:translateY(-16px) scale(1)}
+}
+
+.hz-foot{position:relative;z-index:4;height:62px;max-width:480px;margin:0 auto;display:flex;align-items:center;justify-content:center}
+.upload-zone.is-busy .u-btn{opacity:0;pointer-events:none;transform:translateY(-8px)}
+.hz-row{position:absolute;inset:0;display:flex;align-items:center;gap:12px;padding:0 14px;text-align:left;background:rgba(15,23,42,.78);border:1px solid var(--border-soft);border-radius:var(--r-md);box-shadow:0 8px 24px rgba(0,0,0,.35);opacity:0;transform:translateY(18px);pointer-events:none;transition:opacity .28s ease,transform .32s cubic-bezier(.2,.9,.3,1.2)}
+.hz-row.show{opacity:1;transform:none}
+.hz-ficon{flex:none;min-width:38px;height:28px;padding:0 6px;display:flex;align-items:center;justify-content:center;border-radius:6px;background:#ef4444;color:#fff;font:700 9px var(--ui);letter-spacing:.5px}
+.hz-meta{flex:1;min-width:0}
+.hz-name{font:600 12px var(--ui);color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hz-size{font-size:10px;color:var(--muted)}
+.hz-prog{flex:none;width:clamp(96px,34%,160px)}
+.hz-status{font-size:10px;color:var(--text-soft);margin-bottom:5px;white-space:nowrap}
+.hz-bar{height:4px;border-radius:4px;background:rgba(148,163,184,.22);overflow:hidden}
+.hz-bar i{display:block;height:100%;width:0;border-radius:4px;background:var(--hoop)}
+.hz-check{flex:none;width:20px;height:20px;border-radius:50%;background:var(--green);display:grid;place-items:center;transform:scale(0);transition:transform .35s cubic-bezier(.3,1.7,.5,1)}
+.hz-check svg{width:11px;height:11px;stroke:#fff;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.hz-row.done .hz-status{color:var(--green)}
+.hz-row.done .hz-bar i{background:var(--green)}
+.hz-row.done .hz-check{transform:scale(1)}
+
 /* ── LOADING ── */
 #loading{display:none;text-align:center;padding:60px 20px;color:var(--muted);font-size:13px}
 .loading-inner{display:inline-flex;align-items:center;gap:10px}
@@ -170,7 +295,8 @@ main{padding:20px 0;position:relative;z-index:1}
 .val-title{font-family:var(--ui);font-size:12px;font-weight:700;color:#fca5a5;margin-bottom:7px}
 .val-chips{display:flex;flex-wrap:wrap;gap:5px;max-height:72px;overflow-y:auto}
 .val-chip{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:100px;font-size:10px}
-.val-chip.inv{background:rgba(239,68,68,.15);color:#fca5a5;border:1px solid rgba(239,68,68,.3)}
+.val-chip.inv{background:rgba(239,68,68,.15);color:#fca5a5;border:1px solid rgba(239,68,68,.3);transition:all .15s}
+.val-chip.inv[role="button"]:hover,.val-chip.inv[role="button"]:focus-visible{background:rgba(239,68,68,.3);border-color:#ef4444;transform:translateY(-1px);outline:none}
 .val-chip.warn{background:rgba(249,115,22,.15);color:#fdba74;border:1px solid rgba(249,115,22,.3)}
 .val-more{background:none;border:none;color:var(--muted);font-size:10px;cursor:pointer;margin-top:5px;padding:0;font-family:var(--mono)}
 .val-more:hover{color:var(--text)}
@@ -201,6 +327,7 @@ main{padding:20px 0;position:relative;z-index:1}
 .kpi.c-empty::after{background:var(--empty)}
 .kpi.c-teu::after{background:var(--yellow)}
 .kpi.c-tons::after{background:#a78bfa}
+.kpi.c-flatrack::after{background:#f97316}
 .kpi.c-reefer::after{background:var(--full)}
 .kpi.c-tank::after{background:var(--accent3)}
 .kpi.c-ops::after{background:var(--accent3)}
@@ -213,6 +340,7 @@ main{padding:20px 0;position:relative;z-index:1}
 .kpi.c-empty:hover .kpi-val{color:var(--empty)}
 .kpi.c-teu:hover .kpi-val{color:var(--yellow)}
 .kpi.c-tons:hover .kpi-val{color:#a78bfa}
+.kpi.c-flatrack:hover .kpi-val{color:#f97316}
 .kpi.c-reefer:hover .kpi-val{color:var(--full)}
 .kpi.c-tank:hover .kpi-val{color:var(--accent3)}
 .kpi.c-ops:hover .kpi-val{color:var(--accent3)}
@@ -304,7 +432,7 @@ footer strong{color:var(--accent);font-weight:500}
     <div class="vb-div"></div>
     <div class="vb-field"><span class="vb-label">POL</span><span class="vb-val" id="bPOL">—</span></div>
     <div class="vb-div"></div>
-    <div class="vb-field"><span class="vb-label">Date</span><span class="vb-val" id="bDate">—</span></div>
+    <div class="vb-field"><span class="vb-label">Date Loaded</span><span class="vb-val" id="bDate">—</span></div>
     <div class="vb-badge"><div class="vb-dot"></div><span id="bLoaded">—</span></div>
   </div>
 </div>
@@ -347,6 +475,7 @@ footer strong{color:var(--accent);font-weight:500}
     <p class="filter-stat" id="filterStat">Showing all records</p>
   </div>
   <div class="drawer-footer">
+    <button class="btn-save-asc" id="saveAscBtn">💾 Save ASC File</button>
     <button class="btn-export" id="exportBtn">⬇ Export Filtered Data</button>
     <button class="btn-reset"  id="resetBtn">↺ Reset All Filters</button>
   </div>
@@ -384,11 +513,62 @@ footer strong{color:var(--accent);font-weight:500}
     <!-- UPLOAD -->
     <div id="uploadSection">
       <div class="upload-zone" id="uploadZone" role="button" tabindex="0">
-        <span class="u-icon">📂</span>
+        <span class="hz-count" id="hzPill">Uploaded <b id="hzCount">0</b></span>
+        <span class="u-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V4M7.5 8.5 12 4l4.5 4.5M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg></span>
         <div class="u-title">Drop your manifest file here</div>
         <div class="u-sub">Supports .xlsx · .xls · .csv · .tsv · .asc · .txt · .edi · .baplie</div>
-        <label class="u-btn" for="fileInput">Choose File</label>
-        <input type="file" id="fileInput" accept=".xlsx,.xls,.csv,.tsv,.asc,.txt,.edi,.baplie">
+
+        <div class="hz-stage" id="hzStage" aria-hidden="true">
+          <svg class="hz-back" viewBox="0 0 176 168">
+            <rect x="30" y="2" width="116" height="66" rx="5" fill="rgba(249,115,22,.06)" stroke="#f97316" stroke-width="2.5"/>
+            <rect x="68" y="30" width="40" height="26" rx="2" fill="none" stroke="#f97316" stroke-width="2.5"/>
+            <path d="M48 76A40 8 0 0 1 128 76" fill="none" stroke="#c2410c" stroke-width="4.5" stroke-linecap="round"/>
+          </svg>
+          <svg class="hz-front" viewBox="0 0 176 168">
+            <g class="hz-net" id="hzNet" stroke="#94a3b8" stroke-width="1.3" fill="none" stroke-linecap="round" opacity=".9">
+        <path d="M48 76.0L66.0 128.0"/>
+        <path d="M58 81.3L71.5 130.6"/>
+        <path d="M68 82.9L77.0 131.5"/>
+        <path d="M78 83.7L82.5 131.9"/>
+        <path d="M88 84.0L88.0 132.0"/>
+        <path d="M98 83.7L93.5 131.9"/>
+        <path d="M108 82.9L99.0 131.5"/>
+        <path d="M118 81.3L104.5 130.6"/>
+        <path d="M128 76.0L110.0 128.0"/>
+        <path d="M52.5 89.0Q88 103.0 123.5 89.0"/>
+        <path d="M57.0 102.0Q88 114.0 119.0 102.0"/>
+        <path d="M61.5 115.0Q88 125.0 114.5 115.0"/>
+        <path d="M66.0 128.0Q88 136.0 110.0 128.0"/>
+            </g>
+            <path d="M48 76A40 8 0 0 0 128 76" fill="none" stroke="#ea580c" stroke-width="4.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+
+        <div class="hz-foot">
+          <label class="u-btn" for="fileInput">Choose File</label>
+          <input type="file" id="fileInput" accept=".xlsx,.xls,.csv,.tsv,.asc,.txt,.edi,.baplie">
+          <div class="hz-row" id="hzRow" aria-live="polite">
+            <span class="hz-ficon" id="hzRowExt">FILE</span>
+            <div class="hz-meta"><div class="hz-name" id="hzName"></div><div class="hz-size" id="hzSize"></div></div>
+            <div class="hz-prog"><div class="hz-status" id="hzStatus">Uploading…</div><div class="hz-bar"><i id="hzBar"></i></div></div>
+            <span class="hz-check"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+          </div>
+        </div>
+
+        <div class="hz-fly" aria-hidden="true">
+          <svg class="hz-trail" id="hzTrail"></svg>
+          <div class="hz-file" id="hzFile">
+            <svg viewBox="0 0 44 56">
+              <path d="M4 1.5h26L42.5 14v39a2.5 2.5 0 0 1-2.5 2.5H4A2.5 2.5 0 0 1 1.5 53V4A2.5 2.5 0 0 1 4 1.5z" fill="#f1f5f9" stroke="#cbd5e1"/>
+              <path d="M30 1.5V11a3 3 0 0 0 3 3h9.5" fill="#e2e8f0" stroke="#cbd5e1"/>
+              <rect x="8" y="19" width="24" height="2.4" rx="1.2" fill="#cbd5e1"/>
+              <rect x="8" y="25" width="28" height="2.4" rx="1.2" fill="#cbd5e1"/>
+              <rect x="8" y="31" width="18" height="2.4" rx="1.2" fill="#cbd5e1"/>
+            </svg>
+            <span class="hz-ext" id="hzExt">FILE</span>
+          </div>
+          <div class="hz-plus" id="hzPlus">+1</div>
+        </div>
       </div>
     </div>
 
@@ -439,6 +619,11 @@ footer strong{color:var(--accent);font-weight:500}
           <div class="kpi-label">Gross Weight</div>
           <div class="kpi-val" id="kTons">0</div>
           <div class="kpi-sub">gross weight in tonnes</div>
+        </div>
+        <div class="kpi c-flatrack">
+          <div class="kpi-label">Flat Rack / Break Bulk</div>
+          <div class="kpi-val" id="kFlatRack">0</div>
+          <div class="kpi-sub">flat rack, bundle &amp; break bulk</div>
         </div>
         <div class="kpi c-reefer">
           <div class="kpi-label">Reefer Units</div>
@@ -506,9 +691,12 @@ footer strong{color:var(--accent);font-weight:500}
       <div class="divider"></div>
 
       <!-- TABLE -->
-      <div class="tbl-section" role="region">
+      <div class="tbl-section" role="region" id="ctnrTableSection">
         <div class="tbl-head">
-          <div class="tbl-title">Manifest — Container Line Items</div>
+          <div class="tbl-title" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+            Manifest — Container Line Items
+            <button class="btn-add-ctnr" id="addCtnrBtn" type="button">＋ Add Container</button>
+          </div>
           <div class="tbl-meta">
             <input type="search" class="search-input" id="tableSearch" placeholder="Search container, slot, operator…">
             <div class="row-count" id="tableCount" aria-live="polite">0 rows</div>
@@ -526,6 +714,7 @@ footer strong{color:var(--accent);font-weight:500}
                 <th data-col="POL">POL <span class="si">↕</span></th>
                 <th data-col="POD">POD <span class="si">↕</span></th>
                 <th data-col="VGM">VGM (T) <span class="si">↕</span></th>
+                <th style="text-align:center">Edit</th>
               </tr>
             </thead>
             <tbody id="tBody"></tbody>
@@ -542,6 +731,93 @@ footer strong{color:var(--accent);font-weight:500}
   </main>
 </div><!-- /.container -->
 
+<!-- ADD CONTAINER MODAL -->
+<div id="modalOverlay" onclick="if(event.target===this)closeAddCtnrModal()">
+  <div id="addCtnrModal" role="dialog" aria-label="Add Container">
+    <div class="modal-head">
+      <span class="modal-title" id="modalTitleText">＋ Add Container Line Item</span>
+      <button class="modal-close" onclick="closeAddCtnrModal()" aria-label="Close">✕</button>
+    </div>
+    <form id="addCtnrForm">
+      <div class="modal-body">
+        <div class="full">
+          <label class="mf-label" for="mCtnr">Container No.</label>
+          <input class="mf-input" id="mCtnr" placeholder="e.g. CSNU2742966" maxlength="15" autocomplete="off">
+        </div>
+        <div>
+          <label class="mf-label" for="mSlot">Slot</label>
+          <input class="mf-input" id="mSlot" placeholder="e.g. 010114" maxlength="10" autocomplete="off">
+        </div>
+        <div>
+          <label class="mf-label" for="mOPRSelect">Operator</label>
+          <select class="mf-input" id="mOPRSelect">
+            <option value="">—</option>
+            <option value="EMA">EMA</option>
+            <option value="OCL">OCL</option>
+            <option value="SCS">SCS</option>
+            <option value="UFC">UFC</option>
+            <option value="ONE">ONE</option>
+            <option value="__custom__">Type manually…</option>
+          </select>
+          <input class="mf-input" id="mOPRCustom" style="display:none;margin-top:6px" placeholder="Enter operator code" maxlength="6" autocomplete="off">
+        </div>
+        <div>
+          <label class="mf-label" for="mSzTpSelect">Size/Type</label>
+          <select class="mf-input" id="mSzTpSelect">
+            <option value="">—</option>
+            <option value="2SD">2SD</option>
+            <option value="4SH">4SH</option>
+            <option value="22G0">22G0</option>
+            <option value="45G0">45G0</option>
+            <option value="__custom__">Type manually…</option>
+          </select>
+          <input class="mf-input" id="mSzTpCustom" style="display:none;margin-top:6px" placeholder="Enter size/type code" maxlength="6" autocomplete="off">
+        </div>
+        <div>
+          <label class="mf-label" for="mFE">Full / Empty</label>
+          <select class="mf-input" id="mFE">
+            <option value="">—</option>
+            <option value="F">Full</option>
+            <option value="E">Empty</option>
+          </select>
+        </div>
+        <div>
+          <label class="mf-label" for="mPOLSelect">POL</label>
+          <select class="mf-input" id="mPOLSelect">
+            <option value="MWA" selected>MWA</option>
+            <option value="__custom__">Type manually…</option>
+          </select>
+          <input class="mf-input" id="mPOLCustom" style="display:none;margin-top:6px" placeholder="Enter POL code" maxlength="6" autocomplete="off">
+        </div>
+        <div>
+          <label class="mf-label" for="mPODSelect">POD</label>
+          <select class="mf-input" id="mPODSelect">
+            <option value="">—</option>
+            <option value="QND">QND</option>
+            <option value="SGP">SGP</option>
+            <option value="NBO">NBO</option>
+            <option value="XTH">XTH</option>
+            <option value="JBA">JBA</option>
+            <option value="MUN">MUN</option>
+            <option value="NXV">NXV</option>
+            <option value="__custom__">Type manually…</option>
+          </select>
+          <input class="mf-input" id="mPODCustom" style="display:none;margin-top:6px" placeholder="Enter POD code" maxlength="6" autocomplete="off">
+        </div>
+        <div class="full">
+          <label class="mf-label" for="mVGM">VGM (Tonnes)</label>
+          <input class="mf-input" id="mVGM" type="number" step="0.001" min="0" placeholder="e.g. 2.200" autocomplete="off">
+        </div>
+        <p class="modal-hint" id="modalHintText">Container No. or Slot is required. For Empty containers, weight auto-fills to 2.200 T (20 ft) or 4.400 T (40 ft) based on Size/Type — override it if needed. This entry is added to the current dataset, KPIs and charts, and will be included the next time you save an ASC or export filtered data.</p>
+      </div>
+      <div class="modal-foot">
+        <button type="button" class="btn-modal-cancel" onclick="closeAddCtnrModal()">Cancel</button>
+        <button type="submit" class="btn-modal-save" id="modalSaveBtnText">Add Container</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <footer>
   <div class="container">
     Credits &nbsp;·&nbsp; <a href="gerrit_enhanced.html"><strong>Rhoderick Ngonzi</strong></a><br>&copy; 2026
@@ -556,8 +832,24 @@ let allData = [];
 let charts  = {};
 let sortState = { col:'Slot', dir:1 };
 let vesselMeta = {};
+let loadTimestamp = null;
+// Format a Date as HH:MM:SS in 24-hour time (no AM/PM)
+function fmt24h(d){
+  const p=n=>String(n).padStart(2,'0');
+  return `${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
+}
 let valCache = { invalidCtnrs:[], emptyWarnings:[] };
 let activeFilterCount = 0;
+
+// ── Raw ASC tracking (for "Save ASC File") ──
+let rawASCLoaded    = false;   // true only when the currently loaded file was parsed as ASC
+let rawASCLines     = null;    // original file, split into lines (no line-ending chars)
+let rawASCEol       = '\r\n';  // line-ending style detected from the uploaded file
+let rawASCFileName  = '';      // original uploaded filename, reused on save
+let manualEntrySeq  = 0;       // counter for uniquely tagging manually-added rows
+let ridSeq          = 0;       // counter for uniquely tagging every row so it can be found again to edit
+let editingRid       = null;   // non-null while the Add/Edit modal is editing an existing row
+let dataDirty        = false;  // true once containers are added/edited without being saved back to ASC
 
 /* ════════════════════════════════════════════════════════════
    COLOUR PALETTE
@@ -587,6 +879,20 @@ function calcTEU(sztp){
 }
 function isReefer(s){ s=String(s).toUpperCase(); return /R[0-9A-Z]$/.test(s)||/H[0-9]$/.test(s); }
 function isISOTank(s){ s=String(s).toUpperCase(); return /T[0-9]$/.test(s); }
+// Flat Rack / Platform: ISO 6346 "P" type-group codes (e.g. 22P1, 42P3, 22P8)
+// plus common carrier shorthand for flatrack/platform equipment (FR, FC, FS, PL, PF).
+function isFlatRack(s){
+  s=String(s).toUpperCase().trim();
+  return /P[0-9]$/.test(s) || /^\d{0,2}(FR|FC|FS|PL|PF)\b/.test(s);
+}
+// Break Bulk / Bundle: non-containerised or bundled cargo, flagged with
+// carrier shorthand (BB, BU, BN, BLK, BDL) rather than a standard ISO code.
+function isBreakBulk(s){
+  s=String(s).toUpperCase().trim();
+  return /^\d{0,2}(BB|BU|BN|BLK|BDL|BULK|BREAKBULK|BUNDLE)\b/.test(s);
+}
+// Combined "special/OOG cargo" flag used for the Flat Rack KPI
+function isFlatRackOrBreakBulk(s){ return isFlatRack(s) || isBreakBulk(s); }
 function getVGM(row){
   const v = cf(row,['VGM','VGM_T','Gross Weight','GrossWeight','Weight','weight','wt']);
   if(v===''||v===null||v===undefined) return null;
@@ -649,7 +955,7 @@ function renderValBanner(){
   const expanded = moreBtn.dataset.expanded==='true';
   const mc = expanded ? invalidCtnrs.length : Math.min(invalidCtnrs.length,8);
   let h = '';
-  invalidCtnrs.slice(0,mc).forEach(c=>{ h+=`<span class="val-chip inv" title="ISO 6346 check-digit failed">⚠ ${c}</span>`; });
+  invalidCtnrs.slice(0,mc).forEach(c=>{ h+=`<span class="val-chip inv" title="ISO 6346 check-digit failed — click to edit" role="button" tabindex="0" style="cursor:pointer" onclick="jumpToContainerEdit('${c.replace(/'/g,"\\'")}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();jumpToContainerEdit('${c.replace(/'/g,"\\'")}')}">⚠ ${c}</span>`; });
   chips.innerHTML = h;
   const hidden = total - mc;
   if(hidden>0&&!expanded){ moreBtn.textContent=`+${hidden} more — show all`; moreBtn.style.display='block'; }
@@ -671,20 +977,25 @@ document.getElementById('valMoreBtn').addEventListener('click',function(){
      [19:22] = Operator code
      [27:30] = POL (port of loading)
      [30:33] = POD (port of discharge)
-     [43:47] = Size/Type (strip leading spaces/C prefix for customs)
-     [47:53] = Weight+FE  e.g. " 021E" or " 280F"
+     [44:48] = Size/Type (strip leading spaces/C prefix for customs)
+     [48:54] = Weight-class+FE  e.g. "022E  " or "260F  "
                   numeric part (3 digits) × 100 = weight in KGS
                   letter suffix = F (Full) or E (Empty)
      Weight in file is in tenths of tonnes, e.g. "021" = 2100 KGS = 2.1 T
      ACTUAL confirmed: 5-digit weight at positions 83:88 e.g. "02120" = 2120 KGS = 2.120 T
      Header $604: CALLSIGN/VESSEL/VOYAGE/./POL:xxx/DATE
+     Footer remarks (no bay/slot given): lines under a
+     "***Refer to the following remark." marker can list Bundle (BN) /
+     Break Bulk (BB) units as "BN/CTNRNO1234567" — these are parsed
+     separately and appended to the row list.
 ════════════════════════════════════════════════════════════ */
 function parseASC(text){
   const lines = text.replace(/\r\n/g,'\n').replace(/\r/g,'\n').split('\n');
   const rows  = [];
   let meta = {};
 
-  for(const raw of lines){
+  for(let li=0; li<lines.length; li++){
+    const raw  = lines[li];
     const line = raw.trimEnd();
     if(!line) continue;
 
@@ -716,12 +1027,16 @@ function parseASC(text){
     const pol   = line.slice(27,30).trim();
     const pod   = line.slice(30,33).trim();
 
-    // SzTp: strip leading spaces and leading 'C' (customs-flagged prefix)
-    let sztp = line.slice(43,47).trim();
+    // SzTp: 4-char equipment-type field at [44:48]. Covers standard ISO 6346
+    // codes (22G0, 45R0, 22P1…) AND carrier shorthand codes used for special
+    // equipment (e.g. "FC "/"FR " = Flat Rack, "SD " = Side-Door GP,
+    // "RH " = Reefer High-Cube, "BB "/"BU " = Break Bulk / Bundle).
+    // Strip leading spaces and a leading 'C' (customs-flagged prefix), if present.
+    let sztp = line.slice(44,48).trim();
     if(sztp.startsWith('C') && sztp.length>1) sztp = sztp.slice(1);
 
-    // Weight + F/E field at [47:53] e.g. " 280F " or " 021E "
-    const feArea = line.slice(47,53);
+    // Weight-class + F/E field at [48:54] e.g. "260F  " or "022E  "
+    const feArea = line.slice(48,54);
     const feMatch = feArea.match(/(\d{3})([EF])/);
     const feChar  = feMatch ? feMatch[2] : '';
 
@@ -749,10 +1064,76 @@ function parseASC(text){
       SzTp: sztp, 'F/E': feChar,
       POL: pol, POD: pod,
       VGM: vgmT,   // stored in TONNES
-      _vgmKg: vgmKg
+      _vgmKg: vgmKg,
+      _lineIndex: li   // exact source line in the raw ASC file (for Save ASC File)
     });
   }
-  return { rows, meta };
+
+  // ─────────────────────────────────────────────────────────
+  // REMARKS SECTION: Bundle (BN) / Break Bulk (BB) cargo
+  // Some flat-rack/break-bulk units are not carried in the main
+  // slot grid at all — they're only listed under a
+  // "***Refer to the following remark." footer, as a slash-delimited
+  // group, e.g. "BN/BBLU1245335 /CCNN1954748 /            /            /"
+  // — one equipment-type code followed by up to several container
+  // numbers that are all part of the same bundle. These have no
+  // bay/slot, no OPR, and no F/E flag of their own in this format.
+  // They're physically lashed to the first flat-rack / special-
+  // equipment unit in the main grid (the "reference" bundle
+  // container), so they inherit that unit's Full/Empty status.
+  // ─────────────────────────────────────────────────────────
+  // Some flat-rack/break-bulk units are not carried in the main
+  // slot grid at all — they're only listed under a
+  // "***Refer to the following remark." footer, as a slash-delimited
+  // group, e.g. "BN/BBLU1245335 /CCNN1954748 /BBNN124578  /            /"
+  // — one equipment-type code followed by up to several container
+  // numbers that are all part of the same bundle. These have no
+  // bay/slot, no OPR, no POD, and no VGM of their own in this format.
+  // They're physically lashed to the first flat-rack / special-
+  // equipment unit in the main grid (the "reference" bundle
+  // container, e.g. CXDU1929383), so they inherit that unit's
+  // Operator, Slot, POD, VGM and Full/Empty status.
+  const refBundleRow = rows.find(r=>isFlatRack(r.SzTp)||isBreakBulk(r.SzTp));
+  const refFE  = refBundleRow ? (refBundleRow['F/E']||'F') : 'F';
+  const refOPR = refBundleRow ? (refBundleRow.OPR||'')     : '';
+  const refSlot= refBundleRow ? (refBundleRow.Slot||'')    : '';
+  const refPOD = refBundleRow ? (refBundleRow.POD||'')     : '';
+  const refVGM = refBundleRow ? refBundleRow.VGM           : null;
+  const refVGMKg = refBundleRow ? refBundleRow._vgmKg      : null;
+
+  const knownCtnrs = new Set(rows.map(r=>r.Container).filter(Boolean));
+  const seenRemarkCtnrs = new Set();
+  const REMARK_LABEL = { BN:'BUNDLE', BB:'BREAK BULK', BU:'BUNDLE', BDL:'BUNDLE' };
+  const remarkLineRe = /\b(BN|BB|BU|BDL)\/[A-Z0-9 \/]+/g;
+  // Container-number token inside a bundle slot: 4 letters + 4-8 digits.
+  // Standard ISO 6346 numbers are 4 letters + 7 digits (11 chars total),
+  // but this carrier's remark slots sometimes carry shorter/non-standard
+  // codes (e.g. missing check digit) — matched loosely so any bundle
+  // member gets picked up regardless of exact digit count.
+  const ctnrTokenRe  = /[A-Z]{4}\d{4,8}/g;
+  let lm;
+  while((lm = remarkLineRe.exec(text)) !== null){
+    const code = lm[1];
+    const group = lm[0];
+    ctnrTokenRe.lastIndex = 0;
+    let tm;
+    while((tm = ctnrTokenRe.exec(group)) !== null){
+      const ctnr = tm[0];
+      if(knownCtnrs.has(ctnr) || seenRemarkCtnrs.has(ctnr)) continue; // avoid duplicates
+      seenRemarkCtnrs.add(ctnr);
+      rows.push({
+        Slot: refSlot, Container: ctnr, OPR: refOPR,
+        SzTp: REMARK_LABEL[code] || 'BUNDLE', 'F/E': refFE,
+        POL: meta.pol || '', POD: refPOD,
+        VGM: refVGM,
+        _vgmKg: refVGMKg,
+        _fromRemarks: true,
+        _refContainer: refBundleRow ? refBundleRow.Container : ''
+      });
+    }
+  }
+
+  return { rows, meta, lines };
 }
 
 /* ════════════════════════════════════════════════════════════
@@ -761,14 +1142,238 @@ function parseASC(text){
 function showVesselBanner(m){
   if(!m||(!m.vesselName&&!m.voyage&&!m.callSign)) return;
   vesselMeta = m;
+  loadTimestamp = new Date();
   document.getElementById('bVessel').textContent   = m.vesselName||'—';
   document.getElementById('bVoyage').textContent   = m.voyage    ||'—';
   document.getElementById('bCallSign').textContent = m.callSign  ||'—';
   document.getElementById('bPOL').textContent      = m.pol       ||'—';
-  document.getElementById('bDate').textContent     = m.date      ||'—';
-  document.getElementById('bLoaded').textContent   = `Loaded ${new Date().toLocaleTimeString()}`;
+  document.getElementById('bDate').textContent     = loadTimestamp.toLocaleDateString();
+  document.getElementById('bLoaded').textContent   = `Loaded ${fmt24h(loadTimestamp)}`;
   document.getElementById('vesselBanner').style.display='block';
 }
+
+/* ════════════════════════════════════════════════════════════
+   BASKETBALL UPLOAD — the manifest is "shot" into the hoop
+   • dragging a file over the zone previews the shot (dotted arc)
+   • drop  → file launches from the cursor; Choose File → from bottom-left
+   • swish + "+1" + counter tick, then the progress row, then the dashboard
+   • click the zone (or press Esc) mid-shot to skip the show
+════════════════════════════════════════════════════════════ */
+const HoopShot = (()=>{
+  const $ = id => document.getElementById(id);
+  const zone=$('uploadZone'), stage=$('hzStage'), fileEl=$('hzFile'), plusEl=$('hzPlus'),
+        netEl=$('hzNet'), row=$('hzRow'), bar=$('hzBar'), status=$('hzStatus'),
+        pill=$('hzPill'), countEl=$('hzCount'), trail=$('hzTrail');
+  const reduce = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+  const NS='http://www.w3.org/2000/svg', N_DOTS=16;
+  const dots=[];
+  let count=0, busy=false, skip=false, skipFns=[], aimPt=null, aimRaf=0;
+
+  for(let i=0;i<N_DOTS;i++){
+    const c=document.createElementNS(NS,'circle');
+    c.setAttribute('fill','#f97316');
+    c.style.opacity=0;
+    trail.appendChild(c); dots.push(c);
+  }
+
+  const clamp   = (v,a,b)=>Math.min(b,Math.max(a,v));
+  const outCubic= t=>1-Math.pow(1-t,3);
+  const outBack = t=>{const c1=1.70158,c3=c1+1;return 1+c3*Math.pow(t-1,3)+c1*Math.pow(t-1,2);};
+  const fmtSize = b=>b<1024?b+' B':b<1048576?(b/1024).toFixed(b<10240?1:0)+' KB':(b/1048576).toFixed(1)+' MB';
+  const pulse   = (el,cls)=>{el.classList.remove(cls);void el.getBoundingClientRect();el.classList.add(cls);};
+  const place   = (x,y,r,s)=>{fileEl.style.transform=`translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,0) rotate(${r.toFixed(1)}deg) scale(${s.toFixed(3)})`;};
+
+  // Everything is measured in the zone's own padding-box coordinates.
+  function measure(){
+    const zr=zone.getBoundingClientRect(), sr=stage.getBoundingClientRect();
+    const ox=zr.left+zone.clientLeft, oy=zr.top+zone.clientTop;
+    const k=sr.width/176, sx=sr.left-ox, sy=sr.top-oy;
+    return {ox,oy,w:zone.clientWidth,h:zone.clientHeight,k,
+            rim:{x:sx+88*k,y:sy+76*k}, netBottom:sy+132*k, board:{x:sx+150*k,y:sy+30*k}};
+  }
+
+  // Shot path: quadratic arc from the file to just above the rim, peaking above the hoop.
+  function arc(P0,g){
+    const T={x:g.rim.x,y:g.rim.y-5*g.k};
+    const dx=T.x-P0.x, dy=T.y-P0.y, dist=Math.hypot(dx,dy);
+    const lift=clamp(dist*.55,90,240);
+    return {P0,T,dist,C:{x:P0.x+dx*.6,y:Math.min(P0.y,T.y)-lift}};
+  }
+  const bez=(a,t)=>{const u=1-t;return{x:u*u*a.P0.x+2*u*t*a.C.x+t*t*a.T.x,y:u*u*a.P0.y+2*u*t*a.C.y+t*t*a.T.y};};
+
+  function drawTrail(a,stagger){
+    dots.forEach((c,i)=>{
+      const t=.1+i*(.82/(N_DOTS-1)), p=bez(a,t);
+      c.dataset.t=t;
+      c.setAttribute('cx',p.x.toFixed(1));
+      c.setAttribute('cy',p.y.toFixed(1));
+      c.setAttribute('r',(2.8-1.4*t).toFixed(2));
+      c.style.transitionDelay=stagger?(i*16)+'ms':'0ms';
+      c.style.opacity=(.95-.5*t).toFixed(2);
+    });
+  }
+  const hideTrail=()=>dots.forEach(c=>{c.style.transitionDelay='0ms';c.style.opacity=0;});
+
+  // While an OS file is dragged over the zone, preview the shot from the cursor.
+  function aim(cx,cy){
+    if(busy||reduce) return;
+    aimPt={cx,cy};
+    if(aimRaf) return;
+    aimRaf=requestAnimationFrame(()=>{
+      aimRaf=0;
+      if(busy||!aimPt) return;
+      const g=measure();
+      drawTrail(arc({x:aimPt.cx-g.ox,y:aimPt.cy-g.oy},g),false);
+    });
+  }
+  function unaim(){ aimPt=null; if(!busy) hideTrail(); }
+
+  function skipShow(){
+    if(!busy) return;
+    skip=true;
+    skipFns.splice(0).forEach(f=>f());
+  }
+  zone.addEventListener('click',skipShow);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')skipShow();});
+
+  function reset(){
+    busy=false; skip=false; skipFns=[]; aimPt=null;
+    zone.classList.remove('is-busy','is-hot','drag-over');
+    row.classList.remove('show','done');
+    bar.style.width='0%';
+    fileEl.style.opacity=0;
+    hideTrail();
+    plusEl.classList.remove('go');
+    netEl.classList.remove('swish');
+  }
+
+  // Starts the shot. Returns a handle:  finish(cb,{records})  once parsing is done,
+  // or cancel() if parsing failed. Returns null when the zone isn't on screen.
+  function launch(file,origin){
+    if(busy||zone.offsetParent===null) return null;
+    busy=true; skip=false; skipFns=[];
+    let cancelled=false, revealed=false, revealCb=null, info={}, resolveParsed;
+    const parsedP=new Promise(r=>{resolveParsed=r;});
+    const doReveal=()=>{ if(revealed) return; revealed=true; if(revealCb) revealCb(); };
+
+    const wait=ms=>new Promise(res=>{
+      if(skip||cancelled||reduce||ms<=0) return res();
+      const t=setTimeout(done,ms);
+      function done(){clearTimeout(t);res();}
+      skipFns.push(done);
+    });
+    const frames=(dur,fn)=>new Promise(res=>{
+      if(cancelled) return res();
+      if(skip||reduce||dur<=0){fn(1);return res();}
+      const t0=performance.now();
+      const step=now=>{
+        if(cancelled) return res();
+        if(skip){fn(1);return res();}
+        const p=Math.min(1,(now-t0)/dur);
+        fn(p);
+        p<1?requestAnimationFrame(step):res();
+      };
+      requestAnimationFrame(step);
+    });
+
+    (async()=>{
+      const g=measure();
+      const ext=((file.name.split('.').pop()||'file').slice(0,5)).toUpperCase();
+      $('hzExt').textContent=ext;
+      $('hzRowExt').textContent=ext;
+      $('hzName').textContent=file.name;
+      $('hzSize').textContent=fmtSize(file.size);
+      status.textContent='Uploading…';
+      bar.style.width='0%';
+      plusEl.style.left=g.board.x+'px';
+      plusEl.style.top=g.board.y+'px';
+      zone.classList.remove('drag-over');
+      zone.classList.add('is-busy','is-hot');
+
+      // Dropped → launch from the cursor. Chosen via dialog → launch from bottom-left.
+      const P0=origin
+        ? {x:clamp(origin.x-g.ox,24,g.w-24), y:clamp(origin.y-g.oy,24,g.h-24)}
+        : {x:clamp(g.w*.1,40,90), y:g.h-clamp(g.h*.2,50,80)};
+      const A=arc(P0,g);
+      const show=!reduce;
+
+      if(show){
+        drawTrail(A,!origin);
+        place(P0.x,P0.y,-10,origin?1:.5);
+        fileEl.style.opacity=origin?1:0;
+        if(!origin){
+          await frames(240,p=>{place(P0.x,P0.y,-10,.5+.5*outBack(p));fileEl.style.opacity=Math.min(1,p*3);});
+          await wait(160);
+        } else {
+          await wait(60);
+        }
+        if(cancelled) return;
+
+        // 1 · the shot
+        const D=Math.min(950,Math.max(640,420+A.dist*.55));
+        await frames(D,p=>{
+          const pt=bez(A,p);
+          place(pt.x,pt.y,-10+24*p,1-.38*p);
+          for(const c of dots) if(+c.dataset.t<=p){c.style.transitionDelay='0ms';c.style.opacity=0;}
+        });
+        if(cancelled) return;
+      }
+
+      // 2 · swish: through the net, "+1"
+      pulse(netEl,'swish');
+      pulse(plusEl,'go');
+      const NB=g.netBottom+12*g.k;
+      if(show){
+        await frames(440,p=>{
+          const e=p*p;
+          place(g.rim.x+Math.sin(p*5)*3, A.T.y+(NB-A.T.y)*e, 14+14*p, .62-.14*p);
+        });
+        if(cancelled) return;
+      }
+
+      // 3 · out the bottom → counter ticks, upload row slides in
+      count++; countEl.textContent=count; pulse(pill,'bump');
+      zone.classList.remove('is-hot');
+      row.classList.add('show');
+      if(show){
+        const FY=g.h-40;
+        await frames(260,p=>{
+          const e=p*p;
+          place(g.rim.x, NB+(FY-NB)*e, 28+8*p, .48-.1*p);
+          fileEl.style.opacity=String(1-Math.max(0,(p-.3)/.7));
+        });
+      }
+      fileEl.style.opacity=0;
+      if(cancelled) return;
+
+      // 4 · progress: eases to 90%, then waits for the real parse to finish
+      await frames(700,p=>{bar.style.width=(90*outCubic(p)).toFixed(1)+'%';});
+      await parsedP;
+      if(cancelled) return;
+      await frames(160,p=>{bar.style.width=(90+10*p).toFixed(1)+'%';});
+      row.classList.add('done');
+      status.textContent=info.records!=null?`Uploaded · ${info.records.toLocaleString()} records`:'Uploaded';
+      await wait(400);
+      if(cancelled) return;
+
+      doReveal();
+      reset();
+    })().catch(err=>{
+      // Never leave the user stuck on the zone if the animation itself hiccups.
+      console.error('HoopShot:',err);
+      if(cancelled) return;
+      reset();
+      parsedP.then(doReveal);
+    });
+
+    return {
+      finish(cb,i){ revealCb=cb; info=i||{}; resolveParsed(); },
+      cancel(){ cancelled=true; resolveParsed(); reset(); }
+    };
+  }
+
+  return {aim,unaim,launch,isBusy:()=>busy};
+})();
 
 /* ════════════════════════════════════════════════════════════
    UPLOAD / DRAG
@@ -776,15 +1381,31 @@ function showVesselBanner(m){
 const fileInput  = document.getElementById('fileInput');
 const uploadZone = document.getElementById('uploadZone');
 
-uploadZone.addEventListener('dragover', e=>{e.preventDefault();uploadZone.classList.add('drag-over');});
-uploadZone.addEventListener('dragleave',()=>uploadZone.classList.remove('drag-over'));
-uploadZone.addEventListener('drop',e=>{e.preventDefault();uploadZone.classList.remove('drag-over');const f=e.dataTransfer.files[0];if(f)processFile(f);});
+uploadZone.addEventListener('dragover', e=>{e.preventDefault();uploadZone.classList.add('drag-over');HoopShot.aim(e.clientX,e.clientY);});
+uploadZone.addEventListener('dragleave',e=>{
+  if(e.relatedTarget && uploadZone.contains(e.relatedTarget)) return;   // still inside the zone
+  uploadZone.classList.remove('drag-over'); HoopShot.unaim();
+});
+uploadZone.addEventListener('drop',e=>{
+  e.preventDefault();
+  uploadZone.classList.remove('drag-over');
+  const f=e.dataTransfer.files[0];
+  if(f) processFile(f,{x:e.clientX,y:e.clientY}); else HoopShot.unaim();
+});
 uploadZone.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();fileInput.click();}});
 fileInput.addEventListener('change',e=>{if(e.target.files[0])processFile(e.target.files[0]);});
 
-function processFile(file){
-  document.getElementById('loading').style.display='block';
+function processFile(file, origin){
+  if(HoopShot.isBusy()) return;                     // one shot at a time
+  const shot = HoopShot.launch(file, origin);       // null if the upload zone isn't on screen
+  if(!shot) document.getElementById('loading').style.display='block';
   document.getElementById('dashboard').style.display='none';
+  const fail = err=>{
+    if(shot) shot.cancel();
+    document.getElementById('loading').style.display='none';
+    alert('Error parsing file:\n'+err.message);
+    console.error(err);
+  };
   const ext    = file.name.split('.').pop().toLowerCase();
   const isXL   = ext==='xlsx'||ext==='xls';
   const reader = new FileReader();
@@ -792,6 +1413,9 @@ function processFile(file){
   reader.onload = e => {
     try{
       let raw=[], meta={};
+      // Reset raw-ASC tracking; only the ASC branch below re-arms it.
+      rawASCLoaded = false;
+      rawASCLines  = null;
       if(isXL){
         const wb = XLSX.read(e.target.result,{type:'binary'});
         const ws = wb.Sheets[wb.SheetNames[0]];
@@ -804,6 +1428,10 @@ function processFile(file){
           const result = parseASC(text);
           raw  = result.rows;
           meta = result.meta;
+          rawASCLoaded   = true;
+          rawASCLines    = result.lines;
+          rawASCEol      = text.includes('\r\n') ? '\r\n' : '\n';
+          rawASCFileName = file.name;
         } else if(ext==='edi'||ext==='baplie'||text.trim().startsWith('UNB')||text.includes('BAPLIE')){
           raw  = parseEDI(text);
           meta = parseEDIMeta(text);
@@ -820,22 +1448,35 @@ function processFile(file){
       }).filter(row=>{
         const opr  = String(cf(row,['OPR','Opr','opr'])||'').trim();
         const sztp = String(cf(row,['SzTp','SZTP','SzTP','Size Type','SizeType'])||'').trim();
-        return opr!==''&&opr.toUpperCase()!=='UNKNOWN'&&sztp!==''&&sztp.toUpperCase()!=='UNKNOWN';
+        const ctnr = String(cf(row,['Container','container','CONTAINER','CTR','Ctnr'])||'').trim();
+        const oprOk = opr!==''&&opr.toUpperCase()!=='UNKNOWN';
+        // Bundle / break-bulk / flat-rack units pulled from a manifest's remarks
+        // section often carry no OPR code at all — still keep them if they have
+        // a real container number and a recognised special-cargo type.
+        const specialCargoOk = ctnr!==''&&isFlatRackOrBreakBulk(sztp);
+        return sztp!==''&&sztp.toUpperCase()!=='UNKNOWN'&&(oprOk||specialCargoOk);
       });
+      ridSeq = 0;
+      allData.forEach(row=>{ row._rid = ++ridSeq; });
+      dataDirty = false;
 
-      document.getElementById('loading').style.display='none';
-      document.getElementById('dashboard').style.display='block';
-      document.getElementById('uploadSection').style.display='none';
-      document.getElementById('menuBtn').style.display='flex';
-      document.getElementById('statusDot').classList.add('active');
-      document.getElementById('statusText').textContent=`${allData.length.toLocaleString()} records · ${file.name}`;
-      showVesselBanner(meta);
-      populateFilters();
-      renderAll();
+      const reveal = ()=>{
+        try{
+          document.getElementById('loading').style.display='none';
+          document.getElementById('dashboard').style.display='block';
+          document.getElementById('uploadSection').style.display='none';
+          document.getElementById('menuBtn').style.display='flex';
+          document.getElementById('statusDot').classList.add('active');
+          document.getElementById('statusText').textContent=`${allData.length.toLocaleString()} records · ${file.name}`;
+          showVesselBanner(meta);
+          populateFilters();
+          renderAll();
+        } catch(err){ fail(err); }
+      };
+      // Let the ball finish its shot before the dashboard takes over the screen.
+      if(shot) shot.finish(reveal,{records:allData.length}); else reveal();
     } catch(err){
-      document.getElementById('loading').style.display='none';
-      alert('Error parsing file:\n'+err.message);
-      console.error(err);
+      fail(err);
     }
   };
   isXL ? reader.readAsBinaryString(file) : reader.readAsText(file);
@@ -1006,7 +1647,7 @@ function renderAll(){
 function renderKPIs(filtered, agg){
   const full   = filtered.filter(r=>nFE(cf(r,['F/E','FE','fe','f/e','Full/Empty']))==='F').length;
   const empty  = filtered.filter(r=>nFE(cf(r,['F/E','FE','fe','f/e','Full/Empty']))==='E').length;
-  const oprs   = new Set(agg.map(r=>r.OPR)).size;
+  const oprs   = new Set(agg.map(r=>r.OPR).filter(o=>o!=='')).size;
   const sztps  = new Set(agg.map(r=>r.SzTp)).size;
 
   const teu = filtered.reduce((s,r)=>{
@@ -1014,8 +1655,9 @@ function renderKPIs(filtered, agg){
     return s+calcTEU(sztp);
   },0);
 
-  const reefer = filtered.filter(r=>isReefer(String(cf(r,['SzTp','SZTP','SzTP','Size Type','SizeType'])||'').trim())).length;
-  const tank   = filtered.filter(r=>isISOTank(String(cf(r,['SzTp','SZTP','SzTP','Size Type','SizeType'])||'').trim())).length;
+  const reefer   = filtered.filter(r=>isReefer(String(cf(r,['SzTp','SZTP','SzTP','Size Type','SizeType'])||'').trim())).length;
+  const tank     = filtered.filter(r=>isISOTank(String(cf(r,['SzTp','SZTP','SzTP','Size Type','SizeType'])||'').trim())).length;
+  const flatRack = filtered.filter(r=>isFlatRackOrBreakBulk(String(cf(r,['SzTp','SZTP','SzTP','Size Type','SizeType'])||'').trim())).length;
 
   // Weight: sum VGM in tonnes
   let tons = 0;
@@ -1026,6 +1668,7 @@ function renderKPIs(filtered, agg){
   document.getElementById('kEmpty').textContent  = empty.toLocaleString();
   document.getElementById('kTEU').textContent    = teu.toLocaleString();
   document.getElementById('kTons').textContent   = tonsDisplay;
+  document.getElementById('kFlatRack').textContent = flatRack.toLocaleString();
   document.getElementById('kReefer').textContent = reefer.toLocaleString();
   document.getElementById('kTank').textContent   = tank.toLocaleString();
   document.getElementById('kOPR').textContent    = oprs;
@@ -1054,7 +1697,7 @@ function renderIndicators(agg){
   const title = row.querySelector('.ind-title');
   row.innerHTML=''; row.appendChild(title);
   const oprMap={};
-  agg.forEach(r=>{if(!oprMap[r.OPR])oprMap[r.OPR]={Full:0,Empty:0,Total:0};oprMap[r.OPR].Full+=r.Full;oprMap[r.OPR].Empty+=r.Empty;oprMap[r.OPR].Total+=r.Total;});
+  agg.forEach(r=>{const key=r.OPR||'UNASSIGNED';if(!oprMap[key])oprMap[key]={Full:0,Empty:0,Total:0};oprMap[key].Full+=r.Full;oprMap[key].Empty+=r.Empty;oprMap[key].Total+=r.Total;});
   const top = Object.entries(oprMap).sort((a,b)=>b[1].Total-a[1].Total).slice(0,8);
   top.forEach(([opr,data],idx)=>{
     const pct   = data.Total>0?Math.round((data.Full/data.Total)*100):0;
@@ -1133,6 +1776,7 @@ function renderTable(input){
   const q = document.getElementById('tableSearch').value.toLowerCase().trim();
 
   const view = rows.map(r=>({
+    _rid:      r._rid,
     Container: String(cf(r,['Container','container','CONTAINER','CTR','Ctnr'])||'').trim(),
     Slot:      String(cf(r,['Slot','slot','SLOT','Cell','cell'])||'').trim(),
     OPR:       String(cf(r,['OPR','Opr','opr'])||'').trim(),
@@ -1160,6 +1804,8 @@ function renderTable(input){
     const feL    = v.FE==='F'?'Full':v.FE==='E'?'Empty':(v.FE||'—');
     const rflag  = isReefer(v.SzTp)   ? '<span class="spec-flag" title="Reefer">❄</span>' : '';
     const tflag  = isISOTank(v.SzTp)  ? '<span class="spec-flag" title="ISO Tank">🛢</span>' : '';
+    const fflag  = isFlatRack(v.SzTp) ? '<span class="spec-flag" title="Flat Rack / Platform">🏗</span>'
+                 : isBreakBulk(v.SzTp) ? '<span class="spec-flag" title="Break Bulk / Bundle">📦</span>' : '';
     const cDisp  = v.Container
       ? `<span class="badge-ctnr${isInv?' inv':''}" title="${isInv?'⚠ ISO 6346 invalid':''}">${v.Container}${isInv?'<span style="color:var(--red);margin-left:3px;font-size:9px">⚠</span>':''}</span>`
       : `<span style="color:var(--muted)">—</span>`;
@@ -1169,11 +1815,12 @@ function renderTable(input){
       <td>${cDisp}</td>
       <td>${sDisp}</td>
       <td class="td-opr">${v.OPR||'—'}</td>
-      <td><span style="font-family:var(--ui);font-weight:600;color:var(--accent3)">${v.SzTp||'—'}</span>${rflag}${tflag}</td>
+      <td><span style="font-family:var(--ui);font-weight:600;color:var(--accent3)">${v.SzTp||'—'}</span>${rflag}${tflag}${fflag}</td>
       <td><span class="fe-chip ${feC}">${feL}</span></td>
       <td style="color:var(--text-soft)">${v.POL||'—'}</td>
       <td><span style="font-family:var(--ui);font-weight:600;color:var(--accent)">${v.POD}</span></td>
       <td>${vDisp}</td>
+      <td style="text-align:center">${v._rid!=null?`<button type="button" class="btn-row-edit" title="Edit this line item" onclick="openEditFromRid(${v._rid})">✎</button>`:''}</td>
     </tr>`;
   }).join('');
 }
@@ -1211,12 +1858,14 @@ document.getElementById('exportBtn').addEventListener('click',()=>{
       'VGM (KGS)':     vgm!==null?+(vgm*1000).toFixed(0):'',
       'ISO Valid':     ctnr?(isValidISO6346(ctnr)?'Yes':'INVALID'):'',
       'Reefer':        isReefer(sztp)?'Yes':'No',
-      'ISO Tank':      isISOTank(sztp)?'Yes':'No'
+      'ISO Tank':      isISOTank(sztp)?'Yes':'No',
+      'Flat Rack':     isFlatRack(sztp)?'Yes':'No',
+      'Break Bulk':    isBreakBulk(sztp)?'Yes':'No'
     };
   }).filter(row=>!q||Object.values(row).some(v=>String(v).toLowerCase().includes(q)));
 
   const ws=XLSX.utils.json_to_sheet(rows);
-  ws['!cols']=[{wch:14},{wch:8},{wch:10},{wch:10},{wch:5},{wch:8},{wch:6},{wch:6},{wch:11},{wch:10},{wch:8},{wch:9}];
+  ws['!cols']=[{wch:14},{wch:8},{wch:10},{wch:10},{wch:5},{wch:8},{wch:6},{wch:6},{wch:11},{wch:10},{wch:8},{wch:9},{wch:10},{wch:11}];
   const wb=XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb,ws,'Filtered Manifest');
 
@@ -1237,7 +1886,17 @@ document.getElementById('exportBtn').addEventListener('click',()=>{
   }
   // Vessel info
   if(vesselMeta.vesselName||vesselMeta.voyage){
-    const vmeta=[{Field:'Vessel',Value:vesselMeta.vesselName||'—'},{Field:'Voyage',Value:vesselMeta.voyage||'—'},{Field:'Call Sign',Value:vesselMeta.callSign||'—'},{Field:'POL',Value:vesselMeta.pol||'—'},{Field:'Date',Value:vesselMeta.date||'—'},{Field:'Export',Value:new Date().toISOString().slice(0,10)},{Field:'Records',Value:rows.length}];
+    const loadDT = loadTimestamp || new Date();
+    const vmeta=[
+      {Field:'Vessel',Value:vesselMeta.vesselName||'—'},
+      {Field:'Voyage',Value:vesselMeta.voyage||'—'},
+      {Field:'Call Sign',Value:vesselMeta.callSign||'—'},
+      {Field:'POL',Value:vesselMeta.pol||'—'},
+      {Field:'Time Loaded',Value:fmt24h(loadDT)},
+      {Field:'Date Loaded',Value:loadDT.toISOString().slice(0,10)},
+      {Field:'Records',Value:String(rows.length)},
+      {Field:'Prepared By',Value:'Rhoderick Ngonzi'}
+    ];
     const wsM=XLSX.utils.json_to_sheet(vmeta);wsM['!cols']=[{wch:12},{wch:30}];
     XLSX.utils.book_append_sheet(wb,wsM,'Vessel Info');
   }
@@ -1247,6 +1906,339 @@ document.getElementById('exportBtn').addEventListener('click',()=>{
   const fName=vName&&vVoy?`${vName}_${vVoy}`:vName||vVoy?`${vName||vVoy}`:`manifest_export_${new Date().toISOString().slice(0,10)}`;
   XLSX.writeFile(wb,`${fName}.xlsx`);
   closeDrawer();
+});
+
+/* ════════════════════════════════════════════════════════════
+   ADD CONTAINER (manual entry)
+════════════════════════════════════════════════════════════ */
+const modalOverlay  = document.getElementById('modalOverlay');
+const addCtnrForm   = document.getElementById('addCtnrForm');
+
+// Sets a dropdown+custom-text pair to a given value: selects the option if it's
+// one of the presets, otherwise falls back to "Type manually…" with the value
+// dropped into the free-text box.
+function setFieldValue(prefix, value){
+  const sel = document.getElementById(prefix+'Select');
+  const custom = document.getElementById(prefix+'Custom');
+  const v = String(value||'').trim().toUpperCase();
+  const hasPreset = Array.from(sel.options).some(o=>o.value===v);
+  if(v && !hasPreset){
+    sel.value = '__custom__';
+    custom.value = v;
+    custom.style.display = 'block';
+  } else {
+    sel.value = v;
+    custom.style.display = 'none';
+    custom.value = '';
+  }
+}
+
+// Opens the modal in "Add" mode (no argument) or "Edit" mode (pass the row
+// object from allData — matched earlier by its _rid on the table's edit button).
+function openAddCtnrModal(row){
+  addCtnrForm.reset();
+  ['mOPR','mSzTp','mPOL','mPOD'].forEach(p=>{ document.getElementById(p+'Custom').style.display='none'; document.getElementById(p+'Custom').value=''; });
+
+  editingRid = row ? row._rid : null;
+  const isEdit = editingRid!=null;
+  document.getElementById('modalTitleText').textContent = isEdit ? '✎ Edit Container Line Item' : '＋ Add Container Line Item';
+  document.getElementById('modalSaveBtnText').textContent = isEdit ? 'Save Changes' : 'Add Container';
+  document.getElementById('modalHintText').textContent = isEdit
+    ? 'Update any field below. Changes apply immediately to the dataset, KPIs, charts, and will be reflected the next time you save an ASC or export filtered data.'
+    : 'Container No. or Slot is required. For Empty containers, weight auto-fills to 2.200 T (20 ft) or 4.400 T (40 ft) based on Size/Type — override it if needed. This entry is added to the current dataset, KPIs and charts, and will be included the next time you save an ASC or export filtered data.';
+
+  if(isEdit){
+    document.getElementById('mCtnr').value = String(cf(row,['Container','container','CONTAINER','CTR','Ctnr'])||'');
+    document.getElementById('mSlot').value = String(cf(row,['Slot','slot','SLOT','Cell','cell'])||'');
+    setFieldValue('mOPR',  cf(row,['OPR','Opr','opr']));
+    setFieldValue('mSzTp', cf(row,['SzTp','SZTP','SzTP','Size Type','SizeType']));
+    document.getElementById('mFE').value = nFE(cf(row,['F/E','FE','fe','f/e','Full/Empty']))||'';
+    setFieldValue('mPOL', cf(row,['POL','Pol','pol']));
+    setFieldValue('mPOD', cf(row,['POD','Pod','pod']));
+    const vgm = getVGM(row);
+    document.getElementById('mVGM').value = vgm!=null ? vgm.toFixed(3) : '';
+  } else {
+    document.getElementById('mPOLSelect').value='MWA';
+  }
+
+  modalOverlay.classList.add('active');
+  document.body.style.overflow='hidden';
+  setTimeout(()=>document.getElementById('mCtnr').focus(),50);
+}
+function openEditFromRid(rid){
+  const row = allData.find(r=>r._rid===rid);
+  if(row) openAddCtnrModal(row);
+}
+// Invoked from an invalid-container chip in the validation banner: clears any
+// active drawer filters that might be hiding the row, scrolls the container
+// table into view, sets the search box to isolate that container, and opens
+// the edit modal on it directly so the flagged value can be corrected.
+function jumpToContainerEdit(ctnr){
+  const row = allData.find(r=>String(cf(r,['Container','container','CONTAINER','CTR','Ctnr'])||'').trim()===ctnr);
+  if(!row){ alert(`Could not locate container ${ctnr} in the current dataset — it may have already been edited or removed.`); return; }
+
+  closeDrawer();
+  ['fOPR','fSzTp','fFE','fPOL','fPOD'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('tableSearch').value = ctnr;
+  renderAll();
+  updateActiveBadge();
+
+  document.getElementById('ctnrTableSection').scrollIntoView({behavior:'smooth', block:'start'});
+  setTimeout(()=>openAddCtnrModal(row), 350);
+}
+function closeAddCtnrModal(){
+  modalOverlay.classList.remove('active');
+  document.body.style.overflow='';
+  editingRid = null;
+}
+document.getElementById('addCtnrBtn').addEventListener('click', ()=>openAddCtnrModal());
+document.addEventListener('keydown', e=>{ if(e.key==='Escape' && modalOverlay.classList.contains('active')) closeAddCtnrModal(); });
+
+// Show/hide the "type manually" text box next to each dropdown
+function getFieldValue(prefix){
+  const sel = document.getElementById(prefix+'Select');
+  if(sel.value==='__custom__') return document.getElementById(prefix+'Custom').value.trim().toUpperCase();
+  return sel.value;
+}
+['mOPR','mSzTp','mPOL','mPOD'].forEach(prefix=>{
+  const sel = document.getElementById(prefix+'Select');
+  const custom = document.getElementById(prefix+'Custom');
+  sel.addEventListener('change', ()=>{
+    const isCustom = sel.value==='__custom__';
+    custom.style.display = isCustom?'block':'none';
+    if(isCustom) custom.focus();
+    if(prefix==='mSzTp') updateAutoWeight();
+  });
+});
+document.getElementById('mSzTpCustom').addEventListener('input', updateAutoWeight);
+document.getElementById('mFE').addEventListener('change', updateAutoWeight);
+
+// Auto-fill VGM for empty containers: 20ft → 2.200 T, 40ft → 4.400 T
+function updateAutoWeight(){
+  const fe = document.getElementById('mFE').value;
+  if(fe!=='E') return;
+  const sztp = getFieldValue('mSzTp');
+  if(!sztp) return;
+  const firstChar = sztp.trim()[0];
+  const vgmField = document.getElementById('mVGM');
+  if(firstChar==='2') vgmField.value = '2.200';
+  else if(firstChar==='4') vgmField.value = '4.400';
+}
+
+addCtnrForm.addEventListener('submit', function(e){
+  e.preventDefault();
+  const ctnr = document.getElementById('mCtnr').value.trim().toUpperCase();
+  const slot = document.getElementById('mSlot').value.trim();
+  if(!ctnr && !slot){ alert('Enter at least a Container No. or a Slot.'); return; }
+  if(slot && !slotExistsInTemplate(slot)){
+    const proceed = confirm(`Slot ${slot} was not found in the loaded ASC template's bay plan.\n\nIt will be saved as an extra line rather than filling a real position, which the stowage software may not recognise (or may flag as an error) when this file is reloaded.\n\nContinue anyway?`);
+    if(!proceed) return;
+  }
+
+  const opr  = getFieldValue('mOPR');
+  const sztp = getFieldValue('mSzTp');
+  const fe   = document.getElementById('mFE').value;
+  const pol  = getFieldValue('mPOL');
+  const pod  = getFieldValue('mPOD');
+  const vgmRaw = document.getElementById('mVGM').value.trim();
+  const vgm  = vgmRaw!=='' && !isNaN(parseFloat(vgmRaw)) ? +parseFloat(vgmRaw).toFixed(3) : null;
+
+  if(editingRid!=null){
+    // ── EDIT MODE: mutate the existing row in place ──
+    const row = allData.find(r=>r._rid===editingRid);
+    if(!row){ alert('Could not find that line item anymore — it may have been removed.'); closeAddCtnrModal(); return; }
+    row.Slot = slot; row.Container = ctnr; row.OPR = opr||'MANUAL';
+    row.SzTp = sztp||'UNKNOWN'; row['F/E'] = fe;
+    row.POL = pol; row.POD = pod||'BLANK';
+    row.VGM = vgm; row._vgmKg = vgm!==null ? Math.round(vgm*1000) : null;
+    // _lineIndex (if any) is left untouched, so Save ASC File still patches
+    // this exact source line with the edited values.
+  } else {
+    // ── ADD MODE: push a brand-new row ──
+    manualEntrySeq++;
+    ridSeq++;
+    const row = {
+      Slot: slot, Container: ctnr, OPR: opr||'MANUAL',
+      SzTp: sztp||'UNKNOWN', 'F/E': fe,
+      POL: pol, POD: pod||'BLANK',
+      VGM: vgm,
+      _vgmKg: vgm!==null ? Math.round(vgm*1000) : null,
+      _manualEntry: true,
+      _manualId: manualEntrySeq,
+      _rid: ridSeq
+    };
+
+    // If the dashboard hasn't got any data loaded yet (no file uploaded), start fresh.
+    if(!Array.isArray(allData)) allData = [];
+    if(document.getElementById('dashboard').style.display==='none'){
+      document.getElementById('dashboard').style.display='block';
+      document.getElementById('uploadSection').style.display='none';
+      document.getElementById('menuBtn').style.display='flex';
+      document.getElementById('statusDot').classList.add('active');
+    }
+    allData.push(row);
+    document.getElementById('statusText').textContent = `${allData.length.toLocaleString()} records${rawASCFileName?' · '+rawASCFileName:''}`;
+  }
+
+  dataDirty = true;
+  populateFilters();
+  renderAll();
+  closeAddCtnrModal();
+});
+
+/* ════════════════════════════════════════════════════════════
+   SAVE ASC FILE
+   Rebuilds the originally-uploaded ASC file byte-for-byte for every
+   untouched line, patches the fixed-width fields of any line whose
+   row is still tracked (by _lineIndex), and appends newly added rows
+   as new fixed-width data lines ahead of the "***Refer to the
+   following remark." footer — so headers, spacing, blank slots and
+   the remarks/footer block are all preserved exactly as uploaded.
+════════════════════════════════════════════════════════════ */
+function setField(chars, start, end, value){
+  const w = end - start;
+  const v = String(value==null?'':value).toUpperCase().slice(0,w).padEnd(w,' ');
+  for(let i=0;i<w;i++) chars[start+i] = v[i];
+}
+// Resets a data line back to an empty grid placeholder (slot digits kept,
+// everything else blanked) — used when a container is edited onto a
+// different slot, so its old position doesn't keep stale duplicate data.
+function blankASCLine(template){
+  const chars = template.split('');
+  for(let i=6;i<chars.length;i++) chars[i]=' ';
+  return chars.join('');
+}
+// True if `slot` matches a real grid line in the loaded ASC template
+// (occupied or blank placeholder) — false only for slots the vessel's own
+// bay plan doesn't define, which can't be safely written back into the file.
+function slotExistsInTemplate(slot){
+  if(!rawASCLoaded || !rawASCLines || !slot) return true;
+  return rawASCLines.some(l=>/^\d{6}/.test(l) && l.length>=50 && l.slice(0,6).trim()===slot);
+}
+function buildASCDataLine(row, template){
+  const width = template ? template.length : 198;
+  const chars = (template ? template.padEnd(width,' ') : ' '.repeat(width)).split('');
+
+  const ctnr = String(cf(row,['Container','container','CONTAINER','CTR','Ctnr'])||'').trim();
+  const slot = String(cf(row,['Slot','slot','SLOT','Cell','cell'])||'').trim();
+  const opr  = String(cf(row,['OPR','Opr','opr'])||'').trim();
+  const pol  = String(cf(row,['POL','Pol','pol'])||'').trim();
+  const pod  = String(cf(row,['POD','Pod','pod'])||'').trim();
+  const sztp = String(cf(row,['SzTp','SZTP','SzTP','Size Type','SizeType'])||'').trim();
+  const fe   = nFE(cf(row,['F/E','FE','fe','f/e','Full/Empty']));
+  const vgm  = getVGM(row);
+
+  setField(chars,0,6, slot.padStart(6,'0').slice(-6));
+  setField(chars,7,18, ctnr);
+  setField(chars,19,22, opr==='MANUAL'?'':opr);
+  setField(chars,27,30, pol);
+  setField(chars,30,33, pod==='BLANK'?'':pod);
+  setField(chars,44,48, sztp==='UNKNOWN'?'':sztp);
+
+  // Weight-class(3 digit)+F/E at [48:54], e.g. "022E  "
+  const wt3 = vgm!=null ? String(Math.round(vgm*1000/100)).padStart(3,'0').slice(-3) : '   ';
+  setField(chars,48,54, `${wt3}${fe||''}`.padEnd(6,' '));
+
+  // 5-digit weight (KGS) — reuse the template's own offset within [80:100] if
+  // present, otherwise default to the layout confirmed from the source file.
+  let wtPos = 87;
+  if(template){
+    const w80 = template.slice(80,100);
+    const m = w80.match(/\d{5}/);
+    if(m) wtPos = 80 + m.index;
+  }
+  if(vgm!=null){
+    const wt5 = String(Math.round(vgm*1000)).padStart(5,'0').slice(-5);
+    setField(chars,wtPos,wtPos+5, wt5);
+  }
+
+  return chars.join('');
+}
+
+document.getElementById('saveAscBtn').addEventListener('click', ()=>{
+  if(!rawASCLoaded || !rawASCLines){
+    alert('Save ASC File is only available after loading an .ASC manifest — load an .ASC file first, then any edits or added containers can be saved back into the same format.');
+    return;
+  }
+  if(!Array.isArray(allData) || !allData.length){ alert('No data to save.'); return; }
+
+  const outLines = rawASCLines.slice();
+  const newLines = [];
+  const usedIdx  = new Set();
+
+  // Map every real grid position (occupied or blank) in the ORIGINAL file to
+  // its line index, keyed by slot code — this is what lets a manually-added
+  // container land on its actual blank placeholder line instead of being
+  // appended as a duplicate-slot line (which stowage software rejects as
+  // "position already occupied").
+  const slotIndexMap = new Map();
+  rawASCLines.forEach((l,idx)=>{
+    if(/^\d{6}/.test(l) && l.length>=50){
+      const key = l.slice(0,6).trim();
+      if(key && !slotIndexMap.has(key)) slotIndexMap.set(key, idx);
+    }
+  });
+
+  // Always saves the FULL current dataset (not the active filter/search),
+  // so nothing entered or loaded gets left out of the saved file.
+  allData.forEach(row=>{
+    if(row._fromRemarks) return; // leave the original remarks/bundle block untouched
+
+    const slotKey = String(row.Slot||'').trim();
+    let target = null;
+    if(slotKey && slotIndexMap.has(slotKey) && !usedIdx.has(slotIndexMap.get(slotKey))){
+      target = slotIndexMap.get(slotKey);
+    } else if(Number.isInteger(row._lineIndex) && rawASCLines[row._lineIndex]!==undefined && !usedIdx.has(row._lineIndex)){
+      target = row._lineIndex;
+    }
+
+    if(target!==null){
+      usedIdx.add(target);
+      outLines[target] = buildASCDataLine(row, rawASCLines[target]);
+      // Row moved to a different slot than it originally occupied — clear
+      // out its old line so the container doesn't appear twice.
+      if(Number.isInteger(row._lineIndex) && row._lineIndex!==target && rawASCLines[row._lineIndex]!==undefined){
+        outLines[row._lineIndex] = blankASCLine(rawASCLines[row._lineIndex]);
+      }
+    } else {
+      newLines.push(buildASCDataLine(row, null));
+    }
+  });
+
+  if(newLines.length){
+    const markerIdx = outLines.findIndex(l=>l.trimStart().startsWith('***Refer'));
+    if(markerIdx>=0) outLines.splice(markerIdx,0,...newLines);
+    else outLines.push(...newLines);
+  }
+
+  const blob = new Blob([outLines.join(rawASCEol)], {type:'text/plain'});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url;
+  a.download = rawASCFileName || `manifest_${new Date().toISOString().slice(0,10)}.ASC`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  dataDirty = false;
+  closeDrawer();
+});
+
+/* ════════════════════════════════════════════════════════════
+   EXIT / CLOSE-TAB SAFETY NET
+   Warns before leaving the page (closing the tab, refreshing, or
+   navigating away) if containers were added or edited since the
+   manifest was last saved back to ASC — so changes aren't lost by
+   accident. Browsers show their own generic confirmation dialog
+   text for security reasons; the returnValue string is a fallback
+   for older browsers that still display custom text.
+════════════════════════════════════════════════════════════ */
+window.addEventListener('beforeunload', function(e){
+  if(!dataDirty) return;
+  const msg = 'You have unsaved container changes. Save the ASC file before leaving to keep them.';
+  e.preventDefault();
+  e.returnValue = msg;
+  return msg;
 });
 </script>
 </body>
