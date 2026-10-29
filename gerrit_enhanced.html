@@ -333,9 +333,6 @@
 .hz-row.done .hz-bar i{background:var(--green)}
 .hz-row.done .hz-check{transform:scale(1)}
 
-/* respect reduced-motion (this file has no global rule) */
-@media(prefers-reduced-motion:reduce){.hz-net.swish,.hz-plus.go,.hz-count.bump b{animation-duration:.01ms}.hz-row,.hz-check{transition-duration:.01ms}}
-
 /* ─── LOADING ─── */
   #loading {
     display: none;
@@ -793,6 +790,17 @@
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
   }
+/* Basketball upload: play the shot even when the OS asks for reduced motion
+   (it's a short, one-off, user-triggered animation; click the zone or press Esc to skip).
+   Class selectors + !important beat the global reduced-motion rule above. */
+@media(prefers-reduced-motion:reduce){
+  .hz-net.swish{animation-duration:.8s!important}
+  .hz-plus.go{animation-duration:1s!important}
+  .hz-count.bump b{animation-duration:.45s!important}
+  .hz-trail circle{transition-duration:.2s!important}
+  .hz-row{transition-duration:.28s,.32s!important}
+  .hz-check{transition-duration:.35s!important}
+}
 </style>
 </head>
 <body>
@@ -1106,7 +1114,7 @@ const HoopShot = (()=>{
   const zone=$('uploadZone'), stage=$('hzStage'), fileEl=$('hzFile'), plusEl=$('hzPlus'),
         netEl=$('hzNet'), row=$('hzRow'), bar=$('hzBar'), status=$('hzStatus'),
         pill=$('hzPill'), countEl=$('hzCount'), trail=$('hzTrail');
-  const reduce = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+  const reduce = false;   // always play the shot, even if the OS asks for reduced motion (Esc / click skips it)
   const NS='http://www.w3.org/2000/svg', N_DOTS=16;
   const dots=[];
   let count=0, busy=false, skip=false, skipFns=[], aimPt=null, aimRaf=0;
