@@ -268,7 +268,72 @@
   }
   #fileInput { display: none; }
 
-  /* ─── LOADING ─── */
+  /* ── BASKETBALL UPLOAD ── */
+.upload-zone{--hoop:#f97316;padding:36px 28px 24px}
+.upload-zone .upload-sub{margin-bottom:6px}
+.upload-icon{font-size:0;line-height:0;margin-bottom:10px}
+.upload-icon svg{width:26px;height:26px;stroke:var(--text-soft);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.upload-zone.drag-over,.upload-zone.is-hot{border-color:var(--hoop);background:rgba(249,115,22,.07)}
+.upload-zone.is-busy{cursor:default;transform:none}
+
+.hz-count{position:absolute;top:14px;right:16px;z-index:4;display:flex;align-items:center;gap:6px;font-family:var(--font-ui);font-size:10px;color:var(--text-soft);background:rgba(15,23,42,.6);border:1px solid var(--border-soft);padding:3px 10px;border-radius:100px}
+.hz-count b{display:inline-block;min-width:8px;text-align:center;color:var(--white)}
+.hz-count.bump b{animation:hzBump .45s cubic-bezier(.3,1.6,.5,1)}
+@keyframes hzBump{0%{transform:scale(1)}40%{transform:scale(1.8);color:var(--hoop)}100%{transform:scale(1)}}
+
+.hz-stage{position:relative;width:176px;height:168px;margin:6px auto 12px}
+.hz-back,.hz-front{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.hz-back{z-index:1}
+.hz-front{z-index:3}
+.hz-net{transform-box:fill-box;transform-origin:50% 0}
+.hz-net.swish{animation:hzSwish .8s ease-in-out}
+@keyframes hzSwish{
+  0%{transform:scale(1,1) skewX(0)}
+  18%{transform:scale(1.08,1.16) skewX(-3deg)}
+  38%{transform:scale(.95,.92) skewX(2.5deg)}
+  58%{transform:scale(1.03,1.06) skewX(-1.5deg)}
+  78%{transform:scale(.99,.98) skewX(.8deg)}
+  100%{transform:scale(1,1) skewX(0)}
+}
+
+.hz-fly{position:absolute;inset:0;z-index:2;pointer-events:none}
+.hz-trail{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.hz-trail circle{transition:opacity .2s}
+.hz-file{position:absolute;left:0;top:0;width:44px;height:56px;margin:-28px 0 0 -22px;opacity:0;will-change:transform,opacity;filter:drop-shadow(0 6px 10px rgba(0,0,0,.4))}
+.hz-file svg{display:block;width:100%;height:100%}
+.hz-ext{position:absolute;left:5px;bottom:7px;padding:1px 4px;border-radius:3px;background:#ef4444;color:#fff;font:700 8px/1.3 var(--font-ui);letter-spacing:.4px}
+.hz-plus{position:absolute;opacity:0;font:800 20px/1 var(--font-ui);color:var(--hoop);text-shadow:0 0 14px rgba(249,115,22,.5);transform-origin:0 100%}
+.hz-plus.go{animation:hzPlus 1s ease-out forwards}
+@keyframes hzPlus{
+  0%{opacity:0;transform:translateY(8px) scale(.4)}
+  22%{opacity:1;transform:translateY(0) scale(1.3)}
+  40%{transform:translateY(0) scale(1)}
+  80%{opacity:1;transform:translateY(-10px) scale(1)}
+  100%{opacity:0;transform:translateY(-16px) scale(1)}
+}
+
+.hz-foot{position:relative;z-index:4;height:62px;max-width:480px;margin:0 auto;display:flex;align-items:center;justify-content:center}
+.upload-zone.is-busy .upload-btn{opacity:0;pointer-events:none;transform:translateY(-8px)}
+.hz-row{position:absolute;inset:0;display:flex;align-items:center;gap:12px;padding:0 14px;text-align:left;background:rgba(15,23,42,.78);border:1px solid var(--border-soft);border-radius:var(--r-md);box-shadow:0 8px 24px rgba(0,0,0,.35);opacity:0;transform:translateY(18px);pointer-events:none;transition:opacity .28s ease,transform .32s cubic-bezier(.2,.9,.3,1.2)}
+.hz-row.show{opacity:1;transform:none}
+.hz-ficon{flex:none;min-width:38px;height:28px;padding:0 6px;display:flex;align-items:center;justify-content:center;border-radius:6px;background:#ef4444;color:#fff;font:700 9px var(--font-ui);letter-spacing:.5px}
+.hz-meta{flex:1;min-width:0}
+.hz-name{font:600 12px var(--font-ui);color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hz-size{font-size:10px;color:var(--muted)}
+.hz-prog{flex:none;width:clamp(96px,34%,160px)}
+.hz-status{font-size:10px;color:var(--text-soft);margin-bottom:5px;white-space:nowrap}
+.hz-bar{height:4px;border-radius:4px;background:rgba(148,163,184,.22);overflow:hidden}
+.hz-bar i{display:block;height:100%;width:0;border-radius:4px;background:var(--hoop)}
+.hz-check{flex:none;width:20px;height:20px;border-radius:50%;background:var(--green);display:grid;place-items:center;transform:scale(0);transition:transform .35s cubic-bezier(.3,1.7,.5,1)}
+.hz-check svg{width:11px;height:11px;stroke:#fff;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.hz-row.done .hz-status{color:var(--green)}
+.hz-row.done .hz-bar i{background:var(--green)}
+.hz-row.done .hz-check{transform:scale(1)}
+
+/* respect reduced-motion (this file has no global rule) */
+@media(prefers-reduced-motion:reduce){.hz-net.swish,.hz-plus.go,.hz-count.bump b{animation-duration:.01ms}.hz-row,.hz-check{transition-duration:.01ms}}
+
+/* ─── LOADING ─── */
   #loading {
     display: none;
     text-align: center;
@@ -753,13 +818,64 @@
   <div class="upload-section" id="uploadSection">
     <div class="upload-zone" id="uploadZone" role="button" tabindex="0"
          aria-label="Drop a data file here or click to choose a file">
-      <span class="upload-icon" aria-hidden="true">📂</span>
-      <div class="upload-title">Drop your data file here</div>
-      <div class="upload-sub">Supports .xlsx · .xls · .csv · .tsv · .asc · .txt · .edi · .baplie segments</div>
-      <label class="upload-btn" for="fileInput">Choose File</label>
-      <input type="file" id="fileInput" accept=".xlsx,.xls,.csv,.tsv,.asc,.txt,.edi,.baplie"
-             aria-label="Upload data file">
-    </div>
+        <span class="hz-count" id="hzPill">Uploaded <b id="hzCount">0</b></span>
+        <span class="upload-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V4M7.5 8.5 12 4l4.5 4.5M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg></span>
+        <div class="upload-title">Drop your data file here</div>
+        <div class="upload-sub">Supports .xlsx · .xls · .csv · .tsv · .asc · .txt · .edi · .baplie segments</div>
+
+        <div class="hz-stage" id="hzStage" aria-hidden="true">
+          <svg class="hz-back" viewBox="0 0 176 168">
+            <rect x="30" y="2" width="116" height="66" rx="5" fill="rgba(249,115,22,.06)" stroke="#f97316" stroke-width="2.5"/>
+            <rect x="68" y="30" width="40" height="26" rx="2" fill="none" stroke="#f97316" stroke-width="2.5"/>
+            <path d="M48 76A40 8 0 0 1 128 76" fill="none" stroke="#c2410c" stroke-width="4.5" stroke-linecap="round"/>
+          </svg>
+          <svg class="hz-front" viewBox="0 0 176 168">
+            <g class="hz-net" id="hzNet" stroke="#94a3b8" stroke-width="1.3" fill="none" stroke-linecap="round" opacity=".9">
+        <path d="M48 76.0L66.0 128.0"/>
+        <path d="M58 81.3L71.5 130.6"/>
+        <path d="M68 82.9L77.0 131.5"/>
+        <path d="M78 83.7L82.5 131.9"/>
+        <path d="M88 84.0L88.0 132.0"/>
+        <path d="M98 83.7L93.5 131.9"/>
+        <path d="M108 82.9L99.0 131.5"/>
+        <path d="M118 81.3L104.5 130.6"/>
+        <path d="M128 76.0L110.0 128.0"/>
+        <path d="M52.5 89.0Q88 103.0 123.5 89.0"/>
+        <path d="M57.0 102.0Q88 114.0 119.0 102.0"/>
+        <path d="M61.5 115.0Q88 125.0 114.5 115.0"/>
+        <path d="M66.0 128.0Q88 136.0 110.0 128.0"/>
+            </g>
+            <path d="M48 76A40 8 0 0 0 128 76" fill="none" stroke="#ea580c" stroke-width="4.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+
+        <div class="hz-foot">
+          <label class="upload-btn" for="fileInput">Choose File</label>
+          <input type="file" id="fileInput" accept=".xlsx,.xls,.csv,.tsv,.asc,.txt,.edi,.baplie"
+                 aria-label="Upload data file">
+          <div class="hz-row" id="hzRow" aria-live="polite">
+            <span class="hz-ficon" id="hzRowExt">FILE</span>
+            <div class="hz-meta"><div class="hz-name" id="hzName"></div><div class="hz-size" id="hzSize"></div></div>
+            <div class="hz-prog"><div class="hz-status" id="hzStatus">Uploading…</div><div class="hz-bar"><i id="hzBar"></i></div></div>
+            <span class="hz-check"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+          </div>
+        </div>
+
+        <div class="hz-fly" aria-hidden="true">
+          <svg class="hz-trail" id="hzTrail"></svg>
+          <div class="hz-file" id="hzFile">
+            <svg viewBox="0 0 44 56">
+              <path d="M4 1.5h26L42.5 14v39a2.5 2.5 0 0 1-2.5 2.5H4A2.5 2.5 0 0 1 1.5 53V4A2.5 2.5 0 0 1 4 1.5z" fill="#f1f5f9" stroke="#cbd5e1"/>
+              <path d="M30 1.5V11a3 3 0 0 0 3 3h9.5" fill="#e2e8f0" stroke="#cbd5e1"/>
+              <rect x="8" y="19" width="24" height="2.4" rx="1.2" fill="#cbd5e1"/>
+              <rect x="8" y="25" width="28" height="2.4" rx="1.2" fill="#cbd5e1"/>
+              <rect x="8" y="31" width="18" height="2.4" rx="1.2" fill="#cbd5e1"/>
+            </svg>
+            <span class="hz-ext" id="hzExt">FILE</span>
+          </div>
+          <div class="hz-plus" id="hzPlus">+1</div>
+        </div>
+      </div>
   </div>
 
   <!-- ══ LOADING ══ -->
@@ -975,24 +1091,258 @@ function colFind(row, candidates) {
   return '';
 }
 
+/* ════════════════════════════════════════════════════════════
+   BASKETBALL UPLOAD — the manifest is "shot" into the hoop
+   • dragging a file over the zone previews the shot (dotted arc)
+   • drop  → file launches from the cursor; Choose File → from bottom-left
+   • swish + "+1" + counter tick, then the progress row, then the dashboard
+   • click the zone (or press Esc) mid-shot to skip the show
+════════════════════════════════════════════════════════════ */
+const HoopShot = (()=>{
+  const $ = id => document.getElementById(id);
+  const zone=$('uploadZone'), stage=$('hzStage'), fileEl=$('hzFile'), plusEl=$('hzPlus'),
+        netEl=$('hzNet'), row=$('hzRow'), bar=$('hzBar'), status=$('hzStatus'),
+        pill=$('hzPill'), countEl=$('hzCount'), trail=$('hzTrail');
+  const reduce = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+  const NS='http://www.w3.org/2000/svg', N_DOTS=16;
+  const dots=[];
+  let count=0, busy=false, skip=false, skipFns=[], aimPt=null, aimRaf=0;
+
+  for(let i=0;i<N_DOTS;i++){
+    const c=document.createElementNS(NS,'circle');
+    c.setAttribute('fill','#f97316');
+    c.style.opacity=0;
+    trail.appendChild(c); dots.push(c);
+  }
+
+  const clamp   = (v,a,b)=>Math.min(b,Math.max(a,v));
+  const outCubic= t=>1-Math.pow(1-t,3);
+  const outBack = t=>{const c1=1.70158,c3=c1+1;return 1+c3*Math.pow(t-1,3)+c1*Math.pow(t-1,2);};
+  const fmtSize = b=>b<1024?b+' B':b<1048576?(b/1024).toFixed(b<10240?1:0)+' KB':(b/1048576).toFixed(1)+' MB';
+  const pulse   = (el,cls)=>{el.classList.remove(cls);void el.getBoundingClientRect();el.classList.add(cls);};
+  const place   = (x,y,r,s)=>{fileEl.style.transform=`translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,0) rotate(${r.toFixed(1)}deg) scale(${s.toFixed(3)})`;};
+
+  // Everything is measured in the zone's own padding-box coordinates.
+  function measure(){
+    const zr=zone.getBoundingClientRect(), sr=stage.getBoundingClientRect();
+    const ox=zr.left+zone.clientLeft, oy=zr.top+zone.clientTop;
+    const k=sr.width/176, sx=sr.left-ox, sy=sr.top-oy;
+    return {ox,oy,w:zone.clientWidth,h:zone.clientHeight,k,
+            rim:{x:sx+88*k,y:sy+76*k}, netBottom:sy+132*k, board:{x:sx+150*k,y:sy+30*k}};
+  }
+
+  // Shot path: quadratic arc from the file to just above the rim, peaking above the hoop.
+  function arc(P0,g){
+    const T={x:g.rim.x,y:g.rim.y-5*g.k};
+    const dx=T.x-P0.x, dy=T.y-P0.y, dist=Math.hypot(dx,dy);
+    const lift=clamp(dist*.55,90,240);
+    return {P0,T,dist,C:{x:P0.x+dx*.6,y:Math.min(P0.y,T.y)-lift}};
+  }
+  const bez=(a,t)=>{const u=1-t;return{x:u*u*a.P0.x+2*u*t*a.C.x+t*t*a.T.x,y:u*u*a.P0.y+2*u*t*a.C.y+t*t*a.T.y};};
+
+  function drawTrail(a,stagger){
+    dots.forEach((c,i)=>{
+      const t=.1+i*(.82/(N_DOTS-1)), p=bez(a,t);
+      c.dataset.t=t;
+      c.setAttribute('cx',p.x.toFixed(1));
+      c.setAttribute('cy',p.y.toFixed(1));
+      c.setAttribute('r',(2.8-1.4*t).toFixed(2));
+      c.style.transitionDelay=stagger?(i*16)+'ms':'0ms';
+      c.style.opacity=(.95-.5*t).toFixed(2);
+    });
+  }
+  const hideTrail=()=>dots.forEach(c=>{c.style.transitionDelay='0ms';c.style.opacity=0;});
+
+  // While an OS file is dragged over the zone, preview the shot from the cursor.
+  function aim(cx,cy){
+    if(busy||reduce) return;
+    aimPt={cx,cy};
+    if(aimRaf) return;
+    aimRaf=requestAnimationFrame(()=>{
+      aimRaf=0;
+      if(busy||!aimPt) return;
+      const g=measure();
+      drawTrail(arc({x:aimPt.cx-g.ox,y:aimPt.cy-g.oy},g),false);
+    });
+  }
+  function unaim(){ aimPt=null; if(!busy) hideTrail(); }
+
+  function skipShow(){
+    if(!busy) return;
+    skip=true;
+    skipFns.splice(0).forEach(f=>f());
+  }
+  zone.addEventListener('click',skipShow);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')skipShow();});
+
+  function reset(){
+    busy=false; skip=false; skipFns=[]; aimPt=null;
+    zone.classList.remove('is-busy','is-hot','drag-over');
+    row.classList.remove('show','done');
+    bar.style.width='0%';
+    fileEl.style.opacity=0;
+    hideTrail();
+    plusEl.classList.remove('go');
+    netEl.classList.remove('swish');
+  }
+
+  // Starts the shot. Returns a handle:  finish(cb,{records})  once parsing is done,
+  // or cancel() if parsing failed. Returns null when the zone isn't on screen.
+  function launch(file,origin){
+    if(busy||zone.offsetParent===null) return null;
+    busy=true; skip=false; skipFns=[];
+    let cancelled=false, revealed=false, revealCb=null, info={}, resolveParsed;
+    const parsedP=new Promise(r=>{resolveParsed=r;});
+    const doReveal=()=>{ if(revealed) return; revealed=true; if(revealCb) revealCb(); };
+
+    const wait=ms=>new Promise(res=>{
+      if(skip||cancelled||reduce||ms<=0) return res();
+      const t=setTimeout(done,ms);
+      function done(){clearTimeout(t);res();}
+      skipFns.push(done);
+    });
+    const frames=(dur,fn)=>new Promise(res=>{
+      if(cancelled) return res();
+      if(skip||reduce||dur<=0){fn(1);return res();}
+      const t0=performance.now();
+      const step=now=>{
+        if(cancelled) return res();
+        if(skip){fn(1);return res();}
+        const p=Math.min(1,(now-t0)/dur);
+        fn(p);
+        p<1?requestAnimationFrame(step):res();
+      };
+      requestAnimationFrame(step);
+    });
+
+    (async()=>{
+      const g=measure();
+      const ext=((file.name.split('.').pop()||'file').slice(0,5)).toUpperCase();
+      $('hzExt').textContent=ext;
+      $('hzRowExt').textContent=ext;
+      $('hzName').textContent=file.name;
+      $('hzSize').textContent=fmtSize(file.size);
+      status.textContent='Uploading…';
+      bar.style.width='0%';
+      plusEl.style.left=g.board.x+'px';
+      plusEl.style.top=g.board.y+'px';
+      zone.classList.remove('drag-over');
+      zone.classList.add('is-busy','is-hot');
+
+      // Dropped → launch from the cursor. Chosen via dialog → launch from bottom-left.
+      const P0=origin
+        ? {x:clamp(origin.x-g.ox,24,g.w-24), y:clamp(origin.y-g.oy,24,g.h-24)}
+        : {x:clamp(g.w*.1,40,90), y:g.h-clamp(g.h*.2,50,80)};
+      const A=arc(P0,g);
+      const show=!reduce;
+
+      if(show){
+        drawTrail(A,!origin);
+        place(P0.x,P0.y,-10,origin?1:.5);
+        fileEl.style.opacity=origin?1:0;
+        if(!origin){
+          await frames(240,p=>{place(P0.x,P0.y,-10,.5+.5*outBack(p));fileEl.style.opacity=Math.min(1,p*3);});
+          await wait(160);
+        } else {
+          await wait(60);
+        }
+        if(cancelled) return;
+
+        // 1 · the shot
+        const D=Math.min(950,Math.max(640,420+A.dist*.55));
+        await frames(D,p=>{
+          const pt=bez(A,p);
+          place(pt.x,pt.y,-10+24*p,1-.38*p);
+          for(const c of dots) if(+c.dataset.t<=p){c.style.transitionDelay='0ms';c.style.opacity=0;}
+        });
+        if(cancelled) return;
+      }
+
+      // 2 · swish: through the net, "+1"
+      pulse(netEl,'swish');
+      pulse(plusEl,'go');
+      const NB=g.netBottom+12*g.k;
+      if(show){
+        await frames(440,p=>{
+          const e=p*p;
+          place(g.rim.x+Math.sin(p*5)*3, A.T.y+(NB-A.T.y)*e, 14+14*p, .62-.14*p);
+        });
+        if(cancelled) return;
+      }
+
+      // 3 · out the bottom → counter ticks, upload row slides in
+      count++; countEl.textContent=count; pulse(pill,'bump');
+      zone.classList.remove('is-hot');
+      row.classList.add('show');
+      if(show){
+        const FY=g.h-40;
+        await frames(260,p=>{
+          const e=p*p;
+          place(g.rim.x, NB+(FY-NB)*e, 28+8*p, .48-.1*p);
+          fileEl.style.opacity=String(1-Math.max(0,(p-.3)/.7));
+        });
+      }
+      fileEl.style.opacity=0;
+      if(cancelled) return;
+
+      // 4 · progress: eases to 90%, then waits for the real parse to finish
+      await frames(700,p=>{bar.style.width=(90*outCubic(p)).toFixed(1)+'%';});
+      await parsedP;
+      if(cancelled) return;
+      await frames(160,p=>{bar.style.width=(90+10*p).toFixed(1)+'%';});
+      row.classList.add('done');
+      status.textContent=info.records!=null?`Uploaded · ${info.records.toLocaleString()} records`:'Uploaded';
+      await wait(400);
+      if(cancelled) return;
+
+      doReveal();
+      reset();
+    })().catch(err=>{
+      // Never leave the user stuck on the zone if the animation itself hiccups.
+      console.error('HoopShot:',err);
+      if(cancelled) return;
+      reset();
+      parsedP.then(doReveal);
+    });
+
+    return {
+      finish(cb,i){ revealCb=cb; info=i||{}; resolveParsed(); },
+      cancel(){ cancelled=true; resolveParsed(); reset(); }
+    };
+  }
+
+  return {aim,unaim,launch,isBusy:()=>busy};
+})();
+
 /* ─── UPLOAD / DRAG ─── */
 const fileInput  = document.getElementById('fileInput');
 const uploadZone = document.getElementById('uploadZone');
 
-uploadZone.addEventListener('dragover',  e => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
-uploadZone.addEventListener('dragleave', ()=> uploadZone.classList.remove('drag-over'));
+uploadZone.addEventListener('dragover',  e => { e.preventDefault(); uploadZone.classList.add('drag-over'); HoopShot.aim(e.clientX, e.clientY); });
+uploadZone.addEventListener('dragleave', e => {
+  if (e.relatedTarget && uploadZone.contains(e.relatedTarget)) return;   // still inside the zone
+  uploadZone.classList.remove('drag-over'); HoopShot.unaim();
+});
 uploadZone.addEventListener('drop', e => {
   e.preventDefault(); uploadZone.classList.remove('drag-over');
-  const f = e.dataTransfer.files[0]; if (f) processFile(f);
+  const f = e.dataTransfer.files[0];
+  if (f) processFile(f, { x: e.clientX, y: e.clientY }); else HoopShot.unaim();
 });
 uploadZone.addEventListener('keydown', e => {
   if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInput.click(); }
 });
 fileInput.addEventListener('change', e => { if (e.target.files[0]) processFile(e.target.files[0]); });
 
-function processFile(file) {
-  document.getElementById('loading').style.display = 'block';
+function processFile(file, origin) {
+  if (HoopShot.isBusy()) return;                      // one shot at a time
+  const shot = HoopShot.launch(file, origin);         // null if the upload zone isn't on screen
+  if (!shot) document.getElementById('loading').style.display = 'block';
   document.getElementById('dashboard').style.display = 'none';
+  const fail = err => {
+    if (shot) shot.cancel();
+    document.getElementById('loading').style.display = 'none';
+    alert('Error parsing file: ' + err.message);
+  };
 
   const ext     = file.name.split('.').pop().toLowerCase();
   const isExcel = ext === 'xlsx' || ext === 'xls';
@@ -1021,20 +1371,25 @@ function processFile(file) {
         return opr !== '' && opr.toUpperCase() !== 'UNKNOWN' && sztp !== '' && sztp.toUpperCase() !== 'UNKNOWN';
       });
 
-      document.getElementById('loading').style.display  = 'none';
-      document.getElementById('dashboard').style.display = 'block';
-      document.getElementById('uploadSection').style.display = 'none';
+      const reveal = () => {
+        try {
+          document.getElementById('loading').style.display  = 'none';
+          document.getElementById('dashboard').style.display = 'block';
+          document.getElementById('uploadSection').style.display = 'none';
 
-      const dot = document.getElementById('statusDot');
-      dot.classList.add('active');
-      document.getElementById('statusText').textContent = `${allData.length.toLocaleString()} records · ${file.name}`;
+          const dot = document.getElementById('statusDot');
+          dot.classList.add('active');
+          document.getElementById('statusText').textContent = `${allData.length.toLocaleString()} records · ${file.name}`;
 
-      populateFilters();
-      renderAll();
+          populateFilters();
+          renderAll();
+        } catch (err) { fail(err); }
+      };
+      // Let the ball finish its shot before the dashboard takes over the screen.
+      if (shot) shot.finish(reveal, { records: allData.length }); else reveal();
 
     } catch (err) {
-      document.getElementById('loading').style.display = 'none';
-      alert('Error parsing file: ' + err.message);
+      fail(err);
     }
   };
 
