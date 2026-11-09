@@ -301,6 +301,15 @@ main{padding:20px 0;position:relative;z-index:1}
 .val-chip.inv{background:rgba(239,68,68,.15);color:#fca5a5;border:1px solid rgba(239,68,68,.3);transition:all .15s}
 .val-chip.inv[role="button"]:hover,.val-chip.inv[role="button"]:focus-visible{background:rgba(239,68,68,.3);border-color:#ef4444;transform:translateY(-1px);outline:none}
 .val-chip.warn{background:rgba(249,115,22,.15);color:#fdba74;border:1px solid rgba(249,115,22,.3)}
+#dupBanner{
+  display:none;margin-bottom:18px;border-radius:var(--r-md);
+  border:1px solid rgba(245,158,11,.35);background:rgba(245,158,11,.07);
+  padding:12px 16px;animation:fadeUp .3s ease-out both;
+}
+#dupBanner .val-title{color:#fcd34d}
+.val-chip.dup{background:rgba(245,158,11,.15);color:#fcd34d;border:1px solid rgba(245,158,11,.35);transition:all .15s}
+.val-chip.dup[role="button"]:hover,.val-chip.dup[role="button"]:focus-visible{background:rgba(245,158,11,.3);border-color:#f59e0b;transform:translateY(-1px);outline:none}
+.dup-x{margin-left:4px;font-weight:700;color:#fff;background:rgba(245,158,11,.25);border-radius:100px;padding:0 5px;font-size:9px}
 .val-more{background:none;border:none;color:var(--muted);font-size:10px;cursor:pointer;margin-top:5px;padding:0;font-family:var(--mono)}
 .val-more:hover{color:var(--text)}
 
@@ -394,10 +403,17 @@ tbody tr{border-top:1px solid rgba(51,65,85,.35);transition:background .15s}
 tbody tr:hover{background:rgba(59,130,246,.05)}
 tbody tr.inv-row{background:rgba(239,68,68,.04)}
 tbody tr.inv-row:hover{background:rgba(239,68,68,.08)}
+tbody tr.dup-row{background:rgba(245,158,11,.045)}
+tbody tr.dup-row:hover{background:rgba(245,158,11,.09)}
+tbody tr.dup-row.inv-row{background:rgba(239,68,68,.05);box-shadow:inset 3px 0 0 rgba(239,68,68,.5)}
+tbody tr.dup-row:not(.inv-row){box-shadow:inset 3px 0 0 rgba(245,158,11,.55)}
 td{padding:10px 14px;color:var(--text);white-space:nowrap;font-family:var(--mono);font-size:11px}
 td.td-opr{font-family:var(--ui);font-weight:700;color:var(--white);font-size:12px}
 .badge-ctnr{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--accent2);letter-spacing:.8px}
 .badge-ctnr.inv{color:var(--red);text-decoration:underline wavy rgba(239,68,68,.5)}
+.badge-ctnr.dup{color:#fbbf24;text-decoration:underline dotted rgba(245,158,11,.65)}
+.badge-ctnr.dup.inv{color:#fca5a5}
+.dup-mark{margin-left:4px;font-size:9px;font-weight:700;color:#fbbf24;letter-spacing:0}
 .badge-slot{display:inline-block;padding:2px 8px;border-radius:var(--r-sm);font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text-soft);background:rgba(148,163,184,.08);border:1px solid var(--border-soft)}
 .fe-chip{display:inline-block;padding:2px 9px;border-radius:100px;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase}
 .fe-chip.full{background:rgba(6,182,212,.12);color:var(--full);border:1px solid rgba(6,182,212,.25)}
@@ -457,9 +473,10 @@ footer strong{color:var(--accent);font-weight:500}
   background:linear-gradient(180deg,#1e293b,#172033 65%);
   border-left:1px solid var(--border-soft);z-index:400;
   display:flex;flex-direction:column;min-height:0;
-  transform:translateX(104%);transition:transform .32s cubic-bezier(.4,0,.2,1);
+  transform:translateX(104%);transition:transform .32s cubic-bezier(.4,0,.2,1),width .22s ease;
   box-shadow:-24px 0 70px rgba(0,0,0,.55);
 }
+#aiPanel.ai-wide{width:min(560px,100vw)}
 #aiPanel.open{transform:none}
 #aiPanel::before{content:'';position:absolute;inset:0;pointer-events:none;
   background:radial-gradient(600px 240px at 100% 0,rgba(139,92,246,.12),transparent 70%)}
@@ -604,6 +621,8 @@ footer strong{color:var(--accent);font-weight:500}
 .ai-sec h4 .ai-count{margin-left:auto;font-family:var(--mono);font-size:9px;color:var(--muted);
   background:rgba(148,163,184,.1);border:1px solid var(--border-soft);border-radius:100px;padding:1px 7px;letter-spacing:0}
 .ai-field{display:flex;flex-direction:column;gap:4px;margin-bottom:8px}
+.ai-field[hidden]{display:none!important}
+.ai-grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .ai-field label{font-size:8.5px;color:var(--muted);letter-spacing:1.3px;text-transform:uppercase}
 .ai-input,.ai-select,.ai-textarea{width:100%;background:rgba(15,23,42,.8);border:1px solid var(--border-soft);
   border-radius:8px;padding:8px 10px;color:var(--text);font-family:var(--mono);font-size:11px;outline:none;transition:border-color .18s}
@@ -641,6 +660,36 @@ footer strong{color:var(--accent);font-weight:500}
 .ai-kv dt{color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:1px;padding-top:2px}
 .ai-kv dd{color:var(--text);font-family:var(--mono);word-break:break-word}
 .ai-note{font-size:9.5px;color:var(--muted);margin-top:8px;line-height:1.5}
+
+/* ── summary layout ── */
+.ai-summary{display:flex;flex-direction:column;gap:13px}
+.ai-sect-title{
+  font-family:var(--ui);font-size:9.5px;font-weight:800;letter-spacing:1.3px;text-transform:uppercase;
+  color:var(--text-soft);display:flex;align-items:center;gap:7px;margin-top:2px;
+}
+.ai-sect-title::before{content:'';width:3px;height:11px;border-radius:2px;background:linear-gradient(180deg,var(--accent),var(--accent3));flex:none}
+.ai-seg{display:flex;gap:4px;padding:4px;background:rgba(15,23,42,.55);border:1px solid var(--border-soft);border-radius:9px;flex-wrap:wrap}
+.ai-segbtn{
+  flex:1;min-width:64px;padding:6px 8px;border-radius:6px;border:1px solid transparent;background:transparent;
+  color:var(--muted);font-family:var(--mono);font-size:9.5px;cursor:pointer;white-space:nowrap;transition:all .16s;
+}
+.ai-segbtn span{opacity:.7;margin-left:3px}
+.ai-segbtn:hover{color:#fff;background:rgba(148,163,184,.08)}
+.ai-segbtn.active{background:rgba(59,130,246,.18);border-color:rgba(59,130,246,.4);color:#fff}
+.ai-opcards{display:flex;flex-direction:column;gap:9px}
+.ai-opcard{border:1px solid var(--border-soft);border-radius:10px;background:rgba(15,23,42,.42);padding:10px 11px}
+.ai-oph{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:7px}
+.ai-opname{font-family:var(--ui);font-size:13px;font-weight:800;color:#fff;letter-spacing:.3px}
+.ai-optot{font-size:9px;color:var(--muted);white-space:nowrap}
+.ai-opsizes{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px}
+.ai-opsizes span{display:inline-flex;align-items:baseline;gap:4px;padding:3px 7px;border-radius:5px;background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.18);font-size:8px;color:var(--text-soft);text-transform:uppercase;letter-spacing:.6px}
+.ai-opsizes b{font-family:var(--ui);font-size:12px;color:#fff;letter-spacing:0}
+.ai-podlist{display:flex;flex-direction:column;gap:4px;border-top:1px dashed rgba(51,65,85,.5);padding-top:7px}
+.ai-podrow{display:grid;grid-template-columns:minmax(40px,auto) 1fr auto;gap:8px;align-items:baseline;font-size:9.5px}
+.ai-podrow .p{font-family:var(--ui);font-weight:700;color:var(--accent);white-space:nowrap}
+.ai-podrow .s{color:var(--text-soft);white-space:nowrap}
+.ai-podrow .s b{color:#fff}
+.ai-podrow .c{color:var(--muted);font-size:8.5px;white-space:nowrap}
 
 .ai-empty{font-size:10px;color:var(--muted);padding:6px 0}
 
@@ -1018,6 +1067,13 @@ footer strong{color:var(--accent);font-weight:500}
         <button class="val-more" id="valMoreBtn">Show all</button>
       </div>
 
+      <!-- DUPLICATE BANNER -->
+      <div id="dupBanner" role="alert" aria-live="polite">
+        <div class="val-title" id="dupTitle">⧉ Duplicate containers</div>
+        <div class="val-chips" id="dupChips"></div>
+        <button class="val-more" id="dupMoreBtn">Show all</button>
+      </div>
+
       <!-- KPI ROW -->
       <div class="kpi-row" role="region" aria-label="KPIs">
         <div class="kpi c-full">
@@ -1365,6 +1421,65 @@ footer strong{color:var(--accent);font-weight:500}
     </div>
 
     <div class="ai-sec">
+      <h4>Manual commands</h4>
+      <div class="ai-hint" style="margin-bottom:8px">Write the exact phrase you will use and what I should do. Choose “Give my exact reply” to script the answer with placeholders.</div>
+      <form id="aiCmdForm" autocomplete="off">
+        <div class="ai-field">
+          <label for="aiCmdText">When I say…</label>
+          <textarea class="ai-textarea" id="aiCmdText" placeholder="e.g. give me the boss report" maxlength="400"></textarea>
+        </div>
+        <div class="ai-field">
+          <label for="aiCmdAction">Do this…</label>
+          <select class="ai-select" id="aiCmdAction"></select>
+        </div>
+        <div class="ai-field" id="aiCmdAnswerWrap" hidden>
+          <label for="aiCmdAnswer">Exact reply</label>
+          <textarea class="ai-textarea" id="aiCmdAnswer" placeholder="e.g. {containers} boxes, {teu} TEU, {operators} operators, {pods} PODs." maxlength="1200"></textarea>
+          <div class="ai-hint">Placeholders: {containers} {teu} {full} {empty} {weight} {operators} {pods} {vessel} {date}</div>
+        </div>
+        <button class="ai-btn primary" type="submit">Save command</button>
+        <div class="ai-msgline" id="aiCmdMsg" role="status"></div>
+      </form>
+      <div id="aiCmdList" class="ai-exlist" style="margin-top:8px"></div>
+    </div>
+
+    <div class="ai-sec">
+      <h4>Size knowledge</h4>
+      <div class="ai-hint" style="margin-bottom:8px"><b>20′</b> = 2SD · 22G0 · 2TK &nbsp;·&nbsp; <b>40′</b> = 4SD · 4SH · 42G0 · 45G0 (4SH/45G0 are 40 ft high cubes). Add any other codes below.</div>
+      <form id="aiSizeForm" autocomplete="off">
+        <div class="ai-field">
+          <label for="aiSizeCode">Size code</label>
+          <input class="ai-input" id="aiSizeCode" placeholder="e.g. 2TK" maxlength="6">
+        </div>
+        <div class="ai-grid2">
+          <div class="ai-field">
+            <label for="aiSizeLen">Length</label>
+            <select class="ai-select" id="aiSizeLen">
+              <option value="20">20 ft</option>
+              <option value="40">40 ft</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="ai-field">
+            <label for="aiSizeType">Type</label>
+            <select class="ai-select" id="aiSizeType">
+              <option value="standard">Standard</option>
+              <option value="highcube">High cube</option>
+              <option value="reefer">Reefer</option>
+              <option value="tank">ISO tank</option>
+              <option value="flatrack">Flat rack</option>
+              <option value="breakbulk">Break bulk</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+        </div>
+        <button class="ai-btn primary" type="submit">Add size code</button>
+        <div class="ai-msgline" id="aiSizeMsg" role="status"></div>
+      </form>
+      <div id="aiSizeList"></div>
+    </div>
+
+    <div class="ai-sec">
       <h4>Teach an example</h4>
       <form id="aiTeachForm" autocomplete="off">
         <div class="ai-field">
@@ -1466,7 +1581,7 @@ function fmt24h(d){
   const p=n=>String(n).padStart(2,'0');
   return `${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
 }
-let valCache = { invalidCtnrs:[], emptyWarnings:[] };
+let valCache = { invalidCtnrs:[], emptyWarnings:[], duplicateCtnrs:[] };
 let activeFilterCount = 0;
 
 // ── Raw ASC tracking (for "Save ASC File") ──
@@ -1553,8 +1668,13 @@ function isValidISO6346(ctnr){
 function runValidation(filteredRows){
   const invalidCtnrs = [];
   const emptyWarnings = [];
+  const ctnrCounts = new Map();
   filteredRows.forEach(r => {
     const ctnr = String(cf(r,['Container','container','CONTAINER','CTR','Ctnr'])||'').trim();
+    if(ctnr){
+      const key = ctnr.toUpperCase().replace(/\s+/g,'');
+      ctnrCounts.set(key,(ctnrCounts.get(key)||0)+1);
+    }
     if(ctnr && ctnr.length >= 4 && !isValidISO6346(ctnr)) invalidCtnrs.push(ctnr);
     // Empty stowage inconsistency checks
     const fe  = nFE(cf(r,['F/E','FE','fe','f/e','Full/Empty']));
@@ -1568,8 +1688,13 @@ function runValidation(filteredRows){
       if(!isNaN(tier)&&tier<10&&tier>0) emptyWarnings.push({ctnr,slot,reason:`Empty in low-tier slot (tier ${String(tier).padStart(2,'0')})`});
     }
   });
-  valCache = { invalidCtnrs:[...new Set(invalidCtnrs)], emptyWarnings };
+  const duplicateCtnrs = [...ctnrCounts.entries()]
+    .filter(([,n]) => n > 1)
+    .map(([ctnr,count]) => ({ctnr,count}))
+    .sort((a,b) => b.count-a.count || a.ctnr.localeCompare(b.ctnr));
+  valCache = { invalidCtnrs:[...new Set(invalidCtnrs)], emptyWarnings, duplicateCtnrs };
   renderValBanner();
+  renderDupBanner();
 }
 
 function renderValBanner(){
@@ -1592,9 +1717,50 @@ function renderValBanner(){
   document.getElementById('valTitle').textContent =
     `⚠ ${invalidCtnrs.length} invalid container${invalidCtnrs.length!==1?'s':''} — current filter view`;
 }
+
+function renderDupBanner(){
+  const list = valCache.duplicateCtnrs || [];
+  const banner = document.getElementById('dupBanner');
+  if(!banner) return;
+  if(!list.length){ banner.style.display='none'; return; }
+  banner.style.display='block';
+  const chips = document.getElementById('dupChips');
+  const moreBtn = document.getElementById('dupMoreBtn');
+  const expanded = moreBtn.dataset.expanded==='true';
+  const mc = expanded ? list.length : Math.min(list.length,8);
+  let h = '';
+  list.slice(0,mc).forEach(d=>{
+    const c = d.ctnr.replace(/'/g,"\\'");
+    h += `<span class="val-chip dup" title="Same container number appears ${d.count} times — click to show the rows in the table" role="button" tabindex="0" style="cursor:pointer" onclick="showDuplicateGroup('${c}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();showDuplicateGroup('${c}')}">⧉ ${d.ctnr}<span class="dup-x">×${d.count}</span></span>`;
+  });
+  chips.innerHTML = h;
+  const hidden = list.length - mc;
+  if(hidden>0&&!expanded){ moreBtn.textContent=`+${hidden} more — show all`; moreBtn.style.display='block'; }
+  else if(expanded&&list.length>8){ moreBtn.textContent='Collapse'; moreBtn.style.display='block'; }
+  else moreBtn.style.display='none';
+  const rows = list.reduce((s,d)=>s+d.count,0);
+  document.getElementById('dupTitle').textContent =
+    `⧉ ${list.length} duplicate container number${list.length!==1?'s':''} (${rows} lines) — current filter view`;
+}
+
+function showDuplicateGroup(ctnr){
+  const target = String(ctnr||'').trim().toUpperCase().replace(/\s+/g,'');
+  const row = allData.find(r => String(cf(r,['Container','container','CONTAINER','CTR','Ctnr'])||'').trim().toUpperCase().replace(/\s+/g,'') === target);
+  if(!row){ alert('Could not locate ' + ctnr + ' in the current dataset.'); return; }
+  closeDrawer();
+  ['fOPR','fSzTp','fFE','fPOL','fPOD'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  document.getElementById('tableSearch').value = ctnr;
+  renderAll();
+  updateActiveBadge();
+  document.getElementById('ctnrTableSection').scrollIntoView({behavior:'smooth', block:'start'});
+}
 document.getElementById('valMoreBtn').addEventListener('click',function(){
   this.dataset.expanded = this.dataset.expanded==='true'?'false':'true';
   renderValBanner();
+});
+document.getElementById('dupMoreBtn').addEventListener('click',function(){
+  this.dataset.expanded = this.dataset.expanded==='true'?'false':'true';
+  renderDupBanner();
 });
 
 /* ════════════════════════════════════════════════════════════
@@ -2400,7 +2566,8 @@ let lastRows = [];
 function renderTable(input){
   const rows = Array.isArray(input) ? input : lastRows;
   if(Array.isArray(input)) lastRows = rows;
-  const invalidSet = new Set(valCache.invalidCtnrs);
+  const invalidSet = new Set(valCache.invalidCtnrs.map(c=>String(c).trim().toUpperCase().replace(/\s+/g,'')));
+  const dupMap = new Map((valCache.duplicateCtnrs||[]).map(d=>[d.ctnr,d.count]));
   const q = document.getElementById('tableSearch').value.toLowerCase().trim();
 
   const view = rows.map(r=>({
@@ -2427,19 +2594,26 @@ function renderTable(input){
   empty.classList.toggle('show',!sorted.length);
 
   body.innerHTML = sorted.map(v=>{
-    const isInv  = v.Container && invalidSet.has(v.Container);
+    const ckey = String(v.Container||'').trim().toUpperCase().replace(/\s+/g,'');
+    const isInv  = !!(v.Container && invalidSet.has(ckey));
+    const dupCount = dupMap.get(ckey)||0;
+    const isDup = dupCount > 1;
     const feC    = v.FE==='F'?'full':v.FE==='E'?'empty':'';
     const feL    = v.FE==='F'?'Full':v.FE==='E'?'Empty':(v.FE||'—');
     const rflag  = isReefer(v.SzTp)   ? '<span class="spec-flag" title="Reefer">❄</span>' : '';
     const tflag  = isISOTank(v.SzTp)  ? '<span class="spec-flag" title="ISO Tank">🛢</span>' : '';
     const fflag  = isFlatRack(v.SzTp) ? '<span class="spec-flag" title="Flat Rack / Platform">🏗</span>'
                  : isBreakBulk(v.SzTp) ? '<span class="spec-flag" title="Break Bulk / Bundle">📦</span>' : '';
+    const badTitle = [isInv?'⚠ ISO 6346 check digit invalid':'', isDup?('⧉ duplicate container number (×'+dupCount+')'):''].filter(Boolean).join(' · ');
+    const marks = (isInv?'<span style="color:var(--red);margin-left:3px;font-size:9px">⚠</span>':'')
+                + (isDup?'<span class="dup-mark" title="Duplicate container (×'+dupCount+')">⧉'+dupCount+'</span>':'');
     const cDisp  = v.Container
-      ? `<span class="badge-ctnr${isInv?' inv':''}" title="${isInv?'⚠ ISO 6346 invalid':''}">${v.Container}${isInv?'<span style="color:var(--red);margin-left:3px;font-size:9px">⚠</span>':''}</span>`
+      ? `<span class="badge-ctnr${isInv?' inv':''}${isDup?' dup':''}" title="${badTitle}">${v.Container}${marks}</span>`
       : `<span style="color:var(--muted)">—</span>`;
     const sDisp  = v.Slot ? `<span class="badge-slot">${v.Slot}</span>` : `<span style="color:var(--muted)">—</span>`;
     const vDisp  = v.VGM!==null ? `<span class="wt-cell">${v.VGM.toFixed(3)} T</span>` : `<span style="color:var(--muted)">—</span>`;
-    return `<tr${isInv?' class="inv-row"':''}>
+    const rowCls = [isInv?'inv-row':'', isDup?'dup-row':''].filter(Boolean).join(' ');
+    return `<tr${rowCls?` class="${rowCls}"`:''}>
       <td>${cDisp}</td>
       <td>${sDisp}</td>
       <td class="td-opr">${v.OPR||'—'}</td>
@@ -2469,8 +2643,15 @@ document.getElementById('exportBtn').addEventListener('click',()=>{
   const filtered=getFiltered();
   if(!filtered.length){alert('No data to export.');return;}
   const q=document.getElementById('tableSearch').value.toLowerCase().trim();
+  const dupCounts={};
+  filtered.forEach(r=>{
+    const c=String(cf(r,['Container','container','CONTAINER','CTR','Ctnr'])||'').trim().toUpperCase().replace(/\s+/g,'');
+    if(c) dupCounts[c]=(dupCounts[c]||0)+1;
+  });
   const rows=filtered.map(r=>{
     const ctnr=String(cf(r,['Container','container','CONTAINER','CTR','Ctnr'])||'').trim();
+    const ckey=ctnr.toUpperCase().replace(/\s+/g,'');
+    const copies=dupCounts[ckey]||0;
     const sztp=String(cf(r,['SzTp','SZTP','SzTP','Size Type','SizeType'])||'').trim();
     const fe=nFE(cf(r,['F/E','FE','fe','f/e','Full/Empty']));
     const vgm=getVGM(r);
@@ -2485,6 +2666,8 @@ document.getElementById('exportBtn').addEventListener('click',()=>{
       'POD':           String(cf(r,['POD','Pod','pod'])||'').trim(),
       'VGM (KGS)':     vgm!==null?+(vgm*1000).toFixed(0):'',
       'ISO Valid':     ctnr?(isValidISO6346(ctnr)?'Yes':'INVALID'):'',
+      'Duplicate':     copies>1?'Yes':'No',
+      'Copies':        copies||1,
       'Reefer':        isReefer(sztp)?'Yes':'No',
       'ISO Tank':      isISOTank(sztp)?'Yes':'No',
       'Flat Rack':     isFlatRack(sztp)?'Yes':'No',
@@ -2493,7 +2676,7 @@ document.getElementById('exportBtn').addEventListener('click',()=>{
   }).filter(row=>!q||Object.values(row).some(v=>String(v).toLowerCase().includes(q)));
 
   const ws=XLSX.utils.json_to_sheet(rows);
-  ws['!cols']=[{wch:14},{wch:8},{wch:10},{wch:10},{wch:5},{wch:8},{wch:6},{wch:6},{wch:11},{wch:10},{wch:8},{wch:9},{wch:10},{wch:11}];
+  ws['!cols']=[{wch:14},{wch:8},{wch:10},{wch:10},{wch:5},{wch:8},{wch:6},{wch:6},{wch:11},{wch:10},{wch:9},{wch:7},{wch:8},{wch:9},{wch:10},{wch:11}];
   const wb=XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb,ws,'Filtered Manifest');
 
@@ -2892,6 +3075,7 @@ window.addEventListener('beforeunload', function(e){
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
     });
   }
+  function up(v) { return String(v == null ? '' : v).trim().toUpperCase(); }
   function attr(o) { return esc(JSON.stringify(o)); }
   function fmt(n) { return Number(n || 0).toLocaleString('en-US'); }
   function fmtW(w) {
@@ -3063,6 +3247,128 @@ window.addEventListener('beforeunload', function(e){
     invalid: 'Invalid container number',
     vessel: 'Vessel / ship / voyage'
   };
+  var SIZE_TYPES = {
+    standard: 'standard', highcube: 'high cube', reefer: 'reefer',
+    tank: 'ISO tank', flatrack: 'flat rack', breakbulk: 'break bulk', other: 'other'
+  };
+  // Size-code knowledge used by the agent and by the summary.
+  // 20 ft: 2SD, 22G0, 2TK …   40 ft: 4SD, 4SH, 42G0, 45G0 … (4SH/45G0 = 40 ft HC)
+  var BUILTIN_SIZE_CODES = {
+    '2SD': { len: '20', type: 'standard' },
+    '22G0': { len: '20', type: 'standard' },
+    '2TK': { len: '20', type: 'tank' },
+    '20G0': { len: '20', type: 'standard' },
+    '20GP': { len: '20', type: 'standard' },
+    '22G1': { len: '20', type: 'standard' },
+    '22T1': { len: '20', type: 'tank' },
+    '22P1': { len: '20', type: 'flatrack' },
+    '4SD': { len: '40', type: 'standard' },
+    '42G0': { len: '40', type: 'standard' },
+    '42G1': { len: '40', type: 'standard' },
+    '40G0': { len: '40', type: 'standard' },
+    '4SH': { len: '40', type: 'highcube' },
+    '45G0': { len: '40', type: 'highcube' },
+    '45GO': { len: '40', type: 'highcube' },
+    '40HC': { len: '40', type: 'highcube' },
+    '4QO': { len: '40', type: 'highcube' },
+    '45R1': { len: '40', type: 'reefer' }
+  };
+  function sizeKnowledge() {
+    var m = {};
+    Object.keys(BUILTIN_SIZE_CODES).forEach(function (k) { m[k] = Object.assign({}, BUILTIN_SIZE_CODES[k]); });
+    Object.keys(state.sizes || {}).forEach(function (k) {
+      var s = state.sizes[k];
+      if (s && s.len) m[up(k)] = { len: s.len, type: s.type || 'other' };
+    });
+    return m;
+  }
+  function sizeLenOf(code) {
+    var c = up(code).replace(/[^A-Z0-9]/g, '');
+    var m = sizeKnowledge();
+    if (m[c]) return m[c].len;
+    if (/^2/.test(c)) return '20';
+    if (/^[4LP]/.test(c)) return '40';
+    return '';
+  }
+  function sizeTypeOf(code) {
+    var c = up(code).replace(/[^A-Z0-9]/g, '');
+    var m = sizeKnowledge();
+    return m[c] ? m[c].type : '';
+  }
+  function findSizeCodeInText(text) {
+    var tokens = String(text || '').toUpperCase().replace(/[^A-Z0-9\s]/g, ' ').split(/\s+/);
+    var m = sizeKnowledge();
+    for (var i = 0; i < tokens.length; i++) {
+      var t = tokens[i];
+      if (!t) continue;
+      if (m[t]) return t;
+      if (/^(20|40)(FT|FEET|FOOT)$/.test(t)) continue;
+      if (/^[24][A-Z0-9]{2,3}$/.test(t) && !/^\d+$/.test(t)) return t;
+    }
+    return '';
+  }
+  function inferSizeType(code) {
+    var c = up(code);
+    var m = sizeKnowledge();
+    if (m[c]) return m[c].type;
+    if (/^(4SH|45G0|45GO|4QO|40HC)/.test(c)) return 'highcube';
+    if (/TK|T\d$/.test(c)) return 'tank';
+    if (/R\d$/.test(c)) return 'reefer';
+    if (/P\d$/.test(c)) return 'flatrack';
+    if (/^4[5-9]/.test(c)) return 'highcube';
+    return 'standard';
+  }
+  function parseSizeStatements(text) {
+    var t = String(text || '');
+    var groups = [];
+    t.split(/\b(?:while|but)\b/gi).forEach(function (chunk) {
+      chunk.split(/(?=\b(?:20|40)\s*(?:ft|feet|foot))/i).forEach(function (part) {
+        var m = part.match(/\b(20|40)\b[^.;]*?\b(?:are|is|include|includes|=|:)\b([\s\S]*)/i);
+        if (!m) return;
+        var prefix = m[1] === '20' ? '2' : '4';
+        var found = (m[2].toUpperCase().match(/\b[24][A-Z0-9]{2,3}\b/g) || []);
+        var codes = [], seen = {};
+        found.forEach(function (c) {
+          if (/^\d+$/.test(c)) return;
+          if (c.charAt(0) !== prefix) return;
+          if (!seen[c]) { seen[c] = 1; codes.push(c); }
+        });
+        if (codes.length) groups.push({ len: m[1], codes: codes });
+      });
+    });
+    if (!groups.length) {
+      var rev = t.match(/\b([24][A-Z0-9]{2,3})\b\s*(?:is|are|=)\s*(20|40)\s*(?:ft|feet|foot)\b/i);
+      if (rev) groups.push({ len: rev[2], codes: [rev[1].toUpperCase()] });
+    }
+    return groups;
+  }
+  function sizeLearnAnswer(groups) {
+    var all = [];
+    groups.forEach(function (g) {
+      g.codes.forEach(function (c) { all.push({ code: c, len: g.len }); });
+    });
+    var body = '<div class="ai-note" style="margin:0">Saved <b>' + all.length + '</b> size code' + (all.length === 1 ? '' : 's') + ':</div>';
+    body += '<div class="ai-list">' + all.map(function (x) {
+      var info = sizeKnowledge()[x.code] || { len: x.len, type: inferSizeType(x.code) };
+      return '<div class="ai-row" data-ai="opensizes"><span class="k">' + esc(x.code) + '</span><span class="v">' + esc(info.len) + ' ft ' + esc(SIZE_TYPES[info.type] || info.type) + '</span></div>';
+    }).join('') + '</div>';
+    body += '<div class="ai-note">Ask “what size is ' + esc(all[0].code) + '?” or “what sizes are loaded?”. You can edit these in <b>Train → Size knowledge</b>.</div>';
+    return answer({
+      tag: 'learned', tagClass: 'learned', title: 'Size knowledge updated', body: body,
+      actions: [{ label: 'Open size knowledge', action: 'opensizes', primary: true }],
+      suggestions: ['What sizes are loaded?', 'What size is ' + all[0].code + '?'],
+      plain: 'Learned size codes: ' + all.map(function (x) { return x.code + ' ' + x.len + ' ft'; }).join('; ') + '.'
+    });
+  }
+  function addSizeCode(code, len, type) {
+    code = up(code).replace(/[^A-Z0-9]/g, '');
+    if (!code || code.length < 2 || code.length > 6) return { ok: false, msg: 'Enter a size code such as 2TK or 45G0.' };
+    if (['20', '40', 'other'].indexOf(len) < 0) return { ok: false, msg: 'Choose 20 ft, 40 ft or Other.' };
+    if (!SIZE_TYPES[type]) type = 'other';
+    state.sizes[code] = { len: len, type: type };
+    save(); renderTrain();
+    return { ok: true, msg: code + ' saved as ' + len + ' ft ' + (SIZE_TYPES[type] || type) + '.' };
+  }
   function vocabMap() {
     var m = {};
     for (var k in BUILTIN_VOCAB) m[k] = BUILTIN_VOCAB[k];
@@ -3078,6 +3384,7 @@ window.addEventListener('beforeunload', function(e){
     count: { label: 'count containers / TEU', short: 'Count' },
     rank: { label: 'rank operators / ports / sizes', short: 'Ranking' },
     weight: { label: 'report weights (total, average, heaviest)', short: 'Weights' },
+    sizes: { label: 'size breakdown (20′ / 40′ / PODs)', short: 'Sizes' },
     validate: { label: 'check container numbers / data quality', short: 'Validation' },
     vessel: { label: 'show vessel and voyage details', short: 'Vessel' },
     compare: { label: 'compare two operators / ports', short: 'Compare' },
@@ -3089,7 +3396,7 @@ window.addEventListener('beforeunload', function(e){
     help: { label: 'explain what the agent can do', short: 'Help' },
     greet: { label: 'greet / small talk', short: 'Greeting' }
   };
-  var TASK_ORDER = ['greet', 'help', 'train', 'reset', 'export', 'recon', 'booking', 'validate', 'vessel', 'compare', 'weight', 'rank', 'count', 'find', 'summary', 'search'];
+  var TASK_ORDER = ['greet', 'help', 'train', 'reset', 'export', 'recon', 'booking', 'validate', 'vessel', 'compare', 'weight', 'sizes', 'rank', 'count', 'find', 'summary', 'search'];
 
   var SEED = [
     ['summarise the manifest', 'summary'], ['give me an overview', 'summary'],
@@ -3114,6 +3421,11 @@ window.addEventListener('beforeunload', function(e){
     ['which boxes weigh more than 25t', 'weight'], ['lightest containers', 'weight'],
     ['sum of vgm', 'weight'], ['gross weight of the manifest', 'weight'],
 
+    ['what sizes are loaded', 'sizes'], ['size breakdown', 'sizes'],
+    ['20 and 40 feet breakdown', 'sizes'], ['size breakdown by operator', 'sizes'],
+    ['how many 20 and 40 foot containers', 'sizes'], ['container sizes', 'sizes'],
+    ['what size is 4sh', 'sizes'], ['what size is 2sd', 'sizes'],
+
     ['find container csnu2742966', 'find'], ['where is tcnu1234567', 'find'],
     ['look up maeu7654321', 'find'], ['locate container', 'find'],
     ['which slot is csnu2742966 in', 'find'], ['track container number', 'find'],
@@ -3127,6 +3439,8 @@ window.addEventListener('beforeunload', function(e){
     ['invalid container numbers', 'validate'], ['check digits', 'validate'],
     ['any bad containers', 'validate'], ['data quality issues', 'validate'],
     ['which container numbers are wrong', 'validate'], ['iso 6346 errors', 'validate'],
+    ['duplicate containers', 'validate'], ['duplicated container numbers', 'validate'],
+    ['which containers are repeated', 'validate'], ['show duplicates', 'validate'],
 
     ['vessel details', 'vessel'], ['what voyage is this', 'vessel'],
     ['call sign', 'vessel'], ['ship name and voyage', 'vessel'],
@@ -3167,6 +3481,8 @@ window.addEventListener('beforeunload', function(e){
       v: 1,
       examples: SEED.map(function (e) { return Object.assign({}, e); }),
       facts: [],
+      commands: [],
+      sizes: {},
       vocab: {},
       unresolved: [],
       stats: { asks: 0, up: 0, down: 0 }
@@ -3196,6 +3512,26 @@ window.addEventListener('beforeunload', function(e){
     if (!q || !a) return null;
     return { id: f.id || uid('f'), q: q, a: a, weight: clamp(Number(f.weight) || 1, 0.2, 2), ts: Number(f.ts) || Date.now() };
   }
+  function normalizeCmd(c) {
+    if (!c || typeof c !== 'object') return null;
+    var text = String(c.text || '').trim();
+    var action = String(c.action || '');
+    if (!text || text.length > 400) return null;
+    if (action !== 'answer' && !TASKS[action]) return null;
+    var answer = String(c.answer || '').trim();
+    if (action === 'answer' && !answer) return null;
+    return { id: c.id || uid('c'), text: text, action: action, answer: answer, ts: Number(c.ts) || Date.now() };
+  }
+  function normalizeSize(s) {
+    if (!s || typeof s !== 'object') return null;
+    var code = up(s.code || '').replace(/[^A-Z0-9]/g, '');
+    var len = String(s.len || '');
+    var type = String(s.type || 'standard');
+    if (!code || code.length < 2 || code.length > 6) return null;
+    if (['20', '40', 'other'].indexOf(len) < 0) return null;
+    if (!SIZE_TYPES[type]) type = 'other';
+    return { code: code, len: len, type: type };
+  }
 
   function loadState() {
     var saved = null;
@@ -3211,6 +3547,13 @@ window.addEventListener('beforeunload', function(e){
       out.examples = ex.length ? ex : out.examples;
     }
     if (Array.isArray(saved.facts)) out.facts = saved.facts.map(normalizeFact).filter(Boolean);
+    if (Array.isArray(saved.commands)) out.commands = saved.commands.map(normalizeCmd).filter(Boolean);
+    if (saved.sizes && typeof saved.sizes === 'object') {
+      Object.keys(saved.sizes).forEach(function (k) {
+        var s = normalizeSize(Object.assign({ code: k }, saved.sizes[k]));
+        if (s) out.sizes[s.code] = { len: s.len, type: s.type };
+      });
+    }
     if (saved.vocab && typeof saved.vocab === 'object') {
       Object.keys(saved.vocab).forEach(function (k) {
         var v = String(saved.vocab[k] || '');
@@ -3228,7 +3571,8 @@ window.addEventListener('beforeunload', function(e){
   function save() {
     try {
       localStorage.setItem(STORE_KEY, JSON.stringify({
-        v: 1, examples: state.examples, facts: state.facts,
+        v: 1, examples: state.examples, facts: state.facts, commands: state.commands,
+        sizes: state.sizes,
         vocab: state.vocab, unresolved: state.unresolved, stats: state.stats
       }));
       storageOk = true;
@@ -3315,11 +3659,12 @@ window.addEventListener('beforeunload', function(e){
     help: [/\b(help|what can you (do|answer|help)|how do i use|commands|capabilities|what are you|who are you|what questions)\b/],
     train: [/\b(train|teach|learn|learning|training|remember this|retrain)\b/],
     summary: [/\b(summar(y|ise|ize)|overview|everything|all the info|what('s| is) (loaded|in|on)|tell me about (the )?(manifest|load|shipment|data)|status report|brief me|how is the load)\b/],
-    validate: [/\b(invalid|bad (container|number|box)|check digit|iso ?6346|wrong (container|number)|data quality|errors?)\b/],
+    validate: [/\b(invalid|bad (container|number|box)|check digit|iso ?6346|wrong (container|number)|data quality|errors?|dup(licate|licated|licates)?|repeated)\b/],
     vessel: [/\b(vessel|ship|voyage|voy|call ?sign|imo|sailing|eta)\b/],
     count: [/\b(how many|how much|count|number of|tally|total number|total (containers|boxes|units|teu))\b/],
     rank: [/\b(top|most|largest|biggest|highest|rank|busiest|leading|breakdown|break down|group by|by operator|by port|by pod|distribution)\b/],
     weight: [/\b(weight|weights|vgm|tonnage|heavy|heaviest|lighter|lightest|payload|mass|tonnes?|tons?)\b/],
+    sizes: [/\b(size breakdown|size distribution|sizes loaded|what sizes|which sizes|20.?40 (split|breakdown)|feet split|container sizes)\b/],
     find: [/\b(find|locate|look ?up|search for|where is|which slot|track|pull up)\b/],
     search: [/\b(show|list|display|filter|give me|get me|find me|which|who|what|containers? (to|from|for))\b/],
     compare: [/\b(compare|comparison|versus|vs\.?|against|difference between)\b/],
@@ -3445,6 +3790,12 @@ window.addEventListener('beforeunload', function(e){
     if (sz) f.sztp = sz;
     var sp = detectSizePrefix(text);
     if (sp) f.sizePrefix = sp;
+    var sizeCode = findSizeCodeInText(text);
+    if (sizeCode) {
+      f.sizeCode = sizeCode;
+      var sl = sizeLenOf(sizeCode);
+      if (sl && !f.sizePrefix) f.sizePrefix = sl;
+    }
 
     if (/\b(empty|empties|mt|mtys|unladen)\b/.test(n)) f.fe = 'E';
     else if (/\b(full|laden|stuffing)\b/.test(n)) f.fe = 'F';
@@ -3657,13 +4008,14 @@ window.addEventListener('beforeunload', function(e){
       ['Weights', 'containers over 20 tons'],
       ['Booking', 'am I overbooked?'],
       ['Lists', 'show incorrect container numbers'],
+      ['Sizes', 'what sizes are loaded?'],
       ['Quality', 'invalid container numbers']
     ];
     var h = '<div class="ai-note" style="margin:0 0 8px">Ask in plain English. Everything runs on this computer — no internet, no account. Tap an example to run it:</div>';
     h += '<div class="ai-list">' + ex.map(function (e) {
       return '<div class="ai-row" data-ai="ask" data-data="' + attr({ text: e[1] }) + '"><span class="k">' + e[0] + '</span><span class="v">' + esc(e[1]) + '</span></div>';
     }).join('') + '</div>';
-    h += '<div class="ai-note">I also get better the more you use <b>Train</b>: teach full questions, save facts (port codes, abbreviations), and add vocabulary. Every answer has 👍/👎 buttons.</div>';
+    h += '<div class="ai-note">I also get better the more you use <b>Train</b>: write manual commands, teach examples, save facts, add size codes and vocabulary. Every answer has 👍/👎 buttons.</div>';
     return answer({
       tag: 'help', title: 'What I can do', body: h,
       actions: [{ label: 'Open training', action: 'opentrain', primary: true }],
@@ -3675,23 +4027,327 @@ window.addEventListener('beforeunload', function(e){
     switchTab('train');
     return answer({
       tag: 'training', title: 'Training the assistant',
-      body: '<div class="ai-note" style="margin:0">I learn in three ways:<br><b>1 · Examples</b> — tell me a phrase and which job it means. Similar wording is matched automatically.<br><b>2 · Facts</b> — save a question and the exact answer to give (port codes, abbreviations, procedures).<br><b>3 · Vocabulary</b> — teach me that “boxes” means containers, and so on.<br><br>Use 👍/👎 under any answer to reinforce or correct me. All training is stored in this browser and can be exported.</div>',
+      body: '<div class="ai-note" style="margin:0">I learn in five ways:<br><b>1 · Manual commands</b> — write any phrase and either pick an action or script your exact reply with placeholders.<br><b>2 · Examples</b> — tell me a phrase and which job it means.<br><b>3 · Facts</b> — save a question and the exact answer to give.<br><b>4 · Size knowledge</b> — teach me 20′/40′ codes such as 2SD, 22G0, 4SH, 45G0.<br><b>5 · Vocabulary</b> — teach me that “boxes” means containers.<br><br>Use 👍/👎 under any answer to reinforce or correct me. All training is stored in this browser and can be exported.</div>',
       actions: [{ label: 'Go to Train tab', action: 'opentrain', primary: true }],
-      suggestions: ['Summarise the manifest', 'What can you do?'],
-      plain: 'Training opens in the Train tab: examples, facts and vocabulary, plus export/import.'
+      suggestions: ['Summarise the manifest', 'What sizes are loaded?'],
+      plain: 'Training opens in the Train tab: commands, examples, facts, size knowledge and vocabulary, plus export/import.'
     });
   }
-  function summaryAnswer(rs, sets) {
-    var total = rs.length;
-    var full = 0, empty = 0;
-    rs.forEach(function (r) { var fe = feOf(r); if (fe === 'F') full++; else if (fe === 'E') empty++; });
-    var teu = sumTEU(rs), w = sumW(rs);
-    var invalid = rs.filter(function (r) { var c = ctnrOf(r); return c && !isoValid(c); }).length;
-    var m = vesselMetaSafe();
-    var topO = groupBy(rs, oprOf).slice(0, 3);
-    var topP = groupBy(rs, podOf).slice(0, 3);
-
+  function parseSizeQuestion(text) {
+    if (!/\b(what size|which size|what is|what'?s|is|does|mean|stand for|how many feet|how many foot)\b/i.test(text)) return '';
+    if (!/\b(size|feet|foot|ft|high cube|hc|container|20|40)\b/i.test(text)) return '';
+    return findSizeCodeInText(text);
+  }
+  function operatorSizeData(rs) {
+    var map = {};
+    rs.forEach(function (r) {
+      var o = oprOf(r) || '—';
+      var d = map[o] || (map[o] = { opr: o, n20: 0, n40: 0, nOther: 0, total: 0, teu: 0, pods: {} });
+      var len = sizeLenOf(sztpOf(r));
+      if (len === '20') d.n20++;
+      else if (len === '40') d.n40++;
+      else d.nOther++;
+      d.total++;
+      d.teu += teuOf(sztpOf(r));
+      var p = podOf(r) || '—';
+      var pd = d.pods[p] || (d.pods[p] = { n20: 0, n40: 0, total: 0 });
+      pd.total++;
+      if (len === '20') pd.n20++;
+      else if (len === '40') pd.n40++;
+    });
+    return Object.keys(map).map(function (k) { return map[k]; }).sort(function (a, b) {
+      return b.total - a.total || a.opr.localeCompare(b.opr);
+    });
+  }
+  function podsInline(d) {
+    var ps = Object.keys(d.pods).sort(function (a, b) { return d.pods[b].total - d.pods[a].total; });
+    return ps.map(function (p) {
+      var x = d.pods[p];
+      return esc(p) + ' ' + x.total + ' (20′ ' + x.n20 + ' / 40′ ' + x.n40 + ')';
+    }).join(' · ');
+  }
+  function operatorSizeTable(rows, withPods) {
+    var h = '<div class="ai-tblwrap"><table class="ai-tbl"><thead><tr>' +
+      '<th>Operator</th><th>20′</th><th>40′</th>' +
+      (withPods ? '<th>TEU</th><th>PODs</th>' : '<th>Total</th><th>TEU</th>') +
+      '</tr></thead><tbody>';
+    rows.forEach(function (d) {
+      h += '<tr><td class="cnum">' + esc(d.opr) + '</td>' +
+        '<td>' + fmt(d.n20) + '</td><td>' + fmt(d.n40) + '</td>' +
+        (withPods
+          ? '<td>' + fmt(d.teu) + '</td>'
+          : '<td>' + fmt(d.total) + '</td><td>' + fmt(d.teu) + '</td>') +
+        (withPods ? '<td style="white-space:normal;max-width:180px;line-height:1.45">' + podsInline(d) + '</td>' : '') +
+        '</tr>';
+    });
+    h += '</tbody></table></div>';
+    return h;
+  }
+  function sizeInfoAnswer(code) {
+    var m = sizeKnowledge(), info = m[code];
+    if (!info) {
+      return answer({
+        tag: 'size', tagClass: 'warn', title: 'Size code not known',
+        body: '<div class="ai-note" style="margin:0"><b>' + esc(code) + '</b> is not in my size knowledge yet, so I cannot say whether it is 20 ft or 40 ft. Add it in <b>Train → Size knowledge</b>.</div>',
+        actions: [{ label: 'Add size code', action: 'opensizes', primary: true }],
+        suggestions: ['What sizes are loaded?', 'Summarise manifest'],
+        plain: code + ' is not in my size knowledge.'
+      });
+    }
+    var type = SIZE_TYPES[info.type] || info.type;
+    var teu = info.len === '20' ? 1 : 2;
+    var body = '<div class="ai-note" style="margin:0"><b>' + esc(code) + '</b> is a <b>' + esc(info.len) + ' ft ' + esc(type) + '</b> container' +
+      (info.len === '20' || info.len === '40' ? ' (' + teu + ' TEU)' : '') + '.</div>';
+    if (info.type === 'highcube') body += '<div class="ai-note">It counts as a <b>40 ft</b> box in summaries and size answers, but it is compared in the <b>HC</b> column of the booking reconciliation.</div>';
+    body += '<div class="ai-note">You can edit size codes in <b>Train → Size knowledge</b>.</div>';
+    return answer({
+      tag: 'size', title: 'Size code ' + esc(code), body: body,
+      actions: [{ label: 'Open size knowledge', action: 'opensizes' }],
+      suggestions: ['What sizes are loaded?', 'Summarise manifest'],
+      plain: code + ' is a ' + info.len + ' ft ' + type + ' container.'
+    });
+  }
+  function sizesAnswer(rs) {
+    var n20 = 0, n40 = 0, nOther = 0, teu20 = 0, teu40 = 0;
+    rs.forEach(function (r) {
+      var len = sizeLenOf(sztpOf(r));
+      if (len === '20') { n20++; teu20 += 1; }
+      else if (len === '40') { n40++; teu40 += 2; }
+      else nOther++;
+    });
+    var rows = operatorSizeData(rs);
     var body = statsGrid([
+      ['20 ft', fmt(n20)], ['40 ft (incl. HC)', fmt(n40)],
+      ['Other sizes', fmt(nOther)], ['TEU', fmt(teu20 + teu40)]
+    ]);
+    body += '<div class="ai-title" style="margin:10px 0 4px">By operator</div>';
+    body += operatorSizeTable(rows, false);
+    body += '<div class="ai-note"><b>20′</b> includes 2SD · 22G0 · 2TK. <b>40′</b> includes 4SD · 4SH · 42G0 · 45G0 (4SH/45G0 are high cubes).</div>';
+    if (nOther) body += '<div class="ai-note">' + fmt(nOther) + ' container(s) have a size code not classified as 20′ or 40′ — add them in Train → Size knowledge.</div>';
+    return answer({
+      tag: 'sizes', title: 'Size breakdown', body: body,
+      actions: [{ label: 'Summarise by operator & POD', action: 'ask', data: { text: 'summarise the manifest' } }],
+      suggestions: ['Summarise manifest', 'Top operators', 'Show 20ft containers'],
+      plain: '20 ft: ' + n20 + ' containers (' + teu20 + ' TEU); 40 ft including HC: ' + n40 + ' containers (' + teu40 + ' TEU); other: ' + nOther + '.'
+    });
+  }
+  function commandTokens(text) {
+    var set = {};
+    normalize(text).split(' ').forEach(function (w) { if (w && !STOP[w]) set[w] = 1; });
+    return set;
+  }
+  function findCommand(text) {
+    if (!state.commands || !state.commands.length) return null;
+    var n = normalize(text);
+    var nTok = commandTokens(text);
+    var nKeys = Object.keys(nTok);
+    var best = null, bestScore = 0;
+    state.commands.forEach(function (c) {
+      var cn = normalize(c.text);
+      if (!cn) return;
+      var s = 0;
+      if (cn === n) s = 1;
+      else {
+        var cTok = commandTokens(c.text);
+        var cKeys = Object.keys(cTok);
+        var inter = 0;
+        cKeys.forEach(function (k) { if (nTok[k]) inter++; });
+        var union = cKeys.length + nKeys.length - inter;
+        if (union) s = inter / union;
+        if (inter < 2) s = Math.min(s, 0.5);
+        if (cKeys.length >= 3 && n.indexOf(cn) >= 0) s = Math.max(s, 0.92);
+      }
+      if (s > bestScore) { bestScore = s; best = c; }
+    });
+    return bestScore >= 0.78 ? best : null;
+  }
+  function applyPlaceholders(txt, rs) {
+    var full = 0, empty = 0, w = 0, ops = {}, pods = {};
+    rs.forEach(function (r) {
+      var fe = feOf(r);
+      if (fe === 'F') full++; else if (fe === 'E') empty++;
+      var v = vgmOf(r); if (v != null) w += v;
+      ops[oprOf(r) || '—'] = 1;
+      pods[podOf(r) || '—'] = 1;
+    });
+    var m = vesselMetaSafe();
+    var map = {
+      containers: fmt(rs.length), teu: fmt(sumTEU(rs)), full: fmt(full), empty: fmt(empty),
+      weight: fmtW(w), operators: fmt(Object.keys(ops).length), pods: fmt(Object.keys(pods).length),
+      vessel: m.vesselName || '—', date: new Date().toLocaleDateString()
+    };
+    return esc(txt).replace(/\{([a-z]+)\}/gi, function (all, key) {
+      var v = map[key.toLowerCase()];
+      return v === undefined ? all : esc(String(v));
+    }).replace(/\n/g, '<br>');
+  }
+  function commandAnswer(cmd, rs) {
+    var txt = applyPlaceholders(cmd.answer, rs);
+    return answer({
+      tag: 'custom command', tagClass: 'learned', title: esc(cmd.text),
+      body: '<div class="ai-note" style="margin:0">' + txt + '</div>',
+      actions: [{ label: 'Edit command', action: 'editcmd', data: { id: cmd.id } }],
+      suggestions: ['What can you do?', 'Summarise manifest'],
+      plain: stripHTML(txt)
+    });
+  }
+  function teachCommand(text, action, answerText) {
+    text = String(text || '').trim();
+    action = String(action || '');
+    answerText = String(answerText || '').trim();
+    if (!text) return { ok: false, msg: 'Type the phrase you will use.' };
+    if (action !== 'answer' && !TASKS[action]) return { ok: false, msg: 'Choose what the agent should do.' };
+    if (action === 'answer' && !answerText) return { ok: false, msg: 'Write the exact reply for this command.' };
+    var norm = normalize(text);
+    var dup = null;
+    for (var i = 0; i < state.commands.length; i++) {
+      if (normalize(state.commands[i].text) === norm) { dup = state.commands[i]; break; }
+    }
+    if (dup) {
+      dup.text = text; dup.action = action; dup.answer = answerText; dup.ts = Date.now();
+    } else {
+      state.commands.push({ id: uid('c'), text: text, action: action, answer: answerText, ts: Date.now() });
+    }
+    save(); renderTrain();
+    return { ok: true, msg: 'Command saved.' };
+  }
+  function deleteCommand(id) {
+    state.commands = state.commands.filter(function (c) { return c.id !== id; });
+    save(); renderTrain();
+  }
+  function prefillCommand(id) {
+    var c = null;
+    for (var i = 0; i < state.commands.length; i++) if (state.commands[i].id === id) { c = state.commands[i]; break; }
+    if (!c) return;
+    openPanel('train');
+    $('aiCmdText').value = c.text;
+    $('aiCmdAction').value = c.action;
+    $('aiCmdAnswer').value = c.answer || '';
+    $('aiCmdAnswerWrap').hidden = c.action !== 'answer';
+    var sec = $('aiCmdForm').closest('.ai-sec');
+    if (sec) sec.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    setTimeout(function () { $('aiCmdText').focus(); }, 180);
+    elMsg('aiCmdMsg', 'Editing “' + c.text + '”.', '');
+  }
+  function filteredRows() {
+    try { if (typeof getFiltered === 'function') return getFiltered(); } catch (e) {}
+    return dataRows();
+  }
+  function dashboardFilterInfo() {
+    var defs = [['fOPR', 'Operator'], ['fSzTp', 'Size/Type'], ['fFE', 'F/E'], ['fPOL', 'POL'], ['fPOD', 'POD']];
+    var labels = [], values = {};
+    defs.forEach(function (d) {
+      var el = document.getElementById(d[0]);
+      var v = el ? String(el.value || '').trim() : '';
+      if (!v) return;
+      values[d[0]] = v;
+      labels.push(d[1] + ' = ' + (d[0] === 'fFE' ? (v === 'F' ? 'Full' : 'Empty') : v));
+    });
+    var count = 0;
+    try { count = filteredRows().length; } catch (e) {}
+    return { labels: labels, values: values, count: count, active: labels.length > 0 };
+  }
+  function scopeData(scope, patch) {
+    var d = { mode: scope.mode || 'all', pol: scope.pol || '', fe: scope.fe || '' };
+    Object.keys(patch || {}).forEach(function (k) { d[k] = patch[k]; });
+    return attr(d);
+  }
+  function summaryFilterBar(baseRows, scope) {
+    var full = 0, empty = 0;
+    baseRows.forEach(function (r) { var f = feOf(r); if (f === 'F') full++; else if (f === 'E') empty++; });
+    var items = [['', 'All', baseRows.length], ['F', 'Full', full], ['E', 'Empty', empty]];
+    return '<div class="ai-seg" role="group" aria-label="Filter summary by load status">' + items.map(function (it) {
+      var active = (scope.fe || '') === it[0];
+      return '<button type="button" class="ai-segbtn' + (active ? ' active' : '') + '" data-ai="summary" data-data="' + scopeData(scope, { fe: it[0] }) + '">' +
+        it[1] + ' <span>' + fmt(it[2]) + '</span></button>';
+    }).join('') + '</div>';
+  }
+  function polFilterBar(scopeRows, scope) {
+    var counts = {};
+    scopeRows.forEach(function (r) { var p = polOf(r); if (p) counts[p] = (counts[p] || 0) + 1; });
+    var keys = Object.keys(counts).sort(function (a, b) { return counts[b] - counts[a] || a.localeCompare(b); });
+    var h = '<div class="ai-seg" role="group" aria-label="Filter summary by POL">';
+    h += '<button type="button" class="ai-segbtn' + (!scope.pol ? ' active' : '') + '" data-ai="summary" data-data="' + scopeData(scope, { pol: '' }) + '">All POLs <span>' + fmt(scopeRows.length) + '</span></button>';
+    keys.slice(0, 12).forEach(function (p) {
+      h += '<button type="button" class="ai-segbtn' + (scope.pol === p ? ' active' : '') + '" data-ai="summary" data-data="' + scopeData(scope, { pol: p }) + '">' +
+        esc(p) + ' <span>' + fmt(counts[p]) + '</span></button>';
+    });
+    h += '</div>';
+    return h;
+  }
+  function scopeSwitchBar(allRows, scope) {
+    var info = dashboardFilterInfo();
+    if (!info.active) return '';
+    var filtered = filteredRows();
+    return '<div class="ai-seg" role="group" aria-label="Summary data source">' +
+      '<button type="button" class="ai-segbtn' + (scope.mode === 'filtered' ? ' active' : '') + '" data-ai="summary" data-data="' + scopeData(scope, { mode: 'filtered', pol: '' }) + '">Filtered view <span>' + fmt(filtered.length) + '</span></button>' +
+      '<button type="button" class="ai-segbtn' + (scope.mode === 'all' ? ' active' : '') + '" data-ai="summary" data-data="' + scopeData(scope, { mode: 'all', pol: '' }) + '">All data <span>' + fmt(allRows.length) + '</span></button>' +
+      '</div>' +
+      '<div class="ai-note" style="margin-top:0">Dashboard filters: <b>' + esc(info.labels.join(' · ')) + '</b></div>';
+  }
+  function summaryScopePrompt(allRows, fe) {
+    var info = dashboardFilterInfo();
+    var filtered = filteredRows();
+    var scope = { mode: 'all', pol: '', fe: fe || '' };
+    var body = '<div class="ai-note" style="margin:0">Filters are active in the dashboard: <b>' + esc(info.labels.join(' · ')) + '</b>.<br>' +
+      fmt(filtered.length) + ' of ' + fmt(allRows.length) + ' records match. Which data should I summarise?</div>';
+    body += '<div class="ai-sect-title">Data source</div>';
+    body += '<div class="ai-seg" role="group" aria-label="Summary data source">' +
+      '<button type="button" class="ai-segbtn active" data-ai="summary" data-data="' + scopeData(scope, { mode: 'filtered' }) + '">Filtered data <span>' + fmt(filtered.length) + '</span></button>' +
+      '<button type="button" class="ai-segbtn" data-ai="summary" data-data="' + scopeData(scope, { mode: 'all' }) + '">All data <span>' + fmt(allRows.length) + '</span></button>' +
+      '</div>';
+    body += '<div class="ai-sect-title">Or choose a POL</div>' + polFilterBar(allRows, scope);
+    if (fe) body += '<div class="ai-note">Load status from your question: <b>' + (fe === 'F' ? 'Full' : 'Empty') + '</b> — you can change it after choosing.</div>';
+    return answer({
+      tag: 'scope', title: 'Summarise which data?', body: body,
+      suggestions: ['Summarise filtered data', 'Summarise all data'],
+      plain: 'Filters are active (' + info.labels.join(', ') + '). Choose filtered data (' + filtered.length + ') or all data (' + allRows.length + '), or pick a POL.'
+    });
+  }
+  function operatorCards(rows) {
+    if (!rows.length) return '<div class="ai-empty" style="padding:10px 0">No containers match this filter.</div>';
+    var h = '<div class="ai-opcards">';
+    rows.forEach(function (d) {
+      var pods = Object.keys(d.pods).sort(function (a, b) { return d.pods[b].total - d.pods[a].total; });
+      h += '<div class="ai-opcard">' +
+        '<div class="ai-oph"><span class="ai-opname">' + esc(d.opr) + '</span>' +
+        '<span class="ai-optot">' + fmt(d.total) + ' boxes · ' + fmt(d.teu) + ' TEU</span></div>' +
+        '<div class="ai-opsizes">' +
+        '<span><b>' + fmt(d.n20) + '</b> 20′</span>' +
+        '<span><b>' + fmt(d.n40) + '</b> 40′</span>' +
+        '<span><b>' + fmt(d.total) + '</b> total</span>' +
+        (d.nOther ? '<span><b>' + fmt(d.nOther) + '</b> other</span>' : '') +
+        '</div><div class="ai-podlist">';
+      pods.forEach(function (p) {
+        var x = d.pods[p];
+        h += '<div class="ai-podrow"><span class="p">' + esc(p) + '</span>' +
+          '<span class="s">20′ <b>' + fmt(x.n20) + '</b> / 40′ <b>' + fmt(x.n40) + '</b></span>' +
+          '<span class="c">' + fmt(x.total) + ' box' + (x.total === 1 ? '' : 'es') + '</span></div>';
+      });
+      h += '</div></div>';
+    });
+    return h + '</div>';
+  }
+  function summaryAnswer(rows, baseRows, scopeRows, allRows, scope) {
+    var total = rows.length;
+    var full = 0, empty = 0;
+    rows.forEach(function (r) { var f = feOf(r); if (f === 'F') full++; else if (f === 'E') empty++; });
+    var teu = sumTEU(rows), w = sumW(rows);
+    var invalid = rows.filter(function (r) { var c = ctnrOf(r); return c && !isoValid(c); }).length;
+    var m = vesselMetaSafe();
+    var rowsData = operatorSizeData(rows);
+    var nOther = rowsData.reduce(function (s, d) { return s + d.nOther; }, 0);
+
+    var titleParts = [scope.mode === 'filtered' ? 'Filtered view' : 'All data'];
+    if (scope.pol) titleParts.push('POL ' + scope.pol);
+    if (scope.fe) titleParts.push(scope.fe === 'F' ? 'Full' : 'Empty');
+    var plainParts = [];
+    if (scope.mode === 'filtered') plainParts.push('Filtered');
+    if (scope.pol) plainParts.push('POL ' + scope.pol);
+    if (scope.fe) plainParts.push(scope.fe === 'F' ? 'Full' : 'Empty');
+
+    var body = '<div class="ai-summary">';
+    body += statsGrid([
       ['Containers', fmt(total)], ['TEU', fmt(teu)],
       ['Gross weight', fmtW(w)], ['Full / Empty', fmt(full) + ' / ' + fmt(empty)]
     ]);
@@ -3701,24 +4357,67 @@ window.addEventListener('beforeunload', function(e){
         '<dt>Voyage</dt><dd>' + esc(m.voyage || '—') + '</dd>' +
         '<dt>Call sign</dt><dd>' + esc(m.callSign || '—') + '</dd>' +
         '<dt>POL</dt><dd>' + esc(m.pol || '—') + '</dd>' +
-        '<dt>Operators</dt><dd>' + fmt(groupBy(rs, oprOf).length) + ' · PODs ' + fmt(groupBy(rs, podOf).length) + '</dd>' +
+        '<dt>Operators</dt><dd>' + fmt(rowsData.length) + ' · PODs ' + fmt(groupBy(rows, podOf).length) + '</dd>' +
         '</dl>';
     }
-    body += '<div class="ai-title" style="margin:10px 0 4px">Largest operators</div>' +
-      rankHTML(topO, total, 3, function (k) { return 'show ' + k + ' containers'; });
-    body += '<div class="ai-title" style="margin:10px 0 4px">Busiest discharge ports</div>' +
-      rankHTML(topP, total, 3, function (k) { return 'show containers to ' + k; });
+    body += scopeSwitchBar(allRows, scope);
+    body += '<div class="ai-sect-title">Load status</div>' + summaryFilterBar(baseRows, scope);
+    body += '<div class="ai-sect-title">Port of loading</div>' + polFilterBar(scopeRows, scope);
+    body += '<div class="ai-note" style="margin-top:0">Showing <b>' + fmt(total) + '</b> of ' + fmt(allRows.length) + ' records' +
+      (scope.mode === 'filtered' ? ' from the dashboard filter view' : '') + '.</div>';
+
+    body += '<div class="ai-sect-title">Operator summary — 20′ / 40′ and PODs</div>';
+    body += operatorCards(rowsData);
+
+    var podMap = {};
+    rows.forEach(function (r) {
+      var p = podOf(r) || '—';
+      var d = podMap[p] || (podMap[p] = { pod: p, n20: 0, n40: 0, total: 0 });
+      var len = sizeLenOf(sztpOf(r));
+      if (len === '20') d.n20++; else if (len === '40') d.n40++;
+      d.total++;
+    });
+    var podRows = Object.keys(podMap).map(function (k) { return podMap[k]; }).sort(function (a, b) { return b.total - a.total; });
+    var podLine = podRows.slice(0, 10).map(function (d) {
+      return esc(d.pod) + ' ' + fmt(d.total) + ' <span style="color:var(--muted)">(20′ ' + d.n20 + ' / 40′ ' + d.n40 + ')</span>';
+    }).join(' · ');
+    body += '<div class="ai-sect-title">POD totals — 20′ / 40′</div>';
+    body += '<div class="ai-note" style="margin-top:0;line-height:1.8">' + (podLine || '—') + (podRows.length > 10 ? ' …' : '') + '</div>';
+    body += '<div class="ai-note"><b>20′</b> = 2SD · 22G0 · 2TK &nbsp;·&nbsp; <b>40′</b> = 4SD · 4SH · 42G0 · 45G0 (4SH/45G0 are high cubes).</div>';
+    if (nOther) body += '<div class="ai-note">' + fmt(nOther) + ' container(s) have an unclassified size code.</div>';
     body += '<div class="ai-note"><b>' + fmt(invalid) + '</b> container number' + (invalid === 1 ? '' : 's') +
       ' fail the ISO 6346 check digit · Source: ' + esc(sourceLabel()) + '</div>';
+    body += '</div>';
 
+    var split = rowsData.slice(0, 8).map(function (d) { return d.opr + ' 20=' + d.n20 + ' 40=' + d.n40; }).join('; ');
     return answer({
-      tag: 'summary', title: 'Manifest overview', body: body,
-      actions: [{ label: 'Top operators', action: 'ask', data: { text: 'top operators' } }, { label: 'Invalid numbers', action: 'ask', data: { text: 'invalid container numbers' } }],
-      suggestions: ['Top operators', 'Invalid containers', 'Export to Excel'],
-      plain: 'Summary: ' + total + ' containers, ' + teu + ' TEU, ' + w.toFixed(2) + ' tonnes, ' + full + ' full, ' + empty + ' empty, ' + invalid + ' invalid numbers.' +
-        (m.vesselName ? ' Vessel ' + m.vesselName + (m.voyage ? ' voyage ' + m.voyage : '') + '.' : '')
+      tag: 'summary', title: 'Manifest overview — ' + titleParts.join(' · '), body: body,
+      actions: [
+        { label: 'Size breakdown', action: 'ask', data: { text: 'what sizes are loaded' } },
+        { label: 'Invalid numbers', action: 'ask', data: { text: 'invalid container numbers' } }
+      ],
+      suggestions: ['Summarise full containers', 'Summarise empty containers', 'What sizes are loaded?'],
+      plain: 'Summary' + (plainParts.length ? ' (' + plainParts.join(' · ') + ')' : '') + ': ' + total + ' containers, ' + teu + ' TEU, ' + w.toFixed(2) + ' tonnes, ' + full + ' full, ' + empty + ' empty, ' + invalid + ' invalid numbers.' +
+        (m.vesselName ? ' Vessel ' + m.vesselName + (m.voyage ? ' voyage ' + m.voyage : '') + '.' : '') +
+        ' Operators: ' + split + '.'
     });
   }
+  function renderSummaryScope(d) {
+    if (!messages) initDom();
+    var all = dataRows();
+    var mode = d.mode === 'filtered' ? 'filtered' : 'all';
+    var pol = d.pol || '';
+    var fe = d.fe || '';
+    var source = mode === 'filtered' ? filteredRows() : all;
+    var base = pol ? source.filter(function (r) { return polOf(r) === pol; }) : source;
+    var rows = fe ? base.filter(function (r) { return feOf(r) === fe; }) : base;
+    var res = summaryAnswer(rows, base, source, all, { mode: mode, pol: pol, fe: fe });
+    addBot(res);
+    if (res.suggestions) renderSuggestions(res.suggestions);
+    last = { text: 'summary ' + mode + (pol ? ' ' + pol : '') + (fe ? ' ' + fe : ''), res: res };
+    return res;
+  }
+
   function countAnswer(rs, f, n) {
     var list = filterRows(rs, f);
     var dim = countDim(n, f);
@@ -3980,10 +4679,16 @@ window.addEventListener('beforeunload', function(e){
   }
   function validateAnswer(rs) {
     var invalid = [];
+    var counts = {};
     rs.forEach(function (r) {
       var c = ctnrOf(r);
-      if (c && c.length >= 4 && !isoValid(c)) invalid.push(r);
+      if (!c) return;
+      counts[c] = (counts[c] || 0) + 1;
+      if (c.length >= 4 && !isoValid(c)) invalid.push(r);
     });
+    var dups = Object.keys(counts).filter(function (c) { return counts[c] > 1; })
+      .map(function (c) { return { ctnr: c, count: counts[c] }; })
+      .sort(function (a, b) { return b.count - a.count || a.ctnr.localeCompare(b.ctnr); });
     var emptyWarn = rs.filter(function (r) {
       var fe = feOf(r), w = vgmOf(r), slot = slotOf(r);
       if (fe !== 'E') return false;
@@ -3993,11 +4698,12 @@ window.addEventListener('beforeunload', function(e){
     });
     var body = statsGrid([
       ['Invalid numbers', fmt(invalid.length)],
-      ['Check clean', fmt(rs.length - invalid.length)],
+      ['Duplicate numbers', fmt(dups.length)],
       ['Empty warnings', fmt(emptyWarn.length)],
       ['Records', fmt(rs.length)]
     ], '');
     if (invalid.length) {
+      body += '<div class="ai-title" style="margin:2px 0 4px">Invalid ISO 6346 numbers</div>';
       body += '<div class="ai-list">' + invalid.slice(0, 8).map(function (r) {
         var c = ctnrOf(r);
         return '<div class="ai-row" data-ai="edit" data-data="' + attr({ rid: r._rid, ctnr: c }) + '">' +
@@ -4005,19 +4711,36 @@ window.addEventListener('beforeunload', function(e){
           '<span class="v">' + esc(slotOf(r)) + ' · ' + esc(oprOf(r)) + ' · ' + esc(podOf(r)) + '</span>' +
           '<span class="m" style="color:#fca5a5">check digit</span></div>';
       }).join('') + '</div>';
-      if (invalid.length > 8) body += '<div class="ai-note">+ ' + fmt(invalid.length - 8) + ' more — open the validation banner above the table.</div>';
+      if (invalid.length > 8) body += '<div class="ai-note">+ ' + fmt(invalid.length - 8) + ' more — open the invalid banner above the table.</div>';
       body += '<div class="ai-note">Tap a row to edit it. These fail the ISO 6346 check-digit test, which usually means a typo (or a carrier-specific short number).</div>';
-    } else {
-      body += '<div class="ai-note" style="color:#6ee7b7">Every container number passes the ISO 6346 check digit. No data-quality issues found.</div>';
+    }
+    if (dups.length) {
+      body += '<div class="ai-title" style="margin:10px 0 4px">Duplicate container numbers</div>';
+      body += '<div class="ai-list">' + dups.slice(0, 8).map(function (d) {
+        return '<div class="ai-row" data-ai="ask" data-data="' + attr({ text: 'show ' + d.ctnr }) + '">' +
+          '<span class="k" style="color:#fcd34d">⧉ ' + esc(d.ctnr) + '</span>' +
+          '<span class="v">appears ' + d.count + ' times</span>' +
+          '<span class="m" style="color:#fcd34d">duplicate</span></div>';
+      }).join('') + '</div>';
+      if (dups.length > 8) body += '<div class="ai-note">+ ' + fmt(dups.length - 8) + ' more duplicate numbers — open the duplicate banner above the table.</div>';
+      body += '<div class="ai-note">Duplicates are the <b>same container number on more than one line</b> in the current filter view — separate from ISO check-digit errors. Tap a row to show it in the table.</div>';
+    }
+    if (!invalid.length && !dups.length) {
+      body += '<div class="ai-note" style="color:#6ee7b7">Every container number passes the ISO 6346 check digit and no duplicates were found in this view. No data-quality issues.</div>';
+    } else if (!invalid.length) {
+      body += '<div class="ai-note" style="color:#6ee7b7">All container numbers pass the ISO 6346 check digit.</div>';
     }
     if (emptyWarn.length) {
       body += '<div class="ai-note">⚠ ' + fmt(emptyWarn.length) + ' empty unit(s) look inconsistent (weight over 5 T or stowed in a low tier). First: ' + esc(ctnrOf(emptyWarn[0]) || '—') + '.</div>';
     }
     return answer({
-      tag: 'validation', title: 'Container number check', body: body,
-      actions: [{ label: 'Open validation banner', action: 'banner' }],
-      suggestions: ['Show all invalid containers', 'Summarise manifest', 'Export'],
-      plain: invalid.length + ' invalid container numbers out of ' + rs.length + ' records; ' + emptyWarn.length + ' empty warnings.'
+      tag: 'validation', title: 'Container number & duplicate check', body: body,
+      actions: [
+        { label: 'Invalid banner', action: 'banner' },
+        { label: 'Duplicate banner', action: 'dupbanner' }
+      ],
+      suggestions: ['Show duplicate containers', 'Show all invalid containers', 'Summarise manifest'],
+      plain: invalid.length + ' invalid container numbers, ' + dups.length + ' duplicate number' + (dups.length === 1 ? '' : 's') + ' out of ' + rs.length + ' records; ' + emptyWarn.length + ' empty warnings.'
     });
   }
   function vesselAnswer() {
@@ -4218,29 +4941,52 @@ window.addEventListener('beforeunload', function(e){
   }
 
   /* ────────────────────────── orchestration ──────────────────────────── */
-  function respond(text) {
+  function respond(text, opts) {
+    opts = opts || {};
     var rs = dataRows();
     var sets = buildSets(rs);
     var n = normalize(text);
     var f = extract(text, rs, sets);
     var cls = classify(text);
-    var task = cls.task;
+    var task = opts.forceTask || cls.task;
 
-    // explicit cues override a low-confidence guess
-    var rankCue = /\b(top|most|largest|biggest|highest|rank|breakdown|break down|group by|distribution)\b/.test(n);
-    var byDim = /\b(by|per)\s+(operator|port|pod|size|type|weight|teu)\b/.test(n);
-    var bookingCue = TASK_RULES.booking.some(function (re) { return re.test(n); }) || (cls.task === 'booking' && cls.conf >= 0.5);
-    var reconCue = TASK_RULES.recon.some(function (re) { return re.test(n); }) || (cls.task === 'recon' && cls.conf >= 0.5);
-    if (!bookingCue && /\b(left|remaining|balance)\b/.test(n) && (f.opr || f.pod)) bookingCue = true;
-    if (!bookingCue && /\b(still load|can i still)\b/.test(n) && /\b(teu|containers?)\b/.test(n)) bookingCue = true;
-    if (/\b(how many|number of|count of|total number|tally)\b/.test(n)) task = 'count';
-    if (rankCue && (byDim || !/\b(weight|heaviest|heavy)\b/.test(n))) task = 'rank';
-    if (byDim && (task === 'count' || task === 'search')) task = 'rank';
-    if (/\b(invalid|check digit|iso 6346|data quality)\b/.test(n)) task = 'validate';
-    if (/\bteu\b/.test(n) && task !== 'export' && !rankCue && !byDim) task = 'count';
-    if (f.ctnr && task !== 'find' && task !== 'search' && !/\bhow many\b/.test(n) && cls.conf < 0.55) task = 'find';
-    if (reconCue) task = 'recon';
-    else if (bookingCue) task = 'booking';
+    // manual commands (exact / near-exact phrase) take priority
+    if (!opts.forceTask) {
+      var cmd = findCommand(text);
+      if (cmd) {
+        if (cmd.action === 'answer') return done(commandAnswer(cmd, rs), 'command', f, cls, text);
+        return respond(text, { forceTask: cmd.action, fromCommand: true });
+      }
+      var sizeStatements = parseSizeStatements(text);
+      if (sizeStatements.length) {
+        sizeStatements.forEach(function (g) {
+          g.codes.forEach(function (c) { addSizeCode(c, g.len, inferSizeType(c)); });
+        });
+        return done(sizeLearnAnswer(sizeStatements), 'train', f, cls, text);
+      }
+    }
+
+    if (!opts.forceTask) {
+      // explicit cues override a low-confidence guess
+      var rankCue = /\b(top|most|largest|biggest|highest|rank|breakdown|break down|group by|distribution)\b/.test(n);
+      var byDim = /\b(by|per)\s+(operator|port|pod|size|type|weight|teu)\b/.test(n);
+      var bookingCue = TASK_RULES.booking.some(function (re) { return re.test(n); }) || (cls.task === 'booking' && cls.conf >= 0.5);
+      var reconCue = TASK_RULES.recon.some(function (re) { return re.test(n); }) || (cls.task === 'recon' && cls.conf >= 0.5);
+      if (!bookingCue && /\b(left|remaining|balance)\b/.test(n) && (f.opr || f.pod)) bookingCue = true;
+      if (!bookingCue && /\b(still load|can i still)\b/.test(n) && /\b(teu|containers?)\b/.test(n)) bookingCue = true;
+      if (/\b(how many|number of|count of|total number|tally)\b/.test(n)) task = 'count';
+      if (rankCue && (byDim || !/\b(weight|heaviest|heavy)\b/.test(n))) task = 'rank';
+      if (byDim && (task === 'count' || task === 'search')) task = 'rank';
+      if (/\b(invalid|check digit|iso 6346|data quality)\b/.test(n)) task = 'validate';
+      if (/\bteu\b/.test(n) && task !== 'export' && !rankCue && !byDim) task = 'count';
+      if (f.ctnr && task !== 'find' && task !== 'search' && !/\bhow many\b/.test(n) && cls.conf < 0.55) task = 'find';
+      if (reconCue) task = 'recon';
+      else if (bookingCue) task = 'booking';
+      if (task !== 'booking' && task !== 'recon' &&
+        /\b(20|twenty)\b/.test(n) && /\b(40|forty)\b/.test(n) && /\b(feet|foot|ft|containers?|sizes?)\b/.test(n)) {
+        task = 'sizes';
+      }
+    }
 
     // follow-up context: "and the empties?", "only to NBO", "how many of those"
     if (state.ctxRows !== undefined && state.ctxRows !== rs.length) state.ctx = null;
@@ -4260,6 +5006,10 @@ window.addEventListener('beforeunload', function(e){
     // learned facts take precedence when they match strongly
     var fact = matchFact(text);
     if (fact && fact.sim >= 0.62) return done(factAnswer(fact), 'memory', f, cls, text);
+
+    // size-code questions: "what size is 4SH?"
+    var sq = parseSizeQuestion(text);
+    if (sq) return done(sizeInfoAnswer(sq), 'sizes', f, cls, text);
 
     // "what does X mean?" — answer from learned facts, otherwise ask to be taught
     if (isDefinitionQuery(n)) {
@@ -4283,6 +5033,7 @@ window.addEventListener('beforeunload', function(e){
       if (cmp) return done(cmp, 'compare', f, cls, text);
       return done(helpCompareAnswer(), 'compare', f, cls, text);
     }
+    if (task === 'sizes') return done(sizesAnswer(rs), 'sizes', f, cls, text);
 
     // free-text search term (only when no structured code matched)
     if (!f.q && !f.ctnr && !f.slot && (task === 'search' || task === 'find' || task === 'unknown')) {
@@ -4297,7 +5048,21 @@ window.addEventListener('beforeunload', function(e){
       if (leftover) return done(unknownEntityAnswer(leftover, sets), task, f, cls, text);
     }
 
-    if (task === 'summary') return done(summaryAnswer(rs, sets), 'summary', f, cls, text);
+    if (task === 'summary') {
+      var info = dashboardFilterInfo();
+      var explicitFiltered = /\b(filtered|current view|dashboard filter)\b/.test(n);
+      var explicitAll = /\ball (data|records|containers|manifest)\b|\ball pols?\b|\bno filters?\b|\beverything\b/.test(n);
+      var scopePol = f.pol || '';
+      var feFilter = f.fe || '';
+      if (info.active && !explicitFiltered && !explicitAll && !scopePol) {
+        return done(summaryScopePrompt(rs, feFilter), 'summary', f, cls, text);
+      }
+      var scopeMode = explicitFiltered ? 'filtered' : 'all';
+      var scopeSource = scopeMode === 'filtered' ? filteredRows() : rs;
+      var scopeBase = scopePol ? scopeSource.filter(function (r) { return polOf(r) === scopePol; }) : scopeSource;
+      var scopeRows = feFilter ? scopeBase.filter(function (r) { return feOf(r) === feFilter; }) : scopeBase;
+      return done(summaryAnswer(scopeRows, scopeBase, scopeSource, rs, { mode: scopeMode, pol: scopePol, fe: feFilter }), 'summary', f, cls, text);
+    }
     if (task === 'vessel') return done(vesselAnswer(), 'vessel', f, cls, text);
     if (task === 'validate') return done(validateAnswer(rs), 'validate', f, cls, text);
     if (task === 'find') return done(findAnswer(rs, f, text), 'find', f, cls, text);
@@ -4677,7 +5442,9 @@ window.addEventListener('beforeunload', function(e){
     if (stats) {
       stats.innerHTML =
         '<div class="ai-stat"><b>' + fmt(state.examples.length) + '</b><span>examples</span></div>' +
+        '<div class="ai-stat"><b>' + fmt(state.commands.length) + '</b><span>commands</span></div>' +
         '<div class="ai-stat"><b>' + fmt(state.facts.length) + '</b><span>facts</span></div>' +
+        '<div class="ai-stat"><b>' + fmt(Object.keys(sizeKnowledge()).length) + '</b><span>size codes</span></div>' +
         '<div class="ai-stat"><b>' + fmt(Object.keys(state.vocab).length) + '</b><span>new words</span></div>' +
         '<div class="ai-stat"><b>' + fmt(state.stats.asks) + '</b><span>questions</span></div>' +
         '<div class="ai-stat"><b>' + fmt(state.stats.up) + '</b><span>👍 feedback</span></div>' +
@@ -4686,7 +5453,7 @@ window.addEventListener('beforeunload', function(e){
     var note = $('aiModelNote');
     if (note) {
       note.innerHTML = storageOk
-        ? 'Trained locally in this browser · vocab ' + (Object.keys(BUILTIN_VOCAB).length + Object.keys(state.vocab).length) + ' words'
+        ? 'Trained locally in this browser · ' + fmt(state.commands.length) + ' command' + (state.commands.length === 1 ? '' : 's') + ' · vocab ' + (Object.keys(BUILTIN_VOCAB).length + Object.keys(state.vocab).length) + ' words'
         : '⚠ This browser blocks local storage for local files — training lasts for this session. Use <b>Export</b> to keep it.';
     }
     var count = $('aiExCount');
@@ -4714,7 +5481,50 @@ window.addEventListener('beforeunload', function(e){
         return '<div class="u"><span>“' + esc(u.text) + '”</span><button type="button" data-teach-unres="' + i + '">Teach</button></div>';
       }).join('') : '<div class="ai-empty">Nothing pending — every question so far was understood.</div>';
     }
+    renderCommands();
+    renderSizes();
     renderMemory();
+  }
+  function renderCommands() {
+    var el = $('aiCmdList');
+    if (!el) return;
+    if (!state.commands.length) {
+      el.innerHTML = '<div class="ai-empty">No manual commands yet — write a phrase above and choose what I should do.</div>';
+      return;
+    }
+    var list = state.commands.slice().sort(function (a, b) { return (b.ts || 0) - (a.ts || 0); });
+    el.innerHTML = list.map(function (c) {
+      var action = c.action === 'answer' ? 'Custom reply' : (TASKS[c.action] ? TASKS[c.action].short : c.action);
+      return '<div class="ai-ex"><div style="flex:1;min-width:0">' +
+        '<div class="t"><b>' + esc(c.text) + '</b></div>' +
+        '<div style="display:flex;gap:6px;align-items:center;margin-top:3px">' +
+        '<span class="tag">' + esc(action) + '</span>' +
+        (c.action === 'answer' ? '<span class="t" style="color:var(--muted);font-size:9px">' + esc(c.answer.slice(0, 90)) + (c.answer.length > 90 ? '…' : '') + '</span>' : '') +
+        '</div></div>' +
+        '<button class="del" type="button" data-edit-cmd="' + esc(c.id) + '" title="Edit command" aria-label="Edit command">✎</button>' +
+        '<button class="del" type="button" data-del-cmd="' + esc(c.id) + '" title="Delete command" aria-label="Delete command">✕</button>' +
+        '</div>';
+    }).join('');
+  }
+  function renderSizes() {
+    var el = $('aiSizeList');
+    if (!el) return;
+    var custom = Object.keys(state.sizes);
+    var builtin = Object.keys(BUILTIN_SIZE_CODES);
+    var h = '';
+    if (custom.length) {
+      h += '<div class="ai-hint" style="margin-top:8px">Your size codes</div>';
+      h += custom.map(function (k) {
+        var s = state.sizes[k];
+        return '<div class="ai-ex"><div style="flex:1;min-width:0"><div class="t"><b>' + esc(k) + '</b> → ' + esc(s.len) + ' ft ' + esc(SIZE_TYPES[s.type] || s.type) + '</div></div>' +
+          '<button class="del" type="button" data-del-size="' + esc(k) + '" title="Delete size code">✕</button></div>';
+      }).join('');
+    }
+    var b20 = builtin.filter(function (k) { return BUILTIN_SIZE_CODES[k].len === '20'; });
+    var b40 = builtin.filter(function (k) { return BUILTIN_SIZE_CODES[k].len === '40'; });
+    h += '<div class="ai-hint" style="margin-top:8px"><b>20′</b> · ' + esc(b20.join(' · ')) + '</div>';
+    h += '<div class="ai-hint"><b>40′</b> · ' + esc(b40.join(' · ')) + '</div>';
+    el.innerHTML = h;
   }
   function renderMemory() {
     var fc = $('aiFactCount');
@@ -4844,6 +5654,8 @@ window.addEventListener('beforeunload', function(e){
   var activeTab = 'chat';
   function switchTab(name) {
     activeTab = name;
+    var panel = $('aiPanel');
+    if (panel) panel.classList.toggle('ai-wide', name === 'train' || name === 'memory');
     Array.prototype.slice.call(document.querySelectorAll('.ai-tab')).forEach(function (b) {
       b.classList.toggle('active', b.dataset.aiTab === name);
       b.setAttribute('aria-selected', b.dataset.aiTab === name ? 'true' : 'false');
@@ -4953,9 +5765,16 @@ window.addEventListener('beforeunload', function(e){
       else if (action === 'teach') { prefillTeach(d.text); }
       else if (action === 'teachfact') { prefillFact(d.q); }
       else if (action === 'opentrain') { openPanel('train'); }
+      else if (action === 'opensizes') {
+        openPanel('train');
+        var szForm = $('aiSizeForm');
+        if (szForm) setTimeout(function () { szForm.scrollIntoView({ block: 'center', behavior: 'smooth' }); $('aiSizeCode').focus(); }, 180);
+      }
+      else if (action === 'editcmd') { prefillCommand(d.id); }
       else if (action === 'openmemory') { openPanel('memory'); }
       else if (action === 'openfile') { var fi = $('fileInput'); if (fi) fi.click(); }
       else if (action === 'openrecon') { if (window.Recon) window.Recon.openTab(d.tab || 'booking'); }
+      else if (action === 'summary') { renderSummaryScope(d); }
       else if (action === 'pickbooking') { if (window.Recon) window.Recon.pickBooking(); }
       else if (action === 'picklists') { if (window.Recon) window.Recon.pickLists(); }
       else if (action === 'reconfix') {
@@ -4964,6 +5783,7 @@ window.addEventListener('beforeunload', function(e){
         }
       }
       else if (action === 'banner') { var vb = $('valBanner'); if (vb) { vb.scrollIntoView({ behavior: 'smooth', block: 'center' }); } }
+      else if (action === 'dupbanner') { var db = $('dupBanner'); if (db) { db.scrollIntoView({ behavior: 'smooth', block: 'center' }); } }
       else if (action === 'fb') { feedbackTo(d, b); }
     });
 
@@ -5016,6 +5836,44 @@ window.addEventListener('beforeunload', function(e){
       elMsg('aiTeachMsg', r.msg, r.ok ? 'ok' : 'err');
       if (r.ok) { $('aiTeachText').value = ''; $('aiTeachText').focus(); }
     });
+
+    // manual commands
+    var cmdSel = $('aiCmdAction');
+    if (cmdSel) {
+      Object.keys(TASKS).forEach(function (k) {
+        var o = document.createElement('option');
+        o.value = k; o.textContent = TASKS[k].label;
+        cmdSel.appendChild(o);
+      });
+      var exact = document.createElement('option');
+      exact.value = 'answer'; exact.textContent = 'Give my exact reply';
+      cmdSel.appendChild(exact);
+      cmdSel.selectedIndex = 0;
+      cmdSel.addEventListener('change', function () {
+        var wrap = $('aiCmdAnswerWrap');
+        if (wrap) wrap.hidden = cmdSel.value !== 'answer';
+      });
+    }
+    var cmdForm = $('aiCmdForm');
+    if (cmdForm) cmdForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var r = teachCommand($('aiCmdText').value, $('aiCmdAction').value, $('aiCmdAnswer').value);
+      elMsg('aiCmdMsg', r.msg, r.ok ? 'ok' : 'err');
+      if (r.ok) {
+        $('aiCmdText').value = '';
+        $('aiCmdAnswer').value = '';
+        $('aiCmdText').focus();
+      }
+    });
+
+    // size knowledge
+    var sizeForm = $('aiSizeForm');
+    if (sizeForm) sizeForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var r = addSizeCode($('aiSizeCode').value, $('aiSizeLen').value, $('aiSizeType').value);
+      elMsg('aiSizeMsg', r.msg, r.ok ? 'ok' : 'err');
+      if (r.ok) { $('aiSizeCode').value = ''; $('aiSizeCode').focus(); }
+    });
     var ff = $('aiFactForm');
     if (ff) ff.addEventListener('submit', function (e) {
       e.preventDefault();
@@ -5033,6 +5891,15 @@ window.addEventListener('beforeunload', function(e){
 
     var trainPane = $('aiTrainPane');
     if (trainPane) trainPane.addEventListener('click', function (e) {
+      var dc = e.target.closest('[data-del-cmd]');
+      if (dc) { deleteCommand(dc.dataset.delCmd); return; }
+      var ec = e.target.closest('[data-edit-cmd]');
+      if (ec) { prefillCommand(ec.dataset.editCmd); return; }
+      var ds = e.target.closest('[data-del-size]');
+      if (ds) {
+        delete state.sizes[ds.dataset.delSize];
+        save(); renderTrain(); return;
+      }
       var del = e.target.closest('[data-del-ex]');
       if (del) {
         state.examples = state.examples.filter(function (x) { return x.id !== del.dataset.delEx; });
@@ -5114,6 +5981,8 @@ window.addEventListener('beforeunload', function(e){
       exported: new Date().toISOString(),
       examples: state.examples,
       facts: state.facts,
+      commands: state.commands,
+      sizes: state.sizes,
       vocab: state.vocab
     };
     try {
@@ -5131,7 +6000,7 @@ window.addEventListener('beforeunload', function(e){
   }
   function importTraining(data) {
     if (!data || typeof data !== 'object') return { ok: false, msg: 'Invalid file.' };
-    var addedEx = 0, addedFacts = 0, addedVocab = 0;
+    var addedEx = 0, addedFacts = 0, addedVocab = 0, addedCmds = 0, addedSizes = 0;
     (Array.isArray(data.examples) ? data.examples : []).forEach(function (raw) {
       var e = normalizeEx(raw);
       if (!e) return;
@@ -5146,6 +6015,19 @@ window.addEventListener('beforeunload', function(e){
         state.facts.push(f); addedFacts++;
       }
     });
+    (Array.isArray(data.commands) ? data.commands : []).forEach(function (raw) {
+      var c = normalizeCmd(raw);
+      if (!c) return;
+      if (!state.commands.some(function (x) { return normalize(x.text) === normalize(c.text); })) {
+        state.commands.push(c); addedCmds++;
+      }
+    });
+    if (data.sizes && typeof data.sizes === 'object') {
+      Object.keys(data.sizes).forEach(function (k) {
+        var s = normalizeSize(Object.assign({ code: k }, data.sizes[k]));
+        if (s) { state.sizes[s.code] = { len: s.len, type: s.type }; addedSizes++; }
+      });
+    }
     if (data.vocab && typeof data.vocab === 'object') {
       Object.keys(data.vocab).forEach(function (k) {
         if (CONCEPTS[data.vocab[k]]) { state.vocab[String(k).toLowerCase()] = data.vocab[k]; addedVocab++; }
@@ -5153,7 +6035,7 @@ window.addEventListener('beforeunload', function(e){
     }
     idx.sig = '';
     save();
-    return { ok: true, msg: 'Imported ' + addedEx + ' examples, ' + addedFacts + ' facts, ' + addedVocab + ' words.' };
+    return { ok: true, msg: 'Imported ' + addedEx + ' examples, ' + addedCmds + ' commands, ' + addedFacts + ' facts, ' + addedSizes + ' size codes, ' + addedVocab + ' words.' };
   }
 
   /* ─────────────────────────── boot ──────────────────────────────────── */
@@ -5172,6 +6054,8 @@ window.addEventListener('beforeunload', function(e){
     ask: ask,
     teach: teach,
     teachFact: teachFact,
+    teachCommand: teachCommand,
+    addSizeCode: addSizeCode,
     addVocab: addVocab,
     exportTraining: exportTraining,
     importTraining: importTraining,
@@ -5182,7 +6066,8 @@ window.addEventListener('beforeunload', function(e){
     _debug: {
       classify: classify, extract: extract, respond: respond,
       filterRows: filterRows, findContainer: findContainer, normalize: normalize,
-      dataRows: dataRows, buildSets: buildSets
+      dataRows: dataRows, buildSets: buildSets, sizeLenOf: sizeLenOf, sizeKnowledge: sizeKnowledge,
+      findCommand: findCommand
     }
   };
 })();
