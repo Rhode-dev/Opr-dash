@@ -749,6 +749,8 @@ footer strong{color:var(--accent);font-weight:500}
 .rc-chip .meta{color:var(--muted);white-space:nowrap}
 .rc-chip .dot{width:5px;height:5px;border-radius:50%;background:var(--green);flex:none}
 .rc-chip.warn .dot{background:var(--yellow)}
+.rc-chip.ignored{opacity:.5}
+.rc-chip.ignored .meta{color:#94a3b8}
 .rc-chip select{
   background:rgba(30,41,59,.9);border:1px solid var(--border-soft);color:var(--text);
   font-family:var(--mono);font-size:9.5px;border-radius:5px;padding:2px 3px;outline:none;max-width:110px;
@@ -6490,6 +6492,35 @@ window.addEventListener('beforeunload', function(e){
     try { if (typeof allData !== 'undefined' && Array.isArray(allData)) return allData; } catch (e) {}
     return [];
   }
+  function filteredRows() {
+    try { if (typeof getFiltered === 'function') return getFiltered(); } catch (e) {}
+    return rows();
+  }
+  function activeOprFilter() {
+    try {
+      var el = document.getElementById('fOPR');
+      return el ? up(el.value) : '';
+    } catch (e) { return ''; }
+  }
+  function activeFilterLabels() {
+    var defs = [['fOPR', 'Operator'], ['fSzTp', 'Size/Type'], ['fFE', 'F/E'], ['fPOL', 'POL'], ['fPOD', 'POD']];
+    var out = [];
+    defs.forEach(function (d) {
+      try {
+        var el = document.getElementById(d[0]);
+        var v = el ? String(el.value || '').trim() : '';
+        if (!v) return;
+        out.push(d[1] + ' = ' + (d[0] === 'fFE' ? (v === 'F' ? 'Full' : 'Empty') : v));
+      } catch (e) {}
+    });
+    return out;
+  }
+  function itemInScope(item, l, oprFilter) {
+    if (!oprFilter) return true;
+    var io = up(item.opr);
+    if (io) return io === oprFilter;
+    return up(l.opr) === oprFilter;
+  }
   function ctnrOf(r) { return up(pick(r, 'ctnr')).replace(/[^A-Z0-9]/g, ''); }
   function slotOf(r) { return String(pick(r, 'slot') || '').trim(); }
   function oprOf(r) { return up(pick(r, 'opr')); }
@@ -6533,7 +6564,7 @@ window.addEventListener('beforeunload', function(e){
   var overOnly = false;
   var lastBkgRows = [];
   var lastIssues = [];
-  var issueStats = { opr: 0, ctnr: 0, num: 0, size: 0, missing: 0, extra: 0, matched: 0, listed: 0, total: 0 };
+  var issueStats = { opr: 0, ctnr: 0, num: 0, size: 0, missing: 0, extra: 0, matched: 0, listed: 0, total: 0, checkedLists: 0 };
   var ignored = {};
 
   function loadMap() {
@@ -6983,21 +7014,35 @@ window.addEventListener('beforeunload', function(e){
     return map[p] || '';
   }
   function computeIssues() {
-    var rs = rows();
+    var rsAll = rows();
+    var rs = filteredRows();
+    var oprFilter = activeOprFilter();
     lastIssues = [];
-    issueStats = { opr: 0, ctnr: 0, num: 0, size: 0, missing: 0, extra: 0, matched: 0, listed: 0, total: 0 };
+    issueStats = { opr: 0, ctnr: 0, num: 0, size: 0, missing: 0, extra: 0, matched: 0, listed: 0, total: 0, checkedLists: 0 };
     if (!lists.length) return [];
 
-    var byCtnr = {};
+    var byCtnrAll = {}, byCtnr = {};
+    rsAll.forEach(function (r) {
+      var c = ctnrOf(r);
+      if (!c) return;
+      (byCtnrAll[c] || (byCtnrAll[c] = [])).push(r);
+    });
     rs.forEach(function (r) {
       var c = ctnrOf(r);
       if (!c) return;
       (byCtnr[c] || (byCtnr[c] = [])).push(r);
     });
 
+    var activeLists = lists.filter(function (l) {
+      return !oprFilter || up(l.opr) === oprFilter;
+    });
+    issueStats.checkedLists = activeLists.length;
+
     var listedCtnrs = {};
-    lists.forEach(function (l) {
-      l.items.forEach(function (item) { listedCtnrs[item.ctnr] = 1; });
+    activeLists.forEach(function (l) {
+      l.items.forEach(function (item) {
+        if (itemInScope(item, l, oprFilter)) listedCtnrs[item.ctnr] = 1;
+      });
     });
     issueStats.listed = Object.keys(listedCtnrs).length;
 
@@ -7020,30 +7065,38 @@ window.addEventListener('beforeunload', function(e){
        is the one the manifest expects there. This catches a container
        inserted into the wrong operator's slot without flagging every
        other operator's normal rows. */
-    var slotLists = lists.filter(function (l) {
-      return !!l.opr && l.items.some(function (it) { return !!normSlot(it.slot); });
+    var slotLists = activeLists.filter(function (l) {
+      return !!l.opr && l.items.some(function (it) { return !!normSlot(it.slot) && itemInScope(it, l, oprFilter); });
     });
-    var containerLists = lists.filter(function (l) { return slotLists.indexOf(l) < 0; });
+    var containerLists = activeLists.filter(function (l) { return slotLists.indexOf(l) < 0; });
 
-    var bySlot = {};
+    var bySlot = {}, bySlotAll = {};
     rs.forEach(function (r) {
       var s = normSlot(slotOf(r));
       if (!s) return;
       (bySlot[s] || (bySlot[s] = [])).push(r);
     });
+    rsAll.forEach(function (r) {
+      var s = normSlot(slotOf(r));
+      if (!s) return;
+      (bySlotAll[s] || (bySlotAll[s] = [])).push(r);
+    });
 
     slotLists.forEach(function (l) {
       var listSlots = {}, listCtnrs = {};
       l.items.forEach(function (item) {
+        if (!itemInScope(item, l, oprFilter)) return;
         var s = normSlot(item.slot);
         if (s) listSlots[s] = 1;
         listCtnrs[item.ctnr] = 1;
       });
       l.items.forEach(function (item) {
+        if (!itemInScope(item, l, oprFilter)) return;
         var s = normSlot(item.slot);
         if (!s) return;
         var cands = bySlot[s];
         if (!cands || !cands.length) {
+          if (bySlotAll[s] && bySlotAll[s].length) return; // row is outside the active filter
           push({
             type: 'extra', ctnr: item.ctnr, slot: s, pod: item.pod || '', manifest: '—',
             listOpr: l.opr, listName: l.file, listSize: item.size, noFix: 1
@@ -7064,7 +7117,7 @@ window.addEventListener('beforeunload', function(e){
           }
           return;
         }
-        var m = cands[0], owner = ctnrOwner(item.ctnr, byCtnr);
+        var m = cands[0], owner = ctnrOwner(item.ctnr, byCtnrAll);
         if (owner && l.opr && owner !== l.opr) {
           push({
             type: 'opr', rid: m._rid, ctnr: item.ctnr, slot: s, pod: item.pod || podOf(m),
@@ -7101,6 +7154,7 @@ window.addEventListener('beforeunload', function(e){
     containerLists.forEach(function (l) {
       if (l.opr) covered[l.opr] = 1;
       l.items.forEach(function (item) {
+        if (!itemInScope(item, l, oprFilter)) return;
         (listIndex[item.ctnr] || (listIndex[item.ctnr] = [])).push({ list: l, item: item });
       });
     });
@@ -7135,6 +7189,7 @@ window.addEventListener('beforeunload', function(e){
     var byPrefix = {};
     containerLists.forEach(function (l) {
       l.items.forEach(function (item) {
+        if (!itemInScope(item, l, oprFilter)) return;
         var p = item.ctnr.slice(0, 4);
         (byPrefix[p] || (byPrefix[p] = [])).push({ list: l, item: item });
       });
@@ -7176,7 +7231,8 @@ window.addEventListener('beforeunload', function(e){
     containerLists.forEach(function (l) {
       if (!l.opr) return;
       l.items.forEach(function (item) {
-        if (byCtnr[item.ctnr]) return;
+        if (!itemInScope(item, l, oprFilter)) return;
+        if (byCtnrAll[item.ctnr]) return;
         if (usedProposal[item.ctnr]) return;
         push({
           type: 'extra', ctnr: item.ctnr, slot: item.slot || '', pod: '',
@@ -7196,7 +7252,7 @@ window.addEventListener('beforeunload', function(e){
   }
 
   function issueSnapshot(opr, pod) {
-    var all = lastIssues.length ? lastIssues : computeIssues();
+    var all = computeIssues();
     var list = all.filter(function (i) {
       if (!opr && !pod) return true;
       if (i.type === 'extra') return !opr && !pod;
@@ -7230,6 +7286,8 @@ window.addEventListener('beforeunload', function(e){
   }
   function chipList(l) {
     var ops = manifestOps();
+    var opf = activeOprFilter();
+    var off = !!opf && up(l.opr) !== opf;
     var opts = '<option value="">— set operator —</option>';
     ops.forEach(function (o) {
       opts += '<option value="' + esc(o) + '"' + (l.opr === o ? ' selected' : '') + '>' + esc(o) + '</option>';
@@ -7237,10 +7295,11 @@ window.addEventListener('beforeunload', function(e){
     var detected = l.autoOpr && ops.indexOf(l.autoOpr) < 0
       ? '<span class="meta" style="color:#fcd34d">listed for ' + esc(l.autoOpr) + '</span>' : '';
     var warn = !l.opr ? ' warn' : '';
-    return '<div class="rc-chip' + warn + '"><span class="dot"></span>' +
+    return '<div class="rc-chip' + warn + (off ? ' ignored' : '') + '"><span class="dot"></span>' +
       '<span class="nm" title="' + esc(l.file + ' — ' + (l.sheets || [l.sheet]).join(', ')) + '">📋 ' + esc(l.file) + (l.sheet ? ' · ' + esc(l.sheet) : '') + '</span>' +
       '<span class="meta">' + fmt(l.items.length) + ' boxes' + (l.vessel ? ' · ' + esc(l.vessel) + (l.voyage ? ' ' + esc(l.voyage) : '') : '') + '</span>' +
       detected +
+      (off ? '<span class="meta">outside filter</span>' : '') +
       '<select data-list-opr="' + esc(l.id) + '" aria-label="Loading list operator">' + opts + '</select>' +
       '<button class="x" type="button" data-rm-list="' + esc(l.id) + '" aria-label="Remove loading list">✕</button></div>';
   }
@@ -7404,7 +7463,7 @@ window.addEventListener('beforeunload', function(e){
   function renderLists() {
     if (!lists.length) {
       lastIssues = [];
-      issueStats = { opr: 0, ctnr: 0, num: 0, size: 0, missing: 0, extra: 0, matched: 0, listed: 0, total: 0 };
+      issueStats = { opr: 0, ctnr: 0, num: 0, size: 0, missing: 0, extra: 0, matched: 0, listed: 0, total: 0, checkedLists: 0 };
       $('rcLlKpis').innerHTML = '';
       $('rcLlBody').innerHTML = '<tr><td colspan="7" style="padding:18px;color:var(--muted)">No loading lists loaded. Use <b>📋 Loading lists</b> above and choose one file per operator (multiple files allowed).</td></tr>';
       $('rcLlNote').textContent = '';
@@ -7414,8 +7473,9 @@ window.addEventListener('beforeunload', function(e){
     }
     var issues = computeIssues();
     var s = issueStats;
+    var flabels = activeFilterLabels();
     $('rcLlKpis').innerHTML =
-      kpi('Lists loaded', fmt(lists.length)) +
+      kpi('Lists checked', fmt(s.checkedLists || 0) + (flabels.length ? ' / ' + fmt(lists.length) : '')) +
       kpi('Listed boxes', fmt(s.listed)) +
       kpi('Matched', fmt(s.matched), 'green') +
       kpi('Operator mismatch', fmt(s.opr), s.opr ? 'amber' : '') +
@@ -7428,7 +7488,10 @@ window.addEventListener('beforeunload', function(e){
     var limit = 300;
     var body = $('rcLlBody');
     if (!shown.length) {
-      body.innerHTML = '<tr><td colspan="7" style="padding:16px;color:var(--muted)">No ' + (issueFilter === 'all' ? 'issues' : issueFilter + ' issues') + ' found with the current loading lists.</td></tr>';
+      var emptyMsg = !s.checkedLists
+        ? 'No loading list matches the active main filter.'
+        : 'No ' + (issueFilter === 'all' ? 'issues' : issueFilter + ' issues') + ' found with the current loading lists.';
+      body.innerHTML = '<tr><td colspan="7" style="padding:16px;color:var(--muted)">' + emptyMsg + '</td></tr>';
     } else {
       body.innerHTML = shown.slice(0, limit).map(function (i) {
         var idx = lastIssues.indexOf(i);
@@ -7461,6 +7524,8 @@ window.addEventListener('beforeunload', function(e){
     $('rcFixAllOpr').disabled = !lastIssues.some(function (i) { return i.type === 'opr' && !i.noFix; });
     $('rcFixAllNum').disabled = !s.num;
     var notes = [];
+    if (flabels.length) notes.push('Checks follow the main filters: <b>' + esc(flabels.join(' · ')) + '</b>.');
+    if (!s.checkedLists) notes.push('No loading list is mapped to the selected operator — set the list operator in its dropdown above.');
     notes.push('Showing ' + Math.min(shown.length, limit) + ' of ' + shown.length + ' issues.');
     if (s.num) notes.push('A number proposal comes from the loading list, matched by container prefix and size (±2 characters).');
     if (s.extra) notes.push('<b>' + fmt(s.extra) + '</b> listed container(s) are not in the manifest — check whether they were omitted from the ASC.');
@@ -7711,6 +7776,13 @@ window.addEventListener('beforeunload', function(e){
       if (fx) { fixOne(parseInt(fx.dataset.fix, 10)); return; }
       var ed = e.target.closest('[data-edit]');
       if (ed && typeof openEditFromRid === 'function') openEditFromRid(parseInt(ed.dataset.edit, 10));
+    });
+
+    // Keep list checks in sync with the main dashboard filters even if the
+    // page's renderAll binding isn't the wrapped one.
+    ['fOPR', 'fSzTp', 'fFE', 'fPOL', 'fPOD'].forEach(function (id) {
+      var el = $(id);
+      if (el) el.addEventListener('change', function () { try { refresh(); } catch (e) {} });
     });
 
     // refresh whenever the dashboard re-renders (upload, edit, filters)
