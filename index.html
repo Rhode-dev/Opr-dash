@@ -120,6 +120,15 @@ h1 span{color:var(--accent)}
 }
 .drawer-select:focus,.drawer-select:hover{border-color:var(--accent);background-color:rgba(59,130,246,.06)}
 .drawer-select option{background:#1e293b;color:var(--text)}
+.drawer-ai{margin:4px 0 12px}
+.drawer-ai-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px}
+.drawer-ai-grid button{
+  display:flex;align-items:center;gap:6px;padding:8px 9px;border-radius:8px;cursor:pointer;
+  border:1px solid var(--border-soft);background:rgba(30,41,59,.65);color:var(--text-soft);
+  font-family:var(--ui);font-size:10.5px;font-weight:600;text-align:left;transition:all .16s;
+}
+.drawer-ai-grid button:hover{border-color:var(--accent);background:rgba(59,130,246,.12);color:#fff}
+.drawer-ai-grid button:active{transform:scale(.98)}
 .drawer-divider{height:1px;background:var(--border-soft);margin:14px 0}
 .drawer-footer{padding:14px 16px;border-top:1px solid var(--border-soft);display:flex;flex-direction:column;gap:8px;flex-shrink:0}
 .btn-reset,.btn-export{
@@ -639,6 +648,13 @@ footer strong{color:var(--accent);font-weight:500}
   border-radius:8px;padding:8px 10px;color:var(--text);font-family:var(--mono);font-size:11px;outline:none;transition:border-color .18s}
 .ai-input:focus,.ai-select:focus,.ai-textarea:focus{border-color:var(--accent)}
 .ai-textarea{resize:vertical;min-height:58px;line-height:1.45}
+.ai-keyrow{display:flex;gap:6px;align-items:center}
+.ai-keyrow .ai-input{flex:1;min-width:0}
+.ai-keyrow .ai-btn{flex:none}
+.ai-check{display:flex;align-items:flex-start;gap:7px;font-size:9.5px;line-height:1.5;color:var(--text-soft);cursor:pointer}
+.ai-check input{accent-color:var(--accent);margin-top:2px;flex:none}
+.ai-back{margin:0 0 10px;align-self:flex-start}
+.ai-ds-answer{white-space:pre-wrap;line-height:1.65;font-size:10.5px;color:var(--text);overflow-wrap:anywhere}
 .ai-select{appearance:none;cursor:pointer;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
   background-repeat:no-repeat;background-position:right 9px center;padding-right:26px}
@@ -909,6 +925,68 @@ footer strong{color:var(--accent);font-weight:500}
   .rc-chip .nm{max-width:150px}
 }
 
+/* ── CLOUD SYNC (Supabase) ── */
+#syncOverlay{
+  display:none;position:fixed;inset:0;z-index:520;background:rgba(2,6,23,.72);
+  backdrop-filter:blur(5px);align-items:center;justify-content:center;padding:18px;
+}
+#syncOverlay.open{display:flex}
+#syncModal{
+  width:min(620px,100%);max-height:92vh;display:flex;flex-direction:column;overflow:hidden;
+  background:rgba(15,23,42,.98);border:1px solid var(--border);border-radius:14px;
+  box-shadow:0 24px 70px rgba(0,0,0,.55);animation:fadeUp .2s ease-out both;
+}
+.sync-head{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--border-soft);flex:none}
+.sync-head h3{font-family:var(--ui);font-size:14px;font-weight:800;color:#fff;margin:0;flex:1}
+.sync-close{background:none;border:1px solid var(--border-soft);color:var(--muted);width:28px;height:28px;border-radius:7px;cursor:pointer}
+.sync-close:hover{color:#fff;background:var(--surface2)}
+.sync-body{padding:14px 16px;overflow-y:auto;display:flex;flex-direction:column;gap:10px}
+.sync-note{font-size:10px;line-height:1.6;color:var(--muted)}
+.sync-note b{color:var(--text-soft)}
+.sync-status{font-family:var(--mono);font-size:10px;line-height:1.5;padding:7px 9px;border-radius:7px;border:1px solid var(--border-soft);background:rgba(30,41,59,.55);color:var(--text-soft)}
+.sync-status.ok{color:#6ee7b7;border-color:rgba(34,197,94,.35);background:rgba(34,197,94,.08)}
+.sync-status.err{color:#fca5a5;border-color:rgba(239,68,68,.35);background:rgba(239,68,68,.08)}
+.sync-status.warn{color:#fcd34d;border-color:rgba(245,158,11,.35);background:rgba(245,158,11,.08)}
+.sync-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sync-grid .full{grid-column:1/-1}
+.sync-field{display:flex;flex-direction:column;gap:4px}
+.sync-field label{font-size:8.5px;color:var(--muted);letter-spacing:1.2px;text-transform:uppercase}
+.sync-field input{
+  width:100%;background:rgba(15,23,42,.85);border:1px solid var(--border-soft);border-radius:7px;
+  padding:7px 9px;color:var(--text);font-family:var(--mono);font-size:10.5px;outline:none;
+}
+.sync-field input:focus{border-color:var(--accent)}
+.sync-actions{display:flex;gap:6px;flex-wrap:wrap}
+.sync-btn{
+  padding:6px 10px;border-radius:7px;border:1px solid var(--border-soft);background:transparent;
+  color:var(--text-soft);font-family:var(--ui);font-size:10px;font-weight:600;cursor:pointer;
+}
+.sync-btn:hover{border-color:var(--accent);background:rgba(59,130,246,.12);color:#fff}
+.sync-btn.primary{border-color:rgba(59,130,246,.45);background:rgba(59,130,246,.16);color:#93c5fd}
+.sync-btn.danger{border-color:rgba(239,68,68,.35);color:#fca5a5}
+.sync-btn:disabled{opacity:.4;cursor:default}
+.sync-check{display:flex;align-items:flex-start;gap:7px;font-size:9.5px;line-height:1.5;color:var(--text-soft);cursor:pointer}
+.sync-check input{accent-color:var(--accent);margin-top:2px;flex:none}
+.sync-account{font-size:9.5px;color:var(--muted);font-family:var(--mono)}
+.sync-account b{color:var(--text)}
+.sync-help{border:1px solid var(--border-soft);border-radius:8px;padding:8px 10px;background:rgba(30,41,59,.35)}
+.sync-help summary{cursor:pointer;font-size:10px;font-weight:700;color:var(--text-soft)}
+.sync-help pre{
+  white-space:pre-wrap;word-break:break-word;font-family:var(--mono);font-size:8.5px;line-height:1.45;
+  color:var(--text-soft);background:rgba(2,6,23,.55);border:1px solid var(--border-soft);border-radius:6px;
+  padding:8px;max-height:210px;overflow:auto;margin:7px 0 0;
+}
+.sync-help a{color:var(--accent2)}
+.sync-meta{font-size:9px;color:var(--muted);font-family:var(--mono);white-space:pre-wrap;line-height:1.5}
+.drawer-sync-btn{
+  width:100%;display:flex;align-items:center;justify-content:center;gap:6px;margin:0 0 12px;
+  padding:8px 10px;border-radius:8px;border:1px solid rgba(59,130,246,.3);
+  background:rgba(59,130,246,.08);color:#93c5fd;font-family:var(--ui);font-size:10.5px;font-weight:600;cursor:pointer;
+}
+.drawer-sync-btn:hover{background:rgba(59,130,246,.18);color:#fff}
+.sync-badge{margin-left:auto;font-family:var(--mono);font-size:8.5px;color:var(--muted)}
+@media(max-width:640px){#syncOverlay{padding:8px}.sync-grid{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -963,6 +1041,16 @@ footer strong{color:var(--accent);font-weight:500}
       <label class="filter-label" for="fPOD">Port of Discharge</label>
       <select class="drawer-select" id="fPOD"><option value="">All POD</option></select>
     </div>
+    <div class="drawer-ai">
+      <div class="filter-label">AI Assistant</div>
+      <div class="drawer-ai-grid">
+        <button type="button" data-ai-open="chat">💬 Chat</button>
+        <button type="button" data-ai-open="train">🎓 Train</button>
+        <button type="button" data-ai-open="memory">🧠 Memory</button>
+        <button type="button" data-ai-open="deepseek">🔑 DeepSeek</button>
+      </div>
+    </div>
+    <button class="drawer-sync-btn" type="button" id="syncOpenBtn">☁ Cloud Sync <span class="sync-badge"></span></button>
     <div class="divider"></div>
     <p class="filter-stat" id="filterStat">Showing all records</p>
   </div>
@@ -1422,12 +1510,6 @@ footer strong{color:var(--accent);font-weight:500}
     <button class="ai-close" id="aiClose" type="button" aria-label="Close assistant">✕</button>
   </div>
 
-  <div class="ai-tabs" role="tablist" aria-label="Assistant sections">
-    <button class="ai-tab active" type="button" role="tab" aria-selected="true" data-ai-tab="chat">Chat</button>
-    <button class="ai-tab" type="button" role="tab" aria-selected="false" data-ai-tab="train">Train</button>
-    <button class="ai-tab" type="button" role="tab" aria-selected="false" data-ai-tab="memory">Memory</button>
-  </div>
-
   <!-- CHAT -->
   <section class="ai-body" id="aiChatPane" role="tabpanel" aria-label="Chat">
     <div id="aiMessages" aria-live="polite" aria-relevant="additions"></div>
@@ -1440,6 +1522,7 @@ footer strong{color:var(--accent);font-weight:500}
 
   <!-- TRAIN -->
   <section class="ai-body ai-pane" id="aiTrainPane" role="tabpanel" aria-label="Train the assistant" hidden>
+    <button class="ai-btn ai-back" type="button" data-ai-back="chat">← Chat</button>
     <div class="ai-sec">
       <h4>Model status</h4>
       <div class="ai-stats three" id="aiStatsGrid"></div>
@@ -1552,10 +1635,12 @@ footer strong{color:var(--accent);font-weight:500}
     <div class="ai-sec">
       <h4>Training data</h4>
       <div class="ai-actions">
+        <button class="ai-btn primary" type="button" id="aiDomainPack">＋ Domain training pack</button>
         <button class="ai-btn" type="button" id="aiExportTrain">⬇ Export</button>
         <button class="ai-btn" type="button" id="aiImportTrain">⬆ Import</button>
         <button class="ai-btn danger" type="button" id="aiResetTrain">↺ Reset</button>
       </div>
+      <div class="ai-msgline" id="aiDomainMsg" role="status"></div>
       <input type="file" id="aiImportFile" accept=".json,application/json" hidden>
       <div class="ai-hint" style="margin-top:7px">Training is saved in this browser. Export it to move the assistant to another computer or share it with your team.</div>
     </div>
@@ -1563,6 +1648,7 @@ footer strong{color:var(--accent);font-weight:500}
 
   <!-- MEMORY -->
   <section class="ai-body ai-pane" id="aiMemoryPane" role="tabpanel" aria-label="Memory" hidden>
+    <button class="ai-btn ai-back" type="button" data-ai-back="chat">← Chat</button>
     <div class="ai-sec">
       <h4>Facts &amp; definitions <span class="ai-count" id="aiFactCount">0</span></h4>
       <div id="aiFactList"></div>
@@ -1584,7 +1670,169 @@ footer strong{color:var(--accent);font-weight:500}
       <div id="aiVocabList"></div>
     </div>
   </section>
+
+  <!-- DEEPSEEK -->
+  <section class="ai-body ai-pane" id="aiDeepSeekPane" role="tabpanel" aria-label="DeepSeek" hidden>
+    <button class="ai-btn ai-back" type="button" data-ai-back="chat">← Chat</button>
+    <div class="ai-sec">
+      <h4>DeepSeek API <span class="ai-count" id="dsBadge">Off</span></h4>
+      <div class="ai-note" style="margin:0 0 10px">
+        Connect the panel to <b>DeepSeek</b> with your own API key. Calls go straight from this browser to
+        <code>api.deepseek.com</code>. The key is stored only in this browser profile and is never included in
+        exported training data.
+      </div>
+      <form id="dsForm" autocomplete="off">
+        <div class="ai-field">
+          <label for="dsKey">API key (starts with sk-)</label>
+          <div class="ai-keyrow">
+            <input class="ai-input" id="dsKey" type="password" placeholder="sk-..." spellcheck="false">
+            <button class="ai-btn" type="button" id="dsKeyShow" aria-label="Show or hide API key">Show</button>
+          </div>
+        </div>
+        <div class="ai-grid2">
+          <div class="ai-field">
+            <label for="dsModel">Model</label>
+            <input class="ai-input" id="dsModel" list="dsModelList" value="deepseek-flash" spellcheck="false">
+            <datalist id="dsModelList">
+              <option value="deepseek-flash">deepseek-flash (recommended)</option>
+              <option value="deepseek-v4-pro">deepseek-v4-pro</option>
+            </datalist>
+          </div>
+          <div class="ai-field">
+            <label for="dsMode">When to use</label>
+            <select class="ai-select" id="dsMode">
+              <option value="off">Off — local only</option>
+              <option value="fallback">Fallback — when local AI can't answer</option>
+              <option value="always">Always — send every chat question</option>
+            </select>
+          </div>
+        </div>
+        <div class="ai-field">
+          <label for="dsBase">API base URL</label>
+          <input class="ai-input" id="dsBase" value="https://api.deepseek.com" spellcheck="false">
+        </div>
+        <div class="ai-grid2">
+          <div class="ai-field">
+            <label for="dsTemp">Temperature</label>
+            <input class="ai-input" id="dsTemp" type="number" min="0" max="2" step="0.1" value="0.3">
+          </div>
+          <div class="ai-field">
+            <label for="dsMax">Max reply tokens</label>
+            <input class="ai-input" id="dsMax" type="number" min="64" max="8192" step="64" value="1200">
+          </div>
+        </div>
+        <div class="ai-field">
+          <label for="dsPrompt">System / training instructions</label>
+          <textarea class="ai-textarea" id="dsPrompt" rows="5" placeholder="Tell DeepSeek how to behave for your manifests, bookings and loading lists…"></textarea>
+        </div>
+        <label class="ai-check"><input type="checkbox" id="dsTraining" checked> Include local facts, commands, sizes and a live manifest summary in every request</label>
+        <div class="ai-actions" style="margin-top:9px">
+          <button class="ai-btn primary" type="submit">Save</button>
+          <button class="ai-btn" type="button" id="dsTest">Test connection</button>
+          <button class="ai-btn danger" type="button" id="dsClear">Clear key</button>
+        </div>
+        <div class="ai-msgline" id="dsStatus" role="status"></div>
+      </form>
+    </div>
+
+    <div class="ai-sec">
+      <h4>Train DeepSeek with your data</h4>
+      <div class="ai-note" style="margin:0 0 8px">
+        The public DeepSeek API does not expose model fine-tuning. “Training” here means a strong system prompt plus
+        your learned facts, commands, size codes and a live manifest summary sent with every request. You can edit
+        the instructions above or build a starter prompt from everything the local AI has learned.
+      </div>
+      <div class="ai-actions">
+        <button class="ai-btn primary" type="button" id="dsBuildPrompt">Use local knowledge as prompt</button>
+        <button class="ai-btn" type="button" id="dsTestPrompt">Test with prompt</button>
+      </div>
+      <div class="ai-msgline" id="dsTrainMsg" role="status"></div>
+      <div class="ai-hint">Tip: prefix any chat message with <b>@deepseek</b> to force a remote answer even when the mode is Off or Fallback.</div>
+    </div>
+  </section>
 </aside>
+
+<!-- CLOUD SYNC (Supabase) -->
+<div id="syncOverlay" aria-hidden="true">
+  <div id="syncModal" role="dialog" aria-modal="true" aria-labelledby="syncTitle">
+    <div class="sync-head">
+      <h3 id="syncTitle">☁ Cloud Sync</h3>
+      <button type="button" class="sync-close" id="syncClose" aria-label="Close cloud sync">✕</button>
+    </div>
+    <div class="sync-body">
+      <div class="sync-status" id="syncStatus">Not connected. Sign in with the same Supabase account on your PC and phone.</div>
+      <div class="sync-note">
+        Cloud Sync stores one snapshot of the current manifest in your own <b>Supabase</b> project.
+        Upload from the PC, then Download on the phone (or enable auto-download) to continue with the same containers.
+        Training is not included in the snapshot.
+      </div>
+
+      <details class="sync-help">
+        <summary>One-time Supabase setup (table + security)</summary>
+        <div class="sync-note" style="margin-top:7px">
+          1. Create a project at <a href="https://supabase.com/dashboard" target="_blank" rel="noopener">supabase.com/dashboard</a>.<br>
+          2. Open <b>SQL Editor</b>, paste and run the SQL below.<br>
+          3. Open <b>Project Settings → API</b> and copy the <b>Project URL</b> and <b>anon public</b> key into the fields here.<br>
+          4. Create an account here with an email and password, then sign in on the other device with the same account.<br>
+          If Supabase asks for email confirmation, confirm the email first or turn confirmation off in Authentication settings.
+        </div>
+        <pre id="syncSql">create table if not exists public.manifest_snapshots (
+  user_id uuid primary key references auth.users(id) on delete cascade,
+  payload jsonb not null,
+  updated_at timestamptz not null default now()
+);
+alter table public.manifest_snapshots enable row level security;
+drop policy if exists "own manifest snapshot" on public.manifest_snapshots;
+create policy "own manifest snapshot"
+  on public.manifest_snapshots
+  for all
+  to authenticated
+  using (auth.uid() = user_id)
+  with check (auth.uid() = user_id);</pre>
+        <div class="sync-actions" style="margin-top:7px">
+          <button type="button" class="sync-btn" id="syncCopySql">Copy SQL</button>
+        </div>
+      </details>
+
+      <div class="sync-grid">
+        <div class="sync-field full">
+          <label for="syncUrl">Supabase project URL</label>
+          <input id="syncUrl" placeholder="https://xxxxx.supabase.co" spellcheck="false">
+        </div>
+        <div class="sync-field full">
+          <label for="syncAnon">Anon public key</label>
+          <input id="syncAnon" type="password" placeholder="eyJhbGciOi..." spellcheck="false">
+        </div>
+      </div>
+
+      <div class="sync-grid">
+        <div class="sync-field">
+          <label for="syncEmail">Email</label>
+          <input id="syncEmail" type="email" placeholder="you@example.com" autocomplete="username">
+        </div>
+        <div class="sync-field">
+          <label for="syncPassword">Password</label>
+          <input id="syncPassword" type="password" placeholder="Account password" autocomplete="current-password">
+        </div>
+      </div>
+
+      <div class="sync-actions">
+        <button type="button" class="sync-btn primary" id="syncSignIn">Sign in</button>
+        <button type="button" class="sync-btn" id="syncSignUp">Create account</button>
+        <button type="button" class="sync-btn danger" id="syncSignOut" disabled>Sign out</button>
+      </div>
+      <div class="sync-account" id="syncAccount">Not signed in.</div>
+
+      <div class="sync-actions" style="margin-top:4px">
+        <button type="button" class="sync-btn primary" id="syncPush" disabled>⬆ Upload current data</button>
+        <button type="button" class="sync-btn" id="syncPull" disabled>⬇ Download latest</button>
+      </div>
+      <label class="sync-check"><input type="checkbox" id="syncAutoPull" checked> Auto-download updates every 5 seconds when there are no local edits</label>
+      <label class="sync-check"><input type="checkbox" id="syncAutoPush"> Auto-upload after edits (last write wins — use on one device at a time)</label>
+      <div class="sync-meta" id="syncMeta"></div>
+    </div>
+  </div>
+</div>
 
 
 <footer>
@@ -3758,10 +4006,11 @@ window.addEventListener('beforeunload', function(e){
     recon: { label: 'check loading lists / wrong container numbers', short: 'Recon' },
     reset: { label: 'clear filters and show everything', short: 'Reset' },
     train: { label: 'explain or open training', short: 'Training' },
+    deepseek: { label: 'connect or configure DeepSeek', short: 'DeepSeek' },
     help: { label: 'explain what the agent can do', short: 'Help' },
     greet: { label: 'greet / small talk', short: 'Greeting' }
   };
-  var TASK_ORDER = ['greet', 'help', 'train', 'reset', 'export', 'recon', 'booking', 'validate', 'vessel', 'compare', 'weight', 'sizes', 'rank', 'count', 'find', 'summary', 'search'];
+  var TASK_ORDER = ['greet', 'help', 'deepseek', 'train', 'reset', 'export', 'recon', 'booking', 'validate', 'vessel', 'compare', 'weight', 'sizes', 'rank', 'count', 'find', 'summary', 'search'];
 
   var SEED = [
     ['summarise the manifest', 'summary'], ['give me an overview', 'summary'],
@@ -3841,6 +4090,47 @@ window.addEventListener('beforeunload', function(e){
     return { id: 'seed-' + i, text: x[0], intent: x[1], weight: 1, hits: 0, seed: true };
   });
 
+  /* A larger built-in pack for manifests, bookings and loading-list checks.
+     It is merged into existing training on load, so users updating the file
+     get the new phrases without losing their own examples. */
+  var DOMAIN_PACK = [
+    ['which containers are missing from the loading list', 'recon'],
+    ['what is missing from the loading list', 'recon'],
+    ['which containers are on the list but not in the manifest', 'recon'],
+    ['operator mismatch on the loading list', 'recon'],
+    ['container number mismatch on the loading list', 'recon'],
+    ['which loading list has the wrong operator', 'recon'],
+    ['compare the loading list with the manifest', 'recon'],
+    ['show loading list issues for ema', 'recon'],
+    ['what is the balance of 20 and 40', 'booking'],
+    ['20 and 40 balance', 'booking'],
+    ['how many boxes can i still load', 'booking'],
+    ['which operator is overbooked', 'booking'],
+    ['show booking vs loaded', 'booking'],
+    ['what is booked for ocl', 'booking'],
+    ['teu balance by pod', 'booking'],
+    ['which operator has the most containers', 'rank'],
+    ['top pods', 'rank'],
+    ['busiest loading port', 'rank'],
+    ['how many empty containers', 'count'],
+    ['how many full containers', 'count'],
+    ['how many containers for ema', 'count'],
+    ['show containers for pod nbo', 'search'],
+    ['show 40 foot high cubes', 'search'],
+    ['show reefers', 'search'],
+    ['show containers on pol mwa', 'search'],
+    ['show containers over 25 tons', 'weight'],
+    ['summarise full containers for ema', 'summary'],
+    ['what sizes are loaded for ocl', 'sizes'],
+    ['which containers are invalid', 'validate'],
+    ['compare ema and ocl', 'compare'],
+    ['connect deepseek', 'deepseek'],
+    ['how do i add a deepseek api key', 'deepseek']
+  ];
+  SEED = SEED.concat(DOMAIN_PACK.map(function (x, i) {
+    return { id: 'pack-' + i, text: x[0], intent: x[1], weight: 1.1, hits: 0, seed: true };
+  }));
+
   var STATE_DEFAULT = function () {
     return {
       v: 1,
@@ -3856,6 +4146,36 @@ window.addEventListener('beforeunload', function(e){
 
   var state = STATE_DEFAULT();
   var storageOk = true;
+
+  /* ── DeepSeek remote connection (key stays in this browser only) ───── */
+  var DS_STORE = 'oprDeepSeek.v1';
+  var DS_DEFAULT = {
+    key: '', base: 'https://api.deepseek.com', model: 'deepseek-flash', mode: 'off',
+    temp: 0.3, max: 1200, prompt: '', useTraining: true
+  };
+  function loadDS() {
+    var out = Object.assign({}, DS_DEFAULT);
+    try {
+      var saved = JSON.parse(localStorage.getItem(DS_STORE) || '{}');
+      if (saved && typeof saved === 'object') {
+        out.key = String(saved.key || '');
+        out.base = String(saved.base || out.base).trim() || out.base;
+        out.model = String(saved.model || out.model).trim() || out.model;
+        out.mode = ['off', 'fallback', 'always'].indexOf(saved.mode) >= 0 ? saved.mode : out.mode;
+        var t = Number(saved.temp);
+        out.temp = isFinite(t) ? clamp(t, 0, 2) : out.temp;
+        out.max = Math.round(clamp(Number(saved.max) || out.max, 64, 8192));
+        out.prompt = String(saved.prompt || '');
+        out.useTraining = saved.useTraining !== false;
+      }
+    } catch (e) {}
+    return out;
+  }
+  var ds = loadDS();
+  function saveDS() {
+    try { localStorage.setItem(DS_STORE, JSON.stringify(ds)); } catch (e) {}
+  }
+  function dsReady() { return !!(ds.key && ds.mode !== 'off'); }
 
   function normalizeEx(e) {
     if (!e || typeof e !== 'object') return null;
@@ -3911,6 +4231,15 @@ window.addEventListener('beforeunload', function(e){
       var ex = saved.examples.map(normalizeEx).filter(Boolean);
       out.examples = ex.length ? ex : out.examples;
     }
+    // Bring in new built-in domain phrases without duplicating or dropping
+    // anything the user taught.
+    (function mergeSeeds() {
+      var have = {};
+      out.examples.forEach(function (e) { have[e.text.toLowerCase()] = 1; });
+      SEED.forEach(function (e) {
+        if (!have[e.text.toLowerCase()]) out.examples.push(Object.assign({}, e));
+      });
+    })();
     if (Array.isArray(saved.facts)) out.facts = saved.facts.map(normalizeFact).filter(Boolean);
     if (Array.isArray(saved.commands)) out.commands = saved.commands.map(normalizeCmd).filter(Boolean);
     if (saved.sizes && typeof saved.sizes === 'object') {
@@ -4022,6 +4351,7 @@ window.addEventListener('beforeunload', function(e){
   var TASK_RULES = {
     greet: [/^(hi|hello|hey|yo|hiya|howdy|good (morning|afternoon|evening)|greetings)\b/],
     help: [/\b(help|what can you (do|answer|help)|how do i use|commands|capabilities|what are you|who are you|what questions)\b/],
+    deepseek: [/\b(deepseek|api key|remote ai|connect (the )?(ai|deepseek)|use deepseek)\b/],
     train: [/\b(train|teach|learn|learning|training|remember this|retrain)\b/],
     summary: [/\b(summar(y|ise|ize)|overview|everything|all the info|what('s| is) (loaded|in|on)|tell me about (the )?(manifest|load|shipment|data)|status report|brief me|how is the load)\b/],
     validate: [/\b(invalid|bad (container|number|box)|check digit|iso ?6346|wrong (container|number)|data quality|errors?|dup(licate|licated|licates)?|repeated)\b/],
@@ -4364,6 +4694,21 @@ window.addEventListener('beforeunload', function(e){
       plain: 'No manifest loaded yet. Upload a manifest file first.'
     });
   }
+  function deepSeekInfoAnswer() {
+    var configured = !!ds.key;
+    var stateTxt = configured
+      ? (ds.mode === 'off' ? 'Key saved, remote mode is Off' : 'Key saved, mode ' + ds.mode)
+      : 'No API key saved yet';
+    return answer({
+      tag: 'deepseek', title: 'DeepSeek API',
+      body: '<div class="ai-note" style="margin:0 0 8px">Status: <b>' + esc(stateTxt) + '</b>.</div>' +
+        '<div class="ai-note" style="margin:0 0 8px">Open the <b>DeepSeek</b> section from <b>Filters &amp; Export → AI Assistant</b> and paste your API key into the <b>API KEY</b> field. Choose <b>deepseek-flash</b> or <b>deepseek-v4-pro</b> and set when it should be used.</div>' +
+        '<div class="ai-note" style="margin:0">For prompt-level training, put your rules in <b>System / training instructions</b> and tick <b>Include local training</b> so your facts, commands, size codes and manifest summary are sent with every request. Prefix any chat question with <b>@deepseek</b> to force a remote answer.</div>',
+      actions: [{ label: 'Open DeepSeek settings', action: 'opendeepseek', primary: true }, { label: 'Open training', action: 'opentrain' }],
+      suggestions: ['What can you do?', 'Summarise the manifest'],
+      plain: 'DeepSeek is optional. ' + stateTxt + '. Open the DeepSeek tab to add an API key and training instructions.'
+    });
+  }
   function helpAnswer() {
     var ex = [
       ['Find', 'find CSNU2742966'],
@@ -4376,14 +4721,14 @@ window.addEventListener('beforeunload', function(e){
       ['Sizes', 'what sizes are loaded?'],
       ['Quality', 'invalid container numbers']
     ];
-    var h = '<div class="ai-note" style="margin:0 0 8px">Ask in plain English. Everything runs on this computer — no internet, no account. Tap an example to run it:</div>';
+    var h = '<div class="ai-note" style="margin:0 0 8px">Ask in plain English. The local agent runs on this computer; DeepSeek is optional from its tab. Tap an example to run it:</div>';
     h += '<div class="ai-list">' + ex.map(function (e) {
       return '<div class="ai-row" data-ai="ask" data-data="' + attr({ text: e[1] }) + '"><span class="k">' + e[0] + '</span><span class="v">' + esc(e[1]) + '</span></div>';
     }).join('') + '</div>';
     h += '<div class="ai-note">I also get better the more you use <b>Train</b>: write manual commands, teach examples, save facts, add size codes and vocabulary. Every answer has 👍/👎 buttons.</div>';
     return answer({
       tag: 'help', title: 'What I can do', body: h,
-      actions: [{ label: 'Open training', action: 'opentrain', primary: true }],
+      actions: [{ label: 'Open training', action: 'opentrain', primary: true }, { label: 'DeepSeek API', action: 'opendeepseek' }],
       suggestions: ['Summarise the manifest', 'Top operators', 'Show invalid containers'],
       plain: 'I can find containers, search, count, rank, report weights, validate numbers and summarise the manifest.'
     });
@@ -5386,6 +5731,7 @@ window.addEventListener('beforeunload', function(e){
       if (defTerm) return done(definitionPrompt(defTerm), 'memory', f, cls, text);
     }
 
+    if (task === 'deepseek') return done(deepSeekInfoAnswer(), 'deepseek', f, cls, text);
     if (task === 'help') return done(helpAnswer(), 'help', f, cls, text);
     if (task === 'train') return done(trainAnswer(), 'train', f, cls, text);
     if (task === 'greet' && !rs.length) return done(greetAnswer(), 'greet', f, cls, text);
@@ -5700,6 +6046,240 @@ window.addEventListener('beforeunload', function(e){
     return txt || (dataRows().length ? dataRows().length + ' records' : 'no source');
   }
 
+  /* ───────────────────────────── DeepSeek ────────────────────────────── */
+  var dsTurns = [];
+  function dataBrief() {
+    var rs = dataRows();
+    if (!rs.length) return 'No manifest is loaded in the dashboard.';
+    var m = vesselMetaSafe();
+    var byO = {}, byP = {}, byS = {}, full = 0, empty = 0;
+    rs.forEach(function (r) {
+      var o = oprOf(r) || '—', p = podOf(r) || '—', s = sztpOf(r) || '—';
+      byO[o] = (byO[o] || 0) + 1;
+      byP[p] = (byP[p] || 0) + 1;
+      byS[s] = (byS[s] || 0) + 1;
+      if (feOf(r) === 'F') full++; else if (feOf(r) === 'E') empty++;
+    });
+    function top(obj, n) {
+      return Object.keys(obj).sort(function (a, b) { return obj[b] - obj[a] || a.localeCompare(b); })
+        .slice(0, n || 10).map(function (k) { return k + ' ' + obj[k]; }).join(', ');
+    }
+    var lines = [];
+    lines.push('CURRENT MANIFEST');
+    lines.push('Vessel: ' + (m.vesselName || '—') + (m.voyage ? ' voyage ' + m.voyage : '') + (m.pol ? ' POL ' + m.pol : ''));
+    lines.push('Containers: ' + rs.length + ' · TEU: ' + sumTEU(rs) + ' · Gross tonnes: ' + sumW(rs).toFixed(2) + ' · Full: ' + full + ' · Empty: ' + empty);
+    lines.push('Operators: ' + top(byO, 12));
+    lines.push('PODs: ' + top(byP, 12));
+    lines.push('Size/type codes: ' + top(byS, 12));
+    return lines.join('\n');
+  }
+  function localTrainingBrief() {
+    var lines = [];
+    if (state.facts.length) {
+      lines.push('LEARNED FACTS');
+      state.facts.slice(0, 30).forEach(function (f) { lines.push('Q: ' + f.q + '\nA: ' + f.a); });
+    }
+    if (state.commands.length) {
+      lines.push('LEARNED COMMANDS');
+      state.commands.slice(0, 20).forEach(function (c) {
+        lines.push('When the user says: ' + c.text + '\nDo: ' + (c.action === 'answer' ? c.answer : TASKS[c.action] ? TASKS[c.action].label : c.action));
+      });
+    }
+    var sizes = sizeKnowledge();
+    var sizeKeys = Object.keys(sizes);
+    if (sizeKeys.length) {
+      lines.push('SIZE KNOWLEDGE');
+      lines.push(sizeKeys.slice(0, 60).map(function (k) {
+        return k + ' = ' + (sizes[k].len === '20' ? '20 ft' : sizes[k].len === '40' ? '40 ft' : 'other') + ' ' + (sizes[k].type || '');
+      }).join(', '));
+    }
+    if (state.examples.length) {
+      lines.push('PHRASES THE LOCAL AGENT RECOGNISES');
+      lines.push(state.examples.slice(0, 80).map(function (e) {
+        return e.text + ' → ' + (TASKS[e.intent] ? TASKS[e.intent].short : e.intent);
+      }).join('\n'));
+    }
+    return lines.join('\n').slice(0, 9000);
+  }
+  function buildDsSystemPrompt() {
+    var p = 'You are DeepSeek, the remote assistant inside the OPR Load Dashboard, a container-manifest, booking and loading-list reconciliation tool. ' +
+      'Answer concisely and practically. Use the supplied manifest summary when relevant. Never invent a container number, slot, booking figure or loading-list issue that is not supported by the context; if exact line-level data is needed, tell the user to use the local assistant search. ' +
+      'The user is a shipping/operations professional. Prefer plain English, short paragraphs and tables when helpful.';
+    if (ds.prompt && ds.prompt.trim()) {
+      p += '\n\nUSER TRAINING INSTRUCTIONS\n' + ds.prompt.trim();
+    }
+    if (ds.useTraining) {
+      var local = localTrainingBrief();
+      if (local) p += '\n\nLOCAL TRAINING\n' + local;
+      p += '\n\n' + dataBrief();
+    }
+    return p.slice(0, 18000);
+  }
+  function buildDsMessages(userText) {
+    var msgs = [{ role: 'system', content: buildDsSystemPrompt() }];
+    dsTurns.slice(-6).forEach(function (t) { msgs.push(t); });
+    msgs.push({ role: 'user', content: String(userText || '').slice(0, 4000) });
+    return msgs;
+  }
+  function dsEndpoint() {
+    var b = String(ds.base || DS_DEFAULT.base).trim().replace(/\/+$/, '');
+    if (/\/chat\/completions$/i.test(b)) return b;
+    return b + '/chat/completions';
+  }
+  async function callDeepSeek(userText, opts) {
+    opts = opts || {};
+    if (!ds.key) throw new Error('No DeepSeek API key saved. Open the DeepSeek tab and add one.');
+    if (typeof fetch !== 'function') throw new Error('This browser does not support fetch.');
+    var ctrl = typeof AbortController === 'function' ? new AbortController() : null;
+    var timer = ctrl ? setTimeout(function () { ctrl.abort(); }, opts.timeout || 45000) : 0;
+    var body = {
+      model: ds.model || 'deepseek-flash',
+      messages: buildDsMessages(userText),
+      temperature: clamp(Number(ds.temp), 0, 2),
+      max_tokens: Math.round(clamp(Number(opts.max || ds.max), 64, 8192)),
+      stream: false
+    };
+    var resp, raw;
+    try {
+      resp = await fetch(dsEndpoint(), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + ds.key },
+        body: JSON.stringify(body),
+        signal: ctrl ? ctrl.signal : undefined
+      });
+      raw = await resp.text();
+    } catch (err) {
+      if (err && err.name === 'AbortError') throw new Error('DeepSeek request timed out after 45 seconds.');
+      throw new Error('Could not reach DeepSeek. Check the internet connection and API base URL. ' + (err && err.message ? err.message : ''));
+    } finally { if (timer) clearTimeout(timer); }
+    var data = null;
+    try { data = JSON.parse(raw || '{}'); } catch (e) {}
+    if (!resp.ok) {
+      var msg = data && data.error && (data.error.message || data.error.type);
+      if (resp.status === 401) msg = 'API key rejected (401). Check the key in the DeepSeek tab.';
+      else if (resp.status === 402) msg = 'DeepSeek balance is insufficient (402).';
+      else if (resp.status === 429) msg = 'DeepSeek rate limit reached (429). Try again shortly.';
+      else if (!msg) msg = 'DeepSeek returned HTTP ' + resp.status + '.';
+      throw new Error(msg);
+    }
+    var text = data && data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+    if (!text) throw new Error('DeepSeek returned an empty reply.');
+    text = String(text).trim();
+    dsTurns.push({ role: 'user', content: String(userText || '').slice(0, 2000) });
+    dsTurns.push({ role: 'assistant', content: text.slice(0, 4000) });
+    if (dsTurns.length > 8) dsTurns = dsTurns.slice(-8);
+    return { text: text, model: body.model, usage: data.usage || null };
+  }
+  function deepSeekAnswer(dsr, question) {
+    var usage = dsr.usage ? (' · ' + (dsr.usage.total_tokens || 0) + ' tokens') : '';
+    return answer({
+      tag: 'deepseek', title: 'DeepSeek · ' + dsr.model,
+      body: '<div class="ai-ds-answer">' + esc(dsr.text).replace(/\n/g, '<br>') + '</div>' +
+        '<div class="ai-note">Remote reply from DeepSeek' + esc(usage) + '. Context sent: ' + (ds.useTraining ? 'local training + manifest summary' : 'training prompt only') + '.</div>',
+      actions: [{ label: 'DeepSeek settings', action: 'opendeepseek' }],
+      suggestions: ['Summarise the manifest', 'Show loading list checks'],
+      plain: dsr.text
+    });
+  }
+  function dsErrorAnswer(err, local) {
+    var body = '<div class="ai-note" style="margin:0 0 6px;color:#fca5a5">' + esc(err && err.message ? err.message : String(err)) + '</div>';
+    if (local && local.task && local.task !== 'unknown') {
+      body += '<div class="ai-note" style="margin:0">Local answer kept below. ' + (local.html || '') + '</div>';
+    }
+    return answer({
+      tag: 'deepseek', tagClass: 'warn', title: 'DeepSeek unavailable',
+      body: body,
+      actions: [{ label: 'Open DeepSeek settings', action: 'opendeepseek', primary: true }],
+      suggestions: ['What can you do?', 'Summarise the manifest'],
+      plain: 'DeepSeek error: ' + (err && err.message ? err.message : String(err))
+    });
+  }
+  function buildPromptFromLocal() {
+    return 'You are the DeepSeek assistant for my OPR Load Dashboard. Help with container manifests, bookings and loading-list reconciliation. Be concise, show numbers clearly, and never invent container or booking data.\n\n' + localTrainingBrief();
+  }
+  function installDomainPack() {
+    var have = {};
+    state.examples.forEach(function (e) { have[e.text.toLowerCase()] = 1; });
+    var added = 0;
+    DOMAIN_PACK.forEach(function (x, i) {
+      var text = String(x[0]).trim().toLowerCase();
+      if (have[text] || !TASKS[x[1]]) return;
+      state.examples.push({ id: 'pack-' + i + '-' + Date.now().toString(36), text: x[0], intent: x[1], weight: 1.15, hits: 0, ts: Date.now(), seed: true });
+      have[text] = 1; added++;
+    });
+    if (added) { save(); renderTrain(); }
+    return added;
+  }
+  function renderDeepSeek() {
+    var key = $('dsKey');
+    if (!key) return;
+    key.value = ds.key;
+    $('dsBase').value = ds.base;
+    $('dsModel').value = ds.model;
+    $('dsMode').value = ds.mode;
+    $('dsTemp').value = ds.temp;
+    $('dsMax').value = ds.max;
+    $('dsPrompt').value = ds.prompt;
+    $('dsTraining').checked = !!ds.useTraining;
+    var badge = $('dsBadge');
+    if (badge) {
+      badge.textContent = !ds.key ? 'Not connected' : (ds.mode === 'off' ? 'Key saved · off' : 'Key saved · ' + ds.mode);
+      badge.style.color = ds.key ? 'var(--green)' : 'var(--muted)';
+    }
+  }
+  function readDeepSeekForm() {
+    ds.key = String($('dsKey').value || '').trim();
+    ds.base = String($('dsBase').value || DS_DEFAULT.base).trim() || DS_DEFAULT.base;
+    ds.model = String($('dsModel').value || 'deepseek-flash').trim() || 'deepseek-flash';
+    ds.mode = ['off', 'fallback', 'always'].indexOf($('dsMode').value) >= 0 ? $('dsMode').value : 'off';
+    var t = Number($('dsTemp').value);
+    ds.temp = isFinite(t) ? clamp(t, 0, 2) : DS_DEFAULT.temp;
+    ds.max = Math.round(clamp(Number($('dsMax').value) || 1200, 64, 8192));
+    ds.prompt = String($('dsPrompt').value || '');
+    ds.useTraining = !!$('dsTraining').checked;
+  }
+  function bindDeepSeek() {
+    var form = $('dsForm');
+    if (!form || form.__bound) return;
+    form.__bound = true;
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      readDeepSeekForm();
+      saveDS();
+      renderDeepSeek();
+      elMsg('dsStatus', ds.key ? 'Saved. Mode: ' + ds.mode + '.' : 'Saved without a key — remote calls stay off.', ds.key ? 'ok' : '');
+    });
+    $('dsKeyShow').addEventListener('click', function () {
+      var k = $('dsKey');
+      k.type = k.type === 'password' ? 'text' : 'password';
+      this.textContent = k.type === 'password' ? 'Show' : 'Hide';
+    });
+    $('dsClear').addEventListener('click', function () {
+      if (!confirm('Remove the DeepSeek API key from this browser?')) return;
+      ds.key = ''; ds.mode = 'off'; saveDS(); renderDeepSeek();
+      elMsg('dsStatus', 'API key removed.', 'ok');
+    });
+    $('dsTest').addEventListener('click', async function () {
+      readDeepSeekForm(); saveDS(); renderDeepSeek();
+      elMsg('dsStatus', 'Testing DeepSeek…', '');
+      try {
+        var r = await callDeepSeek('Reply with exactly: OK', { max: 32, timeout: 30000 });
+        elMsg('dsStatus', 'Connected · ' + r.model + ' · ' + (r.text || 'OK'), 'ok');
+        var b = $('dsBadge'); if (b) { b.textContent = 'Connected · ' + r.model; b.style.color = 'var(--green)'; }
+      } catch (err) {
+        elMsg('dsStatus', err.message || String(err), 'err');
+        var b2 = $('dsBadge'); if (b2) { b2.textContent = 'Error'; b2.style.color = '#fca5a5'; }
+      }
+    });
+    $('dsBuildPrompt').addEventListener('click', function () {
+      ds.prompt = buildPromptFromLocal();
+      $('dsPrompt').value = ds.prompt;
+      saveDS();
+      elMsg('dsTrainMsg', 'Built a training prompt from ' + state.facts.length + ' facts, ' + state.commands.length + ' commands and ' + Object.keys(sizeKnowledge()).length + ' size codes.', 'ok');
+    });
+    $('dsTestPrompt').addEventListener('click', function () { $('dsTest').click(); });
+  }
+
   /* ───────────────────────────── chat UI ─────────────────────────────── */
   var messages = null, suggestBox = null, input = null, form = null;
   var answers = new Map(), answerSeq = 0, welcomed = false, dataWelcomed = false;
@@ -5760,11 +6340,14 @@ window.addEventListener('beforeunload', function(e){
     welcomed = true;
     var n = dataRows().length;
     var body = n
-      ? '<div class="ai-note" style="margin:0">Hi — I am your manifest assistant. I can already search all <b>' + fmt(n) + '</b> loaded containers. Ask for a container number, a count, a ranking, weights, or data-quality checks.<br><br>I run entirely on this computer, and you can <b>train me</b> in the Train tab.</div>'
-      : '<div class="ai-note" style="margin:0">Hi — I am your manifest assistant. Upload a manifest file and I can answer questions about every container, operator, port and weight.<br><br>You can train me before that too: open the <b>Train</b> tab and teach me a phrase or a fact.</div>';
+      ? '<div class="ai-note" style="margin:0">Hi — I am your manifest assistant. I can already search all <b>' + fmt(n) + '</b> loaded containers. Ask for a container number, a count, a ranking, weights, or data-quality checks.<br><br>I run on this computer by default, and you can <b>train me</b> in the Train tab. Add an API key in the <b>DeepSeek</b> tab if you want an optional remote assistant.</div>'
+      : '<div class="ai-note" style="margin:0">Hi — I am your manifest assistant. Upload a manifest file and I can answer questions about every container, operator, port and weight.<br><br>You can train me before that too: open the <b>Train</b> tab and teach me a phrase or a fact. DeepSeek is optional in its own tab.</div>';
     addBot({
       tag: 'manifest ai', title: 'On-device assistant', html: body, intent: null,
-      actions: [{ label: 'What can you do?', action: 'ask', data: { text: 'what can you do' } }],
+      actions: [
+        { label: 'What can you do?', action: 'ask', data: { text: 'what can you do' } },
+        { label: 'Where is the API key?', action: 'opendeepseek' }
+      ],
       suggestions: defaultSuggestions()
     });
   }
@@ -5772,11 +6355,21 @@ window.addEventListener('beforeunload', function(e){
     opts = opts || {};
     text = String(text || '').trim();
     if (!text) return Promise.resolve(null);
+    var forceDS = /^@deepseek\b[:,]?\s*/i.test(text);
+    if (forceDS) text = text.replace(/^@deepseek\b[:,]?\s*/i, '').trim();
     if (!messages) initDom();
     if (!opts.silent) addMsg('user', esc(text).replace(/\n/g, '<br>'));
+    if (forceDS && !text) {
+      var q = answer({
+        tag: 'deepseek', tagClass: 'warn', title: 'Ask DeepSeek a question',
+        body: '<div class="ai-note" style="margin:0">Type <b>@deepseek</b> followed by your question, for example <b>@deepseek explain TEU vs container count</b>.</div>',
+        plain: 'Add a question after @deepseek.'
+      });
+      addBot(q); return Promise.resolve(q);
+    }
     var typing = addThinking();
     var delay = opts.fast ? 40 : 150;
-    return wait(delay).then(function () {
+    return wait(delay).then(async function () {
       var res;
       try {
         res = respond(text);
@@ -5789,6 +6382,22 @@ window.addEventListener('beforeunload', function(e){
           plain: 'Error'
         });
       }
+
+      var wantRemote = forceDS || ds.mode === 'always' ||
+        (ds.mode === 'fallback' && (!res || res.task === 'unknown'));
+      if (wantRemote) {
+        if (!ds.key) {
+          if (forceDS || ds.mode === 'always') res = dsErrorAnswer(new Error('No DeepSeek API key saved. Open the DeepSeek tab and add one.'), res);
+        } else {
+          try {
+            var dsr = await callDeepSeek(text);
+            res = deepSeekAnswer(dsr, text);
+          } catch (err) {
+            res = dsErrorAnswer(err, res);
+          }
+        }
+      }
+
       typing.remove();
       addBot(res);
       renderSuggestions(res.suggestions || defaultSuggestions());
@@ -6023,18 +6632,19 @@ window.addEventListener('beforeunload', function(e){
   function switchTab(name) {
     activeTab = name;
     var panel = $('aiPanel');
-    if (panel) panel.classList.toggle('ai-wide', name === 'train' || name === 'memory');
+    if (panel) panel.classList.toggle('ai-wide', name === 'train' || name === 'memory' || name === 'deepseek');
     Array.prototype.slice.call(document.querySelectorAll('.ai-tab')).forEach(function (b) {
       b.classList.toggle('active', b.dataset.aiTab === name);
       b.setAttribute('aria-selected', b.dataset.aiTab === name ? 'true' : 'false');
     });
-    var panes = { chat: 'aiChatPane', train: 'aiTrainPane', memory: 'aiMemoryPane' };
+    var panes = { chat: 'aiChatPane', train: 'aiTrainPane', memory: 'aiMemoryPane', deepseek: 'aiDeepSeekPane' };
     Object.keys(panes).forEach(function (k) {
       var p = $(panes[k]);
       if (p) p.hidden = (k !== name);
     });
     if (name === 'train') renderTrain();
     if (name === 'memory') renderMemory();
+    if (name === 'deepseek') renderDeepSeek();
     if (name === 'chat') setTimeout(scrollChat, 30);
   }
   function openPanel(tab) {
@@ -6048,7 +6658,7 @@ window.addEventListener('beforeunload', function(e){
       $('aiScrim').classList.add('show');
       document.body.style.overflow = 'hidden';
     }
-    if (tab) switchTab(tab);
+    if (tab) switchTab(tab); else switchTab('chat');
     if (!welcomed) welcome();
     else if (dataRows().length && !dataWelcomed) {
       dataWelcomed = true;
@@ -6098,6 +6708,12 @@ window.addEventListener('beforeunload', function(e){
     Array.prototype.slice.call(document.querySelectorAll('.ai-tab')).forEach(function (b) {
       b.addEventListener('click', function () { switchTab(b.dataset.aiTab); });
     });
+    Array.prototype.slice.call(document.querySelectorAll('[data-ai-open]')).forEach(function (b) {
+      b.addEventListener('click', function () { openPanel(b.dataset.aiOpen); });
+    });
+    Array.prototype.slice.call(document.querySelectorAll('[data-ai-back]')).forEach(function (b) {
+      b.addEventListener('click', function () { switchTab('chat'); });
+    });
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
@@ -6140,6 +6756,7 @@ window.addEventListener('beforeunload', function(e){
       }
       else if (action === 'editcmd') { prefillCommand(d.id); }
       else if (action === 'openmemory') { openPanel('memory'); }
+      else if (action === 'opendeepseek') { openPanel('deepseek'); }
       else if (action === 'openfile') { var fi = $('fileInput'); if (fi) fi.click(); }
       else if (action === 'openrecon') { if (window.Recon) window.Recon.openTab(d.tab || 'booking'); }
       else if (action === 'summary') { renderSummaryScope(d); }
@@ -6318,6 +6935,11 @@ window.addEventListener('beforeunload', function(e){
         rd.readAsText(f);
       });
     }
+    var dp = $('aiDomainPack');
+    if (dp) dp.addEventListener('click', function () {
+      var added = installDomainPack();
+      elMsg('aiDomainMsg', added ? 'Added ' + added + ' manifest / booking / loading-list phrases.' : 'The domain pack is already installed.', added ? 'ok' : '');
+    });
     var rsBtn = $('aiResetTrain');
     if (rsBtn) rsBtn.addEventListener('click', function () {
       if (!confirm('Reset the assistant to its built-in examples? Your taught examples, facts and vocabulary will be removed. Export first if you want to keep them.')) return;
@@ -6338,6 +6960,8 @@ window.addEventListener('beforeunload', function(e){
       }
     });
 
+    bindDeepSeek();
+    renderDeepSeek();
     renderSuggestions(defaultSuggestions());
     updateStatus();
   }
@@ -6351,7 +6975,8 @@ window.addEventListener('beforeunload', function(e){
       facts: state.facts,
       commands: state.commands,
       sizes: state.sizes,
-      vocab: state.vocab
+      vocab: state.vocab,
+      deepseek: { prompt: ds.prompt, useTraining: ds.useTraining }
     };
     try {
       var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
@@ -6401,6 +7026,11 @@ window.addEventListener('beforeunload', function(e){
         if (CONCEPTS[data.vocab[k]]) { state.vocab[String(k).toLowerCase()] = data.vocab[k]; addedVocab++; }
       });
     }
+    if (data.deepseek && typeof data.deepseek === 'object') {
+      ds.prompt = String(data.deepseek.prompt || '');
+      ds.useTraining = data.deepseek.useTraining !== false;
+      saveDS(); renderDeepSeek();
+    }
     idx.sig = '';
     save();
     return { ok: true, msg: 'Imported ' + addedEx + ' examples, ' + addedCmds + ' commands, ' + addedFacts + ' facts, ' + addedSizes + ' size codes, ' + addedVocab + ' words.' };
@@ -6431,11 +7061,20 @@ window.addEventListener('beforeunload', function(e){
     applyFilters: applyFilters,
     getState: function () { return state; },
     get last() { return last; },
+    deepseek: {
+      config: function () { return Object.assign({}, ds); },
+      save: function (patch) { Object.assign(ds, patch || {}); saveDS(); renderDeepSeek(); return Object.assign({}, ds); },
+      call: callDeepSeek,
+      buildPrompt: buildPromptFromLocal,
+      installDomainPack: installDomainPack
+    },
     _debug: {
       classify: classify, extract: extract, respond: respond,
       filterRows: filterRows, findContainer: findContainer, normalize: normalize,
       dataRows: dataRows, buildSets: buildSets, sizeLenOf: sizeLenOf, sizeKnowledge: sizeKnowledge,
-      findCommand: findCommand
+      findCommand: findCommand, ds: function () { return ds; }, callDeepSeek: callDeepSeek,
+      buildDsMessages: buildDsMessages, buildDsSystemPrompt: buildDsSystemPrompt,
+      installDomainPack: installDomainPack
     }
   };
 })();
@@ -7832,6 +8471,393 @@ window.addEventListener('beforeunload', function(e){
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
+})();
+
+</script>
+<script>
+(function () {
+  'use strict';
+  var CFG_KEY = 'oprCloudSync.v1';
+  var SESSION_KEY = 'oprCloudSyncSession.v1';
+  var TABLE = 'manifest_snapshots';
+  var cfg = loadCfg();
+  var session = loadSession();
+  var timer = 0, syncing = false, lastRemoteAt = '', remoteSeen = false;
+  var $ = function (id) { return document.getElementById(id); };
+
+  function loadCfg() {
+    var out = { url: '', anon: '', email: '', autoPull: true, autoPush: false, lastRemoteAt: '' };
+    try {
+      var v = JSON.parse(localStorage.getItem(CFG_KEY) || '{}');
+      Object.keys(out).forEach(function (k) { if (v[k] !== undefined) out[k] = v[k]; });
+    } catch (e) {}
+    return out;
+  }
+  function saveCfg() {
+    try { localStorage.setItem(CFG_KEY, JSON.stringify(cfg)); } catch (e) {}
+  }
+  function loadSession() {
+    try {
+      var s = JSON.parse(localStorage.getItem(SESSION_KEY) || 'null');
+      if (s && s.access_token && s.user && s.user.id) return s;
+    } catch (e) {}
+    return null;
+  }
+  function saveSession() {
+    try {
+      if (session) localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+      else localStorage.removeItem(SESSION_KEY);
+    } catch (e) {}
+  }
+  function base() { return String(cfg.url || '').trim().replace(/\/+$/, ''); }
+  function signedIn() { return !!(session && session.access_token && session.user); }
+  function setStatus(msg, kind) {
+    var el = $('syncStatus');
+    if (!el) return;
+    el.textContent = msg || '';
+    el.className = 'sync-status' + (kind ? ' ' + kind : '');
+  }
+  function render() {
+    if (!$('syncUrl')) return;
+    $('syncUrl').value = cfg.url || '';
+    $('syncAnon').value = cfg.anon || '';
+    $('syncEmail').value = cfg.email || '';
+    $('syncAutoPull').checked = !!cfg.autoPull;
+    $('syncAutoPush').checked = !!cfg.autoPush;
+    $('syncSignOut').disabled = !signedIn();
+    $('syncPush').disabled = !signedIn();
+    $('syncPull').disabled = !signedIn();
+    $('syncAccount').innerHTML = signedIn()
+      ? 'Signed in as <b>' + esc(session.user.email || session.user.id) + '</b> · project ' + esc(base().replace(/^https?:\/\//, ''))
+      : 'Not signed in.';
+    $('syncMeta').textContent =
+      'Rows in memory: ' + (typeof allData !== 'undefined' && Array.isArray(allData) ? allData.length.toLocaleString() : '0') +
+      (lastRemoteAt ? '\nLast remote update: ' + lastRemoteAt : '') +
+      (typeof dataDirty !== 'undefined' && dataDirty ? '\nLocal edits not uploaded' : '');
+    var badge = document.querySelector('.sync-badge');
+    if (badge) badge.textContent = signedIn() ? '☁ connected' : '';
+  }
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function errText(data, resp) {
+    return (data && (data.error_description || data.msg || data.message || (data.error && data.error.message))) ||
+      ('Supabase returned HTTP ' + (resp ? resp.status : '?') + '.');
+  }
+  async function api(path, opts, noAuth) {
+    opts = opts || {};
+    var headers = Object.assign({ 'apikey': cfg.anon, 'Content-Type': 'application/json' }, opts.headers || {});
+    if (!noAuth) {
+      await ensureSession();
+      headers.Authorization = 'Bearer ' + session.access_token;
+    }
+    var resp = await fetch(base() + path, Object.assign({}, opts, { headers: headers }));
+    var raw = await resp.text();
+    var data = null;
+    try { data = raw ? JSON.parse(raw) : null; } catch (e) {}
+    if (!resp.ok) throw new Error(errText(data, resp));
+    return data;
+  }
+  async function ensureSession() {
+    if (!signedIn()) throw new Error('Sign in to Supabase first.');
+    var exp = Number(session.expires_at || 0);
+    if (exp && exp - Date.now() > 60000) return;
+    if (!session.refresh_token) throw new Error('Session expired. Sign in again.');
+    var resp = await fetch(base() + '/auth/v1/token?grant_type=refresh_token', {
+      method: 'POST',
+      headers: { 'apikey': cfg.anon, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ refresh_token: session.refresh_token })
+    });
+    var raw = await resp.text(), data = null;
+    try { data = raw ? JSON.parse(raw) : null; } catch (e) {}
+    if (!resp.ok || !data || !data.access_token) throw new Error(errText(data, resp));
+    session.access_token = data.access_token;
+    session.refresh_token = data.refresh_token || session.refresh_token;
+    session.expires_at = Date.now() + (Number(data.expires_in) || 3600) * 1000;
+    if (data.user) session.user = data.user;
+    saveSession();
+  }
+  function configFromForm() {
+    cfg.url = String($('syncUrl').value || '').trim().replace(/\/+$/, '');
+    cfg.anon = String($('syncAnon').value || '').trim();
+    cfg.email = String($('syncEmail').value || '').trim();
+    cfg.autoPull = !!$('syncAutoPull').checked;
+    cfg.autoPush = !!$('syncAutoPush').checked;
+    saveCfg();
+  }
+  function sessionFrom(data) {
+    if (!data || !data.access_token || !data.user) return null;
+    return {
+      access_token: data.access_token,
+      refresh_token: data.refresh_token || '',
+      expires_at: Date.now() + (Number(data.expires_in) || 3600) * 1000,
+      user: { id: data.user.id, email: data.user.email || cfg.email }
+    };
+  }
+  async function signIn() {
+    configFromForm();
+    if (!base() || !cfg.anon) { setStatus('Enter the Supabase project URL and anon key first.', 'err'); return false; }
+    var email = String($('syncEmail').value || '').trim();
+    var password = String($('syncPassword').value || '');
+    if (!email || !password) { setStatus('Enter the account email and password.', 'err'); return false; }
+    setStatus('Signing in…');
+    try {
+      var resp = await fetch(base() + '/auth/v1/token?grant_type=password', {
+        method: 'POST',
+        headers: { 'apikey': cfg.anon, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email, password: password })
+      });
+      var raw = await resp.text(), data = null;
+      try { data = raw ? JSON.parse(raw) : null; } catch (e) {}
+      if (!resp.ok) throw new Error(errText(data, resp));
+      session = sessionFrom(data);
+      if (!session) throw new Error('Sign-in succeeded but no user session was returned.');
+      saveSession();
+      $('syncPassword').value = '';
+      lastRemoteAt = cfg.lastRemoteAt || '';
+      setStatus('Signed in. Upload or download the manifest snapshot.', 'ok');
+      render();
+      startPolling();
+      return true;
+    } catch (err) {
+      setStatus('Sign-in failed: ' + err.message, 'err');
+      return false;
+    }
+  }
+  async function signUp() {
+    configFromForm();
+    if (!base() || !cfg.anon) { setStatus('Enter the Supabase project URL and anon key first.', 'err'); return false; }
+    var email = String($('syncEmail').value || '').trim();
+    var password = String($('syncPassword').value || '');
+    if (!email || !password) { setStatus('Enter an email and password.', 'err'); return false; }
+    setStatus('Creating account…');
+    try {
+      var resp = await fetch(base() + '/auth/v1/signup', {
+        method: 'POST',
+        headers: { 'apikey': cfg.anon, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email, password: password })
+      });
+      var raw = await resp.text(), data = null;
+      try { data = raw ? JSON.parse(raw) : null; } catch (e) {}
+      if (!resp.ok) throw new Error(errText(data, resp));
+      if (data.access_token) {
+        session = sessionFrom(data); saveSession(); $('syncPassword').value = '';
+        setStatus('Account created and signed in.', 'ok'); render(); startPolling();
+      } else {
+        setStatus('Account created. Confirm the email (or disable confirmation in Supabase Auth), then sign in.', 'warn');
+      }
+      return true;
+    } catch (err) {
+      setStatus('Could not create account: ' + err.message, 'err');
+      return false;
+    }
+  }
+  function signOut() {
+    session = null; saveSession(); lastRemoteAt = ''; render();
+    setStatus('Signed out. Your local manifest is unchanged.', 'ok');
+  }
+  function snapshotPayload() {
+    var rows = (typeof allData !== 'undefined' && Array.isArray(allData)) ? allData.map(function (r) { return Object.assign({}, r); }) : [];
+    var st = $('statusText');
+    return {
+      app: 'OPR Load Dashboard',
+      savedAt: new Date().toISOString(),
+      fileName: st ? st.textContent.trim() : '',
+      vesselMeta: (typeof vesselMeta !== 'undefined' && vesselMeta) ? Object.assign({}, vesselMeta) : {},
+      rows: rows
+    };
+  }
+  async function remoteMeta() {
+    if (!signedIn()) return null;
+    var path = '/rest/v1/' + TABLE + '?select=payload,updated_at&user_id=eq.' + encodeURIComponent(session.user.id) + '&limit=1';
+    var data = await api(path);
+    return (Array.isArray(data) && data[0]) ? data[0] : null;
+  }
+  async function push(opts) {
+    opts = opts || {};
+    if (!signedIn()) { setStatus('Sign in first.', 'err'); return false; }
+    if (syncing) return false;
+    syncing = true;
+    setStatus('Uploading current data…');
+    try {
+      var remote = null;
+      try { remote = await remoteMeta(); } catch (e) {}
+      if (remote && remote.updated_at && lastRemoteAt && remote.updated_at !== lastRemoteAt && !opts.auto) {
+        if (!confirm('The cloud copy changed since your last sync. Uploading will overwrite it with this device’s data. Continue?')) {
+          syncing = false; setStatus('Upload cancelled.', 'warn'); return false;
+        }
+      }
+      var payload = snapshotPayload();
+      var now = new Date().toISOString();
+      var body = [{ user_id: session.user.id, payload: payload, updated_at: now }];
+      var resp = await fetch(base() + '/rest/v1/' + TABLE + '?on_conflict=user_id', {
+        method: 'POST',
+        headers: {
+          'apikey': cfg.anon,
+          'Authorization': 'Bearer ' + session.access_token,
+          'Content-Type': 'application/json',
+          'Prefer': 'resolution=merge-duplicates,return=representation'
+        },
+        body: JSON.stringify(body)
+      });
+      var raw = await resp.text(), data = null;
+      try { data = raw ? JSON.parse(raw) : null; } catch (e) {}
+      if (!resp.ok) throw new Error(errText(data, resp));
+      lastRemoteAt = now;
+      cfg.lastRemoteAt = now; saveCfg();
+      if (typeof dataDirty !== 'undefined') dataDirty = false;
+      remoteSeen = false;
+      setStatus('Uploaded ' + payload.rows.length.toLocaleString() + ' containers at ' + new Date(now).toLocaleTimeString() + '.', 'ok');
+      render();
+      return true;
+    } catch (err) {
+      setStatus('Upload failed: ' + err.message, 'err');
+      return false;
+    } finally { syncing = false; }
+  }
+  function applyPayload(payload, opts) {
+    opts = opts || {};
+    if (!payload || !Array.isArray(payload.rows)) throw new Error('Cloud snapshot has no container rows.');
+    if (typeof dataDirty !== 'undefined' && dataDirty && !opts.force) {
+      if (!confirm('This device has local edits that are not uploaded. Downloading the cloud copy will replace them. Continue?')) return false;
+    }
+    allData = payload.rows.map(function (r) { return Object.assign({}, r); });
+    ridSeq = 0;
+    allData.forEach(function (r) { r._rid = ++ridSeq; });
+    vesselMeta = payload.vesselMeta || {};
+    dataDirty = false;
+    rawASCLoaded = false;
+    rawASCLines = null;
+    rawASCFileName = '';
+    var st = $('statusText');
+    var rowsN = allData.length.toLocaleString();
+    if (st) st.textContent = rowsN + ' records · Cloud sync';
+    var dash = $('dashboard'), up = $('uploadSection'), mb = $('menuBtn');
+    if (dash) dash.style.display = 'block';
+    if (up) up.style.display = 'none';
+    if (mb) mb.style.display = 'flex';
+    var dot = $('statusDot'); if (dot) dot.classList.add('active');
+    try { showVesselBanner(vesselMeta); } catch (e) {}
+    try { populateFilters(); } catch (e) {}
+    try { renderAll(); } catch (e) {}
+    if (lastRemoteAt) { cfg.lastRemoteAt = lastRemoteAt; saveCfg(); }
+    remoteSeen = false;
+    setStatus('Downloaded ' + rowsN + ' containers from the cloud.', 'ok');
+    render();
+    return true;
+  }
+  async function pull(opts) {
+    opts = opts || {};
+    if (!signedIn()) { setStatus('Sign in first.', 'err'); return false; }
+    if (syncing) return false;
+    syncing = true;
+    setStatus('Downloading cloud data…');
+    try {
+      var meta = await remoteMeta();
+      if (!meta) { setStatus('No cloud snapshot exists yet. Upload from the first device.', 'warn'); return false; }
+      lastRemoteAt = meta.updated_at || '';
+      applyPayload(meta.payload, opts);
+      return true;
+    } catch (err) {
+      setStatus('Download failed: ' + err.message, 'err');
+      return false;
+    } finally { syncing = false; }
+  }
+  async function poll() {
+    if (!signedIn() || syncing || !cfg.autoPull) return;
+    if (document.hidden) return;
+    try {
+      var meta = await remoteMeta();
+      if (!meta) return;
+      var noLocal = !(typeof allData !== 'undefined' && Array.isArray(allData) && allData.length);
+      if (meta.updated_at && (meta.updated_at !== lastRemoteAt || noLocal)) {
+        if (typeof dataDirty !== 'undefined' && dataDirty) {
+          remoteSeen = true;
+          setStatus('A newer cloud copy is available. Upload your edits or download it manually.', 'warn');
+          return;
+        }
+        lastRemoteAt = meta.updated_at;
+        applyPayload(meta.payload, { force: true });
+      } else if (cfg.autoPush && typeof dataDirty !== 'undefined' && dataDirty) {
+        await push({ auto: true });
+      }
+    } catch (e) {
+      // Silent during background polling; manual actions report errors.
+    }
+  }
+  function startPolling() {
+    if (timer) clearInterval(timer);
+    timer = setInterval(poll, 5000);
+    setTimeout(poll, 300);
+  }
+  function open() {
+    render();
+    $('syncOverlay').classList.add('open');
+    $('syncOverlay').setAttribute('aria-hidden', 'false');
+    if (signedIn()) startPolling();
+  }
+  function close() {
+    $('syncOverlay').classList.remove('open');
+    $('syncOverlay').setAttribute('aria-hidden', 'true');
+    configFromForm();
+  }
+  function bind() {
+    if (!$('syncOverlay') || $('syncOverlay').__bound) return;
+    $('syncOverlay').__bound = true;
+    $('syncClose').addEventListener('click', close);
+    $('syncOverlay').addEventListener('click', function (e) { if (e.target === this) close(); });
+    var openBtn = $('syncOpenBtn');
+    if (openBtn) openBtn.addEventListener('click', open);
+    $('syncSignIn').addEventListener('click', signIn);
+    $('syncSignUp').addEventListener('click', signUp);
+    $('syncSignOut').addEventListener('click', signOut);
+    $('syncPush').addEventListener('click', function () { push({ force: true }); });
+    $('syncPull').addEventListener('click', function () { pull({ force: false }); });
+    $('syncAutoPull').addEventListener('change', function () { cfg.autoPull = this.checked; saveCfg(); });
+    $('syncAutoPush').addEventListener('change', function () { cfg.autoPush = this.checked; saveCfg(); });
+    $('syncUrl').addEventListener('change', configFromForm);
+    $('syncAnon').addEventListener('change', configFromForm);
+    $('syncEmail').addEventListener('change', configFromForm);
+    ['syncUrl', 'syncAnon', 'syncEmail'].forEach(function (id) {
+      $(id).addEventListener('blur', configFromForm);
+    });
+    $('syncCopySql').addEventListener('click', function () {
+      var text = $('syncSql').textContent;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () { setStatus('Setup SQL copied.', 'ok'); }, function () {});
+      } else {
+        var ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); setStatus('Setup SQL copied.', 'ok'); } catch (e) {}
+        ta.remove();
+      }
+    });
+    render();
+    if (signedIn()) startPolling();
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind);
+  else bind();
+
+  window.CloudSync = {
+    open: open,
+    close: close,
+    config: function () { return Object.assign({}, cfg); },
+    session: function () { return session ? { user: session.user, expires_at: session.expires_at } : null; },
+    signIn: signIn,
+    signUp: signUp,
+    signOut: signOut,
+    push: push,
+    pull: pull,
+    applyPayload: applyPayload,
+    snapshot: snapshotPayload,
+    _debug: {
+      setSession: function (s) { session = s; saveSession(); render(); startPolling(); },
+      setConfig: function (c) { Object.assign(cfg, c || {}); saveCfg(); render(); },
+      remoteMeta: remoteMeta,
+      poll: poll
+    }
+  };
 })();
 
 </script>
