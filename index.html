@@ -978,13 +978,31 @@ footer strong{color:var(--accent);font-weight:500}
 }
 .sync-help a{color:var(--accent2)}
 .sync-meta{font-size:9px;color:var(--muted);font-family:var(--mono);white-space:pre-wrap;line-height:1.5}
-.drawer-sync-btn{
-  width:100%;display:flex;align-items:center;justify-content:center;gap:6px;margin:0 0 12px;
-  padding:8px 10px;border-radius:8px;border:1px solid rgba(59,130,246,.3);
-  background:rgba(59,130,246,.08);color:#93c5fd;font-family:var(--ui);font-size:10.5px;font-weight:600;cursor:pointer;
+.toolbar-sync{
+  display:flex;align-items:center;gap:7px;padding:9px 14px;margin:0;width:auto;justify-content:flex-start;
+  color:#93c5fd;
 }
-.drawer-sync-btn:hover{background:rgba(59,130,246,.18);color:#fff}
-.sync-badge{margin-left:auto;font-family:var(--mono);font-size:8.5px;color:var(--muted)}
+.toolbar-sync:hover{color:#fff}
+.toolbar-sync .sync-badge{margin-left:2px;font-family:var(--mono);font-size:8.5px;color:var(--muted)}
+.toolbar-sync.changes{border-color:rgba(245,158,11,.5)!important;background:rgba(245,158,11,.1)!important;color:#fcd34d!important}
+.toolbar-sync.changes .sync-badge{color:#fcd34d}
+#syncPrompt{
+  position:fixed;left:50%;bottom:16px;transform:translate(-50%,12px);z-index:480;
+  display:none;align-items:center;gap:9px;padding:8px 10px 8px 12px;border-radius:10px;
+  background:rgba(15,23,42,.96);border:1px solid rgba(245,158,11,.4);box-shadow:0 12px 32px rgba(0,0,0,.45);
+  font-family:var(--mono);font-size:10px;color:#fcd34d;opacity:0;pointer-events:none;
+  transition:opacity .18s,transform .18s;max-width:calc(100vw - 20px);
+}
+#syncPrompt.show{display:flex;opacity:1;transform:translate(-50%,0);pointer-events:auto}
+#syncPrompt .sp-ico{font-size:14px;line-height:1}
+#syncPrompt .sp-text{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#syncPrompt .sp-btn{
+  border:1px solid rgba(245,158,11,.5);background:rgba(245,158,11,.15);color:#fde68a;
+  border-radius:6px;padding:4px 9px;font-family:var(--ui);font-size:9.5px;font-weight:700;cursor:pointer;
+}
+#syncPrompt .sp-btn:hover{background:rgba(245,158,11,.28);color:#fff}
+#syncPrompt .sp-x{border:none;background:none;color:var(--muted);cursor:pointer;font-size:11px;padding:2px 4px}
+#syncPrompt .sp-x:hover{color:#fff}
 @media(max-width:640px){#syncOverlay{padding:8px}.sync-grid{grid-template-columns:1fr}}
 
 </style>
@@ -1050,7 +1068,6 @@ footer strong{color:var(--accent);font-weight:500}
         <button type="button" data-ai-open="deepseek">🔑 DeepSeek</button>
       </div>
     </div>
-    <button class="drawer-sync-btn" type="button" id="syncOpenBtn">☁ Cloud Sync <span class="sync-badge"></span></button>
     <div class="divider"></div>
     <p class="filter-stat" id="filterStat">Showing all records</p>
   </div>
@@ -1167,6 +1184,9 @@ footer strong{color:var(--accent);font-weight:500}
             <div class="burger-icon" style="width:16px"><div class="burger-line"></div><div class="burger-line"></div><div class="burger-line"></div></div>
             Filters &amp; Export
             <span class="active-badge" id="activeBadge2">0</span>
+          </button>
+          <button id="syncOpenBtn" class="btn-reset toolbar-sync" type="button">
+            ☁ Cloud Sync <span class="sync-badge"></span>
           </button>
         </div>
       </div>
@@ -1760,11 +1780,12 @@ footer strong{color:var(--accent);font-weight:500}
       <button type="button" class="sync-close" id="syncClose" aria-label="Close cloud sync">✕</button>
     </div>
     <div class="sync-body">
-      <div class="sync-status" id="syncStatus">Not connected. Sign in with the same Supabase account on your PC and phone.</div>
+      <div class="sync-status" id="syncStatus">Checking saved session…</div>
       <div class="sync-note">
         Cloud Sync stores one snapshot of the current manifest in your own <b>Supabase</b> project.
         Upload from the PC, then Download on the phone (or enable auto-download) to continue with the same containers.
-        Training is not included in the snapshot.
+        Training is not included in the snapshot.<br><br>
+        You stay signed in on this device — Supabase refreshes the session automatically. You only need to sign in again if the session is revoked or expires.
       </div>
 
       <details class="sync-help">
@@ -1829,9 +1850,17 @@ create policy "own manifest snapshot"
       </div>
       <label class="sync-check"><input type="checkbox" id="syncAutoPull" checked> Auto-download updates every 5 seconds when there are no local edits</label>
       <label class="sync-check"><input type="checkbox" id="syncAutoPush"> Auto-upload after edits (last write wins — use on one device at a time)</label>
+      <div class="sync-check" style="color:var(--muted)">When Auto-upload is off, a small Cloud Sync prompt appears only after you change the loaded data.</div>
       <div class="sync-meta" id="syncMeta"></div>
     </div>
   </div>
+</div>
+
+<div id="syncPrompt" role="status" aria-live="polite">
+  <span class="sp-ico">☁</span>
+  <span class="sp-text">Cloud Sync: local changes are not uploaded.</span>
+  <button type="button" class="sp-btn" id="syncPromptUpload">Upload</button>
+  <button type="button" class="sp-x" id="syncPromptDismiss" aria-label="Dismiss cloud sync prompt">✕</button>
 </div>
 
 
@@ -6784,18 +6813,8 @@ window.addEventListener('beforeunload', function(e){
       });
     });
 
-    // toolbar button (added inside the dashboard toolbar)
-    var left = document.querySelector('.toolbar-left');
-    if (left && !$('aiOpenBtn')) {
-      var tb = document.createElement('button');
-      tb.id = 'aiOpenBtn';
-      tb.type = 'button';
-      tb.className = 'btn-reset';
-      tb.style.cssText = 'display:flex;align-items:center;gap:7px;padding:9px 14px;margin:0;width:auto;justify-content:flex-start';
-      tb.innerHTML = '<span style="color:#c4b5fd">✦</span> Ask AI';
-      tb.addEventListener('click', function () { openPanel(); });
-      left.appendChild(tb);
-    }
+    // AI is opened from the floating button at the bottom and from the
+    // Filters & Export → AI Assistant menu. No toolbar "Ask AI" button.
 
     // training form
     var teachSel = $('aiTeachIntent');
@@ -8482,7 +8501,7 @@ window.addEventListener('beforeunload', function(e){
   var TABLE = 'manifest_snapshots';
   var cfg = loadCfg();
   var session = loadSession();
-  var timer = 0, syncing = false, lastRemoteAt = '', remoteSeen = false;
+  var timer = 0, keeper = 0, syncing = false, lastRemoteAt = '', remoteSeen = false, dirtyPrompted = false;
   var $ = function (id) { return document.getElementById(id); };
 
   function loadCfg() {
@@ -8511,6 +8530,18 @@ window.addEventListener('beforeunload', function(e){
   }
   function base() { return String(cfg.url || '').trim().replace(/\/+$/, ''); }
   function signedIn() { return !!(session && session.access_token && session.user); }
+  function idleStatus() {
+    if (!signedIn()) {
+      setStatus('Not connected. Sign in with the same Supabase account on your PC and phone.', '');
+      return;
+    }
+    var who = (session.user && session.user.email) || 'your account';
+    if (typeof dataDirty !== 'undefined' && dataDirty) {
+      setStatus('Signed in as ' + who + ' · local changes are not uploaded yet.', 'warn');
+    } else {
+      setStatus('Signed in as ' + who + ' · automatic sync is active.', 'ok');
+    }
+  }
   function setStatus(msg, kind) {
     var el = $('syncStatus');
     if (!el) return;
@@ -8535,7 +8566,22 @@ window.addEventListener('beforeunload', function(e){
       (lastRemoteAt ? '\nLast remote update: ' + lastRemoteAt : '') +
       (typeof dataDirty !== 'undefined' && dataDirty ? '\nLocal edits not uploaded' : '');
     var badge = document.querySelector('.sync-badge');
-    if (badge) badge.textContent = signedIn() ? '☁ connected' : '';
+    if (badge) badge.textContent = signedIn() ? (typeof dataDirty !== 'undefined' && dataDirty ? '● changes' : '✓ synced') : '';
+    var openBtn = $('syncOpenBtn');
+    if (openBtn) openBtn.classList.toggle('changes', signedIn() && typeof dataDirty !== 'undefined' && dataDirty && !cfg.autoPush);
+  }
+  function checkDirty() {
+    var p = $('syncPrompt');
+    if (!p) return;
+    var dirty = typeof dataDirty !== 'undefined' && dataDirty;
+    var badge = document.querySelector('.sync-badge');
+    if (badge) badge.textContent = signedIn() ? (dirty ? '● changes' : '✓ synced') : '';
+    var openBtn = $('syncOpenBtn');
+    if (openBtn) openBtn.classList.toggle('changes', signedIn() && dirty && !cfg.autoPush);
+    if (!dirty) { dirtyPrompted = false; p.classList.remove('show'); return; }
+    var show = signedIn() && !cfg.autoPush && !syncing && !$('syncOverlay').classList.contains('open');
+    if (show && !dirtyPrompted) { dirtyPrompted = true; p.classList.add('show'); }
+    if (!show) p.classList.remove('show');
   }
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
@@ -8560,10 +8606,10 @@ window.addEventListener('beforeunload', function(e){
     if (!resp.ok) throw new Error(errText(data, resp));
     return data;
   }
-  async function ensureSession() {
+  async function ensureSession(force) {
     if (!signedIn()) throw new Error('Sign in to Supabase first.');
     var exp = Number(session.expires_at || 0);
-    if (exp && exp - Date.now() > 60000) return;
+    if (!force && exp && exp - Date.now() > 60000) return;
     if (!session.refresh_token) throw new Error('Session expired. Sign in again.');
     var resp = await fetch(base() + '/auth/v1/token?grant_type=refresh_token', {
       method: 'POST',
@@ -8572,7 +8618,14 @@ window.addEventListener('beforeunload', function(e){
     });
     var raw = await resp.text(), data = null;
     try { data = raw ? JSON.parse(raw) : null; } catch (e) {}
-    if (!resp.ok || !data || !data.access_token) throw new Error(errText(data, resp));
+    if (!resp.ok) {
+      if (resp.status === 400 || resp.status === 401) {
+        session = null; saveSession(); render(); checkDirty();
+        setStatus('Your Supabase session expired. Sign in again to resume cloud sync.', 'warn');
+      }
+      throw new Error(errText(data, resp));
+    }
+    if (!data || !data.access_token) throw new Error(errText(data, resp));
     session.access_token = data.access_token;
     session.refresh_token = data.refresh_token || session.refresh_token;
     session.expires_at = Date.now() + (Number(data.expires_in) || 3600) * 1000;
@@ -8655,7 +8708,9 @@ window.addEventListener('beforeunload', function(e){
     }
   }
   function signOut() {
-    session = null; saveSession(); lastRemoteAt = ''; render();
+    session = null; saveSession(); lastRemoteAt = ''; dirtyPrompted = false;
+    var p = $('syncPrompt'); if (p) p.classList.remove('show');
+    render();
     setStatus('Signed out. Your local manifest is unchanged.', 'ok');
   }
   function snapshotPayload() {
@@ -8705,10 +8760,13 @@ window.addEventListener('beforeunload', function(e){
       var raw = await resp.text(), data = null;
       try { data = raw ? JSON.parse(raw) : null; } catch (e) {}
       if (!resp.ok) throw new Error(errText(data, resp));
-      lastRemoteAt = now;
-      cfg.lastRemoteAt = now; saveCfg();
+      var savedRow = Array.isArray(data) && data[0];
+      lastRemoteAt = (savedRow && savedRow.updated_at) || now;
+      cfg.lastRemoteAt = lastRemoteAt; saveCfg();
       if (typeof dataDirty !== 'undefined') dataDirty = false;
       remoteSeen = false;
+      dirtyPrompted = false;
+      var promptEl = $('syncPrompt'); if (promptEl) promptEl.classList.remove('show');
       setStatus('Uploaded ' + payload.rows.length.toLocaleString() + ' containers at ' + new Date(now).toLocaleTimeString() + '.', 'ok');
       render();
       return true;
@@ -8744,6 +8802,8 @@ window.addEventListener('beforeunload', function(e){
     try { renderAll(); } catch (e) {}
     if (lastRemoteAt) { cfg.lastRemoteAt = lastRemoteAt; saveCfg(); }
     remoteSeen = false;
+    dirtyPrompted = false;
+    var promptEl = $('syncPrompt'); if (promptEl) promptEl.classList.remove('show');
     setStatus('Downloaded ' + rowsN + ' containers from the cloud.', 'ok');
     render();
     return true;
@@ -8766,8 +8826,12 @@ window.addEventListener('beforeunload', function(e){
     } finally { syncing = false; }
   }
   async function poll() {
-    if (!signedIn() || syncing || !cfg.autoPull) return;
+    if (!signedIn() || syncing || (!cfg.autoPull && !cfg.autoPush)) return;
     if (document.hidden) return;
+    if (cfg.autoPush && typeof dataDirty !== 'undefined' && dataDirty) {
+      await push({ auto: true });
+      return;
+    }
     try {
       var meta = await remoteMeta();
       if (!meta) return;
@@ -8789,14 +8853,22 @@ window.addEventListener('beforeunload', function(e){
   }
   function startPolling() {
     if (timer) clearInterval(timer);
+    if (keeper) clearInterval(keeper);
     timer = setInterval(poll, 5000);
+    keeper = setInterval(function () {
+      if (signedIn() && session.expires_at && session.expires_at - Date.now() < 300000) {
+        ensureSession(true).catch(function () {});
+      }
+    }, 60000);
     setTimeout(poll, 300);
   }
   function open() {
     render();
+    idleStatus();
     $('syncOverlay').classList.add('open');
     $('syncOverlay').setAttribute('aria-hidden', 'false');
     if (signedIn()) startPolling();
+    checkDirty();
   }
   function close() {
     $('syncOverlay').classList.remove('open');
@@ -8816,7 +8888,12 @@ window.addEventListener('beforeunload', function(e){
     $('syncPush').addEventListener('click', function () { push({ force: true }); });
     $('syncPull').addEventListener('click', function () { pull({ force: false }); });
     $('syncAutoPull').addEventListener('change', function () { cfg.autoPull = this.checked; saveCfg(); });
-    $('syncAutoPush').addEventListener('change', function () { cfg.autoPush = this.checked; saveCfg(); });
+    $('syncAutoPush').addEventListener('change', function () { cfg.autoPush = this.checked; saveCfg(); checkDirty(); });
+    $('syncPromptUpload').addEventListener('click', function () { push({ force: true }); });
+    $('syncPromptDismiss').addEventListener('click', function () {
+      dirtyPrompted = true;
+      $('syncPrompt').classList.remove('show');
+    });
     $('syncUrl').addEventListener('change', configFromForm);
     $('syncAnon').addEventListener('change', configFromForm);
     $('syncEmail').addEventListener('change', configFromForm);
@@ -8834,6 +8911,7 @@ window.addEventListener('beforeunload', function(e){
       }
     });
     render();
+    setInterval(checkDirty, 1500);
     if (signedIn()) startPolling();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind);
@@ -8855,7 +8933,9 @@ window.addEventListener('beforeunload', function(e){
       setSession: function (s) { session = s; saveSession(); render(); startPolling(); },
       setConfig: function (c) { Object.assign(cfg, c || {}); saveCfg(); render(); },
       remoteMeta: remoteMeta,
-      poll: poll
+      poll: poll,
+      checkDirty: checkDirty,
+      idleStatus: idleStatus
     }
   };
 })();
