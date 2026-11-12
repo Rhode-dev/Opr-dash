@@ -9788,30 +9788,44 @@ window.addEventListener('beforeunload', function(e){
       var ex2 = buildExceptions();
       var h = { high: 0, medium: 0, low: 0 };
       ex2.forEach(function (e) { h[e.severity] = (h[e.severity] || 0) + 1; });
-      var g = {};
-      rows.forEach(function (r) {
-        var k = (r.OPR || '—') + '|||' + (r.POD || '—');
-        if (!g[k]) g[k] = { opr: r.OPR || '—', pod: r.POD || '—', c20: 0, c40: 0, teu: 0, vgm: 0 };
-        var ft = ftOf(r.SzTp || r.SZTP || '');
-        if (ft === 20) g[k].c20++;
-        else if (ft === 40) g[k].c40++;
-        g[k].teu += teuOf(r.SzTp || r.SZTP || '');
-        var v = (typeof getVGM === 'function') ? getVGM(r) : null; if (v != null) g[k].vgm += v;
-      });
-      var groups = Object.keys(g).map(function (k) { return g[k]; }).sort(function (a, b) { return b.teu - a.teu; });
+      function feOfRow(r) {
+        var s = String(r['F/E'] || r.FE || '').trim().toUpperCase();
+        if (s === 'F' || s === 'FULL' || s === 'LADEN' || s === 'LOADED') return 'F';
+        if (s === 'E' || s === 'EMPTY' || s === 'MT' || s === 'MTY') return 'E';
+        return '';
+      }
+      var fullRows = rows.filter(function (r) { return feOfRow(r) === 'F'; });
+      var emptyRows = rows.filter(function (r) { return feOfRow(r) === 'E'; });
+      function summaryTable(label, list) {
+        var g = {};
+        list.forEach(function (r) {
+          var k = (r.OPR || '—') + '|||' + (r.POD || '—');
+          if (!g[k]) g[k] = { opr: r.OPR || '—', pod: r.POD || '—', c20: 0, c40: 0, teu: 0, vgm: 0 };
+          var ft = ftOf(r.SzTp || r.SZTP || '');
+          if (ft === 20) g[k].c20++;
+          else if (ft === 40) g[k].c40++;
+          g[k].teu += teuOf(r.SzTp || r.SZTP || '');
+          var v = (typeof getVGM === 'function') ? getVGM(r) : null; if (v != null) g[k].vgm += v;
+        });
+        var groups = Object.keys(g).map(function (k) { return g[k]; }).sort(function (a, b) { return b.teu - a.teu; });
+        if (!groups.length) return '<h3>' + esc(label) + ' — by operator and POD</h3><p style="font-size:10px;color:#666">No ' + esc(label.toLowerCase()) + ' containers.</p>';
+        var t20 = 0, t40 = 0, tteu = 0, tvgm = 0;
+        var tableRows = groups.map(function (x) {
+          t20 += x.c20; t40 += x.c40; tteu += x.teu; tvgm += x.vgm;
+          return '<tr><td>' + esc(x.opr) + '</td><td>' + esc(x.pod) + '</td><td>' + x.c20 + '</td><td>' + x.c40 + '</td><td>' + x.teu + '</td><td>' + x.vgm.toFixed(2) + '</td></tr>';
+        }).join('');
+        return '<h3>' + esc(label) + ' — by operator and POD</h3><table><thead><tr><th>Operator</th><th>POD</th><th>20′</th><th>40′</th><th>TEU</th><th>VGM (T)</th></tr></thead><tbody>' +
+          tableRows + '<tr><td><b>TOTAL</b></td><td></td><td><b>' + t20 + '</b></td><td><b>' + t40 + '</b></td><td><b>' + tteu + '</b></td><td><b>' + tvgm.toFixed(2) + '</b></td></tr></tbody></table>';
+      }
       var totalVgm = rows.reduce(function (s, r) { var v = (typeof getVGM === 'function') ? getVGM(r) : null; return s + (v || 0); }, 0);
-      var full = rows.filter(function (r) { return String(r['F/E'] || r.FE || '').toUpperCase() === 'F'; }).length;
-      var total20 = groups.reduce(function (s, x) { return s + x.c20; }, 0);
-      var total40 = groups.reduce(function (s, x) { return s + x.c40; }, 0);
       body = '<div class="kpis">' +
         '<div><b>' + rows.length + '</b><span>Containers</span></div>' +
         '<div><b>' + teu + '</b><span>TEU</span></div>' +
-        '<div><b>' + full + ' / ' + (rows.length - full) + '</b><span>Full / Empty</span></div>' +
+        '<div><b>' + fullRows.length + ' / ' + emptyRows.length + '</b><span>Full / Empty</span></div>' +
         '<div><b>' + totalVgm.toFixed(1) + '</b><span>VGM tonnes</span></div>' +
         '<div><b>' + (h.high || 0) + ' / ' + (h.medium || 0) + '</b><span>High / Medium exceptions</span></div></div>' +
-        '<h3>By operator and POD</h3><table><thead><tr><th>Operator</th><th>POD</th><th>20′</th><th>40′</th><th>TEU</th><th>VGM (T)</th></tr></thead><tbody>' +
-        groups.map(function (x) { return '<tr><td>' + esc(x.opr) + '</td><td>' + esc(x.pod) + '</td><td>' + x.c20 + '</td><td>' + x.c40 + '</td><td>' + x.teu + '</td><td>' + x.vgm.toFixed(2) + '</td></tr>'; }).join('') +
-        '<tr><td><b>TOTAL</b></td><td></td><td><b>' + total20 + '</b></td><td><b>' + total40 + '</b></td><td><b>' + teu + '</b></td><td><b>' + totalVgm.toFixed(2) + '</b></td></tr></tbody></table>' +
+        summaryTable('FULL', fullRows) +
+        summaryTable('EMPTY', emptyRows) +
         '<h3>Exception summary</h3><table><thead><tr><th>Severity</th><th>Count</th></tr></thead><tbody><tr><td>High</td><td>' + (h.high || 0) + '</td></tr><tr><td>Medium</td><td>' + (h.medium || 0) + '</td></tr><tr><td>Low</td><td>' + (h.low || 0) + '</td></tr></tbody></table>';
     } else {
       var list = kind === 'loading' ? rows.sort(function (a, b) { return String(a.Slot || '').localeCompare(String(b.Slot || ''), undefined, { numeric: true }); }) : rows;
@@ -9838,6 +9852,12 @@ window.addEventListener('beforeunload', function(e){
   function formulaWorkbook() {
     var rows = filteredRows().slice();
     var m = (typeof vesselMeta !== 'undefined' && vesselMeta) || {};
+    function feOf(r) {
+      var s = String((r && (r['F/E'] || r.FE || r.fe)) || '').trim().toUpperCase();
+      if (s === 'F' || s === 'FULL' || s === 'LADEN' || s === 'LOADED') return 'F';
+      if (s === 'E' || s === 'EMPTY' || s === 'MT' || s === 'MTY') return 'E';
+      return '';
+    }
     function ftOf(s) {
       s = up(s).replace(/[^A-Z0-9]/g, '');
       if (s.charAt(0) === '2') return 20;
@@ -9847,59 +9867,95 @@ window.addEventListener('beforeunload', function(e){
     var data = [['Container', 'Slot', 'Operator', 'Size/Type', 'TEU', 'F/E', 'POL', 'POD', 'VGM kg', 'ISO Valid', 'Length ft']];
     rows.forEach(function (r) {
       var v = (typeof getVGM === 'function') ? getVGM(r) : null;
-      data.push([r.Container || '', r.Slot || '', r.OPR || '', r.SzTp || '', teuOf(r.SzTp || ''), r['F/E'] || '', r.POL || '', r.POD || '', v == null ? '' : +(v * 1000).toFixed(0), r.Container ? (isValidISO6346(String(r.Container)) ? 'Yes' : 'INVALID') : '', ftOf(r.SzTp || '')]);
+      data.push([r.Container || '', r.Slot || '', r.OPR || '', r.SzTp || '', teuOf(r.SzTp || ''), feOf(r), r.POL || '', r.POD || '', v == null ? '' : +(v * 1000).toFixed(0), r.Container ? (isValidISO6346(String(r.Container)) ? 'Yes' : 'INVALID') : '', ftOf(r.SzTp || '')]);
     });
     var ws = XLSX.utils.aoa_to_sheet(data);
     ws['!cols'] = [{ wch: 14 }, { wch: 8 }, { wch: 10 }, { wch: 10 }, { wch: 6 }, { wch: 7 }, { wch: 7 }, { wch: 7 }, { wch: 10 }, { wch: 9 }, { wch: 9 }];
     var wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Manifest');
     var n = rows.length + 1;
+    var fullRows = rows.filter(function (r) { return feOf(r) === 'F'; });
+    var emptyRows = rows.filter(function (r) { return feOf(r) === 'E'; });
 
-    var groups = {};
-    rows.forEach(function (r) {
-      var k = (r.OPR || '—') + '|||' + (r.POD || '—');
-      if (!groups[k]) groups[k] = [r.OPR || '—', r.POD || '—'];
-    });
-    var gv = Object.keys(groups).map(function (k) { return groups[k]; }).sort(function (a, b) { return String(a[0]).localeCompare(String(b[0])) || String(a[1]).localeCompare(String(b[1])); });
-    var sum = [['Operator', 'POD', "20'", "40'", 'TEU', 'VGM kg']];
-    gv.forEach(function (g, i) {
-      var r = i + 2;
-      sum.push([
-        g[0], g[1],
-        { t: 'n', f: 'COUNTIFS(Manifest!$C$2:$C$' + n + ',$A' + r + ',Manifest!$H$2:$H$' + n + ',$B' + r + ',Manifest!$K$2:$K$' + n + ',20)' },
-        { t: 'n', f: 'COUNTIFS(Manifest!$C$2:$C$' + n + ',$A' + r + ',Manifest!$H$2:$H$' + n + ',$B' + r + ',Manifest!$K$2:$K$' + n + ',40)' },
-        { t: 'n', f: 'SUMIFS(Manifest!$E$2:$E$' + n + ',Manifest!$C$2:$C$' + n + ',$A' + r + ',Manifest!$H$2:$H$' + n + ',$B' + r + ')' },
-        { t: 'n', f: 'SUMIFS(Manifest!$I$2:$I$' + n + ',Manifest!$C$2:$C$' + n + ',$A' + r + ',Manifest!$H$2:$H$' + n + ',$B' + r + ')' }
-      ]);
-    });
-    var totalRow = gv.length + 2;
-    sum.push(['TOTAL', '', { t: 'n', f: 'SUM(C2:C' + (totalRow - 1) + ')' }, { t: 'n', f: 'SUM(D2:D' + (totalRow - 1) + ')' }, { t: 'n', f: 'SUM(E2:E' + (totalRow - 1) + ')' }, { t: 'n', f: 'SUM(F2:F' + (totalRow - 1) + ')' }]);
-    var wsS = XLSX.utils.aoa_to_sheet(sum);
+    function summaryGroups(list) {
+      var g = {};
+      list.forEach(function (r) {
+        var k = (r.OPR || '—') + '|||' + (r.POD || '—');
+        if (!g[k]) g[k] = { opr: r.OPR || '—', pod: r.POD || '—' };
+      });
+      return Object.keys(g).map(function (k) { return g[k]; }).sort(function (a, b) {
+        return String(a.opr).localeCompare(String(b.opr)) || String(a.pod).localeCompare(String(b.pod));
+      });
+    }
+    function operatorGroups(list) {
+      var g = {};
+      list.forEach(function (r) { g[r.OPR || '—'] = 1; });
+      return Object.keys(g).sort();
+    }
+    function summaryBlock(aoa, title, fe, list) {
+      aoa.push([title]);
+      aoa.push(['Operator', 'POD', "20'", "40'", 'TEU', 'VGM kg']);
+      var headerRow = aoa.length;
+      var groups = summaryGroups(list);
+      groups.forEach(function (g) {
+        var r = aoa.length + 1;
+        aoa.push([g.opr, g.pod,
+          { t: 'n', f: 'COUNTIFS(Manifest!$C$2:$C$' + n + ',$A' + r + ',Manifest!$H$2:$H$' + n + ',$B' + r + ',Manifest!$F$2:$F$' + n + ',"' + fe + '",Manifest!$K$2:$K$' + n + ',20)' },
+          { t: 'n', f: 'COUNTIFS(Manifest!$C$2:$C$' + n + ',$A' + r + ',Manifest!$H$2:$H$' + n + ',$B' + r + ',Manifest!$F$2:$F$' + n + ',"' + fe + '",Manifest!$K$2:$K$' + n + ',40)' },
+          { t: 'n', f: 'SUMIFS(Manifest!$E$2:$E$' + n + ',Manifest!$C$2:$C$' + n + ',$A' + r + ',Manifest!$H$2:$H$' + n + ',$B' + r + ',Manifest!$F$2:$F$' + n + ',"' + fe + '")' },
+          { t: 'n', f: 'SUMIFS(Manifest!$I$2:$I$' + n + ',Manifest!$C$2:$C$' + n + ',$A' + r + ',Manifest!$H$2:$H$' + n + ',$B' + r + ',Manifest!$F$2:$F$' + n + ',"' + fe + '")' }
+        ]);
+      });
+      if (groups.length) {
+        var start = headerRow + 1, end = aoa.length;
+        aoa.push(['TOTAL', '', { t: 'n', f: 'SUM(C' + start + ':C' + end + ')' }, { t: 'n', f: 'SUM(D' + start + ':D' + end + ')' }, { t: 'n', f: 'SUM(E' + start + ':E' + end + ')' }, { t: 'n', f: 'SUM(F' + start + ':F' + end + ')' }]);
+      } else {
+        aoa.push(['No ' + title.toLowerCase() + ' containers', '', '', '', '', '']);
+      }
+      aoa.push([]);
+    }
+    var sumAo = [];
+    summaryBlock(sumAo, 'FULL CONTAINERS', 'F', fullRows);
+    summaryBlock(sumAo, 'EMPTY CONTAINERS', 'E', emptyRows);
+    var wsS = XLSX.utils.aoa_to_sheet(sumAo);
     wsS['!cols'] = [{ wch: 12 }, { wch: 8 }, { wch: 8 }, { wch: 8 }, { wch: 8 }, { wch: 12 }];
     XLSX.utils.book_append_sheet(wb, wsS, 'Summary');
 
-    var ops = {};
-    rows.forEach(function (r) { ops[r.OPR || '—'] = 1; });
-    var opNames = Object.keys(ops).sort();
-    var op = [['Operator', "20'", "40'", 'TEU', 'VGM kg']];
-    opNames.forEach(function (name, i) {
-      var r = i + 2;
-      op.push([name,
-        { t: 'n', f: 'COUNTIFS(Manifest!$C$2:$C$' + n + ',$A' + r + ',Manifest!$K$2:$K$' + n + ',20)' },
-        { t: 'n', f: 'COUNTIFS(Manifest!$C$2:$C$' + n + ',$A' + r + ',Manifest!$K$2:$K$' + n + ',40)' },
-        { t: 'n', f: 'SUMIF(Manifest!$C$2:$C$' + n + ',$A' + r + ',Manifest!$E$2:$E$' + n + ')' },
-        { t: 'n', f: 'SUMIF(Manifest!$C$2:$C$' + n + ',$A' + r + ',Manifest!$I$2:$I$' + n + ')' }]);
-    });
-    op.push(['TOTAL', { t: 'n', f: 'SUM(B2:B' + (opNames.length + 1) + ')' }, { t: 'n', f: 'SUM(C2:C' + (opNames.length + 1) + ')' }, { t: 'n', f: 'SUM(D2:D' + (opNames.length + 1) + ')' }, { t: 'n', f: 'SUM(E2:E' + (opNames.length + 1) + ')' }]);
-    var wsO = XLSX.utils.aoa_to_sheet(op);
+    function operatorBlock(aoa, title, fe, list) {
+      aoa.push([title]);
+      aoa.push(['Operator', "20'", "40'", 'TEU', 'VGM kg']);
+      var headerRow = aoa.length;
+      var names = operatorGroups(list);
+      names.forEach(function (name) {
+        var r = aoa.length + 1;
+        aoa.push([name,
+          { t: 'n', f: 'COUNTIFS(Manifest!$C$2:$C$' + n + ',$A' + r + ',Manifest!$F$2:$F$' + n + ',"' + fe + '",Manifest!$K$2:$K$' + n + ',20)' },
+          { t: 'n', f: 'COUNTIFS(Manifest!$C$2:$C$' + n + ',$A' + r + ',Manifest!$F$2:$F$' + n + ',"' + fe + '",Manifest!$K$2:$K$' + n + ',40)' },
+          { t: 'n', f: 'SUMIFS(Manifest!$E$2:$E$' + n + ',Manifest!$C$2:$C$' + n + ',$A' + r + ',Manifest!$F$2:$F$' + n + ',"' + fe + '")' },
+          { t: 'n', f: 'SUMIFS(Manifest!$I$2:$I$' + n + ',Manifest!$C$2:$C$' + n + ',$A' + r + ',Manifest!$F$2:$F$' + n + ',"' + fe + '")' }
+        ]);
+      });
+      if (names.length) {
+        var start = headerRow + 1, end = aoa.length;
+        aoa.push(['TOTAL', { t: 'n', f: 'SUM(B' + start + ':B' + end + ')' }, { t: 'n', f: 'SUM(C' + start + ':C' + end + ')' }, { t: 'n', f: 'SUM(D' + start + ':D' + end + ')' }, { t: 'n', f: 'SUM(E' + start + ':E' + end + ')' }]);
+      } else {
+        aoa.push(['No ' + title.toLowerCase() + ' containers', '', '', '', '']);
+      }
+      aoa.push([]);
+    }
+    var opAo = [];
+    operatorBlock(opAo, 'FULL CONTAINERS', 'F', fullRows);
+    operatorBlock(opAo, 'EMPTY CONTAINERS', 'E', emptyRows);
+    var wsO = XLSX.utils.aoa_to_sheet(opAo);
     wsO['!cols'] = [{ wch: 12 }, { wch: 8 }, { wch: 8 }, { wch: 8 }, { wch: 12 }];
     XLSX.utils.book_append_sheet(wb, wsO, 'Operator Totals');
 
-    var meta = [['Field', 'Value'], ['Vessel', m.vesselName || ''], ['Voyage', m.voyage || ''], ['POL', m.pol || ''], ['Prepared', new Date().toLocaleString()], ['Filtered rows', rows.length]];
+    var meta = [['Field', 'Value'], ['Vessel', m.vesselName || ''], ['Voyage', m.voyage || ''], ['POL', m.pol || ''], ['Prepared', new Date().toLocaleString()], ['Filtered rows', rows.length], ['Full containers', fullRows.length], ['Empty containers', emptyRows.length]];
     XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(meta), 'Vessel');
     var base = ((m.vesselName || 'Manifest') + (m.voyage ? '_' + m.voyage : '')).replace(/[^a-zA-Z0-9]+/g, '_').replace(/^_|_$/g, '');
     return { wb: wb, filename: (base || 'manifest') + '_formulas.xlsx' };
   }
+
   function exportFormulaWorkbook() {
     if (!filteredRows().length) { alert('No data to export.'); return; }
     var out = formulaWorkbook();
