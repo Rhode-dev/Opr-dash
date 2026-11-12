@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
 <title>Operator Load Dashboard</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0b1220">
+<link rel="apple-touch-icon" href="icon-192.png">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2064%2064%22%3E%3Cdefs%3E%3ClinearGradient%20id=%22g%22%20x1=%220%22%20y1=%220%22%20x2=%221%22%20y2=%221%22%3E%3Cstop%20offset=%220%22%20stop-color=%22%233b82f6%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22%238b5cf6%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width=%2264%22%20height=%2264%22%20rx=%2214%22%20fill=%22url(%23g)%22/%3E%3Cg%20fill=%22%23fff%22%3E%3Crect%20x=%2215%22%20y=%2222%22%20width=%2210.5%22%20height=%229%22%20rx=%221.2%22/%3E%3Crect%20x=%2226.8%22%20y=%2222%22%20width=%2210.5%22%20height=%229%22%20rx=%221.2%22%20opacity=%22.85%22/%3E%3Crect%20x=%2238.6%22%20y=%2222%22%20width=%2210.5%22%20height=%229%22%20rx=%221.2%22/%3E%3Crect%20x=%2221%22%20y=%2212.5%22%20width=%2210.5%22%20height=%228.5%22%20rx=%221.2%22%20opacity=%22.85%22/%3E%3Crect%20x=%2232.8%22%20y=%2212.5%22%20width=%2210.5%22%20height=%228.5%22%20rx=%221.2%22/%3E%3Cpath%20d=%22M9%2034h46l-6%2012H15z%22/%3E%3C/g%3E%3Cpath%20d=%22M10%2053c4-3%208%203%2012%200s8%203%2012%200%208%203%2012%200%206%202%208%200%22%20fill=%22none%22%20stroke=%22%23fff%22%20stroke-opacity=%22.6%22%20stroke-width=%222.4%22%20stroke-linecap=%22round%22/%3E%3C/svg%3E">
 <link rel="apple-touch-icon" href="data:image/png;base64,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">
 <meta name="theme-color" content="#0f172a">
@@ -986,6 +989,28 @@ footer strong{color:var(--accent);font-weight:500}
 .toolbar-sync .sync-badge{margin-left:2px;font-family:var(--mono);font-size:8.5px;color:var(--muted)}
 .toolbar-sync.changes{border-color:rgba(245,158,11,.5)!important;background:rgba(245,158,11,.1)!important;color:#fcd34d!important}
 .toolbar-sync.changes .sync-badge{color:#fcd34d}
+.sync-tabs{display:flex;gap:2px;padding:6px 14px 0;border-bottom:1px solid var(--border-soft);flex:none}
+.sync-tab{padding:7px 10px 8px;background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);font-family:var(--mono);font-size:9.5px;cursor:pointer}
+.sync-tab:hover{color:var(--text-soft)}
+.sync-tab.active{color:#fff;border-bottom-color:var(--accent3)}
+#syncPersonalPane[hidden],#syncTeamPane[hidden]{display:none!important}
+.team-head{display:flex;align-items:center;gap:8px;margin:8px 0}
+.team-head > div{flex:1}
+.team-head b{font-family:var(--ui);font-size:12px;color:#fff}
+.team-role{font-family:var(--mono);font-size:8.5px;text-transform:uppercase;letter-spacing:1px;padding:2px 7px;border-radius:100px;border:1px solid var(--border-soft);color:var(--text-soft)}
+.team-role.admin{color:#fcd34d;border-color:rgba(245,158,11,.4);background:rgba(245,158,11,.1)}
+.team-role.editor{color:#93c5fd;border-color:rgba(59,130,246,.4);background:rgba(59,130,246,.1)}
+.team-role.viewer{color:var(--muted)}
+.team-members,.team-requests,.team-history{display:flex;flex-direction:column;gap:4px;margin-top:5px;max-height:170px;overflow-y:auto}
+.team-row{display:flex;align-items:center;gap:6px;padding:4px 6px;border:1px solid var(--border-soft);border-radius:6px;font-size:9px;color:var(--text-soft)}
+.team-row .who{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.team-row select{padding:2px 4px;background:var(--surface2);border:1px solid var(--border-soft);border-radius:4px;color:var(--text);font-size:8.5px}
+.team-row button{padding:2px 6px;font-size:8.5px}
+.team-conflict{margin-top:8px;padding:8px;border:1px solid rgba(245,158,11,.4);border-radius:8px;background:rgba(245,158,11,.07);font-size:10px;color:#fcd34d}
+.team-conflict[hidden]{display:none}
+.team-history .team-row{display:block}
+.team-history .team-row b{color:var(--text)}
+body.team-viewer #addCtnrBtn,body.team-viewer .btn-row-edit{display:none!important}
 #syncPrompt{
   position:fixed;left:50%;bottom:16px;transform:translate(-50%,12px);z-index:480;
   display:none;align-items:center;gap:9px;padding:8px 10px 8px 12px;border-radius:10px;
@@ -1062,6 +1087,18 @@ footer strong{color:var(--accent);font-weight:500}
 .ops-table th{color:var(--muted);font-size:8px;text-transform:uppercase;letter-spacing:.8px}
 .ops-table td{color:var(--text-soft)}
 .ops-table tr:hover td{background:rgba(59,130,246,.05)}
+.ops-export-group{border-top:1px solid var(--border-soft);padding:9px 0 2px;margin-top:4px}
+.ops-export-group:first-of-type{border-top:none}
+.ops-export-title{font-size:9px;font-family:var(--mono);color:var(--text-soft);text-transform:uppercase;letter-spacing:1.2px;font-weight:700;margin-bottom:4px}
+#pwaDraftBanner{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:490;display:flex;align-items:center;gap:8px;padding:8px 10px 8px 12px;border-radius:9px;background:rgba(15,23,42,.97);border:1px solid rgba(59,130,246,.45);box-shadow:0 12px 32px rgba(0,0,0,.45);font-family:var(--mono);font-size:9.5px;color:#bfdbfe;max-width:calc(100vw - 20px)}
+#pwaDraftBanner button{border:1px solid rgba(59,130,246,.45);background:rgba(59,130,246,.15);color:#dbeafe;border-radius:5px;padding:3px 7px;font-size:9px;cursor:pointer}
+#shareBanner{position:fixed;top:0;left:0;right:0;height:38px;z-index:550;display:flex;align-items:center;gap:10px;padding:0 14px;background:#0f172a;border-bottom:1px solid rgba(59,130,246,.4);font-family:var(--mono);font-size:9.5px;color:#bfdbfe}
+#shareBanner span{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#shareBanner button{border:1px solid rgba(59,130,246,.45);background:rgba(59,130,246,.12);color:#dbeafe;border-radius:5px;padding:4px 8px;font-size:9px;cursor:pointer}
+#shareBanner.error{border-bottom-color:rgba(239,68,68,.5);color:#fca5a5}
+body.shared-view{padding-top:38px}
+body.shared-view .btn-row-edit,body.shared-view #addCtnrBtn,body.shared-view #syncOpenBtn,body.shared-view #opsOpenBtn,body.shared-view #aiFab{display:none!important}
+body.shared-view #opsAlertBar,body.shared-view #syncPrompt,body.shared-view #pwaDraftBanner{display:none!important}
 @media(max-width:700px){#opsOverlay{padding:6px}#opsModal{max-height:96vh}.ops-body{padding:10px}}
 
 </style>
@@ -1840,7 +1877,11 @@ footer strong{color:var(--accent);font-weight:500}
       <h3 id="syncTitle">☁ Cloud Sync</h3>
       <button type="button" class="sync-close" id="syncClose" aria-label="Close cloud sync">✕</button>
     </div>
-    <div class="sync-body">
+    <div class="sync-tabs" role="tablist" aria-label="Cloud sync mode">
+      <button class="sync-tab active" type="button" role="tab" data-sync-tab="personal" aria-selected="true">Personal sync</button>
+      <button class="sync-tab" type="button" role="tab" data-sync-tab="team" aria-selected="false">Team workspace</button>
+    </div>
+    <div class="sync-body" id="syncPersonalPane">
       <div class="sync-status" id="syncStatus">Checking saved session…</div>
       <div class="sync-note">
         Cloud Sync stores one snapshot of the current manifest in your own <b>Supabase</b> project.
@@ -1914,6 +1955,162 @@ create policy "own manifest snapshot"
       <div class="sync-check" style="color:var(--muted)">When Auto-upload is off, a small Cloud Sync prompt appears only after you change the loaded data.</div>
       <div class="sync-meta" id="syncMeta"></div>
     </div>
+
+    <div class="sync-body" id="syncTeamPane" hidden>
+      <div class="sync-status" id="teamStatus">Sign in on the Personal tab first.</div>
+      <div class="sync-note">
+        A team workspace is shared by several Supabase users. <b>Viewer</b> can only read, <b>Editor</b> can upload or submit changes,
+        and <b>Admin</b> can manage members and approve changes. Team data is separate from your personal snapshot.
+      </div>
+
+      <div id="teamSetup">
+        <div class="sync-grid">
+          <div class="sync-field full">
+            <label for="teamName">New workspace name</label>
+            <input id="teamName" placeholder="e.g. OPR Operations Team">
+          </div>
+          <div class="sync-field full">
+            <label for="teamCode">Join code (to join an existing workspace)</label>
+            <input id="teamCode" placeholder="e.g. OPR-7K3P">
+          </div>
+        </div>
+        <div class="sync-actions">
+          <button class="sync-btn primary" type="button" id="teamCreate">Create workspace</button>
+          <button class="sync-btn" type="button" id="teamJoin">Join workspace</button>
+          <button class="sync-btn" type="button" id="teamRefresh">Refresh</button>
+        </div>
+      </div>
+
+      <div id="teamWorkspace" hidden>
+        <div class="team-head">
+          <div><b id="teamWsName">Workspace</b><div class="sync-account" id="teamWsMeta"></div></div>
+          <span class="team-role" id="teamRole">—</span>
+        </div>
+        <div class="sync-actions">
+          <button class="sync-btn primary" type="button" id="teamPull">⬇ Pull team data</button>
+          <button class="sync-btn" type="button" id="teamUpload">⬆ Upload team data</button>
+          <button class="sync-btn" type="button" id="teamSubmit">📤 Submit for approval</button>
+          <button class="sync-btn danger" type="button" id="teamLeave">Leave</button>
+        </div>
+        <label class="sync-check" id="teamApprovalWrap"><input type="checkbox" id="teamApproval"> Require admin approval for editor uploads</label>
+
+        <div class="sync-help" style="margin-top:8px">
+          <summary style="cursor:default;font-size:10px;font-weight:700;color:var(--text-soft)">Team members</summary>
+          <div id="teamMembers" class="team-members"></div>
+        </div>
+
+        <div class="sync-help" style="margin-top:8px">
+          <summary style="cursor:default;font-size:10px;font-weight:700;color:var(--text-soft)">Pending approvals</summary>
+          <div id="teamRequests" class="team-requests"></div>
+        </div>
+
+        <div id="teamConflict" class="team-conflict" hidden>
+          <b>⚠ Remote data changed</b>
+          <div id="teamConflictMsg" class="sync-note"></div>
+          <div class="sync-actions">
+            <button class="sync-btn primary" type="button" id="teamConflictMerge">Merge rows</button>
+            <button class="sync-btn" type="button" id="teamConflictPull">Use remote (discard mine)</button>
+            <button class="sync-btn danger" type="button" id="teamConflictOverwrite">Overwrite remote</button>
+            <button class="sync-btn" type="button" id="teamConflictCancel">Cancel</button>
+          </div>
+        </div>
+
+        <div class="sync-help" style="margin-top:8px">
+          <summary style="cursor:default;font-size:10px;font-weight:700;color:var(--text-soft)">Row edit history</summary>
+          <div class="sync-grid">
+            <div class="sync-field full"><label for="teamHistoryFilter">Filter by container</label><input id="teamHistoryFilter" placeholder="CSNU1234567"></div>
+          </div>
+          <div id="teamHistory" class="team-history"></div>
+        </div>
+      </div>
+
+      <details class="sync-help" style="margin-top:8px">
+        <summary>One-time team SQL setup</summary>
+        <div class="sync-note" style="margin-top:7px">Run this in the same Supabase project as Personal sync. It creates team workspaces, members, roles, snapshots, approvals and helper functions.</div>
+        <pre id="teamSql">create table if not exists public.team_workspaces (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  owner uuid not null references auth.users(id) on delete cascade,
+  join_code text unique not null,
+  approval_required boolean not null default false,
+  created_at timestamptz not null default now()
+);
+create table if not exists public.team_members (
+  workspace_id uuid references public.team_workspaces(id) on delete cascade,
+  user_id uuid references auth.users(id) on delete cascade,
+  email text,
+  role text not null check (role in ('viewer','editor','admin')),
+  joined_at timestamptz not null default now(),
+  primary key (workspace_id,user_id)
+);
+create table if not exists public.team_snapshots (
+  workspace_id uuid primary key references public.team_workspaces(id) on delete cascade,
+  payload jsonb not null,
+  revision bigint not null default 1,
+  updated_at timestamptz not null default now(),
+  updated_by uuid
+);
+create table if not exists public.team_change_requests (
+  id uuid primary key default gen_random_uuid(),
+  workspace_id uuid references public.team_workspaces(id) on delete cascade,
+  user_id uuid references auth.users(id) on delete cascade,
+  email text,
+  payload jsonb not null,
+  note text,
+  status text not null default 'pending' check (status in ('pending','approved','rejected')),
+  created_at timestamptz not null default now(),
+  reviewed_by uuid,
+  reviewed_at timestamptz
+);
+alter table public.team_workspaces enable row level security;
+alter table public.team_members enable row level security;
+alter table public.team_snapshots enable row level security;
+alter table public.team_change_requests enable row level security;
+create or replace function public.team_role(ws uuid) returns text
+language sql security definer set search_path=public stable as $$
+  select role from team_members where workspace_id=ws and user_id=auth.uid()
+$$;
+create policy "team workspaces read" on public.team_workspaces for select to authenticated using (public.team_role(id) is not null);
+create policy "team workspaces update" on public.team_workspaces for update to authenticated using (public.team_role(id)='admin');
+create policy "team members read" on public.team_members for select to authenticated using (public.team_role(workspace_id) is not null);
+create policy "team members admin" on public.team_members for update to authenticated using (public.team_role(workspace_id)='admin') with check (public.team_role(workspace_id)='admin');
+create policy "team members delete" on public.team_members for delete to authenticated using (public.team_role(workspace_id)='admin');
+create policy "team snapshots read" on public.team_snapshots for select to authenticated using (public.team_role(workspace_id) is not null);
+create policy "team snapshots write" on public.team_snapshots for insert to authenticated with check (public.team_role(workspace_id) in ('editor','admin'));
+create policy "team snapshots update" on public.team_snapshots for update to authenticated using (public.team_role(workspace_id) in ('editor','admin'));
+create policy "team requests read" on public.team_change_requests for select to authenticated using (public.team_role(workspace_id) in ('editor','admin') and (user_id=auth.uid() or public.team_role(workspace_id)='admin'));
+create policy "team requests insert" on public.team_change_requests for insert to authenticated with check (user_id=auth.uid() and public.team_role(workspace_id) in ('editor','admin'));
+create policy "team requests update" on public.team_change_requests for update to authenticated using (public.team_role(workspace_id)='admin');
+create policy "team members leave" on public.team_members for delete to authenticated using (user_id=auth.uid());
+create or replace function public.create_team(p_name text,p_code text) returns uuid
+language plpgsql security definer set search_path=public as $$
+declare ws uuid;
+begin
+  insert into team_workspaces(name,owner,join_code) values(p_name,auth.uid(),p_code) returning id into ws;
+  insert into team_members(workspace_id,user_id,email,role) values(ws,auth.uid(),auth.email(),'admin');
+  insert into team_snapshots(workspace_id,payload,revision) values(ws,'{}'::jsonb,1);
+  return ws;
+end $$;
+create or replace function public.join_team(p_code text) returns uuid
+language plpgsql security definer set search_path=public as $$
+declare ws uuid;
+begin
+  select id into ws from team_workspaces where join_code=p_code;
+  if ws is null then raise exception 'Invalid join code'; end if;
+  insert into team_members(workspace_id,user_id,email,role) values(ws,auth.uid(),auth.email(),'editor')
+  on conflict (workspace_id,user_id) do nothing;
+  return ws;
+end $$;
+grant execute on function public.team_role(uuid) to authenticated;
+grant execute on function public.create_team(text,text) to authenticated;
+grant execute on function public.join_team(text) to authenticated;
+grant select, insert, update, delete on public.team_workspaces to authenticated;
+grant select, insert, update, delete on public.team_members to authenticated;
+grant select, insert, update, delete on public.team_snapshots to authenticated;
+grant select, insert, update, delete on public.team_change_requests to authenticated;</pre>
+        <div class="sync-actions" style="margin-top:7px"><button class="sync-btn" type="button" id="teamCopySql">Copy team SQL</button></div>
+      </details>
+    </div>
   </div>
 </div>
 
@@ -1937,6 +2134,7 @@ create policy "own manifest snapshot"
       <button class="ops-tab" type="button" data-ops-tab="audit">Audit Log</button>
       <button class="ops-tab" type="button" data-ops-tab="views">Saved Views</button>
       <button class="ops-tab" type="button" data-ops-tab="mapping">Import Mapping</button>
+      <button class="ops-tab" type="button" data-ops-tab="export">Export &amp; Print</button>
     </div>
     <div class="ops-body">
       <section class="ops-pane" id="opsAlertsPane" role="tabpanel">
@@ -2021,6 +2219,85 @@ create policy "own manifest snapshot"
         <div class="ops-row">
           <button class="ops-btn primary" type="button" id="opsMapImport" disabled>Import mapped rows</button>
           <span class="ops-note" id="opsMapStatus"></span>
+        </div>
+      </section>
+
+      <section class="ops-pane" id="opsExportPane" role="tabpanel" hidden>
+        <div class="ops-note">Exports use the current filtered view and current vessel/voyage details.</div>
+
+        <div class="ops-export-group">
+          <div class="ops-export-title">Print / PDF</div>
+          <div class="ops-row">
+            <button class="ops-btn primary" type="button" id="opsPrintManifest2">🖨 Manifest</button>
+            <button class="ops-btn" type="button" id="opsPrintLoading">🖨 Loading list</button>
+            <button class="ops-btn" type="button" id="opsPrintSummary">📄 Voyage summary (PDF)</button>
+          </div>
+          <div class="ops-note">Use the browser print dialog and choose “Save as PDF”. The loading list is sorted by slot.</div>
+        </div>
+
+        <div class="ops-export-group">
+          <div class="ops-export-title">Excel with formulas</div>
+          <div class="ops-row">
+            <button class="ops-btn primary" type="button" id="opsExcelFormula">⬇ Formula workbook (.xlsx)</button>
+            <span class="ops-note">Manifest + operator/POD summary using COUNTIFS, SUMIFS and totals. Excel recalculates on open.</span>
+          </div>
+        </div>
+
+        <div class="ops-export-group">
+          <div class="ops-export-title">EDIFACT drafts</div>
+          <div class="ops-row">
+            <button class="ops-btn" type="button" id="opsEdiBaplie">BAPLIE</button>
+            <button class="ops-btn" type="button" id="opsEdiCoprar">COPRAR</button>
+            <button class="ops-btn" type="button" id="opsEdiMovins">MOVINS</button>
+          </div>
+          <div class="ops-note">Draft EDIFACT built from available fields. Carrier/port validation is still required; UN/LOCODE and partner IDs may need adjustment.</div>
+        </div>
+
+        <div class="ops-export-group">
+          <div class="ops-export-title">Read-only share link</div>
+          <div class="ops-row">
+            <div class="ops-field">
+              <label for="opsShareExpiry">Expires</label>
+              <select id="opsShareExpiry">
+                <option value="1">1 day</option>
+                <option value="7" selected>7 days</option>
+                <option value="30">30 days</option>
+              </select>
+            </div>
+            <button class="ops-btn primary" type="button" id="opsShareCreate">🔗 Create share link</button>
+            <button class="ops-btn" type="button" id="opsShareCopy" disabled>Copy link</button>
+          </div>
+          <div class="ops-note" id="opsShareStatus">Requires Cloud Sync sign-in and the share SQL below.</div>
+          <details class="sync-help" style="margin-top:6px">
+            <summary>One-time share SQL</summary>
+            <pre id="opsShareSql">create table if not exists public.shared_snapshots (
+  id uuid primary key default gen_random_uuid(),
+  token text unique not null,
+  payload jsonb not null,
+  created_by uuid references auth.users(id) on delete cascade,
+  created_at timestamptz not null default now(),
+  expires_at timestamptz not null
+);
+alter table public.shared_snapshots enable row level security;
+create policy "share insert own" on public.shared_snapshots for insert to authenticated with check (created_by=auth.uid());
+create or replace function public.get_shared_snapshot(p_token text) returns jsonb
+language sql security definer set search_path=public stable as $$
+  select payload from shared_snapshots where token=p_token and expires_at>now()
+$$;
+revoke all on public.shared_snapshots from anon;
+grant execute on function public.get_shared_snapshot(text) to anon, authenticated;</pre>
+          </details>
+          <div class="ops-note">Anyone with the link can view that snapshot until it expires. It is read-only and does not expose your Supabase account.</div>
+        </div>
+
+        <div class="ops-export-group">
+          <div class="ops-export-title">Install / offline</div>
+          <div class="ops-row">
+            <button class="ops-btn" type="button" id="opsPwaInstall" disabled>📱 Install app</button>
+            <button class="ops-btn" type="button" id="opsDraftSave">Save offline draft</button>
+            <button class="ops-btn" type="button" id="opsDraftRestore" disabled>Restore offline draft</button>
+          </div>
+          <div class="ops-note" id="opsPwaStatus">Install is available when the dashboard is served over HTTPS (GitHub Pages). Offline edits are stored in this browser until you upload them.</div>
         </div>
       </section>
     </div>
@@ -3463,6 +3740,7 @@ function setFieldValue(prefix, value){
 // Opens the modal in "Add" mode (no argument) or "Edit" mode (pass the row
 // object from allData — matched earlier by its _rid on the table's edit button).
 function openAddCtnrModal(row){
+  if(window.Team && Team.isViewer()){ alert('Your team role is Viewer. Ask an admin to change you to Editor before changing containers.'); return; }
   addCtnrForm.reset();
   ['mOPR','mSzTp','mPOL','mPOD'].forEach(p=>{ document.getElementById(p+'Custom').style.display='none'; document.getElementById(p+'Custom').value=''; });
 
@@ -3620,8 +3898,10 @@ addCtnrForm.addEventListener('submit', function(e){
       const changes = Object.keys(after).filter(k=>String(after[k]??'')!==String(beforeVals[k]??''))
         .map(k=>k+': '+(beforeVals[k]??'—')+' → '+(after[k]??'—'));
       Ops.audit('edit', (beforeVals.Container||ctnr)+' · '+(changes.length?changes.join(' · '):'no field changes'));
+      if(window.Team) Team.recordHistory(beforeVals.Container||ctnr, changes.length?changes.join(' · '):'no field changes');
     } else {
       Ops.audit('add', ctnr+' · '+(opr||'MANUAL')+' · '+(pod||'BLANK'));
+      if(window.Team) Team.recordHistory(ctnr, 'added · '+(opr||'MANUAL')+' · '+(pod||'BLANK'));
     }
   }
   populateFilters();
@@ -8425,6 +8705,7 @@ window.addEventListener('beforeunload', function(e){
     try { populateFilters(); } catch (e) {}
     try { renderAll(); } catch (e) { refresh(); }
     if (window.Ops) { try { Ops.audit('recon fix', msg); } catch (e) {} }
+    if (window.Team) { try { Team.recordHistory('', 'reconciliation fix · ' + msg); } catch (e) {} }
     toast(msg);
   }
   function fixOne(idx) {
@@ -8756,6 +9037,8 @@ window.addEventListener('beforeunload', function(e){
   function checkDirty() {
     var p = $('syncPrompt');
     if (!p) return;
+    if (window.__sharedView) { p.classList.remove('show'); return; }
+    if (window.Team && Team.isActive && Team.isActive()) { p.classList.remove('show'); return; }
     var dirty = typeof dataDirty !== 'undefined' && dataDirty;
     var badge = document.querySelector('.sync-badge');
     if (badge) badge.textContent = signedIn() ? (dirty ? '● changes' : '✓ synced') : '';
@@ -8893,6 +9176,7 @@ window.addEventListener('beforeunload', function(e){
   function signOut() {
     session = null; saveSession(); lastRemoteAt = ''; dirtyPrompted = false;
     var p = $('syncPrompt'); if (p) p.classList.remove('show');
+    if (window.Team && Team.reset) { try { Team.reset(); } catch (e) {} }
     render();
     setStatus('Signed out. Your local manifest is unchanged.', 'ok');
   }
@@ -9011,7 +9295,9 @@ window.addEventListener('beforeunload', function(e){
     } finally { syncing = false; }
   }
   async function poll() {
+    if (window.__sharedView) return;
     if (!signedIn() || syncing || (!cfg.autoPull && !cfg.autoPush)) return;
+    if (window.Team && Team.isActive && Team.isActive()) return;
     if (document.hidden) return;
     if (cfg.autoPush && typeof dataDirty !== 'undefined' && dataDirty) {
       await push({ auto: true });
@@ -9107,6 +9393,8 @@ window.addEventListener('beforeunload', function(e){
     close: close,
     config: function () { return Object.assign({}, cfg); },
     session: function () { return session ? { user: session.user, expires_at: session.expires_at } : null; },
+    token: function () { return session ? session.access_token : ''; },
+    ensure: ensureSession,
     signIn: signIn,
     signUp: signUp,
     signOut: signOut,
@@ -9159,6 +9447,12 @@ window.addEventListener('beforeunload', function(e){
   function teuOf(sztp) {
     var s = up(sztp).replace(/[^A-Z0-9]/g, '');
     return s[0] === '2' ? 1 : (s[0] === '4' || s[0] === 'L' || s[0] === 'P') ? 2 : 1;
+  }
+  function ftOf(sztp) {
+    var s = up(sztp).replace(/[^A-Z0-9]/g, '');
+    if (s.charAt(0) === '2') return 20;
+    if (s.charAt(0) === '4' || s.charAt(0) === 'L' || s.charAt(0) === 'P') return 40;
+    return '';
   }
 
   /* ── IndexedDB ───────────────────────────────────────────────────── */
@@ -9479,26 +9773,58 @@ window.addEventListener('beforeunload', function(e){
     try { return typeof getFiltered === 'function' ? getFiltered() : allData; } catch (e) { return allData; }
   }
   function buildPrintHTML(kind) {
-    var rows = filteredRows();
+    var rows = filteredRows().slice();
     var m = (typeof vesselMeta !== 'undefined' && vesselMeta) || {};
-    var title = kind === 'exceptions' ? 'Operational Exceptions' : 'Manifest';
-    var body;
+    var titles = { manifest: 'Manifest', loading: 'Loading List', summary: 'Voyage Summary', exceptions: 'Operational Exceptions' };
+    var title = titles[kind] || 'Manifest';
+    var teu = rows.reduce(function (s, r) { return s + teuOf(r.SzTp || r.SZTP || ''); }, 0);
+    var body = '';
     if (kind === 'exceptions') {
       var ex = buildExceptions();
       body = '<table><thead><tr><th>Severity</th><th>Type</th><th>Container</th><th>Slot</th><th>Operator</th><th>POD</th><th>Detail</th></tr></thead><tbody>' +
         ex.slice(0, 500).map(function (e) { return '<tr><td>' + esc(e.severity) + '</td><td>' + esc(e.type) + '</td><td>' + esc(e.ctnr) + '</td><td>' + esc(e.slot) + '</td><td>' + esc(e.opr) + '</td><td>' + esc(e.pod) + '</td><td>' + esc(e.message) + '</td></tr>'; }).join('') +
         '</tbody></table>';
+    } else if (kind === 'summary') {
+      var ex2 = buildExceptions();
+      var h = { high: 0, medium: 0, low: 0 };
+      ex2.forEach(function (e) { h[e.severity] = (h[e.severity] || 0) + 1; });
+      var g = {};
+      rows.forEach(function (r) {
+        var k = (r.OPR || '—') + '|||' + (r.POD || '—');
+        if (!g[k]) g[k] = { opr: r.OPR || '—', pod: r.POD || '—', c20: 0, c40: 0, teu: 0, vgm: 0 };
+        var ft = ftOf(r.SzTp || r.SZTP || '');
+        if (ft === 20) g[k].c20++;
+        else if (ft === 40) g[k].c40++;
+        g[k].teu += teuOf(r.SzTp || r.SZTP || '');
+        var v = (typeof getVGM === 'function') ? getVGM(r) : null; if (v != null) g[k].vgm += v;
+      });
+      var groups = Object.keys(g).map(function (k) { return g[k]; }).sort(function (a, b) { return b.teu - a.teu; });
+      var totalVgm = rows.reduce(function (s, r) { var v = (typeof getVGM === 'function') ? getVGM(r) : null; return s + (v || 0); }, 0);
+      var full = rows.filter(function (r) { return String(r['F/E'] || r.FE || '').toUpperCase() === 'F'; }).length;
+      var total20 = groups.reduce(function (s, x) { return s + x.c20; }, 0);
+      var total40 = groups.reduce(function (s, x) { return s + x.c40; }, 0);
+      body = '<div class="kpis">' +
+        '<div><b>' + rows.length + '</b><span>Containers</span></div>' +
+        '<div><b>' + teu + '</b><span>TEU</span></div>' +
+        '<div><b>' + full + ' / ' + (rows.length - full) + '</b><span>Full / Empty</span></div>' +
+        '<div><b>' + totalVgm.toFixed(1) + '</b><span>VGM tonnes</span></div>' +
+        '<div><b>' + (h.high || 0) + ' / ' + (h.medium || 0) + '</b><span>High / Medium exceptions</span></div></div>' +
+        '<h3>By operator and POD</h3><table><thead><tr><th>Operator</th><th>POD</th><th>20′</th><th>40′</th><th>TEU</th><th>VGM (T)</th></tr></thead><tbody>' +
+        groups.map(function (x) { return '<tr><td>' + esc(x.opr) + '</td><td>' + esc(x.pod) + '</td><td>' + x.c20 + '</td><td>' + x.c40 + '</td><td>' + x.teu + '</td><td>' + x.vgm.toFixed(2) + '</td></tr>'; }).join('') +
+        '<tr><td><b>TOTAL</b></td><td></td><td><b>' + total20 + '</b></td><td><b>' + total40 + '</b></td><td><b>' + teu + '</b></td><td><b>' + totalVgm.toFixed(2) + '</b></td></tr></tbody></table>' +
+        '<h3>Exception summary</h3><table><thead><tr><th>Severity</th><th>Count</th></tr></thead><tbody><tr><td>High</td><td>' + (h.high || 0) + '</td></tr><tr><td>Medium</td><td>' + (h.medium || 0) + '</td></tr><tr><td>Low</td><td>' + (h.low || 0) + '</td></tr></tbody></table>';
     } else {
-      body = '<table><thead><tr><th>Container</th><th>Slot</th><th>Operator</th><th>Size/Type</th><th>F/E</th><th>POL</th><th>POD</th><th>VGM (T)</th></tr></thead><tbody>' +
-        rows.map(function (r) {
+      var list = kind === 'loading' ? rows.sort(function (a, b) { return String(a.Slot || '').localeCompare(String(b.Slot || ''), undefined, { numeric: true }); }) : rows;
+      body = '<table><thead><tr><th>Container</th><th>Slot</th><th>Operator</th><th>Size/Type</th><th>F/E</th><th>POL</th><th>POD</th>' + (kind === 'loading' ? '' : '<th>VGM (T)</th>') + '</tr></thead><tbody>' +
+        list.map(function (r) {
           var v = (typeof getVGM === 'function') ? getVGM(r) : null;
-          return '<tr><td>' + esc(r.Container || '') + '</td><td>' + esc(r.Slot || '') + '</td><td>' + esc(r.OPR || '') + '</td><td>' + esc(r.SzTp || '') + '</td><td>' + esc(r['F/E'] || '') + '</td><td>' + esc(r.POL || '') + '</td><td>' + esc(r.POD || '') + '</td><td>' + (v == null ? '' : esc(v.toFixed(2))) + '</td></tr>';
+          return '<tr><td>' + esc(r.Container || '') + '</td><td>' + esc(r.Slot || '') + '</td><td>' + esc(r.OPR || '') + '</td><td>' + esc(r.SzTp || '') + '</td><td>' + esc(r['F/E'] || '') + '</td><td>' + esc(r.POL || '') + '</td><td>' + esc(r.POD || '') + '</td>' + (kind === 'loading' ? '' : '<td>' + (v == null ? '' : esc(v.toFixed(2))) + '</td>') + '</tr>';
         }).join('') + '</tbody></table>';
     }
-    var teu = rows.reduce(function (s, r) { return s + teuOf(r.SzTp || r.SZTP || ''); }, 0);
     return '<!doctype html><html><head><meta charset="utf-8"><title>' + esc(title) + '</title><style>' +
-      'body{font-family:Arial,sans-serif;margin:18px;color:#111}h1{font-size:17px;margin:0 0 4px}h2{font-size:12px;font-weight:400;color:#555;margin:0 0 10px}' +
+      'body{font-family:Arial,sans-serif;margin:18px;color:#111}h1{font-size:17px;margin:0 0 4px}h2{font-size:12px;font-weight:400;color:#555;margin:0 0 10px}h3{font-size:11px;margin:14px 0 5px}' +
       '.meta{font-size:10px;color:#444;margin-bottom:10px}table{width:100%;border-collapse:collapse;font-size:9px}th,td{border:1px solid #bbb;padding:3px 4px;text-align:left}th{background:#eee}' +
+      '.kpis{display:flex;gap:8px;margin:10px 0}.kpis div{border:1px solid #ccc;border-radius:4px;padding:5px 8px;min-width:80px}.kpis b{display:block;font-size:16px}.kpis span{font-size:8px;color:#666}' +
       '@page{size:A4 landscape;margin:10mm}</style></head><body><h1>' + esc(title) + '</h1><h2>' + esc((m.vesselName || '') + (m.voyage ? ' · ' + m.voyage : '') + (m.pol ? ' · POL ' + m.pol : '')) + '</h2>' +
       '<div class="meta">' + rows.length + ' containers · ' + teu + ' TEU · printed ' + new Date().toLocaleString() + '</div>' + body + '</bo'+'dy></html>';
   }
@@ -9507,6 +9833,175 @@ window.addEventListener('beforeunload', function(e){
     if (!w) { alert('Allow pop-ups to print/PDF this report.'); return; }
     w.document.open(); w.document.write(buildPrintHTML(kind)); w.document.close();
     setTimeout(function () { try { w.focus(); w.print(); } catch (e) {} }, 250);
+  }
+
+  function formulaWorkbook() {
+    var rows = filteredRows().slice();
+    var m = (typeof vesselMeta !== 'undefined' && vesselMeta) || {};
+    function ftOf(s) {
+      s = up(s).replace(/[^A-Z0-9]/g, '');
+      if (s.charAt(0) === '2') return 20;
+      if (s.charAt(0) === '4' || s.charAt(0) === 'L' || s.charAt(0) === 'P') return 40;
+      return '';
+    }
+    var data = [['Container', 'Slot', 'Operator', 'Size/Type', 'TEU', 'F/E', 'POL', 'POD', 'VGM kg', 'ISO Valid', 'Length ft']];
+    rows.forEach(function (r) {
+      var v = (typeof getVGM === 'function') ? getVGM(r) : null;
+      data.push([r.Container || '', r.Slot || '', r.OPR || '', r.SzTp || '', teuOf(r.SzTp || ''), r['F/E'] || '', r.POL || '', r.POD || '', v == null ? '' : +(v * 1000).toFixed(0), r.Container ? (isValidISO6346(String(r.Container)) ? 'Yes' : 'INVALID') : '', ftOf(r.SzTp || '')]);
+    });
+    var ws = XLSX.utils.aoa_to_sheet(data);
+    ws['!cols'] = [{ wch: 14 }, { wch: 8 }, { wch: 10 }, { wch: 10 }, { wch: 6 }, { wch: 7 }, { wch: 7 }, { wch: 7 }, { wch: 10 }, { wch: 9 }, { wch: 9 }];
+    var wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Manifest');
+    var n = rows.length + 1;
+
+    var groups = {};
+    rows.forEach(function (r) {
+      var k = (r.OPR || '—') + '|||' + (r.POD || '—');
+      if (!groups[k]) groups[k] = [r.OPR || '—', r.POD || '—'];
+    });
+    var gv = Object.keys(groups).map(function (k) { return groups[k]; }).sort(function (a, b) { return String(a[0]).localeCompare(String(b[0])) || String(a[1]).localeCompare(String(b[1])); });
+    var sum = [['Operator', 'POD', "20'", "40'", 'TEU', 'VGM kg']];
+    gv.forEach(function (g, i) {
+      var r = i + 2;
+      sum.push([
+        g[0], g[1],
+        { t: 'n', f: 'COUNTIFS(Manifest!$C$2:$C$' + n + ',$A' + r + ',Manifest!$H$2:$H$' + n + ',$B' + r + ',Manifest!$K$2:$K$' + n + ',20)' },
+        { t: 'n', f: 'COUNTIFS(Manifest!$C$2:$C$' + n + ',$A' + r + ',Manifest!$H$2:$H$' + n + ',$B' + r + ',Manifest!$K$2:$K$' + n + ',40)' },
+        { t: 'n', f: 'SUMIFS(Manifest!$E$2:$E$' + n + ',Manifest!$C$2:$C$' + n + ',$A' + r + ',Manifest!$H$2:$H$' + n + ',$B' + r + ')' },
+        { t: 'n', f: 'SUMIFS(Manifest!$I$2:$I$' + n + ',Manifest!$C$2:$C$' + n + ',$A' + r + ',Manifest!$H$2:$H$' + n + ',$B' + r + ')' }
+      ]);
+    });
+    var totalRow = gv.length + 2;
+    sum.push(['TOTAL', '', { t: 'n', f: 'SUM(C2:C' + (totalRow - 1) + ')' }, { t: 'n', f: 'SUM(D2:D' + (totalRow - 1) + ')' }, { t: 'n', f: 'SUM(E2:E' + (totalRow - 1) + ')' }, { t: 'n', f: 'SUM(F2:F' + (totalRow - 1) + ')' }]);
+    var wsS = XLSX.utils.aoa_to_sheet(sum);
+    wsS['!cols'] = [{ wch: 12 }, { wch: 8 }, { wch: 8 }, { wch: 8 }, { wch: 8 }, { wch: 12 }];
+    XLSX.utils.book_append_sheet(wb, wsS, 'Summary');
+
+    var ops = {};
+    rows.forEach(function (r) { ops[r.OPR || '—'] = 1; });
+    var opNames = Object.keys(ops).sort();
+    var op = [['Operator', "20'", "40'", 'TEU', 'VGM kg']];
+    opNames.forEach(function (name, i) {
+      var r = i + 2;
+      op.push([name,
+        { t: 'n', f: 'COUNTIFS(Manifest!$C$2:$C$' + n + ',$A' + r + ',Manifest!$K$2:$K$' + n + ',20)' },
+        { t: 'n', f: 'COUNTIFS(Manifest!$C$2:$C$' + n + ',$A' + r + ',Manifest!$K$2:$K$' + n + ',40)' },
+        { t: 'n', f: 'SUMIF(Manifest!$C$2:$C$' + n + ',$A' + r + ',Manifest!$E$2:$E$' + n + ')' },
+        { t: 'n', f: 'SUMIF(Manifest!$C$2:$C$' + n + ',$A' + r + ',Manifest!$I$2:$I$' + n + ')' }]);
+    });
+    op.push(['TOTAL', { t: 'n', f: 'SUM(B2:B' + (opNames.length + 1) + ')' }, { t: 'n', f: 'SUM(C2:C' + (opNames.length + 1) + ')' }, { t: 'n', f: 'SUM(D2:D' + (opNames.length + 1) + ')' }, { t: 'n', f: 'SUM(E2:E' + (opNames.length + 1) + ')' }]);
+    var wsO = XLSX.utils.aoa_to_sheet(op);
+    wsO['!cols'] = [{ wch: 12 }, { wch: 8 }, { wch: 8 }, { wch: 8 }, { wch: 12 }];
+    XLSX.utils.book_append_sheet(wb, wsO, 'Operator Totals');
+
+    var meta = [['Field', 'Value'], ['Vessel', m.vesselName || ''], ['Voyage', m.voyage || ''], ['POL', m.pol || ''], ['Prepared', new Date().toLocaleString()], ['Filtered rows', rows.length]];
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(meta), 'Vessel');
+    var base = ((m.vesselName || 'Manifest') + (m.voyage ? '_' + m.voyage : '')).replace(/[^a-zA-Z0-9]+/g, '_').replace(/^_|_$/g, '');
+    return { wb: wb, filename: (base || 'manifest') + '_formulas.xlsx' };
+  }
+  function exportFormulaWorkbook() {
+    if (!filteredRows().length) { alert('No data to export.'); return; }
+    var out = formulaWorkbook();
+    XLSX.writeFile(out.wb, out.filename);
+    if (window.Ops) Ops.audit('excel export', out.filename + ' · formulas');
+  }
+
+  /* ── EDIFACT drafts ─────────────────────────────────────────────── */
+  function ediDate() {
+    var d = new Date(), p = function (n) { return String(n).padStart(2, '0'); };
+    return { ymd: d.getFullYear() + p(d.getMonth() + 1) + p(d.getDate()), hm: p(d.getHours()) + p(d.getMinutes()) };
+  }
+  function buildEdifact(kind) {
+    var rows = filteredRows();
+    var m = (typeof vesselMeta !== 'undefined' && vesselMeta) || {};
+    var dt = ediDate(), ref = (m.voyage || 'VOY') + '-' + Date.now().toString(36).toUpperCase();
+    var seg = [];
+    seg.push('UNA:+.? \'');
+    seg.push('UNB+UNOC:3+OPRDASHBOARD+RECIPIENT+' + dt.ymd + ':' + dt.hm + '+' + ref + '+++' + kind + '\'');
+    seg.push('UNH+1+' + kind + ':D:95B:UN\'');
+    seg.push('BGM+++' + (kind === 'BAPLIE' ? '224' : '9') + '\'');
+    seg.push('DTM+137:' + dt.ymd + ':102\'');
+    seg.push('TDT+20+' + (m.voyage || '') + '+++172:' + (m.vesselName || '') + ':103\'');
+    if (kind === 'COPRAR') {
+      seg.push('LOC+9+' + (m.pol || rows[0] && rows[0].POL || '') + '\'');
+      seg.push('LOC+11+' + (rows[0] && rows[0].POD || '') + '\'');
+    } else {
+      seg.push('LOC+5+' + (m.pol || rows[0] && rows[0].POL || '') + '\'');
+      seg.push('LOC+13+' + (rows[0] && rows[0].POD || '') + '\'');
+    }
+    rows.forEach(function (r) {
+      var c = String(r.Container || '').replace(/[^A-Z0-9]/gi, '').toUpperCase();
+      if (!c) return;
+      var iso = String(r.SzTp || '').replace(/[^A-Z0-9]/gi, '').toUpperCase();
+      seg.push('EQD+CN+' + c + '+' + iso + '+++5\'');
+      var v = (typeof getVGM === 'function') ? getVGM(r) : null;
+      if (v != null) seg.push('MEA+AAE+VGM+KGM:' + Math.round(v * 1000) + '\'');
+      if (r.Slot) seg.push('LOC+147+' + String(r.Slot).replace(/[^A-Z0-9]/gi, '') + '\'');
+      if (r.POD) seg.push('RFF+BN:' + String(r.POD).toUpperCase() + '\'');
+      if (kind === 'MOVINS' && r.Slot) seg.push('FTX+AAI+++' + String(r.Slot) + '\'');
+    });
+    var bodyCount = seg.length - 3 + 1;
+    seg.push('UNT+' + (bodyCount + 1) + '+1\'');
+    seg.push('UNZ+1+' + ref + '\'');
+    return seg.join('\n');
+  }
+  function downloadText(name, text, mime) {
+    var blob = new Blob([text], { type: mime || 'text/plain;charset=utf-8' }), url = URL.createObjectURL(blob), a = document.createElement('a');
+    a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  }
+  function exportEdifact(kind) {
+    if (!filteredRows().length) { alert('No data to export.'); return; }
+    var m = (typeof vesselMeta !== 'undefined' && vesselMeta) || {};
+    var base = ((m.vesselName || 'MANIFEST') + (m.voyage ? '_' + m.voyage : '')).replace(/[^a-zA-Z0-9]+/g, '_').replace(/^_|_$/g, '');
+    downloadText((base || 'manifest') + '_' + kind + '_DRAFT.edi', buildEdifact(kind), 'text/plain;charset=utf-8');
+    if (window.Ops) Ops.audit('edifact export', kind + ' · draft');
+  }
+
+  /* ── read-only share link ──────────────────────────────────────── */
+  var lastShareUrl = '';
+  function shareToken() {
+    var a = new Uint8Array(18);
+    if (window.crypto && crypto.getRandomValues) crypto.getRandomValues(a);
+    else for (var i = 0; i < a.length; i++) a[i] = Math.floor(Math.random() * 256);
+    return Array.prototype.map.call(a, function (b) { return ('0' + b.toString(16)).slice(-2); }).join('');
+  }
+  async function makeShareLink() {
+    try {
+      if (!window.CloudSync || !CloudSync.session()) throw new Error('Sign in with Cloud Sync first.');
+      await CloudSync.ensure();
+      var cfg = CloudSync.config(), baseUrl = String(cfg.url || '').replace(/\/+$/, '');
+      if (!baseUrl || !cfg.anon) throw new Error('Cloud Sync Supabase URL/key is missing.');
+      var s = CloudSync.session(), days = Number($('opsShareExpiry').value || 7);
+      var token = shareToken();
+      var payload = {
+        rows: (Array.isArray(allData) ? allData : []).map(function (r) { return Object.assign({}, r); }),
+        vesselMeta: (typeof vesselMeta !== 'undefined' && vesselMeta) || {},
+        sharedAt: new Date().toISOString()
+      };
+      var resp = await fetch(baseUrl + '/rest/v1/shared_snapshots', {
+        method: 'POST',
+        headers: { 'apikey': cfg.anon, 'Authorization': 'Bearer ' + CloudSync.token(), 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+        body: JSON.stringify({ token: token, payload: payload, created_by: s.user.id, expires_at: new Date(Date.now() + days * 86400000).toISOString() })
+      });
+      if (!resp.ok) throw new Error((await resp.text()) || ('HTTP ' + resp.status));
+      var u = new URL(location.href);
+      u.search = '';
+      u.hash = '';
+      u.searchParams.set('share', token);
+      u.searchParams.set('sb', baseUrl);
+      u.searchParams.set('key', cfg.anon);
+      lastShareUrl = u.toString();
+      $('opsShareStatus').textContent = 'Link ready · expires in ' + days + ' day' + (days === 1 ? '' : 's') + '.';
+      $('opsShareCopy').disabled = false;
+      try { await navigator.clipboard.writeText(lastShareUrl); $('opsShareStatus').textContent += ' Copied to clipboard.'; } catch (e) { prompt('Copy share link:', lastShareUrl); }
+      if (window.Ops) Ops.audit('share link', days + ' days');
+    } catch (e) { $('opsShareStatus').textContent = 'Share failed: ' + e.message; }
+  }
+  async function copyShareLink() {
+    if (!lastShareUrl) return;
+    try { await navigator.clipboard.writeText(lastShareUrl); $('opsShareStatus').textContent = 'Link copied.'; }
+    catch (e) { prompt('Copy share link:', lastShareUrl); }
   }
 
   /* ── import mapping ──────────────────────────────────────────────── */
@@ -9623,13 +10118,14 @@ window.addEventListener('beforeunload', function(e){
   function switchOpsTab(name) {
     activeTab = name;
     document.querySelectorAll('.ops-tab').forEach(function (b) { b.classList.toggle('active', b.dataset.opsTab === name); });
-    var panes = { alerts: 'opsAlertsPane', archive: 'opsArchivePane', audit: 'opsAuditPane', views: 'opsViewsPane', mapping: 'opsMappingPane' };
+    var panes = { alerts: 'opsAlertsPane', archive: 'opsArchivePane', audit: 'opsAuditPane', views: 'opsViewsPane', mapping: 'opsMappingPane', export: 'opsExportPane' };
     Object.keys(panes).forEach(function (k) { var p = $(panes[k]); if (p) p.hidden = (k !== name); });
     if (name === 'archive') renderArchives();
     if (name === 'audit') renderAudit();
     if (name === 'views') renderViews();
     if (name === 'mapping') { renderTemplates(); renderMapFields(); }
     if (name === 'alerts') updateAlerts();
+    if (name === 'export') { if (window.PWA) PWA.refresh(); }
   }
   function openOps(tab) {
     $('opsOverlay').classList.add('open');
@@ -9684,6 +10180,18 @@ window.addEventListener('beforeunload', function(e){
     if ($('opsAlertFilter')) $('opsAlertFilter').addEventListener('change', renderAlerts);
     if ($('opsPrintManifest')) $('opsPrintManifest').addEventListener('click', function () { printView('manifest'); });
     if ($('opsPrintExceptions')) $('opsPrintExceptions').addEventListener('click', function () { printView('exceptions'); });
+    if ($('opsPrintManifest2')) $('opsPrintManifest2').addEventListener('click', function () { printView('manifest'); });
+    if ($('opsPrintLoading')) $('opsPrintLoading').addEventListener('click', function () { printView('loading'); });
+    if ($('opsPrintSummary')) $('opsPrintSummary').addEventListener('click', function () { printView('summary'); });
+    if ($('opsExcelFormula')) $('opsExcelFormula').addEventListener('click', exportFormulaWorkbook);
+    if ($('opsEdiBaplie')) $('opsEdiBaplie').addEventListener('click', function () { exportEdifact('BAPLIE'); });
+    if ($('opsEdiCoprar')) $('opsEdiCoprar').addEventListener('click', function () { exportEdifact('COPRAR'); });
+    if ($('opsEdiMovins')) $('opsEdiMovins').addEventListener('click', function () { exportEdifact('MOVINS'); });
+    if ($('opsShareCreate')) $('opsShareCreate').addEventListener('click', makeShareLink);
+    if ($('opsShareCopy')) $('opsShareCopy').addEventListener('click', copyShareLink);
+    if ($('opsDraftSave')) $('opsDraftSave').addEventListener('click', function () { if (window.PWA) PWA.saveDraft(); });
+    if ($('opsDraftRestore')) $('opsDraftRestore').addEventListener('click', function () { if (window.PWA) PWA.restoreDraft(); });
+    if ($('opsPwaInstall')) $('opsPwaInstall').addEventListener('click', function () { if (window.PWA) PWA.install(); });
     if ($('opsArchiveCurrent')) $('opsArchiveCurrent').addEventListener('click', function () { archiveCurrent({}); });
     if ($('opsArchiveList')) $('opsArchiveList').addEventListener('click', function (e) {
       var a = (this.__rows || []).filter(function (x) { return x.id === (e.target.dataset.archiveRestore || e.target.dataset.archiveDownload || e.target.dataset.archiveDel); })[0];
@@ -9760,6 +10268,8 @@ window.addEventListener('beforeunload', function(e){
     printHTML: buildPrintHTML,
     updateAlerts: updateAlerts,
     _debug: {
+      formulaWorkbook: formulaWorkbook,
+      buildEdifact: buildEdifact,
       restoreArchive: restoreArchive,
       renderArchives: renderArchives,
       importMatrix: function (matrix, map, fileName) {
@@ -9772,6 +10282,570 @@ window.addEventListener('beforeunload', function(e){
   };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind);
   else bind();
+})();
+
+</script>
+<script>
+(function () {
+  'use strict';
+  var state = { ws: null, role: '', members: [], revision: 0, baseRows: null, history: [], conflict: null, loaded: false };
+  var $ = function (id) { return document.getElementById(id); };
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function up(v) { return String(v == null ? '' : v).trim().toUpperCase(); }
+  function base() { var c = window.CloudSync ? CloudSync.config() : {}; return String(c.url || '').replace(/\/+$/, ''); }
+  function anon() { var c = window.CloudSync ? CloudSync.config() : {}; return c.anon || ''; }
+  function user() { var s = window.CloudSync && CloudSync.session(); return s && s.user || null; }
+  function isSignedIn() { return !!(user() && CloudSync.token()); }
+  function setStatus(msg) { var el = $('teamStatus'); if (el) el.textContent = msg; }
+  async function req(path, opts) {
+    opts = opts || {};
+    if (!isSignedIn()) throw new Error('Sign in on the Personal sync tab first.');
+    await CloudSync.ensure();
+    var headers = Object.assign({ 'apikey': anon(), 'Authorization': 'Bearer ' + CloudSync.token(), 'Content-Type': 'application/json' }, opts.headers || {});
+    var resp = await fetch(base() + path, Object.assign({}, opts, { headers: headers }));
+    var raw = await resp.text(), data = null;
+    try { data = raw ? JSON.parse(raw) : null; } catch (e) {}
+    if (!resp.ok) {
+      var msg = data && (data.message || data.hint || data.error_description || data.error) || raw || ('HTTP ' + resp.status);
+      throw new Error(msg);
+    }
+    return data;
+  }
+  function roleLabel(r) { return r ? r.charAt(0).toUpperCase() + r.slice(1) : '—'; }
+  function setRole(r) {
+    state.role = r || '';
+    document.body.classList.toggle('team-viewer', r === 'viewer');
+    var el = $('teamRole'); if (el) { el.textContent = roleLabel(r); el.className = 'team-role ' + (r || ''); }
+  }
+
+  async function loadTeam(force) {
+    if (!isSignedIn()) { setStatus('Sign in on the Personal sync tab first.'); $('teamSetup').hidden = false; $('teamWorkspace').hidden = true; setRole(''); return; }
+    if (state.loaded && !force) return;
+    setStatus('Loading team workspace…');
+    try {
+      var uid = user().id;
+      var rows = await req('/rest/v1/team_members?select=workspace_id,role,email,team_workspaces(id,name,join_code,approval_required,owner)&user_id=eq.' + encodeURIComponent(uid) + '&limit=1');
+      var row = rows && rows[0];
+      if (!row) {
+        state.ws = null; state.loaded = true; setRole('');
+        $('teamSetup').hidden = false; $('teamWorkspace').hidden = true;
+        setStatus('No team workspace yet. Create one or join with a code.');
+        return;
+      }
+      state.ws = row.team_workspaces || { id: row.workspace_id, name: 'Workspace' };
+      state.ws.id = state.ws.id || row.workspace_id;
+      state.loaded = true;
+      $('teamSetup').hidden = true; $('teamWorkspace').hidden = false;
+      setRole(row.role);
+      $('teamWsName').textContent = state.ws.name || 'Team workspace';
+      $('teamWsMeta').textContent = 'Join code: ' + (state.ws.join_code || '—') + ' · member ' + (user().email || uid.slice(0, 8));
+      $('teamApproval').checked = !!state.ws.approval_required;
+      $('teamApproval').disabled = state.role !== 'admin';
+      $('teamApprovalWrap').style.display = state.role === 'admin' ? '' : 'none';
+      $('teamUpload').hidden = state.role === 'viewer' || (!!state.ws.approval_required && state.role !== 'admin');
+      $('teamSubmit').hidden = !(!!state.ws.approval_required && state.role !== 'admin');
+      $('teamLeave').hidden = state.ws.owner === uid;
+      await loadSnapshot(false);
+      await loadMembers();
+      await loadRequests();
+      setStatus('Team: ' + state.ws.name + ' · ' + roleLabel(state.role) + ' · revision ' + state.revision + '.');
+    } catch (e) {
+      state.loaded = false;
+      setStatus('Team error: ' + e.message);
+    }
+  }
+
+  async function loadSnapshot(apply) {
+    if (!state.ws) return;
+    var rows = await req('/rest/v1/team_snapshots?select=revision,updated_at,payload&workspace_id=eq.' + encodeURIComponent(state.ws.id) + '&limit=1');
+    var row = rows && rows[0];
+    if (!row) { state.revision = 0; state.baseRows = []; return; }
+    state.revision = Number(row.revision || 0);
+    state.baseRows = ((row.payload && row.payload.rows) || []).map(function (r) { return Object.assign({}, r); });
+    state.history = ((row.payload && row.payload.history) || []).slice(-1000);
+    renderHistory();
+    if (apply && row.payload && Array.isArray(row.payload.rows)) {
+      CloudSync.applyPayload(row.payload, { force: true });
+      setStatus('Team data downloaded · revision ' + state.revision + '.');
+    }
+  }
+
+  async function pullTeam() {
+    if (!state.ws) return;
+    if (typeof dataDirty !== 'undefined' && dataDirty && !confirm('Local changes will be replaced by the team copy. Continue?')) return;
+    try {
+      await loadSnapshot(true);
+      await refreshAfterPull();
+    } catch (e) { setStatus('Pull failed: ' + e.message); }
+  }
+  async function refreshAfterPull() {
+    if (!state.ws) return;
+    setStatus('Team data downloaded · revision ' + state.revision + '.');
+    state.conflict = null; hideConflict();
+  }
+
+  function teamPayload() {
+    return {
+      rows: (Array.isArray(allData) ? allData : []).map(function (r) { return Object.assign({}, r); }),
+      vesselMeta: (typeof vesselMeta !== 'undefined' && vesselMeta) ? Object.assign({}, vesselMeta) : {},
+      history: state.history.slice(-1000),
+      savedAt: new Date().toISOString(),
+      savedBy: (user() && user().email) || ''
+    };
+  }
+  async function pushTeam(expectedRev) {
+    if (!state.ws) throw new Error('No team workspace.');
+    var uid = user().id, vals = teamPayload();
+    if (!state.revision) {
+      await req('/rest/v1/team_snapshots', { method: 'POST', headers: { 'Prefer': 'return=representation' }, body: JSON.stringify({ workspace_id: state.ws.id, payload: vals, revision: 1, updated_at: new Date().toISOString(), updated_by: uid }) });
+      state.revision = 1; state.baseRows = vals.rows;
+      return;
+    }
+    var updated = await req('/rest/v1/team_snapshots?workspace_id=eq.' + encodeURIComponent(state.ws.id) + '&revision=eq.' + expectedRev, {
+      method: 'PATCH', headers: { 'Prefer': 'return=representation' },
+      body: JSON.stringify({ payload: vals, revision: expectedRev + 1, updated_at: new Date().toISOString(), updated_by: uid })
+    });
+    if (!updated || !updated.length) throw new Error('Revision conflict');
+    state.revision = expectedRev + 1; state.baseRows = vals.rows;
+    if (typeof dataDirty !== 'undefined') dataDirty = false;
+  }
+  async function uploadTeam() {
+    if (!state.ws) return;
+    if (state.role === 'viewer') { setStatus('Viewer role: download only.'); return; }
+    if (state.ws.approval_required && state.role !== 'admin') { return submitRequest(); }
+    try {
+      setStatus('Uploading team data…');
+      var cur = await req('/rest/v1/team_snapshots?select=revision,updated_at,payload&workspace_id=eq.' + encodeURIComponent(state.ws.id) + '&limit=1');
+      var remote = cur && cur[0];
+      var rev = remote ? Number(remote.revision) : 0;
+      if (remote && state.revision && rev !== state.revision) return showConflict(remote);
+      await pushTeam(rev);
+      setStatus('Team data uploaded · revision ' + state.revision + '.');
+      if (window.Ops) Ops.audit('team upload', state.ws.name + ' · revision ' + state.revision);
+      hideConflict();
+    } catch (e) { setStatus('Upload failed: ' + e.message); }
+  }
+  async function submitRequest() {
+    try {
+      var vals = teamPayload();
+      await req('/rest/v1/team_change_requests', {
+        method: 'POST',
+        body: JSON.stringify({ workspace_id: state.ws.id, user_id: user().id, email: user().email, payload: vals, note: 'Editor upload', status: 'pending' })
+      });
+      setStatus('Submitted for admin approval.');
+      await loadRequests();
+    } catch (e) { setStatus('Submit failed: ' + e.message); }
+  }
+
+  function keyOf(r) { return String(r.Container || r.CONTAINER || '') + '|' + String(r.Slot || r.SLOT || ''); }
+  function norm(r) {
+    return { Container: up(r.Container), Slot: String(r.Slot || ''), OPR: up(r.OPR), SzTp: up(r.SzTp), 'F/E': up(r['F/E']), POL: up(r.POL), POD: up(r.POD), VGM: r.VGM == null ? '' : String(r.VGM) };
+  }
+  function same(a, b) { return JSON.stringify(norm(a)) === JSON.stringify(norm(b)); }
+  function mergeHistory(remote) {
+    var seen = {}, all = state.history.concat(remote || []);
+    state.history = all.filter(function (h) {
+      var k = [h.ts, h.ctnr, h.changes, h.user].join('|');
+      if (seen[k]) return false; seen[k] = 1; return true;
+    }).sort(function (a, b) { return a.ts - b.ts; }).slice(-1000);
+  }
+  function mergeRows(baseRows, localRows, remoteRows) {
+    var b = {}, l = {}, r = {}, out = [], conflicts = 0;
+    (baseRows || []).forEach(function (x) { b[keyOf(x)] = x; });
+    (localRows || []).forEach(function (x) { l[keyOf(x)] = x; });
+    (remoteRows || []).forEach(function (x) { r[keyOf(x)] = x; });
+    var keys = Object.keys(Object.assign({}, b, l, r));
+    keys.forEach(function (k) {
+      var lb = l[k], rb = r[k], bb = b[k];
+      if (lb && rb) {
+        if (same(lb, rb)) out.push(lb);
+        else if (bb) {
+          var lc = !same(lb, bb), rc = !same(rb, bb);
+          if (lc && rc) { conflicts++; out.push(lb); }
+          else out.push(rc ? rb : lb);
+        } else { conflicts++; out.push(lb); }
+      } else if (lb) out.push(lb);
+      else if (rb) out.push(rb);
+    });
+    out.forEach(function (x, i) { x._rid = i + 1; });
+    return { rows: out, conflicts: conflicts };
+  }
+  function showConflict(remote) {
+    state.conflict = remote;
+    mergeHistory((remote.payload && remote.payload.history) || []);
+    renderHistory();
+    var merged = mergeRows(state.baseRows, allData, (remote.payload && remote.payload.rows) || []);
+    $('teamConflictMsg').textContent = 'Remote revision ' + remote.revision + ' at ' + new Date(remote.updated_at).toLocaleString() + '. ' +
+      merged.conflicts + ' row' + (merged.conflicts === 1 ? '' : 's') + ' changed on both sides. Merge keeps your local row for overlapping containers.';
+    $('teamConflict').hidden = false;
+  }
+  function hideConflict() { var el = $('teamConflict'); if (el) el.hidden = true; }
+  async function mergeAndPush() {
+    if (!state.conflict) return;
+    var remote = state.conflict;
+    var merged = mergeRows(state.baseRows, allData, (remote.payload && remote.payload.rows) || []);
+    allData = merged.rows;
+    try { ridSeq = allData.length; } catch (e) {}
+    try { populateFilters(); renderAll(); } catch (e) {}
+    state.baseRows = merged.rows;
+    try {
+      await pushTeam(Number(remote.revision));
+      setStatus('Merged ' + merged.rows.length + ' rows (' + merged.conflicts + ' local-wins conflicts) and uploaded revision ' + state.revision + '.');
+      hideConflict();
+    } catch (e) { setStatus('Merge upload failed: ' + e.message); }
+  }
+
+  async function loadMembers() {
+    if (!state.ws) return;
+    try {
+      var rows = await req('/rest/v1/team_members?select=user_id,email,role,joined_at&workspace_id=eq.' + encodeURIComponent(state.ws.id) + '&order=role.asc');
+      state.members = rows || [];
+      var box = $('teamMembers'); if (!box) return;
+      if (!state.members.length) { box.innerHTML = '<div class="ops-empty">No members.</div>'; return; }
+      box.innerHTML = state.members.map(function (m) {
+        var me = user() && m.user_id === user().id;
+        var owner = state.ws.owner === m.user_id;
+        var roleCtl = state.role === 'admin' && !owner ? '<select data-team-role="' + esc(m.user_id) + '">' + ['viewer', 'editor', 'admin'].map(function (r) { return '<option value="' + r + '"' + (m.role === r ? ' selected' : '') + '>' + roleLabel(r) + '</option>'; }).join('') + '</select>' : '<span class="team-role ' + esc(m.role) + '">' + roleLabel(m.role) + '</span>';
+        return '<div class="team-row"><span class="who">' + esc(m.email || m.user_id.slice(0, 8)) + (me ? ' (you)' : '') + (owner ? ' · owner' : '') + '</span>' + roleCtl + '</div>';
+      }).join('');
+    } catch (e) { /* non-admin may still read */ }
+  }
+  async function changeRole(uid, role) {
+    try {
+      await req('/rest/v1/team_members?workspace_id=eq.' + encodeURIComponent(state.ws.id) + '&user_id=eq.' + encodeURIComponent(uid), { method: 'PATCH', body: JSON.stringify({ role: role }) });
+      setStatus('Role updated.'); await loadMembers();
+    } catch (e) { setStatus('Role change failed: ' + e.message); }
+  }
+  async function loadRequests() {
+    if (!state.ws) return;
+    try {
+      var rows = await req('/rest/v1/team_change_requests?workspace_id=eq.' + encodeURIComponent(state.ws.id) + '&status=eq.pending&select=id,user_id,email,note,created_at&order=created_at.desc');
+      var box = $('teamRequests'); if (!box) return;
+      if (!rows || !rows.length) { box.innerHTML = '<div class="ops-empty">No pending approvals.</div>'; return; }
+      box.innerHTML = rows.map(function (r) {
+        return '<div class="team-row"><span class="who">' + esc(r.email || r.user_id.slice(0, 8)) + ' · ' + new Date(r.created_at).toLocaleString() + (r.note ? '<br><span style="color:var(--muted)">' + esc(r.note) + '</span>' : '') + '</span>' +
+          (state.role === 'admin' ? '<button class="ops-btn" type="button" data-team-approve="' + esc(r.id) + '">Approve</button><button class="ops-btn danger" type="button" data-team-reject="' + esc(r.id) + '">Reject</button>' : '<span class="team-role">pending</span>') + '</div>';
+      }).join('');
+    } catch (e) { /* ignored */ }
+  }
+  async function reviewRequest(id, approve) {
+    try {
+      if (approve) {
+        var rows = await req('/rest/v1/team_change_requests?select=payload&id=eq.' + encodeURIComponent(id) + '&limit=1');
+        var payload = rows && rows[0] && rows[0].payload;
+        if (!payload) throw new Error('Request has no payload');
+        var snap = await req('/rest/v1/team_snapshots?select=revision&workspace_id=eq.' + encodeURIComponent(state.ws.id) + '&limit=1');
+        var rev = snap && snap[0] ? Number(snap[0].revision) : 0;
+        var applied = await req('/rest/v1/team_snapshots?workspace_id=eq.' + encodeURIComponent(state.ws.id) + '&revision=eq.' + rev, {
+          method: 'PATCH', headers: { 'Prefer': 'return=representation' },
+          body: JSON.stringify({ payload: payload, revision: rev + 1, updated_at: new Date().toISOString(), updated_by: user().id })
+        });
+        if (!applied || !applied.length) throw new Error('Snapshot changed while approving — refresh and retry.');
+      }
+      await req('/rest/v1/team_change_requests?id=eq.' + encodeURIComponent(id), { method: 'PATCH', body: JSON.stringify({ status: approve ? 'approved' : 'rejected', reviewed_by: user().id, reviewed_at: new Date().toISOString() }) });
+      setStatus(approve ? 'Change approved and applied.' : 'Change rejected.');
+      if (window.Ops) Ops.audit(approve ? 'team approval' : 'team rejection', 'request ' + id);
+      await loadSnapshot(false); await loadRequests();
+    } catch (e) { setStatus('Approval failed: ' + e.message); }
+  }
+
+  function recordHistory(ctnr, changes) {
+    var entry = { ts: Date.now(), user: (user() && user().email) || 'local', ctnr: ctnr || '', changes: changes || '' };
+    state.history.push(entry);
+    if (state.history.length > 1000) state.history = state.history.slice(-1000);
+    renderHistory();
+  }
+  function renderHistory() {
+    var box = $('teamHistory'); if (!box) return;
+    var q = ($('teamHistoryFilter') && $('teamHistoryFilter').value || '').trim().toUpperCase();
+    var rows = state.history.slice().reverse().filter(function (h) { return !q || String(h.ctnr).toUpperCase().indexOf(q) >= 0; }).slice(0, 100);
+    if (!rows.length) { box.innerHTML = '<div class="ops-empty">No row history in this team snapshot yet.</div>'; return; }
+    box.innerHTML = rows.map(function (h) { return '<div class="team-row"><span class="who"><b>' + esc(h.ctnr || '—') + '</b> · ' + esc(h.changes || '') + '</span><span style="color:var(--muted)">' + esc(h.user || '') + ' · ' + new Date(h.ts).toLocaleString() + '</span></div>'; }).join('');
+  }
+
+  async function createTeam() {
+    var name = ($('teamName').value || '').trim(); if (!name) return setStatus('Enter a workspace name.');
+    var code = 'OPR-' + Math.random().toString(36).slice(2, 6).toUpperCase();
+    try {
+      setStatus('Creating workspace…');
+      await req('/rest/v1/rpc/create_team', { method: 'POST', body: JSON.stringify({ p_name: name, p_code: code }) });
+      state.loaded = false; await loadTeam(true);
+    } catch (e) { setStatus('Create failed: ' + e.message); }
+  }
+  async function joinTeam() {
+    var code = ($('teamCode').value || '').trim().toUpperCase(); if (!code) return setStatus('Enter a join code.');
+    try {
+      setStatus('Joining workspace…');
+      await req('/rest/v1/rpc/join_team', { method: 'POST', body: JSON.stringify({ p_code: code }) });
+      state.loaded = false; await loadTeam(true);
+    } catch (e) { setStatus('Join failed: ' + e.message); }
+  }
+  async function leaveTeam() {
+    if (!state.ws || state.ws.owner === (user() && user().id)) return;
+    if (!confirm('Leave this team workspace?')) return;
+    try {
+      await req('/rest/v1/team_members?workspace_id=eq.' + encodeURIComponent(state.ws.id) + '&user_id=eq.' + encodeURIComponent(user().id), { method: 'DELETE' });
+      state.loaded = false; state.ws = null; await loadTeam(true);
+    } catch (e) { setStatus('Leave failed: ' + e.message); }
+  }
+
+  function switchTab(name) {
+    document.querySelectorAll('.sync-tab').forEach(function (b) { var on = b.dataset.syncTab === name; b.classList.toggle('active', on); b.setAttribute('aria-selected', on ? 'true' : 'false'); });
+    if ($('syncPersonalPane')) $('syncPersonalPane').hidden = name !== 'personal';
+    if ($('syncTeamPane')) $('syncTeamPane').hidden = name !== 'team';
+    if (name === 'team') loadTeam(false);
+  }
+
+  function bind() {
+    if (!$('syncTeamPane') || $('syncTeamPane').__bound) return;
+    $('syncTeamPane').__bound = true;
+    document.querySelectorAll('.sync-tab').forEach(function (b) { b.addEventListener('click', function () { switchTab(b.dataset.syncTab); }); });
+    ['teamCreate'].forEach(function (id) { if ($(id)) $(id).addEventListener('click', createTeam); });
+    if ($('teamJoin')) $('teamJoin').addEventListener('click', joinTeam);
+    if ($('teamRefresh')) $('teamRefresh').addEventListener('click', function () { state.loaded = false; loadTeam(true); });
+    if ($('teamPull')) $('teamPull').addEventListener('click', pullTeam);
+    if ($('teamUpload')) $('teamUpload').addEventListener('click', uploadTeam);
+    if ($('teamSubmit')) $('teamSubmit').addEventListener('click', submitRequest);
+    if ($('teamLeave')) $('teamLeave').addEventListener('click', leaveTeam);
+    if ($('teamApproval')) $('teamApproval').addEventListener('change', async function () {
+      try { await req('/rest/v1/team_workspaces?id=eq.' + encodeURIComponent(state.ws.id), { method: 'PATCH', body: JSON.stringify({ approval_required: this.checked }) }); state.ws.approval_required = this.checked; setStatus('Approval setting saved.'); await loadTeam(true); }
+      catch (e) { setStatus('Setting failed: ' + e.message); }
+    });
+    if ($('teamMembers')) $('teamMembers').addEventListener('change', function (e) { if (e.target.dataset.teamRole) changeRole(e.target.dataset.teamRole, e.target.value); });
+    if ($('teamRequests')) $('teamRequests').addEventListener('click', function (e) {
+      if (e.target.dataset.teamApprove) reviewRequest(e.target.dataset.teamApprove, true);
+      else if (e.target.dataset.teamReject) reviewRequest(e.target.dataset.teamReject, false);
+    });
+    if ($('teamConflictMerge')) $('teamConflictMerge').addEventListener('click', mergeAndPush);
+    if ($('teamConflictPull')) $('teamConflictPull').addEventListener('click', async function () {
+      if (state.conflict) {
+        mergeHistory((state.conflict.payload && state.conflict.payload.history) || []);
+        CloudSync.applyPayload(state.conflict.payload, { force: true });
+        state.revision = Number(state.conflict.revision);
+        state.baseRows = (state.conflict.payload.rows || []).slice();
+        hideConflict(); setStatus('Remote revision applied.'); renderHistory();
+      }
+    });
+    if ($('teamConflictOverwrite')) $('teamConflictOverwrite').addEventListener('click', async function () { if (!state.conflict) return; try { await pushTeam(Number(state.conflict.revision)); hideConflict(); setStatus('Remote overwritten with revision ' + state.revision + '.'); } catch (e) { setStatus('Overwrite failed: ' + e.message); } });
+    if ($('teamConflictCancel')) $('teamConflictCancel').addEventListener('click', hideConflict);
+    if ($('teamHistoryFilter')) $('teamHistoryFilter').addEventListener('input', renderHistory);
+    if ($('teamCopySql')) $('teamCopySql').addEventListener('click', function () { var t = $('teamSql').textContent; if (navigator.clipboard) navigator.clipboard.writeText(t); });
+  }
+
+  window.Team = {
+    isViewer: function () { return state.role === 'viewer'; },
+    role: function () { return state.role; },
+    isActive: function () { return !!state.ws; },
+    recordHistory: recordHistory,
+    syncNow: function () { return uploadTeam(); },
+    refresh: function () { state.loaded = false; return loadTeam(true); },
+    openTeam: function () { switchTab('team'); },
+    reset: function () {
+      state.ws = null; state.role = ''; state.loaded = false; state.revision = 0; state.baseRows = null; state.conflict = null; state.history = [];
+      setRole('');
+      if ($('teamSetup')) $('teamSetup').hidden = false;
+      if ($('teamWorkspace')) $('teamWorkspace').hidden = true;
+      setStatus('Sign in on the Personal sync tab first.');
+    },
+    _debug: { switchTab: switchTab, mergeRows: mergeRows, setRole: setRole, state: state }
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind);
+  else bind();
+})();
+
+</script>
+<script>
+(function () {
+  'use strict';
+  var DRAFT_KEY = 'oprOfflineDraft.v1', PENDING_KEY = 'oprOfflinePending.v1';
+  var deferredPrompt = null, timer = 0;
+  var $ = function (id) { return document.getElementById(id); };
+  function hasData() { return typeof allData !== 'undefined' && Array.isArray(allData) && allData.length > 0; }
+  function saveDraft(silent) {
+    if (window.__sharedView) return false;
+    if (!hasData()) { if (!silent) alert('There is no manifest data to save yet.'); return false; }
+    try {
+      var draft = {
+        ts: Date.now(),
+        dirty: typeof dataDirty !== 'undefined' ? !!dataDirty : false,
+        rows: allData.map(function (r) { return Object.assign({}, r); }),
+        vesselMeta: (typeof vesselMeta !== 'undefined' && vesselMeta) ? Object.assign({}, vesselMeta) : {},
+        fileName: ($('statusText') ? $('statusText').textContent.trim() : '')
+      };
+      localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+      if (!silent && $('opsPwaStatus')) $('opsPwaStatus').textContent = 'Offline draft saved at ' + new Date().toLocaleTimeString() + '.';
+      refresh();
+      return true;
+    } catch (e) {
+      if (!silent && $('opsPwaStatus')) $('opsPwaStatus').textContent = 'Draft could not be saved: ' + e.message;
+      return false;
+    }
+  }
+  function loadDraft() {
+    try {
+      var d = JSON.parse(localStorage.getItem(DRAFT_KEY) || 'null');
+      return d && Array.isArray(d.rows) && d.rows.length ? d : null;
+    } catch (e) { return null; }
+  }
+  function restoreDraft() {
+    var d = loadDraft();
+    if (!d) return;
+    if (hasData() && !confirm('Replace the current table with the offline draft from ' + new Date(d.ts).toLocaleString() + '?')) return;
+    allData = d.rows.map(function (r) { return Object.assign({}, r); });
+    var seq = 0; allData.forEach(function (r) { r._rid = ++seq; });
+    try { ridSeq = seq; rawASCLoaded = false; rawASCLines = null; rawASCFileName = ''; } catch (e) {}
+    if (typeof vesselMeta !== 'undefined') vesselMeta = d.vesselMeta || {};
+    if (typeof dataDirty !== 'undefined') dataDirty = !!d.dirty;
+    var dash = $('dashboard'), upSec = $('uploadSection'), mb = $('menuBtn');
+    if (dash) dash.style.display = 'block';
+    if (upSec) upSec.style.display = 'none';
+    if (mb) mb.style.display = 'flex';
+    var st = $('statusText'); if (st) st.textContent = allData.length.toLocaleString() + ' records · offline draft';
+    try { showVesselBanner(vesselMeta); } catch (e) {}
+    try { populateFilters(); } catch (e) {}
+    try { renderAll(); } catch (e) {}
+    if (window.Ops) Ops.audit('draft restore', allData.length + ' rows · ' + new Date(d.ts).toLocaleString());
+    hideDraftBanner();
+    refresh();
+  }
+  function showDraftBanner() {
+    if (!loadDraft() || hasData() || $('pwaDraftBanner')) return;
+    var b = document.createElement('div');
+    b.id = 'pwaDraftBanner';
+    b.innerHTML = '<span>💾 An offline draft from ' + new Date(loadDraft().ts).toLocaleString() + ' is available.</span><button type="button" id="pwaDraftRestore2">Restore</button><button type="button" id="pwaDraftDismiss">✕</button>';
+    document.body.appendChild(b);
+    b.querySelector('#pwaDraftRestore2').addEventListener('click', restoreDraft);
+    b.querySelector('#pwaDraftDismiss').addEventListener('click', hideDraftBanner);
+  }
+  function hideDraftBanner() { var b = $('pwaDraftBanner'); if (b) b.remove(); }
+  function refresh() {
+    var d = loadDraft();
+    if ($('opsDraftRestore')) $('opsDraftRestore').disabled = !d;
+    if ($('opsDraftSave')) $('opsDraftSave').disabled = !hasData();
+    if ($('opsPwaInstall')) {
+      $('opsPwaInstall').disabled = !deferredPrompt;
+      $('opsPwaInstall').textContent = (window.matchMedia && matchMedia('(display-mode: standalone)').matches) ? '✓ Installed' : '📱 Install app';
+    }
+    if ($('opsPwaStatus')) {
+      var offline = !navigator.onLine;
+      $('opsPwaStatus').textContent = (offline ? 'Offline — edits are saved locally. ' : '') +
+        (d ? 'Draft saved ' + new Date(d.ts).toLocaleTimeString() + '. ' : '') +
+        (deferredPrompt ? 'Install is available.' : 'Install appears when served over HTTPS and the app is installable.');
+    }
+    showDraftBanner();
+  }
+  async function install() {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    try { await deferredPrompt.userChoice; } catch (e) {}
+    deferredPrompt = null;
+    refresh();
+  }
+  function setPending() {
+    try { localStorage.setItem(PENDING_KEY, '1'); } catch (e) {}
+  }
+  function clearPending() { try { localStorage.removeItem(PENDING_KEY); } catch (e) {} }
+  async function flushPending() {
+    if (!navigator.onLine) return;
+    if (localStorage.getItem(PENDING_KEY) !== '1') return;
+    if (typeof dataDirty === 'undefined' || !dataDirty) { clearPending(); return; }
+    try {
+      if (window.Team && Team.isActive && Team.isActive()) {
+        await Team.syncNow();
+        if (!dataDirty) clearPending();
+      } else if (window.CloudSync && CloudSync.session()) {
+        var ok = await CloudSync.push({ force: false });
+        if (ok) clearPending();
+      }
+    } catch (e) { /* keep pending */ }
+  }
+  function bind() {
+    if (window.__pwaBound) return;
+    window.__pwaBound = true;
+    if ('serviceWorker' in navigator && location.protocol === 'https:') {
+      navigator.serviceWorker.register('./sw.js').catch(function () {});
+    }
+    window.addEventListener('beforeinstallprompt', function (e) {
+      e.preventDefault(); deferredPrompt = e; refresh();
+    });
+    window.addEventListener('appinstalled', function () { deferredPrompt = null; refresh(); });
+    window.addEventListener('offline', function () {
+      if (typeof dataDirty !== 'undefined' && dataDirty) setPending();
+      saveDraft(true); refresh();
+    });
+    window.addEventListener('online', function () { flushPending(); refresh(); });
+    window.addEventListener('beforeunload', function () { if (hasData()) saveDraft(true); });
+    timer = setInterval(function () {
+      if (hasData()) saveDraft(true);
+      if (!navigator.onLine && typeof dataDirty !== 'undefined' && dataDirty) setPending();
+    }, 5000);
+    refresh();
+    setTimeout(flushPending, 1500);
+  }
+  window.PWA = { saveDraft: saveDraft, restoreDraft: restoreDraft, install: install, refresh: refresh, flush: flushPending, hasDraft: function () { return !!loadDraft(); } };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind);
+  else bind();
+})();
+
+</script>
+<script>
+(function () {
+  'use strict';
+  var params = new URLSearchParams(location.search);
+  var token = params.get('share'), sb = params.get('sb'), key = params.get('key');
+  if (!token || !sb || !key) return;
+  window.__sharedView = true;
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function banner(msg, error) {
+    var b = document.getElementById('shareBanner');
+    if (!b) {
+      b = document.createElement('div'); b.id = 'shareBanner';
+      b.innerHTML = '<span id="shareBannerText"></span><button type="button" id="sharePrint">🖨 Print</button>';
+      document.body.appendChild(b);
+      b.querySelector('#sharePrint').addEventListener('click', function () {
+        if (window.Ops) {
+          var w = window.open('', '_blank'); if (!w) return;
+          w.document.open(); w.document.write(Ops.printHTML('manifest')); w.document.close();
+          setTimeout(function () { w.focus(); w.print(); }, 250);
+        }
+      });
+    }
+    b.classList.toggle('error', !!error);
+    b.querySelector('#shareBannerText').textContent = msg;
+  }
+  async function load() {
+    try {
+      document.body.classList.add('shared-view');
+      banner('Loading shared snapshot…');
+      var resp = await fetch(String(sb).replace(/\/+$/, '') + '/rest/v1/rpc/get_shared_snapshot', {
+        method: 'POST',
+        headers: { 'apikey': key, 'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ p_token: token })
+      });
+      if (!resp.ok) throw new Error((await resp.text()) || ('HTTP ' + resp.status));
+      var payload = await resp.json();
+      if (!payload || !Array.isArray(payload.rows)) throw new Error('This shared link is invalid or has expired.');
+      allData = payload.rows.map(function (r) { return Object.assign({}, r); });
+      var seq = 0; allData.forEach(function (r) { r._rid = ++seq; });
+      try { ridSeq = seq; rawASCLoaded = false; rawASCLines = null; rawASCFileName = ''; } catch (e) {}
+      if (typeof vesselMeta !== 'undefined') vesselMeta = payload.vesselMeta || {};
+      dataDirty = false;
+      var dash = document.getElementById('dashboard'), upSec = document.getElementById('uploadSection');
+      if (dash) dash.style.display = 'block';
+      if (upSec) upSec.style.display = 'none';
+      ['menuBtnDash', 'syncOpenBtn', 'opsOpenBtn', 'aiFab', 'addCtnrBtn'].forEach(function (id) { var el = document.getElementById(id); if (el) el.style.display = 'none'; });
+      var mb = document.getElementById('menuBtn'); if (mb) mb.style.display = 'none';
+      try { showVesselBanner(vesselMeta); } catch (e) {}
+      try { populateFilters(); } catch (e) {}
+      try { renderAll(); } catch (e) {}
+      banner('Read-only shared snapshot · ' + allData.length.toLocaleString() + ' containers · ' + new Date(payload.sharedAt || Date.now()).toLocaleString());
+      document.title = 'Shared manifest · ' + (vesselMeta.vesselName || 'OPR');
+    } catch (e) {
+      banner('Could not open shared manifest: ' + e.message, true);
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { setTimeout(load, 50); });
+  else setTimeout(load, 50);
 })();
 
 </script>
