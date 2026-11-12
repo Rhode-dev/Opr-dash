@@ -9954,7 +9954,7 @@ window.addEventListener('beforeunload', function(e){
     var meta = [['Field', 'Value'], ['Vessel', m.vesselName || ''], ['Voyage', m.voyage || ''], ['POL', m.pol || ''], ['Prepared', new Date().toLocaleString()], ['Filtered rows', rows.length], ['Full containers', fullRows.length], ['Empty containers', emptyRows.length]];
     XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(meta), 'Vessel');
     var base = ((m.vesselName || 'Manifest') + (m.voyage ? '_' + m.voyage : '')).replace(/[^a-zA-Z0-9]+/g, '_').replace(/^_|_$/g, '');
-    return { wb: wb, filename: (base || 'manifest') + '_formulas.xlsx' };
+    return { wb: wb, filename: (base || 'manifest') + '.xlsx' };
   }
 
   function exportFormulaWorkbook() {
