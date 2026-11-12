@@ -1005,6 +1005,65 @@ footer strong{color:var(--accent);font-weight:500}
 #syncPrompt .sp-x:hover{color:#fff}
 @media(max-width:640px){#syncOverlay{padding:8px}.sync-grid{grid-template-columns:1fr}}
 
+/* ── OPERATIONS CENTRE ── */
+#opsOpenBtn{display:flex;align-items:center;gap:7px;padding:9px 14px;margin:0;width:auto;justify-content:flex-start;color:#fcd34d}
+#opsOpenBtn:hover{color:#fff}
+.ops-badge{min-width:16px;text-align:center;font-family:var(--mono);font-size:8.5px;padding:1px 5px;border-radius:100px;background:rgba(245,158,11,.18);border:1px solid rgba(245,158,11,.35);color:#fcd34d}
+#opsOverlay{display:none;position:fixed;inset:0;z-index:520;background:rgba(2,6,23,.72);backdrop-filter:blur(5px);align-items:center;justify-content:center;padding:18px}
+#opsOverlay.open{display:flex}
+#opsModal{width:min(900px,100%);max-height:92vh;display:flex;flex-direction:column;overflow:hidden;background:rgba(15,23,42,.98);border:1px solid var(--border);border-radius:14px;box-shadow:0 24px 70px rgba(0,0,0,.55)}
+.ops-head{display:flex;align-items:center;gap:10px;padding:13px 16px;border-bottom:1px solid var(--border-soft);flex:none}
+.ops-head h3{font-family:var(--ui);font-size:14px;font-weight:800;color:#fff;margin:0;flex:1}
+.ops-close{background:none;border:1px solid var(--border-soft);color:var(--muted);width:28px;height:28px;border-radius:7px;cursor:pointer}
+.ops-close:hover{color:#fff;background:var(--surface2)}
+.ops-tabs{display:flex;gap:2px;padding:7px 10px 0;border-bottom:1px solid var(--border-soft);flex:none;overflow-x:auto}
+.ops-tab{padding:7px 9px 8px;background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);font-family:var(--mono);font-size:9.5px;cursor:pointer;white-space:nowrap}
+.ops-tab:hover{color:var(--text-soft)}
+.ops-tab.active{color:#fff;border-bottom-color:var(--accent3)}
+.ops-body{padding:13px 16px;overflow-y:auto}
+.ops-pane{display:block}
+.ops-pane[hidden]{display:none!important}
+.ops-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:6px;margin-bottom:10px}
+.ops-kpi{background:rgba(30,41,59,.6);border:1px solid var(--border-soft);border-radius:8px;padding:7px 9px}
+.ops-kpi b{display:block;font-family:var(--ui);font-size:16px;color:#fff;line-height:1.2}
+.ops-kpi span{display:block;font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+.ops-kpi.high b{color:#fca5a5}
+.ops-kpi.medium b{color:#fcd34d}
+.ops-row{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:9px}
+.ops-btn{padding:6px 10px;border-radius:7px;border:1px solid var(--border-soft);background:transparent;color:var(--text-soft);font-family:var(--ui);font-size:10px;font-weight:600;cursor:pointer}
+.ops-btn:hover{border-color:var(--accent);background:rgba(59,130,246,.12);color:#fff}
+.ops-btn.primary{border-color:rgba(59,130,246,.45);background:rgba(59,130,246,.16);color:#93c5fd}
+.ops-btn.danger{border-color:rgba(239,68,68,.35);color:#fca5a5}
+.ops-btn:disabled{opacity:.4;cursor:default}
+.ops-field{display:flex;flex-direction:column;gap:4px;min-width:130px}
+.ops-field label{font-size:8.5px;color:var(--muted);letter-spacing:1.2px;text-transform:uppercase}
+.ops-field input,.ops-field select{background:rgba(15,23,42,.85);border:1px solid var(--border-soft);border-radius:7px;padding:6px 8px;color:var(--text);font-family:var(--mono);font-size:10px;outline:none}
+.ops-field input:focus,.ops-field select:focus{border-color:var(--accent)}
+.ops-list{display:flex;flex-direction:column;gap:5px;max-height:420px;overflow-y:auto}
+.ops-item{border:1px solid var(--border-soft);border-radius:8px;padding:7px 9px;background:rgba(30,41,59,.35);display:flex;gap:8px;align-items:flex-start}
+.ops-item .tag{flex:none;font-size:8px;font-family:var(--mono);padding:1px 6px;border-radius:100px;border:1px solid var(--border-soft);color:var(--text-soft);text-transform:uppercase;letter-spacing:.5px}
+.ops-item.high .tag{color:#fca5a5;border-color:rgba(239,68,68,.35);background:rgba(239,68,68,.1)}
+.ops-item.medium .tag{color:#fcd34d;border-color:rgba(245,158,11,.35);background:rgba(245,158,11,.1)}
+.ops-item .main{flex:1;min-width:0}
+.ops-item .t{font-size:10px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ops-item .d{font-size:9px;color:var(--muted);margin-top:2px;line-height:1.45}
+.ops-item .meta{flex:none;font-size:8.5px;font-family:var(--mono);color:var(--muted);text-align:right}
+.ops-empty{padding:14px;text-align:center;color:var(--muted);font-size:10px;border:1px dashed var(--border);border-radius:8px}
+.ops-note{font-size:9px;color:var(--muted);line-height:1.5;margin-top:6px}
+#opsAlertBar{display:none;align-items:center;gap:9px;margin-bottom:12px;padding:9px 12px;border-radius:9px;border:1px solid rgba(245,158,11,.35);background:rgba(245,158,11,.07);font-size:10px;color:#fcd34d}
+#opsAlertBar.show{display:flex}
+#opsAlertBar b{color:#fff}
+#opsAlertBar button{margin-left:auto;border:1px solid rgba(245,158,11,.45);background:rgba(245,158,11,.12);color:#fde68a;border-radius:6px;padding:4px 9px;font-family:var(--ui);font-size:9.5px;font-weight:700;cursor:pointer}
+#opsAlertBar button:hover{background:rgba(245,158,11,.25);color:#fff}
+.ops-mapgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:6px;margin:8px 0}
+.ops-mapgrid .ops-field{min-width:0}
+.ops-table{width:100%;border-collapse:collapse;font-size:9.5px}
+.ops-table th,.ops-table td{padding:5px 7px;border-bottom:1px solid rgba(51,65,85,.35);text-align:left}
+.ops-table th{color:var(--muted);font-size:8px;text-transform:uppercase;letter-spacing:.8px}
+.ops-table td{color:var(--text-soft)}
+.ops-table tr:hover td{background:rgba(59,130,246,.05)}
+@media(max-width:700px){#opsOverlay{padding:6px}#opsModal{max-height:96vh}.ops-body{padding:10px}}
+
 </style>
 </head>
 <body>
@@ -1188,8 +1247,10 @@ footer strong{color:var(--accent);font-weight:500}
           <button id="syncOpenBtn" class="btn-reset toolbar-sync" type="button">
             ☁ Cloud Sync <span class="sync-badge"></span>
           </button>
+          <button id="opsOpenBtn" class="btn-reset" type="button" title="Operations Centre">⚠ Ops <span class="ops-badge" id="opsBadge"></span></button>
         </div>
       </div>
+      <div id="opsAlertBar" role="status"></div>
 
       <!-- VALIDATION BANNER -->
       <div id="valBanner" role="alert" aria-live="polite">
@@ -1863,6 +1924,109 @@ create policy "own manifest snapshot"
   <button type="button" class="sp-x" id="syncPromptDismiss" aria-label="Dismiss cloud sync prompt">✕</button>
 </div>
 
+<!-- OPERATIONS CENTRE -->
+<div id="opsOverlay" aria-hidden="true">
+  <div id="opsModal" role="dialog" aria-modal="true" aria-labelledby="opsTitle">
+    <div class="ops-head">
+      <h3 id="opsTitle">⚠ Operations Centre</h3>
+      <button type="button" class="ops-close" id="opsClose" aria-label="Close operations">✕</button>
+    </div>
+    <div class="ops-tabs" role="tablist" aria-label="Operations sections">
+      <button class="ops-tab active" type="button" data-ops-tab="alerts">Alerts &amp; Exceptions</button>
+      <button class="ops-tab" type="button" data-ops-tab="archive">Voyage Archive</button>
+      <button class="ops-tab" type="button" data-ops-tab="audit">Audit Log</button>
+      <button class="ops-tab" type="button" data-ops-tab="views">Saved Views</button>
+      <button class="ops-tab" type="button" data-ops-tab="mapping">Import Mapping</button>
+    </div>
+    <div class="ops-body">
+      <section class="ops-pane" id="opsAlertsPane" role="tabpanel">
+        <div class="ops-kpis" id="opsKpis"></div>
+        <div class="ops-row">
+          <div class="ops-field">
+            <label for="opsCutoff">Voyage cut-off</label>
+            <input type="datetime-local" id="opsCutoff">
+          </div>
+          <button class="ops-btn primary" type="button" id="opsSaveCutoff">Save cut-off</button>
+          <button class="ops-btn" type="button" id="opsClearCutoff">Clear</button>
+          <div style="flex:1"></div>
+          <button class="ops-btn" type="button" id="opsPrintManifest">🖨 Print manifest</button>
+          <button class="ops-btn" type="button" id="opsPrintExceptions">🖨 Print exceptions</button>
+        </div>
+        <div class="ops-row">
+          <div class="ops-field">
+            <label for="opsAlertFilter">Show</label>
+            <select id="opsAlertFilter">
+              <option value="all">All exceptions</option>
+              <option value="high">High severity</option>
+              <option value="booking">Booking</option>
+              <option value="lists">Loading lists</option>
+              <option value="manifest">Manifest data</option>
+              <option value="cutoff">Cut-off</option>
+            </select>
+          </div>
+          <span class="ops-note" id="opsAlertSummary"></span>
+        </div>
+        <div class="ops-list" id="opsAlertList"></div>
+        <div class="ops-note">Alerts cover ISO/duplicates, required fields, overbooking, loading-list mismatches, DG/reefer flags and the cut-off. Resolve by editing the row or correcting the reference files.</div>
+      </section>
+
+      <section class="ops-pane" id="opsArchivePane" role="tabpanel" hidden>
+        <div class="ops-row">
+          <div class="ops-field" style="flex:1">
+            <label for="opsArchiveName">Archive name</label>
+            <input id="opsArchiveName" placeholder="e.g. MV GERRI 115E — final load">
+          </div>
+          <button class="ops-btn primary" type="button" id="opsArchiveCurrent">＋ Archive current voyage</button>
+        </div>
+        <div class="ops-note">Archives store the full manifest, vessel details and cut-off in this browser’s IndexedDB. Restoring replaces the current table. Before a new file is loaded, the current voyage is archived automatically.</div>
+        <div class="ops-list" id="opsArchiveList" style="margin-top:8px"></div>
+      </section>
+
+      <section class="ops-pane" id="opsAuditPane" role="tabpanel" hidden>
+        <div class="ops-row">
+          <button class="ops-btn" type="button" id="opsAuditExport">⬇ Export audit CSV</button>
+          <button class="ops-btn danger" type="button" id="opsAuditClear">Clear audit</button>
+        </div>
+        <div class="ops-list" id="opsAuditList"></div>
+      </section>
+
+      <section class="ops-pane" id="opsViewsPane" role="tabpanel" hidden>
+        <div class="ops-row">
+          <div class="ops-field" style="flex:1">
+            <label for="opsViewName">View name</label>
+            <input id="opsViewName" placeholder="e.g. EMA · MWA · missing from list">
+          </div>
+          <button class="ops-btn primary" type="button" id="opsSaveView">Save current filters as view</button>
+        </div>
+        <div class="ops-note">A saved view stores the main filters and table search. Apply it from here; the dashboard updates immediately.</div>
+        <div class="ops-list" id="opsViewList" style="margin-top:8px"></div>
+      </section>
+
+      <section class="ops-pane" id="opsMappingPane" role="tabpanel" hidden>
+        <div class="ops-note">Use this when a carrier file has unusual column names. Choose a file, map each field, optionally save the mapping as a template, then import. The normal Upload Manifest flow remains unchanged.</div>
+        <div class="ops-row" style="margin-top:8px">
+          <input type="file" id="opsMapFile" accept=".xlsx,.xls,.xlsm,.csv,.tsv" style="display:none">
+          <button class="ops-btn primary" type="button" id="opsMapChoose">Choose file to map</button>
+          <span class="ops-note" id="opsMapFileName">No file selected.</span>
+        </div>
+        <div class="ops-row">
+          <div class="ops-field">
+            <label for="opsMapTemplate">Template</label>
+            <select id="opsMapTemplate"><option value="">— no template —</option></select>
+          </div>
+          <button class="ops-btn" type="button" id="opsMapSaveTemplate">Save mapping as template</button>
+          <button class="ops-btn danger" type="button" id="opsMapDeleteTemplate">Delete template</button>
+        </div>
+        <div class="ops-mapgrid" id="opsMapFields"></div>
+        <div class="ops-row">
+          <button class="ops-btn primary" type="button" id="opsMapImport" disabled>Import mapped rows</button>
+          <span class="ops-note" id="opsMapStatus"></span>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
 
 <footer>
   <div class="container">
@@ -2498,6 +2662,7 @@ fileInput.addEventListener('change',e=>{if(e.target.files[0])processFile(e.targe
 
 function processFile(file, origin){
   if(HoopShot.isBusy()) return;                     // one shot at a time
+  if(window.Ops) Ops.beforeLoad(file.name);
   const shot = HoopShot.launch(file, origin);       // null if the upload zone isn't on screen
   if(!shot) document.getElementById('loading').style.display='block';
   document.getElementById('dashboard').style.display='none';
@@ -2572,6 +2737,7 @@ function processFile(file, origin){
           showVesselBanner(meta);
           populateFilters();
           renderAll();
+          if(window.Ops) Ops.audit('upload', file.name + ' · ' + allData.length + ' records');
         } catch(err){ fail(err); }
       };
       // Let the ball finish its shot before the dashboard takes over the screen.
@@ -3404,6 +3570,12 @@ addCtnrForm.addEventListener('submit', function(e){
   const vgmRaw = document.getElementById('mVGM').value.trim();
   const vgm  = vgmRaw!=='' && !isNaN(parseFloat(vgmRaw)) ? +parseFloat(vgmRaw).toFixed(3) : null;
 
+  const beforeEdit = editingRid!=null ? allData.find(r=>r._rid===editingRid) : null;
+  const beforeVals = beforeEdit ? {
+    Slot: beforeEdit.Slot, Container: beforeEdit.Container, OPR: beforeEdit.OPR,
+    SzTp: beforeEdit.SzTp, FE: beforeEdit['F/E'], POL: beforeEdit.POL, POD: beforeEdit.POD, VGM: beforeEdit.VGM
+  } : null;
+
   if(editingRid!=null){
     // ── EDIT MODE: mutate the existing row in place ──
     const row = allData.find(r=>r._rid===editingRid);
@@ -3442,6 +3614,16 @@ addCtnrForm.addEventListener('submit', function(e){
   }
 
   dataDirty = true;
+  if(window.Ops){
+    if(beforeVals){
+      const after = { Slot: slot, Container: ctnr, OPR: opr||'MANUAL', SzTp: sztp||'UNKNOWN', FE: fe, POL: pol, POD: pod||'BLANK', VGM: vgm };
+      const changes = Object.keys(after).filter(k=>String(after[k]??'')!==String(beforeVals[k]??''))
+        .map(k=>k+': '+(beforeVals[k]??'—')+' → '+(after[k]??'—'));
+      Ops.audit('edit', (beforeVals.Container||ctnr)+' · '+(changes.length?changes.join(' · '):'no field changes'));
+    } else {
+      Ops.audit('add', ctnr+' · '+(opr||'MANUAL')+' · '+(pod||'BLANK'));
+    }
+  }
   populateFilters();
   renderAll();
   closeAddCtnrModal();
@@ -8242,6 +8424,7 @@ window.addEventListener('beforeunload', function(e){
   function afterFix(msg) {
     try { populateFilters(); } catch (e) {}
     try { renderAll(); } catch (e) { refresh(); }
+    if (window.Ops) { try { Ops.audit('recon fix', msg); } catch (e) {} }
     toast(msg);
   }
   function fixOne(idx) {
@@ -8781,6 +8964,7 @@ window.addEventListener('beforeunload', function(e){
     if (typeof dataDirty !== 'undefined' && dataDirty && !opts.force) {
       if (!confirm('This device has local edits that are not uploaded. Downloading the cloud copy will replace them. Continue?')) return false;
     }
+    if (window.Ops) { try { Ops.beforeLoad('cloud download'); } catch (e) {} }
     allData = payload.rows.map(function (r) { return Object.assign({}, r); });
     ridSeq = 0;
     allData.forEach(function (r) { r._rid = ++ridSeq; });
@@ -8800,6 +8984,7 @@ window.addEventListener('beforeunload', function(e){
     try { showVesselBanner(vesselMeta); } catch (e) {}
     try { populateFilters(); } catch (e) {}
     try { renderAll(); } catch (e) {}
+    if (window.Ops) { try { Ops.audit('cloud download', rowsN + ' rows'); } catch (e) {} }
     if (lastRemoteAt) { cfg.lastRemoteAt = lastRemoteAt; saveCfg(); }
     remoteSeen = false;
     dirtyPrompted = false;
@@ -8938,6 +9123,655 @@ window.addEventListener('beforeunload', function(e){
       idleStatus: idleStatus
     }
   };
+})();
+
+</script>
+<script>
+(function () {
+  'use strict';
+  var CFG_KEY = 'oprOps.v1', VIEW_KEY = 'oprSavedViews.v1', MAP_KEY = 'oprImportMaps.v1';
+  var DB_NAME = 'oprOpsDB', DB_VER = 1;
+  var cfg = loadCfg();
+  var dbp = null;
+  var mapState = null;
+  var lastExceptions = [];
+  var archiveCache = null, archiveLoading = null, auditCache = null, auditLoading = null;
+  var $ = function (id) { return document.getElementById(id); };
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function up(v) { return String(v == null ? '' : v).trim().toUpperCase(); }
+  function loadCfg() {
+    var out = { cutoff: '' };
+    try { var v = JSON.parse(localStorage.getItem(CFG_KEY) || '{}'); if (v.cutoff) out.cutoff = v.cutoff; } catch (e) {}
+    return out;
+  }
+  function saveCfg() { try { localStorage.setItem(CFG_KEY, JSON.stringify(cfg)); } catch (e) {} }
+  function toLocalInput(iso) {
+    if (!iso) return '';
+    var d = new Date(iso);
+    if (isNaN(d.getTime())) return '';
+    d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+    return d.toISOString().slice(0, 16);
+  }
+  function teuOf(sztp) {
+    var s = up(sztp).replace(/[^A-Z0-9]/g, '');
+    return s[0] === '2' ? 1 : (s[0] === '4' || s[0] === 'L' || s[0] === 'P') ? 2 : 1;
+  }
+
+  /* ── IndexedDB ───────────────────────────────────────────────────── */
+  function db() {
+    if (dbp) return dbp;
+    dbp = new Promise(function (resolve, reject) {
+      if (!window.indexedDB) return reject(new Error('IndexedDB is not available.'));
+      var req = indexedDB.open(DB_NAME, DB_VER);
+      req.onupgradeneeded = function () {
+        var d = req.result;
+        if (!d.objectStoreNames.contains('archives')) d.createObjectStore('archives', { keyPath: 'id' });
+        if (!d.objectStoreNames.contains('audit')) d.createObjectStore('audit', { keyPath: 'id', autoIncrement: true });
+      };
+      req.onsuccess = function () { resolve(req.result); };
+      req.onerror = function () { reject(req.error || new Error('IndexedDB error')); };
+    });
+    return dbp;
+  }
+  function tx(store, mode, fn) {
+    return db().then(function (d) {
+      return new Promise(function (resolve, reject) {
+        var t = d.transaction(store, mode), s = t.objectStore(store), out;
+        try { out = fn(s); } catch (e) { reject(e); return; }
+        t.oncomplete = function () { resolve(out && out.result !== undefined ? out.result : out); };
+        t.onerror = function () { reject(t.error || new Error('IndexedDB transaction failed')); };
+        t.onabort = function () { reject(t.error || new Error('IndexedDB transaction aborted')); };
+      });
+    });
+  }
+  function dbAll(store) {
+    return tx(store, 'readonly', function (s) { return s.getAll(); }).then(function (rows) { return rows || []; });
+  }
+  function dbPut(store, value) { return tx(store, 'readwrite', function (s) { return s.put(value); }); }
+  function dbAdd(store, value) { return tx(store, 'readwrite', function (s) { return s.add(value); }); }
+  function dbDelete(store, key) { return tx(store, 'readwrite', function (s) { return s.delete(key); }); }
+  function dbClear(store) { return tx(store, 'readwrite', function (s) { return s.clear(); }); }
+
+  /* ── audit ───────────────────────────────────────────────────────── */
+  function currentUser() {
+    try {
+      var s = window.CloudSync && CloudSync.session && CloudSync.session();
+      return s && s.user && (s.user.email || s.user.id) || 'local';
+    } catch (e) { return 'local'; }
+  }
+  function audit(action, detail) {
+    var entry = { id: 'x' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5), ts: Date.now(), action: action || 'change', detail: String(detail || ''), user: currentUser() };
+    if (!auditCache) auditCache = [];
+    auditCache.unshift(entry);
+    dbAdd('audit', { ts: entry.ts, action: entry.action, detail: entry.detail, user: entry.user }).catch(function () {});
+    renderAudit();
+  }
+  function ensureArchives() {
+    if (archiveCache || archiveLoading) return archiveLoading || Promise.resolve(archiveCache || []);
+    archiveLoading = dbAll('archives').then(function (rows) {
+      var map = {};
+      (archiveCache || []).concat(rows || []).forEach(function (a) { map[a.id] = a; });
+      archiveCache = Object.keys(map).map(function (k) { return map[k]; });
+      archiveLoading = null;
+      return archiveCache;
+    }).catch(function () { archiveLoading = null; if (!archiveCache) archiveCache = []; return archiveCache; });
+    return archiveLoading;
+  }
+  function ensureAudit() {
+    if (auditCache || auditLoading) return auditLoading || Promise.resolve(auditCache || []);
+    auditLoading = dbAll('audit').then(function (rows) {
+      var map = {};
+      (auditCache || []).concat(rows || []).forEach(function (a) {
+        var key = [a.ts, a.action, a.detail, a.user].join('|');
+        map[key] = a;
+      });
+      auditCache = Object.keys(map).map(function (k) { return map[k]; }).sort(function (a, b) { return b.ts - a.ts; });
+      auditLoading = null;
+      return auditCache;
+    }).catch(function () { auditLoading = null; if (!auditCache) auditCache = []; return auditCache; });
+    return auditLoading;
+  }
+
+  /* ── voyage archive ──────────────────────────────────────────────── */
+  function voyageName() {
+    var m = (typeof vesselMeta !== 'undefined' && vesselMeta) || {};
+    return (m.vesselName || 'Voyage') + (m.voyage ? ' ' + m.voyage : '') + ' · ' + new Date().toLocaleDateString();
+  }
+  function archiveCurrent(opts) {
+    opts = opts || {};
+    if (!Array.isArray(allData) || !allData.length) { if (!opts.silent) alert('There is no manifest data to archive yet.'); return Promise.resolve(false); }
+    var name = opts.name || ($('opsArchiveName') && $('opsArchiveName').value.trim()) || voyageName();
+    var rows = allData.map(function (r) { return Object.assign({}, r); });
+    var m = (typeof vesselMeta !== 'undefined' && vesselMeta) ? Object.assign({}, vesselMeta) : {};
+    var a = {
+      id: 'a' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5),
+      name: name, ts: Date.now(), count: rows.length,
+      teu: rows.reduce(function (s, r) { return s + teuOf(r.SzTp || r.SZTP || ''); }, 0),
+      vesselMeta: m, cutoff: cfg.cutoff || '', rows: rows,
+      fileName: ($('statusText') ? $('statusText').textContent.trim() : '')
+    };
+    if (!archiveCache) archiveCache = [];
+    archiveCache.unshift(a);
+    dbPut('archives', a).catch(function () {});
+    audit('archive', name + ' · ' + rows.length + ' rows');
+    if (!opts.silent && $('opsArchiveName')) $('opsArchiveName').value = '';
+    renderArchives();
+    return Promise.resolve(a);
+  }
+  function beforeLoad(fileName) {
+    if (Array.isArray(allData) && allData.length) {
+      archiveCurrent({ name: 'Auto · before ' + (fileName || 'new upload'), silent: true }).catch(function () {});
+    }
+  }
+  function restoreArchive(a) {
+    if (!a || !Array.isArray(a.rows)) return;
+    if (typeof dataDirty !== 'undefined' && dataDirty && !confirm('The current table has unsaved edits. Restore the archived voyage and replace them?')) return;
+    if (Array.isArray(allData) && allData.length) archiveCurrent({ name: 'Auto · before restore', silent: true }).catch(function () {});
+    allData = a.rows.map(function (r) { return Object.assign({}, r); });
+    var seq = 0;
+    allData.forEach(function (r) { r._rid = ++seq; });
+    try { ridSeq = seq; } catch (e) {}
+    vesselMeta = a.vesselMeta || {};
+    cfg.cutoff = a.cutoff || ''; saveCfg();
+    dataDirty = false;
+    try { rawASCLoaded = false; rawASCLines = null; rawASCFileName = ''; } catch (e) {}
+    var st = $('statusText'); if (st) st.textContent = allData.length.toLocaleString() + ' records · Archive · ' + a.name;
+    var dash = $('dashboard'), upSec = $('uploadSection'), mb = $('menuBtn');
+    if (dash) dash.style.display = 'block';
+    if (upSec) upSec.style.display = 'none';
+    if (mb) mb.style.display = 'flex';
+    try { showVesselBanner(vesselMeta); } catch (e) {}
+    try { populateFilters(); } catch (e) {}
+    try { renderAll(); } catch (e) {}
+    audit('restore', a.name + ' · ' + allData.length + ' rows');
+    updateAlerts();
+  }
+  function downloadArchive(a) {
+    var blob = new Blob([JSON.stringify({ name: a.name, ts: a.ts, vesselMeta: a.vesselMeta, cutoff: a.cutoff, rows: a.rows }, null, 2)], { type: 'application/json' });
+    var url = URL.createObjectURL(blob), el = document.createElement('a');
+    el.href = url; el.download = 'voyage-archive-' + String(a.name).replace(/[^a-z0-9]+/gi, '-').slice(0, 50) + '.json';
+    document.body.appendChild(el); el.click(); el.remove(); URL.revokeObjectURL(url);
+  }
+  function renderArchives() {
+    var list = $('opsArchiveList');
+    if (!list) return Promise.resolve();
+    if (!archiveCache) {
+      list.innerHTML = '<div class="ops-empty">Loading archives…</div>';
+      return ensureArchives().then(renderArchives);
+    }
+    var rows = archiveCache.slice().sort(function (a, b) { return b.ts - a.ts; });
+    if (!rows.length) { list.innerHTML = '<div class="ops-empty">No archived voyages yet.</div>'; return Promise.resolve(); }
+    list.innerHTML = rows.map(function (a) {
+      return '<div class="ops-item" data-archive-id="' + esc(a.id) + '">' +
+        '<span class="tag">' + a.count + ' rows</span>' +
+        '<div class="main"><div class="t">' + esc(a.name) + '</div>' +
+        '<div class="d">' + new Date(a.ts).toLocaleString() + ' · ' + esc((a.vesselMeta && a.vesselMeta.voyage) || '') + (a.cutoff ? ' · cut-off ' + esc(new Date(a.cutoff).toLocaleString()) : '') + '</div></div>' +
+        '<div class="meta"><button class="ops-btn" type="button" data-archive-restore="' + esc(a.id) + '">Restore</button> ' +
+        '<button class="ops-btn" type="button" data-archive-download="' + esc(a.id) + '">JSON</button> ' +
+        '<button class="ops-btn danger" type="button" data-archive-del="' + esc(a.id) + '">Delete</button></div></div>';
+    }).join('');
+    list.__rows = rows;
+    return Promise.resolve();
+  }
+
+  /* ── exceptions ──────────────────────────────────────────────────── */
+  function addEx(list, type, severity, source, ctnr, slot, opr, pod, message, extra) {
+    list.push(Object.assign({ type: type, severity: severity, source: source, ctnr: ctnr || '', slot: slot || '', opr: opr || '', pod: pod || '', message: message || '' }, extra || {}));
+  }
+  function buildExceptions() {
+    var rows = (typeof allData !== 'undefined' && Array.isArray(allData)) ? allData : [];
+    var out = [], seen = {};
+    function add(ex) {
+      var k = [ex.type, ex.ctnr, ex.slot, ex.pod, ex.listName || '', ex.message].join('|');
+      if (seen[k]) return;
+      seen[k] = 1; out.push(ex);
+    }
+    var counts = {};
+    rows.forEach(function (r) {
+      var c = up(r.Container || r.CONTAINER || r.Ctnr || '');
+      if (c) counts[c] = (counts[c] || 0) + 1;
+    });
+    rows.forEach(function (r) {
+      var c = up(r.Container || r.CONTAINER || r.Ctnr || '');
+      var slot = String(r.Slot || r.SLOT || r.Cell || '').trim();
+      var opr = up(r.OPR || r.Opr || '');
+      var pod = up(r.POD || r.Pod || '');
+      var sz = up(r.SzTp || r.SZTP || r.SzTP || '');
+      if (!c) addEx(out, 'Missing container', 'high', 'manifest', '', slot, opr, pod, 'No container number');
+      else if (typeof isValidISO6346 === 'function' && !isValidISO6346(c)) addEx(out, 'Invalid ISO', 'high', 'manifest', c, slot, opr, pod, 'ISO 6346 check digit failed');
+      if (c && counts[c] > 1) addEx(out, 'Duplicate', 'high', 'manifest', c, slot, opr, pod, c + ' appears ' + counts[c] + ' times');
+      if (!slot) addEx(out, 'Missing slot', 'medium', 'manifest', c, '', opr, pod, 'No slot/cell');
+      if (!opr) addEx(out, 'Missing operator', 'medium', 'manifest', c, slot, '', pod, 'No operator');
+      if (!pod) addEx(out, 'Missing POD', 'high', 'manifest', c, slot, opr, '', 'No POD');
+      if (!sz) addEx(out, 'Missing size', 'medium', 'manifest', c, slot, opr, pod, 'No size/type');
+      var vgm = (typeof getVGM === 'function') ? getVGM(r) : null;
+      if (vgm == null || vgm <= 0) addEx(out, 'Missing VGM', 'medium', 'manifest', c, slot, opr, pod, 'No verified gross mass');
+      var dgKeys = ['DG', 'DG Code', 'DGCode', 'IMO', 'UNNO', 'UN No', 'UN Number', 'Hazard', 'Hazmat'];
+      var dg = '';
+      for (var i = 0; i < dgKeys.length; i++) if (r[dgKeys[i]] !== undefined && String(r[dgKeys[i]]).trim() !== '') { dg = String(r[dgKeys[i]]).trim(); break; }
+      if (dg) addEx(out, 'DG cargo', 'medium', 'manifest', c, slot, opr, pod, 'DG/IMO: ' + dg);
+      if (sz && typeof isReefer === 'function' && isReefer(sz)) {
+        var temp = r.Temp || r.Temperature || r['Set Temp'] || r.SetTemp || '';
+        if (!String(temp).trim()) addEx(out, 'Reefer', 'low', 'manifest', c, slot, opr, pod, 'Reefer — confirm temperature setpoint');
+      }
+    });
+    try {
+      if (window.Recon && Recon.hasBooking && Recon.hasBooking()) {
+        var b = Recon.getBooking();
+        (b.rows || []).forEach(function (r) {
+          if (r.status === 'over') addEx(out, 'Overbooked', 'high', 'booking', '', '', r.opr, r.pod, r.opr + ' / ' + r.pod + ' loaded ' + r.loaded + ' vs booked ' + r.booked + ' TEU');
+          else if (r.status === 'unbooked') addEx(out, 'Unbooked', 'high', 'booking', '', '', r.opr, r.pod, r.opr + ' / ' + r.pod + ' has no booking');
+          (r.sizeOver || []).forEach(function (s) { addEx(out, 'Size over', 'high', 'booking', '', '', r.opr, r.pod, s.size + ' loaded ' + s.l + ' vs booked ' + s.b); });
+        });
+      }
+    } catch (e) {}
+    try {
+      if (window.Recon && Recon.hasLists && Recon.hasLists()) {
+        var iss = Recon.getIssues();
+        (iss.issues || []).forEach(function (i) {
+          var label = i.type === 'opr' ? 'Operator mismatch' : i.type === 'ctnr' ? 'Container mismatch' : i.type === 'num' ? 'Number mismatch' : i.type === 'size' ? 'Size mismatch' : i.type === 'missing' ? 'Not on list' : 'List only';
+          addEx(out, label, i.type === 'extra' ? 'medium' : 'high', 'lists', i.ctnr, i.slot, i.listOpr || '', i.pod, (i.listName ? i.listName + ' · ' : '') + (i.reason || label), { listName: i.listName || '' });
+        });
+      }
+    } catch (e) {}
+    if (cfg.cutoff) {
+      var cut = new Date(cfg.cutoff).getTime();
+      if (!isNaN(cut)) {
+        var ms = cut - Date.now();
+        if (ms < 0) addEx(out, 'Cut-off passed', 'high', 'cutoff', '', '', '', '', 'Voyage cut-off was ' + new Date(cut).toLocaleString());
+        else if (ms < 24 * 3600 * 1000) addEx(out, 'Cut-off soon', 'medium', 'cutoff', '', '', '', '', Math.ceil(ms / 3600000) + ' hours to cut-off');
+      }
+    }
+    var sev = { high: 0, medium: 1, low: 2 };
+    out.sort(function (a, b) { return (sev[a.severity] || 3) - (sev[b.severity] || 3) || String(a.type).localeCompare(String(b.type)); });
+    lastExceptions = out;
+    return out;
+  }
+  function countBy(ex, field) {
+    var m = {};
+    ex.forEach(function (e) { m[e[field]] = (m[e[field]] || 0) + 1; });
+    return m;
+  }
+  function renderAlerts() {
+    var ex = buildExceptions();
+    var h = countBy(ex, 'severity'), s = countBy(ex, 'source');
+    function kpi(label, val, cls) { return '<div class="ops-kpi ' + (cls || '') + '"><b>' + val + '</b><span>' + label + '</span></div>'; }
+    if ($('opsKpis')) $('opsKpis').innerHTML =
+      kpi('High', h.high || 0, 'high') + kpi('Medium', h.medium || 0, 'medium') + kpi('Booking', s.booking || 0) +
+      kpi('Loading lists', s.lists || 0) + kpi('Manifest data', s.manifest || 0) + kpi('Cut-off', s.cutoff || 0);
+    var filter = $('opsAlertFilter') ? $('opsAlertFilter').value : 'all';
+    var shown = ex.filter(function (e) {
+      if (filter === 'all') return true;
+      if (filter === 'high') return e.severity === 'high';
+      return e.source === filter;
+    });
+    if ($('opsAlertSummary')) $('opsAlertSummary').textContent = shown.length + ' shown · ' + ex.length + ' total';
+    var list = $('opsAlertList');
+    if (list) {
+      if (!shown.length) list.innerHTML = '<div class="ops-empty">No exceptions found.</div>';
+      else list.innerHTML = shown.slice(0, 300).map(function (e) {
+        return '<div class="ops-item ' + esc(e.severity) + '" data-ops-ctnr="' + esc(e.ctnr) + '">' +
+          '<span class="tag">' + esc(e.type) + '</span>' +
+          '<div class="main"><div class="t">' + esc(e.ctnr || e.type) + '</div><div class="d">' + esc(e.message) + '</div></div>' +
+          '<div class="meta">' + esc(e.slot || '') + (e.opr ? '<br>' + esc(e.opr) : '') + (e.pod ? ' · ' + esc(e.pod) : '') + '</div></div>';
+      }).join('');
+    }
+    var badge = $('opsBadge');
+    if (badge) badge.textContent = String((h.high || 0) + (h.medium || 0));
+    var bar = $('opsAlertBar');
+    if (bar) {
+      var high = h.high || 0;
+      bar.classList.toggle('show', high > 0);
+      if (high > 0) {
+        bar.innerHTML = '<span>⚠ <b>' + high + '</b> high-severity operation' + (high === 1 ? ' needs' : 's need') + ' attention.</span><button type="button" id="opsBarReview">Review</button>';
+      }
+    }
+  }
+  function ensureAlertBar() {
+    if ($('opsAlertBar')) return;
+    var bar = document.createElement('div');
+    bar.id = 'opsAlertBar';
+    var toolbar = document.querySelector('.toolbar');
+    if (toolbar && toolbar.parentNode) toolbar.parentNode.insertBefore(bar, toolbar.nextSibling);
+    else document.body.appendChild(bar);
+  }
+  function updateAlerts() {
+    ensureAlertBar();
+    renderAlerts();
+  }
+
+  /* ── saved views ─────────────────────────────────────────────────── */
+  function loadViews() {
+    try { var v = JSON.parse(localStorage.getItem(VIEW_KEY) || '[]'); return Array.isArray(v) ? v : []; } catch (e) { return []; }
+  }
+  function saveViews(v) { try { localStorage.setItem(VIEW_KEY, JSON.stringify(v)); } catch (e) {} }
+  function captureView() {
+    var f = {};
+    ['fOPR', 'fSzTp', 'fFE', 'fPOL', 'fPOD'].forEach(function (id) { var el = $(id); f[id] = el ? el.value : ''; });
+    return { filters: f, search: ($('tableSearch') ? $('tableSearch').value : '') };
+  }
+  function applyView(v) {
+    ['fOPR', 'fSzTp', 'fFE', 'fPOL', 'fPOD'].forEach(function (id) {
+      var el = $(id); if (el) el.value = (v.filters && v.filters[id]) || '';
+    });
+    if ($('tableSearch')) $('tableSearch').value = v.search || '';
+    if (typeof renderAll === 'function') renderAll();
+    if (typeof updateActiveBadge === 'function') updateActiveBadge();
+    closeOps();
+  }
+  function renderViews() {
+    var list = $('opsViewList'); if (!list) return;
+    var views = loadViews();
+    if (!views.length) { list.innerHTML = '<div class="ops-empty">No saved views yet.</div>'; return; }
+    list.innerHTML = views.map(function (v) {
+      var f = v.filters || {};
+      var summary = ['fOPR', 'fSzTp', 'fFE', 'fPOL', 'fPOD'].filter(function (k) { return f[k]; }).map(function (k) { return k.replace('f', '') + '=' + f[k]; }).join(' · ');
+      return '<div class="ops-item"><span class="tag">view</span><div class="main"><div class="t">' + esc(v.name) + '</div><div class="d">' + esc(summary || 'no filters') + (v.search ? ' · search: ' + esc(v.search) : '') + '</div></div><div class="meta"><button class="ops-btn" type="button" data-view-apply="' + esc(v.id) + '">Apply</button> <button class="ops-btn danger" type="button" data-view-del="' + esc(v.id) + '">Delete</button></div></div>';
+    }).join('');
+  }
+
+  /* ── print ───────────────────────────────────────────────────────── */
+  function filteredRows() {
+    try { return typeof getFiltered === 'function' ? getFiltered() : allData; } catch (e) { return allData; }
+  }
+  function buildPrintHTML(kind) {
+    var rows = filteredRows();
+    var m = (typeof vesselMeta !== 'undefined' && vesselMeta) || {};
+    var title = kind === 'exceptions' ? 'Operational Exceptions' : 'Manifest';
+    var body;
+    if (kind === 'exceptions') {
+      var ex = buildExceptions();
+      body = '<table><thead><tr><th>Severity</th><th>Type</th><th>Container</th><th>Slot</th><th>Operator</th><th>POD</th><th>Detail</th></tr></thead><tbody>' +
+        ex.slice(0, 500).map(function (e) { return '<tr><td>' + esc(e.severity) + '</td><td>' + esc(e.type) + '</td><td>' + esc(e.ctnr) + '</td><td>' + esc(e.slot) + '</td><td>' + esc(e.opr) + '</td><td>' + esc(e.pod) + '</td><td>' + esc(e.message) + '</td></tr>'; }).join('') +
+        '</tbody></table>';
+    } else {
+      body = '<table><thead><tr><th>Container</th><th>Slot</th><th>Operator</th><th>Size/Type</th><th>F/E</th><th>POL</th><th>POD</th><th>VGM (T)</th></tr></thead><tbody>' +
+        rows.map(function (r) {
+          var v = (typeof getVGM === 'function') ? getVGM(r) : null;
+          return '<tr><td>' + esc(r.Container || '') + '</td><td>' + esc(r.Slot || '') + '</td><td>' + esc(r.OPR || '') + '</td><td>' + esc(r.SzTp || '') + '</td><td>' + esc(r['F/E'] || '') + '</td><td>' + esc(r.POL || '') + '</td><td>' + esc(r.POD || '') + '</td><td>' + (v == null ? '' : esc(v.toFixed(2))) + '</td></tr>';
+        }).join('') + '</tbody></table>';
+    }
+    var teu = rows.reduce(function (s, r) { return s + teuOf(r.SzTp || r.SZTP || ''); }, 0);
+    return '<!doctype html><html><head><meta charset="utf-8"><title>' + esc(title) + '</title><style>' +
+      'body{font-family:Arial,sans-serif;margin:18px;color:#111}h1{font-size:17px;margin:0 0 4px}h2{font-size:12px;font-weight:400;color:#555;margin:0 0 10px}' +
+      '.meta{font-size:10px;color:#444;margin-bottom:10px}table{width:100%;border-collapse:collapse;font-size:9px}th,td{border:1px solid #bbb;padding:3px 4px;text-align:left}th{background:#eee}' +
+      '@page{size:A4 landscape;margin:10mm}</style></head><body><h1>' + esc(title) + '</h1><h2>' + esc((m.vesselName || '') + (m.voyage ? ' · ' + m.voyage : '') + (m.pol ? ' · POL ' + m.pol : '')) + '</h2>' +
+      '<div class="meta">' + rows.length + ' containers · ' + teu + ' TEU · printed ' + new Date().toLocaleString() + '</div>' + body + '</bo'+'dy></html>';
+  }
+  function printView(kind) {
+    var w = window.open('', '_blank');
+    if (!w) { alert('Allow pop-ups to print/PDF this report.'); return; }
+    w.document.open(); w.document.write(buildPrintHTML(kind)); w.document.close();
+    setTimeout(function () { try { w.focus(); w.print(); } catch (e) {} }, 250);
+  }
+
+  /* ── import mapping ──────────────────────────────────────────────── */
+  var MAP_FIELDS = [
+    { k: 'Container', label: 'Container No.', re: /CONTAINER|CNTR|CTNR|EQUIPMENT|BOX/i },
+    { k: 'Slot', label: 'Slot / Cell', re: /SLOT|CELL|POSITION|BAY/i },
+    { k: 'OPR', label: 'Operator', re: /OPR|OPERATOR|LINE|CARRIER/i },
+    { k: 'SzTp', label: 'Size / Type', re: /SZTP|SIZE|TYPE|ISO/i },
+    { k: 'F/E', label: 'Full / Empty', re: /F\/E|FE|FULL|EMPTY|STATUS/i },
+    { k: 'POL', label: 'POL', re: /^POL$|LOADING|ORIGIN/i },
+    { k: 'POD', label: 'POD', re: /^POD$|DISCHARGE|DESTINATION/i },
+    { k: 'VGM', label: 'VGM / Weight', re: /VGM|WEIGHT|GROSS|WGT/i }
+  ];
+  function loadTemplates() { try { var v = JSON.parse(localStorage.getItem(MAP_KEY) || '[]'); return Array.isArray(v) ? v : []; } catch (e) { return []; } }
+  function saveTemplates(v) { try { localStorage.setItem(MAP_KEY, JSON.stringify(v)); } catch (e) {} }
+  function renderTemplates() {
+    var sel = $('opsMapTemplate'); if (!sel) return;
+    var tpls = loadTemplates(), cur = sel.value;
+    sel.innerHTML = '<option value="">— no template —</option>' + tpls.map(function (t) { return '<option value="' + esc(t.id) + '">' + esc(t.name) + '</option>'; }).join('');
+    sel.value = cur;
+  }
+  function currentMap() {
+    var map = {};
+    document.querySelectorAll('[data-map-field]').forEach(function (s) { if (s.value !== '') map[s.dataset.mapField] = Number(s.value); });
+    return map;
+  }
+  function renderMapFields() {
+    var box = $('opsMapFields'); if (!box) return;
+    if (!mapState) { box.innerHTML = ''; return; }
+    box.innerHTML = MAP_FIELDS.map(function (f) {
+      var guess = '';
+      mapState.headers.forEach(function (h, i) { if (guess === '' && f.re.test(String(h))) guess = i; });
+      var current = mapState.map && mapState.map[f.k] !== undefined ? mapState.map[f.k] : guess;
+      return '<div class="ops-field"><label>' + esc(f.label) + '</label><select data-map-field="' + esc(f.k) + '"><option value="">— not mapped —</option>' +
+        mapState.headers.map(function (h, i) { return '<option value="' + i + '"' + (String(i) === String(current) ? ' selected' : '') + '>' + esc(h || 'Column ' + (i + 1)) + '</option>'; }).join('') + '</select></div>';
+    }).join('');
+  }
+  function openMapFile(file) {
+    if (!file) return;
+    var fr = new FileReader();
+    fr.onload = function (e) {
+      try {
+        var wb = XLSX.read(new Uint8Array(e.target.result), { type: 'array' });
+        var ws = wb.Sheets[wb.SheetNames[0]];
+        var matrix = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '', raw: false, blankrows: false });
+        var hdr = 0;
+        for (var i = 0; i < Math.min(matrix.length, 30); i++) {
+          var n = (matrix[i] || []).filter(function (x) { return String(x).trim() !== ''; }).length;
+          if (n >= 2) { hdr = i; break; }
+        }
+        var headers = (matrix[hdr] || []).map(function (h) { return String(h == null ? '' : h).trim(); });
+        mapState = { matrix: matrix, headerRow: hdr, headers: headers, file: file, map: {} };
+        $('opsMapFileName').textContent = file.name + ' · ' + headers.length + ' columns';
+        renderMapFields();
+        $('opsMapImport').disabled = false;
+        $('opsMapStatus').textContent = '';
+        var tpls = loadTemplates();
+        var match = tpls.filter(function (t) {
+          var keys = Object.keys(t.map || {});
+          return keys.length && keys.every(function (k) { return t.map[k] === '__none__' || headers.indexOf(t.map[k]) >= 0; });
+        })[0];
+        if (match) {
+          var m2 = {};
+          Object.keys(match.map).forEach(function (k) { var idx = headers.indexOf(match.map[k]); if (idx >= 0) m2[k] = idx; });
+          mapState.map = m2;
+          $('opsMapTemplate').value = match.id;
+          renderMapFields();
+          $('opsMapStatus').textContent = 'Template applied: ' + match.name;
+        }
+      } catch (err) { $('opsMapStatus').textContent = 'Could not read file: ' + err.message; }
+    };
+    fr.readAsArrayBuffer(file);
+  }
+  function importMapped() {
+    if (!mapState) return;
+    var map = currentMap();
+    if (!Object.keys(map).length && mapState.map) map = mapState.map;
+    if (map.Container === undefined) { alert('Map the Container No. column first.'); return; }
+    var rows = [];
+    for (var i = mapState.headerRow + 1; i < mapState.matrix.length; i++) {
+      var src = mapState.matrix[i] || [];
+      function val(k) { var idx = map[k]; return idx === undefined ? '' : String(src[idx] == null ? '' : src[idx]).trim(); }
+      var ctnr = up(val('Container')).replace(/[^A-Z0-9]/g, '');
+      if (!ctnr) continue;
+      var sz = up(val('SzTp')).replace(/[^A-Z0-9]/g, '');
+      var fe = up(val('F/E'));
+      fe = /^(F|FULL|LADEN|LOADED)$/.test(fe) ? 'F' : /^(E|EMPTY|MT|MTY)$/.test(fe) ? 'E' : '';
+      var v = parseFloat(String(val('VGM')).replace(/[^0-9.\-]/g, ''));
+      rows.push({
+        Container: ctnr, Slot: val('Slot'), OPR: up(val('OPR')), SzTp: sz, 'F/E': fe,
+        POL: up(val('POL')), POD: up(val('POD')), VGM: isNaN(v) ? null : v
+      });
+    }
+    if (!rows.length) { $('opsMapStatus').textContent = 'No container rows found.'; return; }
+    if (Array.isArray(allData) && allData.length) archiveCurrent({ name: 'Auto · before mapped import', silent: true }).catch(function () {});
+    allData = rows;
+    var seq = 0; allData.forEach(function (r) { r._rid = ++seq; });
+    try { ridSeq = seq; rawASCLoaded = false; rawASCLines = null; rawASCFileName = ''; } catch (e) {}
+    dataDirty = false;
+    var st = $('statusText'); if (st) st.textContent = rows.length.toLocaleString() + ' records · Mapped import · ' + mapState.file.name;
+    var dash = $('dashboard'), upSec = $('uploadSection'), mb = $('menuBtn');
+    if (dash) dash.style.display = 'block';
+    if (upSec) upSec.style.display = 'none';
+    if (mb) mb.style.display = 'flex';
+    try { populateFilters(); } catch (e) {}
+    try { renderAll(); } catch (e) {}
+    audit('mapped import', mapState.file.name + ' · ' + rows.length + ' rows');
+    $('opsMapStatus').textContent = 'Imported ' + rows.length + ' rows.';
+    updateAlerts();
+  }
+
+  /* ── modal/tabs ─────────────────────────────────────────────────── */
+  var activeTab = 'alerts';
+  function switchOpsTab(name) {
+    activeTab = name;
+    document.querySelectorAll('.ops-tab').forEach(function (b) { b.classList.toggle('active', b.dataset.opsTab === name); });
+    var panes = { alerts: 'opsAlertsPane', archive: 'opsArchivePane', audit: 'opsAuditPane', views: 'opsViewsPane', mapping: 'opsMappingPane' };
+    Object.keys(panes).forEach(function (k) { var p = $(panes[k]); if (p) p.hidden = (k !== name); });
+    if (name === 'archive') renderArchives();
+    if (name === 'audit') renderAudit();
+    if (name === 'views') renderViews();
+    if (name === 'mapping') { renderTemplates(); renderMapFields(); }
+    if (name === 'alerts') updateAlerts();
+  }
+  function openOps(tab) {
+    $('opsOverlay').classList.add('open');
+    $('opsOverlay').setAttribute('aria-hidden', 'false');
+    var cut = $('opsCutoff');
+    if (cut) cut.value = toLocalInput(cfg.cutoff);
+    updateAlerts();
+    switchOpsTab(tab || activeTab);
+  }
+  function closeOps() { $('opsOverlay').classList.remove('open'); $('opsOverlay').setAttribute('aria-hidden', 'true'); }
+
+  function renderAudit() {
+    var list = $('opsAuditList'); if (!list) return;
+    if (!auditCache) {
+      list.innerHTML = '<div class="ops-empty">Loading audit…</div>';
+      ensureAudit().then(renderAudit);
+      return;
+    }
+    var entries = auditCache.slice().sort(function (a, b) { return b.ts - a.ts; });
+    if (!entries.length) { list.innerHTML = '<div class="ops-empty">No audit entries yet.</div>'; return; }
+    list.innerHTML = entries.slice(0, 300).map(function (e) {
+      return '<div class="ops-item"><span class="tag">' + esc(e.action) + '</span><div class="main"><div class="t">' + esc(e.detail) + '</div><div class="d">' + esc(e.user) + '</div></div><div class="meta">' + new Date(e.ts).toLocaleString() + '</div></div>';
+    }).join('');
+  }
+  function exportAudit() {
+    (auditCache ? Promise.resolve(auditCache) : ensureAudit()).then(function (entries) {
+      var csv = 'time,user,action,detail\n' + entries.slice().sort(function (a, b) { return a.ts - b.ts; }).map(function (e) {
+        return [new Date(e.ts).toISOString(), e.user, e.action, e.detail].map(function (v) { return '"' + String(v).replace(/"/g, '""') + '"'; }).join(',');
+      }).join('\n');
+      var blob = new Blob([csv], { type: 'text/csv' }), url = URL.createObjectURL(blob), a = document.createElement('a');
+      a.href = url; a.download = 'audit-log-' + new Date().toISOString().slice(0, 10) + '.csv';
+      document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    });
+  }
+
+  function bind() {
+    if (!$('opsOverlay') || $('opsOverlay').__bound) return;
+    $('opsOverlay').__bound = true;
+    if ($('opsOpenBtn')) $('opsOpenBtn').addEventListener('click', function () { openOps('alerts'); });
+    $('opsClose').addEventListener('click', closeOps);
+    $('opsOverlay').addEventListener('click', function (e) { if (e.target === this) closeOps(); });
+    document.querySelectorAll('.ops-tab').forEach(function (b) { b.addEventListener('click', function () { switchOpsTab(b.dataset.opsTab); }); });
+    ensureAlertBar();
+    if ($('opsAlertBar')) $('opsAlertBar').addEventListener('click', function (e) {
+      if (e.target.id === 'opsBarReview') openOps('alerts');
+    });
+    if ($('opsSaveCutoff')) $('opsSaveCutoff').addEventListener('click', function () {
+      var v = $('opsCutoff').value;
+      cfg.cutoff = v ? new Date(v).toISOString() : ''; saveCfg(); updateAlerts();
+    });
+    if ($('opsClearCutoff')) $('opsClearCutoff').addEventListener('click', function () { cfg.cutoff = ''; saveCfg(); $('opsCutoff').value = ''; updateAlerts(); });
+    if ($('opsAlertFilter')) $('opsAlertFilter').addEventListener('change', renderAlerts);
+    if ($('opsPrintManifest')) $('opsPrintManifest').addEventListener('click', function () { printView('manifest'); });
+    if ($('opsPrintExceptions')) $('opsPrintExceptions').addEventListener('click', function () { printView('exceptions'); });
+    if ($('opsArchiveCurrent')) $('opsArchiveCurrent').addEventListener('click', function () { archiveCurrent({}); });
+    if ($('opsArchiveList')) $('opsArchiveList').addEventListener('click', function (e) {
+      var a = (this.__rows || []).filter(function (x) { return x.id === (e.target.dataset.archiveRestore || e.target.dataset.archiveDownload || e.target.dataset.archiveDel); })[0];
+      if (!a) return;
+      if (e.target.dataset.archiveRestore) restoreArchive(a);
+      else if (e.target.dataset.archiveDownload) downloadArchive(a);
+      else if (e.target.dataset.archiveDel && confirm('Delete this archived voyage?')) {
+        archiveCache = (archiveCache || []).filter(function (x) { return x.id !== a.id; });
+        dbDelete('archives', a.id).catch(function () {});
+        renderArchives();
+      }
+    });
+    if ($('opsAuditExport')) $('opsAuditExport').addEventListener('click', exportAudit);
+    if ($('opsAuditClear')) $('opsAuditClear').addEventListener('click', function () {
+      if (!confirm('Clear the audit log?')) return;
+      auditCache = [];
+      dbClear('audit').catch(function () {});
+      renderAudit();
+    });
+    if ($('opsSaveView')) $('opsSaveView').addEventListener('click', function () {
+      var name = ($('opsViewName').value || '').trim(); if (!name) return;
+      var views = loadViews(); views.push(Object.assign({ id: 'v' + Date.now().toString(36), name: name }, captureView()));
+      saveViews(views); $('opsViewName').value = ''; renderViews();
+    });
+    if ($('opsViewList')) $('opsViewList').addEventListener('click', function (e) {
+      var id = e.target.dataset.viewApply || e.target.dataset.viewDel;
+      var views = loadViews(), v = views.filter(function (x) { return x.id === id; })[0]; if (!v) return;
+      if (e.target.dataset.viewApply) applyView(v);
+      else if (e.target.dataset.viewDel) { saveViews(views.filter(function (x) { return x.id !== id; })); renderViews(); }
+    });
+    if ($('opsAlertList')) $('opsAlertList').addEventListener('click', function (e) {
+      var c = e.target.closest('[data-ops-ctnr]');
+      if (!c || !c.dataset.opsCtnr) return;
+      closeOps();
+      if ($('tableSearch')) $('tableSearch').value = c.dataset.opsCtnr;
+      if (typeof renderAll === 'function') renderAll();
+      var sec = $('ctnrTableSection'); if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    if ($('opsMapChoose')) $('opsMapChoose').addEventListener('click', function () { $('opsMapFile').click(); });
+    if ($('opsMapFile')) $('opsMapFile').addEventListener('change', function () { if (this.files && this.files[0]) openMapFile(this.files[0]); });
+    if ($('opsMapImport')) $('opsMapImport').addEventListener('click', importMapped);
+    if ($('opsMapTemplate')) $('opsMapTemplate').addEventListener('change', function () {
+      var t = loadTemplates().filter(function (x) { return x.id === this.value; }.bind(this))[0];
+      if (!t || !mapState) return;
+      var m = {};
+      Object.keys(t.map || {}).forEach(function (k) { var idx = mapState.headers.indexOf(t.map[k]); if (idx >= 0) m[k] = idx; });
+      mapState.map = m; renderMapFields();
+    });
+    if ($('opsMapSaveTemplate')) $('opsMapSaveTemplate').addEventListener('click', function () {
+      if (!mapState) return;
+      var name = prompt('Template name:', mapState.file ? mapState.file.name : 'Carrier template');
+      if (!name) return;
+      var map = currentMap(), byName = {};
+      Object.keys(map).forEach(function (k) { byName[k] = mapState.headers[map[k]]; });
+      var tpls = loadTemplates(); tpls.push({ id: 't' + Date.now().toString(36), name: name, map: byName });
+      saveTemplates(tpls); renderTemplates();
+    });
+    if ($('opsMapDeleteTemplate')) $('opsMapDeleteTemplate').addEventListener('click', function () {
+      var id = $('opsMapTemplate').value; if (!id) return;
+      saveTemplates(loadTemplates().filter(function (t) { return t.id !== id; })); renderTemplates();
+    });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && $('opsOverlay').classList.contains('open')) closeOps(); });
+    updateAlerts();
+    setInterval(updateAlerts, 5000);
+  }
+
+  window.Ops = {
+    open: openOps,
+    close: closeOps,
+    archiveCurrent: archiveCurrent,
+    beforeLoad: beforeLoad,
+    audit: audit,
+    exceptions: buildExceptions,
+    printHTML: buildPrintHTML,
+    updateAlerts: updateAlerts,
+    _debug: {
+      restoreArchive: restoreArchive,
+      renderArchives: renderArchives,
+      importMatrix: function (matrix, map, fileName) {
+        var headers = (matrix[0] || []).map(function (h) { return String(h); });
+        mapState = { matrix: matrix, headerRow: 0, headers: headers, file: { name: fileName || 'test.xlsx' }, map: map || {} };
+        importMapped();
+      },
+      config: function () { return cfg; }
+    }
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind);
+  else bind();
 })();
 
 </script>
