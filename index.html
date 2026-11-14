@@ -929,7 +929,17 @@ footer strong{color:var(--accent);font-weight:500}
 .rc-maprow .teu{color:var(--muted);font-size:9px}
 .rc-maprow.alert{border-color:rgba(249,115,22,.4);background:rgba(249,115,22,.07)}
 
+.rc-fe-bar{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:0 0 9px;padding:6px 8px;border:1px solid var(--border-soft);border-radius:5px;background:rgba(30,41,59,.35)}
+.rc-fe-label{font-size:7px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-right:3px}
+.rc-fe-btn{border:1px solid var(--border);background:transparent;color:var(--muted);border-radius:4px;padding:3px 7px;font-size:8px;cursor:pointer;font-family:var(--mono)}
+.rc-fe-btn:hover{color:var(--text);border-color:var(--text-soft)}
+.rc-fe-btn.active{background:rgba(59,130,246,.18);border-color:rgba(59,130,246,.65);color:#dbeafe}
+.rc-fe-hint{font-size:8px;color:var(--muted);margin-left:auto}
+.rc-fe-pill{display:inline-block;padding:1px 5px;border-radius:3px;font-size:7px;font-weight:700;letter-spacing:.04em;background:rgba(148,163,184,.15);color:#cbd5e1;border:1px solid rgba(148,163,184,.25)}
+.rc-fe-pill.full{background:rgba(16,185,129,.13);color:#6ee7b7;border-color:rgba(16,185,129,.3)}
+.rc-fe-pill.empty{background:rgba(245,158,11,.13);color:#fcd34d;border-color:rgba(245,158,11,.3)}
 .rc-note{font-size:9.5px;color:var(--muted);margin-top:8px;line-height:1.55}
+.rc-note b{color:var(--text-soft)}
 .rc-note b{color:var(--text-soft)}
 .rc-fix{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:5px;
   border:1px solid rgba(59,130,246,.35);background:rgba(59,130,246,.1);color:#93c5fd;
@@ -1494,6 +1504,14 @@ body.shared-view #rcSection{display:none!important}
 
           <div class="rc-pane" id="rcBookingPane">
             <div class="rc-kpis" id="rcBkgKpis"></div>
+            <div class="rc-fe-bar" id="rcBkgFeBar" role="group" aria-label="Booking full or empty filter">
+              <span class="rc-fe-label">Full / Empty</span>
+              <button type="button" class="rc-fe-btn active" data-rc-fe="auto">Main filter</button>
+              <button type="button" class="rc-fe-btn" data-rc-fe="F">Full</button>
+              <button type="button" class="rc-fe-btn" data-rc-fe="E">Empty</button>
+              <button type="button" class="rc-fe-btn" data-rc-fe="">All</button>
+              <span class="rc-fe-hint" id="rcBkgFeHint"></span>
+            </div>
             <div class="rc-banner" id="rcBkgBanner" hidden></div>
             <div id="rcBkgMap"></div>
             <div class="rc-tools">
@@ -1504,7 +1522,7 @@ body.shared-view #rcSection{display:none!important}
             <div class="rc-tblwrap">
               <table class="rc-tbl">
                 <thead><tr>
-                  <th>Operator</th><th>POD</th><th>POL</th>
+                  <th>Operator</th><th>POD</th><th>F/E</th><th>POL</th>
                   <th class="sz" title="20ft: 2SD, 22G0, 2TK — booked / loaded boxes">20′ B / L</th>
                   <th class="sz" title="40ft standard / low cube: 4SD, 42G0 — booked / loaded boxes">40′ B / L</th>
                   <th class="sz" title="High cube: 4SH, 45G0 — booked / loaded boxes">HC B / L</th>
@@ -8260,6 +8278,7 @@ window.addEventListener('beforeunload', function(e){
   var tab = 'booking';
   var issueFilter = 'all';
   var overOnly = false;
+  var bookingFe = 'auto';
   var lastBkgRows = [];
   var lastIssues = [];
   var issueStats = { opr: 0, ctnr: 0, num: 0, size: 0, missing: 0, extra: 0, matched: 0, listed: 0, total: 0, checkedLists: 0 };
@@ -8497,7 +8516,8 @@ window.addEventListener('beforeunload', function(e){
         var q20 = numVal(row[gr.col]), q40 = numVal(row[gr.col + 1]), qhc = numVal(row[gr.col + 2]);
         var teu = q20 + 2 * (q40 + qhc);
         if (teu > 0) {
-          out.push({ pol: pol, pod: pod, opr: gr.opr, band: b, q20: q20, q40: q40, qhc: qhc, teu: teu });
+          var rowFe = /^EMPTY/.test(b) ? 'E' : 'F';
+          out.push({ pol: pol, pod: pod, opr: gr.opr, band: b, fe: rowFe, q20: q20, q40: q40, qhc: qhc, teu: teu });
         }
       }
     }
@@ -8709,16 +8729,25 @@ window.addEventListener('beforeunload', function(e){
     }
     return '';
   }
+  function bookingFeScope() {
+    if (bookingFe === 'auto') {
+      var fs = (typeof filterValues === 'function') ? filterValues('fFE') : [];
+      return fs.length === 1 ? fs[0] : '';
+    }
+    return bookingFe || '';
+  }
   function computeBookingRows() {
+    var feScope = bookingFeScope();
     var rs = filteredRows();
+    if (feScope) rs = rs.filter(function (r) { return nFE(cf(r, ['F/E','FE','fe','f/e','Full/Empty'])) === feScope; });
     if (!bkg || !bkg.rows.length) return [];
     var oprFilter = activeOprFilter();
     var podFilters = (typeof filterValues === 'function' ? filterValues('fPOD') : []).map(up);
     var polFilters = (typeof filterValues === 'function' ? filterValues('fPOL') : []).map(up);
     var loaded = {}, loadedSz = {};
     rs.forEach(function (r) {
-      var o = oprOf(r), p = podOf(r);
-      var k = o + '|' + p;
+      var o = oprOf(r), p = podOf(r), rfe = nFE(cf(r, ['F/E','FE','fe','f/e','Full/Empty'])) || 'F';
+      var k = o + '|' + p + '|' + rfe;
       loaded[k] = (loaded[k] || 0) + teuOf(sztpOf(r));
       var s = loadedSz[k] || (loadedSz[k] = { l20: 0, l40: 0, lhc: 0, lother: 0 });
       var b = bookingSize(sztpOf(r));
@@ -8731,6 +8760,8 @@ window.addEventListener('beforeunload', function(e){
     var agg = {}, unmapped = {};
     bkg.rows.forEach(function (b) {
       var t = bkgTarget(b.opr);
+      var bfe = b.fe || (/^EMPTY/.test(b.band) ? 'E' : 'F');
+      if (feScope && bfe !== feScope) return;
       if (oprFilter.length && (!t || oprFilter.indexOf(t) < 0)) return;
       if (podFilters.length && podFilters.indexOf(up(b.pod)) < 0) return;
       if (polFilters.length && b.pol && polFilters.indexOf(up(b.pol)) < 0) return;
@@ -8739,9 +8770,9 @@ window.addEventListener('beforeunload', function(e){
         u.teu += b.teu; u.pods[b.pod] = 1;
         return;
       }
-      var k = t + '|' + b.pod;
+      var k = t + '|' + b.pod + '|' + bfe;
       var a = agg[k] || (agg[k] = {
-        opr: t, bookOpr: b.opr, pod: b.pod, pols: {}, booked: 0, q20: 0, q40: 0, qhc: 0
+        opr: t, bookOpr: b.opr, pod: b.pod, fe: bfe, pols: {}, booked: 0, q20: 0, q40: 0, qhc: 0
       });
       a.booked += b.teu;
       a.q20 += b.q20; a.q40 += b.q40; a.qhc += b.qhc;
@@ -8751,8 +8782,8 @@ window.addEventListener('beforeunload', function(e){
     var out = [];
     Object.keys(agg).forEach(function (k) {
       var a = agg[k];
-      var ld = loaded[a.opr + '|' + a.pod] || 0;
-      var ls = loadedSz[a.opr + '|' + a.pod] || { l20: 0, l40: 0, lhc: 0, lother: 0 };
+      var ld = loaded[a.opr + '|' + a.pod + '|' + a.fe] || 0;
+      var ls = loadedSz[a.opr + '|' + a.pod + '|' + a.fe] || { l20: 0, l40: 0, lhc: 0, lother: 0 };
       var bal = a.booked - ld;
       var used = pct(ld, a.booked);
       var sizeOver = [];
@@ -8761,7 +8792,7 @@ window.addEventListener('beforeunload', function(e){
       if (ls.lhc > a.qhc) sizeOver.push({ size: 'HC', b: a.qhc, l: ls.lhc });
       var status = (ld > a.booked || sizeOver.length) ? 'over' : (used !== null && used >= 90 ? 'tight' : 'ok');
       out.push({
-        opr: a.opr, bookOpr: a.bookOpr, pod: a.pod,
+        opr: a.opr, bookOpr: a.bookOpr, pod: a.pod, fe: a.fe,
         pols: Object.keys(a.pols).sort().join('/'),
         booked: a.booked, loaded: ld, balance: bal, used: used, status: status,
         q20: a.q20, q40: a.q40, qhc: a.qhc,
@@ -8774,12 +8805,12 @@ window.addEventListener('beforeunload', function(e){
     var bookedOps = {};
     bkg.rows.forEach(function (b) { var t = bkgTarget(b.opr); if (t) bookedOps[t] = 1; });
     Object.keys(loaded).forEach(function (k) {
-      var parts = k.split('|'), o = parts[0], p = parts[1];
+      var parts = k.split('|'), o = parts[0], p = parts[1], fe = parts[2] || 'F';
       if (!bookedOps[o]) return;
-      if (out.some(function (x) { return x.opr === o && x.pod === p; })) return;
+      if (out.some(function (x) { return x.opr === o && x.pod === p && x.fe === fe; })) return;
       var ls = loadedSz[k] || { l20: 0, l40: 0, lhc: 0, lother: 0 };
       out.push({
-        opr: o, bookOpr: '', pod: p, pols: '', booked: 0, loaded: loaded[k],
+        opr: o, bookOpr: '', pod: p, fe: fe, pols: '', booked: 0, loaded: loaded[k],
         balance: -loaded[k], used: null, status: 'unbooked',
         q20: 0, q40: 0, qhc: 0,
         l20: ls.l20, l40: ls.l40, lhc: ls.lhc, lother: ls.lother,
@@ -9190,16 +9221,30 @@ window.addEventListener('beforeunload', function(e){
       : status === 'unbooked' ? '<span class="rc-pill unbooked">NO BOOKING</span>'
       : '<span class="rc-pill ok">OK</span>';
   }
+  function renderBookingFeBar() {
+    var bar = $('rcBkgFeBar'); if (!bar) return;
+    var scope = bookingFeScope();
+    Array.prototype.forEach.call(bar.querySelectorAll('[data-rc-fe]'), function (b) {
+      b.classList.toggle('active', b.dataset.rcFe === bookingFe);
+    });
+    var hint = $('rcBkgFeHint');
+    if (hint) {
+      hint.textContent = bookingFe === 'auto'
+        ? (scope ? 'Following main filter: ' + (scope === 'F' ? 'Full' : 'Empty') : 'Main filter: all')
+        : (scope === 'F' ? 'Showing full only' : scope === 'E' ? 'Showing empty only' : 'Showing full + empty');
+    }
+  }
   function renderBooking() {
     var pane = $('rcBookingPane');
     if (!pane) return;
+    renderBookingFeBar();
     if (!bkg) {
       lastBkgRows = [];
       lastBkgRows.unmapped = {};
       $('rcBkgKpis').innerHTML = '';
       $('rcBkgBanner').hidden = true;
       $('rcBkgMap').innerHTML = '';
-      $('rcBkgBody').innerHTML = '<tr><td colspan="12" style="padding:18px;color:var(--muted)">No booking file loaded. Use <b>📑 Booking file</b> above to add the booking prospect for this voyage.</td></tr>';
+      $('rcBkgBody').innerHTML = '<tr><td colspan="13" style="padding:18px;color:var(--muted)">No booking file loaded. Use <b>📑 Booking file</b> above to add the booking prospect for this voyage.</td></tr>';
       $('rcBkgFoot').innerHTML = '';
       $('rcBkgNote').textContent = '';
       return;
@@ -9208,8 +9253,10 @@ window.addEventListener('beforeunload', function(e){
     lastBkgRows = snap.rows;
     lastBkgRows.unmapped = snap.unmapped;
     var t = snap.totals;
+    var scope = bookingFeScope();
+    var scopeLabel = scope === 'F' ? 'Full' : scope === 'E' ? 'Empty' : 'Full + empty';
     $('rcBkgKpis').innerHTML =
-      kpi('Booked TEU', fmt(t.booked)) +
+      kpi('Booked TEU · ' + scopeLabel, fmt(t.booked)) +
       kpi('Loaded TEU', fmt(t.loaded), 'blue') +
       kpi('Balance TEU', (t.balance >= 0 ? '+' : '') + fmt(t.balance), t.balance < 0 ? 'red' : 'green') +
       kpi('Balance 20′ / 40′', (t.b20 >= 0 ? '+' : '') + fmt(t.b20) + ' / ' + (t.b40 >= 0 ? '+' : '') + fmt(t.b40), (t.b20 < 0 || t.b40 < 0) ? 'red' : 'green') +
@@ -9257,14 +9304,16 @@ window.addEventListener('beforeunload', function(e){
     if (overOnly) list = list.filter(function (r) { return r.status === 'over' || r.status === 'unbooked'; });
     var body = $('rcBkgBody');
     if (!list.length) {
-      body.innerHTML = '<tr><td colspan="12" style="padding:16px;color:var(--muted)">Nothing to show' + (overOnly ? ' with the “overbooked only” filter' : '') + '.</td></tr>';
+      body.innerHTML = '<tr><td colspan="13" style="padding:16px;color:var(--muted)">Nothing to show' + (overOnly ? ' with the “overbooked only” filter' : '') + '.</td></tr>';
     } else {
       body.innerHTML = list.map(function (r) {
         var bal = (r.balance > 0 ? '+' : '') + fmt(r.balance);
         var used = r.used === null ? '—' : r.used + '%';
+        var fe = r.fe === 'E' ? '<span class="rc-fe-pill empty">EMPTY</span>' : '<span class="rc-fe-pill full">FULL</span>';
         return '<tr>' +
           '<td class="opr">' + esc(r.opr) + (r.bookOpr && r.bookOpr !== r.opr ? ' <span class="dim">← ' + esc(r.bookOpr) + '</span>' : '') + '</td>' +
           '<td>' + esc(r.pod) + '</td>' +
+          '<td>' + fe + '</td>' +
           '<td class="dim">' + esc(r.pols || '—') + '</td>' +
           sizeCell(r.q20, r.l20, '20ft') +
           sizeCell(r.q40, r.l40, '40ft') +
@@ -9283,8 +9332,9 @@ window.addEventListener('beforeunload', function(e){
       : (t.booked === 0 && t.loaded > 0) ? 'unbooked'
       : (t.booked > 0 && pct(t.loaded, t.booked) >= 90) ? 'tight' : 'ok';
     var totalUsed = t.booked ? pct(t.loaded, t.booked) + '%' : '—';
+    var totalFe = scope === 'F' ? '<span class="rc-fe-pill full">FULL</span>' : scope === 'E' ? '<span class="rc-fe-pill empty">EMPTY</span>' : 'BOTH';
     $('rcBkgFoot').innerHTML = '<tr class="rc-total">' +
-      '<td class="opr">TOTAL</td><td>All rows</td><td class="dim">—</td>' +
+      '<td class="opr">TOTAL</td><td>All rows</td><td>' + totalFe + '</td><td class="dim">—</td>' +
       sizeCell(t.q20, t.l20, '20ft total') +
       sizeCell(t.q40, t.l40, '40ft total') +
       sizeCell(t.qhc, t.lhc, 'High cube total') +
@@ -9298,7 +9348,7 @@ window.addEventListener('beforeunload', function(e){
       return !bkg.operators.some(function (b) { return bkgTarget(b) === o; }) && filteredRows().some(function (r) { return oprOf(r) === o; });
     });
     var notes = [];
-    notes.push('Loaded TEU counts every container in the manifest (full + empty) using its size/type.');
+    notes.push('Loaded TEU counts ' + (scope === 'F' ? 'full containers only' : scope === 'E' ? 'empty containers only' : 'full + empty containers') + ' in the manifest using its size/type.');
     var fl = activeFilterLabels();
     notes.push(fl.length ? '<b>Filter scope:</b> ' + esc(fl.join(' · ')) + '.' : '<b>Filter scope:</b> all manifest rows.');
     notes.push('<b>20′</b> = 2SD · 22G0 · 2TK &nbsp;·&nbsp; <b>40′</b> = 4SD · 42G0 &nbsp;·&nbsp; <b>HC</b> = 4SH · 45G0. Size cells show <b>booked / loaded</b> boxes; red means more loaded than booked.');
@@ -9397,7 +9447,7 @@ window.addEventListener('beforeunload', function(e){
     renderLists();
     renderTabs();
     var sub = [];
-    if (bkg) sub.push('Booking ' + esc(bkg.fileName) + ' · ' + fmt(bkg.teu) + ' TEU booked');
+    if (bkg) sub.push('Booking ' + esc(bkg.fileName) + ' · ' + fmt(bookingSnapshot().totals.booked) + ' TEU booked');
     if (lists.length) sub.push(lists.length + ' loading list' + (lists.length === 1 ? '' : 's') + ' · ' + fmt(issueStats.listed) + ' boxes');
     $('rcSub').innerHTML = sub.join(' &nbsp;·&nbsp; ');
   }
@@ -9460,7 +9510,7 @@ window.addEventListener('beforeunload', function(e){
     var bsnap = bookingSnapshot();
     var bRows = bsnap.rows.map(function (r) {
       return {
-        Operator: r.opr, BookingOperator: r.bookOpr, POD: r.pod, POL: r.pols,
+        Operator: r.opr, BookingOperator: r.bookOpr, POD: r.pod, 'F/E': r.fe === 'E' ? 'Empty' : 'Full', POL: r.pols,
         '20ft Booked': r.q20, '20ft Loaded': r.l20, '20ft Balance': r.q20 - r.l20,
         '40ft Booked': r.q40, '40ft Loaded': r.l40, '40ft Balance': r.q40 - r.l40,
         'HC Booked': r.qhc, 'HC Loaded': r.lhc, 'HC Balance': r.qhc - r.lhc,
@@ -9577,6 +9627,13 @@ window.addEventListener('beforeunload', function(e){
 
     Array.prototype.slice.call(document.querySelectorAll('.rc-tab')).forEach(function (b) {
       b.addEventListener('click', function () { tab = b.dataset.rcTab; renderTabs(); });
+    });
+    var feBar = $('rcBkgFeBar');
+    if (feBar) feBar.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-rc-fe]');
+      if (!b) return;
+      bookingFe = b.dataset.rcFe;
+      renderBooking();
     });
 
     var chips = $('rcChips');
