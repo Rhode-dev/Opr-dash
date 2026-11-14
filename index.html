@@ -3693,6 +3693,7 @@ document.querySelectorAll('.kpi[data-kpi]').forEach(el=>{
 function closeOprPop(){
   const pop = document.getElementById('kpiOprPop');
   if(pop) pop.classList.remove('open');
+  if(window.UIHistory) UIHistory.remove('filter');
 }
 let kpiRenderTimer = 0;
 function scheduleKpiRender(){
@@ -3746,6 +3747,7 @@ function openFilterPop(id, anchor){
   pop.style.left = Math.max(8, Math.min(window.innerWidth-244, r.left)) + 'px';
   pop.style.top = Math.max(8, Math.min(window.innerHeight-312, r.bottom+8)) + 'px';
   pop.classList.add('open');
+  if(window.UIHistory) UIHistory.push('filter', closeOprPop);
 }
 document.getElementById('kpiOprClose').addEventListener('click',closeOprPop);
 ['fOPR','fSzTp','fFE','fPOL','fPOD'].forEach(id=>{
@@ -3799,6 +3801,7 @@ function openDrawer(){
   document.getElementById('menuBtn').classList.add('open');
   document.body.style.overflow='hidden';
   updateActiveBadge();
+  if(window.UIHistory) UIHistory.push('drawer', closeDrawer);
 }
 function closeDrawer(){
   document.getElementById('drawer').classList.remove('open');
@@ -3806,6 +3809,7 @@ function closeDrawer(){
   document.getElementById('drawer').setAttribute('aria-hidden','true');
   document.getElementById('menuBtn').classList.remove('open');
   document.body.style.overflow='';
+  if(window.UIHistory) UIHistory.remove('drawer');
 }
 document.getElementById('menuBtn').addEventListener('click',()=>{
   document.getElementById('drawer').classList.contains('open') ? closeDrawer() : openDrawer();
@@ -4179,6 +4183,7 @@ function openAddCtnrModal(row, presetSlot){
 
   modalOverlay.classList.add('active');
   document.body.style.overflow='hidden';
+  if(window.UIHistory) UIHistory.push('modal', closeAddCtnrModal);
   setTimeout(()=>document.getElementById('mCtnr').focus(),50);
 }
 function openEditFromRid(rid){
@@ -4208,6 +4213,7 @@ function closeAddCtnrModal(){
   modalOverlay.classList.remove('active');
   document.body.style.overflow='';
   editingRid = null;
+  if(window.UIHistory) UIHistory.remove('modal');
   if(window.Stowage && document.getElementById('opsStowagePane') && !document.getElementById('opsStowagePane').hidden) {
     try { Stowage.refresh(); } catch(e) {}
   }
@@ -4576,6 +4582,38 @@ window.addEventListener('beforeunload', function(e){
   e.returnValue = msg;
   return msg;
 });
+
+/* In-app back handling: close the top overlay instead of leaving the single-file app. */
+(function(){
+  var stack = [];
+  function guard(){
+    try { history.pushState({oprGuard:true}, '', location.href); } catch(e) {}
+  }
+  function remove(id){
+    for(var i=stack.length-1;i>=0;i--){
+      if(stack[i].id===id){ stack.splice(i,1); return; }
+    }
+  }
+  window.UIHistory = {
+    push: function(id, close){
+      remove(id);
+      stack.push({ id:id, close:close });
+    },
+    remove: remove,
+    closeTop: function(){
+      var item = stack.pop();
+      if(item){ try { item.close(); } catch(e) {} }
+    }
+  };
+  window.addEventListener('popstate', function(){
+    var item = stack.pop();
+    if(item){ try { item.close(); } catch(e) {} }
+    /* Keep one guard entry so a second back press does not close the app. */
+    guard();
+  });
+  try { history.replaceState({oprGuard:true}, '', location.href); } catch(e) {}
+  guard();
+})();
 </script>
 <script>
 /* ════════════════════════════════════════════════════════════════════
@@ -7684,6 +7722,7 @@ window.addEventListener('beforeunload', function(e){
     }
     updateStatus();
     if (!suggestBox.children.length) renderSuggestions(defaultSuggestions());
+    if (window.UIHistory) UIHistory.push('ai', closePanel);
     setTimeout(function () { if (input) input.focus(); }, 140);
   }
   function closePanel() {
@@ -7693,6 +7732,7 @@ window.addEventListener('beforeunload', function(e){
     $('aiFab').setAttribute('aria-expanded', 'false');
     $('aiScrim').classList.remove('show');
     if (window.innerWidth <= 640) document.body.style.overflow = '';
+    if (window.UIHistory) UIHistory.remove('ai');
   }
   function updateStatus() {
     var el = $('aiStatus');
@@ -10748,8 +10788,13 @@ window.addEventListener('beforeunload', function(e){
     if (cut) cut.value = toLocalInput(cfg.cutoff);
     updateAlerts();
     switchOpsTab(tab || activeTab);
+    if (window.UIHistory) UIHistory.push('ops', closeOps);
   }
-  function closeOps() { $('opsOverlay').classList.remove('open'); $('opsOverlay').setAttribute('aria-hidden', 'true'); }
+  function closeOps() {
+    $('opsOverlay').classList.remove('open');
+    $('opsOverlay').setAttribute('aria-hidden', 'true');
+    if (window.UIHistory) UIHistory.remove('ops');
+  }
 
   function renderAudit() {
     var list = $('opsAuditList'); if (!list) return;
@@ -11619,8 +11664,12 @@ window.addEventListener('beforeunload', function(e){
     }
     showVesselName();
     var modal = $('stowVesselModal'); if (modal) modal.hidden = false;
+    if (window.UIHistory) UIHistory.push('vessel', closeVesselModal);
   }
-  function closeVesselModal() { var modal = $('stowVesselModal'); if (modal) modal.hidden = true; }
+  function closeVesselModal() {
+    var modal = $('stowVesselModal'); if (modal) modal.hidden = true;
+    if (window.UIHistory) UIHistory.remove('vessel');
+  }
   function applyVesselRoute() {
     var vs = $('stowVesselSelect'), rs = $('stowRouteSelect');
     if (!vs || !rs) return;
@@ -11823,6 +11872,8 @@ window.addEventListener('beforeunload', function(e){
     var deckTiers = [], underTiers = [];
     for (var d = 82; d <= maxDeck; d += 2) deckTiers.push(String(d).padStart(2, '0'));
     for (var u = 2; u <= maxUnder; u += 2) underTiers.push(String(u).padStart(2, '0'));
+    deckTiers.reverse();
+    underTiers.reverse();
     renderLegend();
     function headerRow() {
       return '<div class="stow-row stow-head"><div class="stow-cells" style="grid-template-columns:repeat(' + rowKeys.length + ',44px)">' +
