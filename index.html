@@ -181,7 +181,7 @@ h1 span{color:var(--accent)}
 .btn-row-edit:hover,.btn-row-edit:active{background:rgba(59,130,246,.15);border-color:var(--accent);color:var(--accent)}
 
 /* ── MODAL (Add Container) ── */
-#modalOverlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:300;animation:fadeIn .2s ease-out;align-items:center;justify-content:center;padding:20px}
+#modalOverlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:700;animation:fadeIn .2s ease-out;align-items:center;justify-content:center;padding:20px}
 #modalOverlay.active{display:flex}
 #addCtnrModal{
   width:100%;max-width:420px;max-height:90vh;overflow-y:auto;
@@ -1125,6 +1125,76 @@ body.shared-view{padding-top:38px}
 body.shared-view .btn-row-edit,body.shared-view #addCtnrBtn,body.shared-view #syncOpenBtn,body.shared-view #opsOpenBtn,body.shared-view #aiFab{display:none!important}
 body.shared-view #opsAlertBar,body.shared-view #syncPrompt,body.shared-view #pwaDraftBanner{display:none!important}
 body.shared-view #rcSection{display:none!important}
+/* ── STOWAGE ── */
+.stow-top{display:flex;align-items:flex-start;gap:8px;flex-wrap:wrap;margin-bottom:7px}
+.stow-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(78px,1fr));gap:5px;flex:1;min-width:280px}
+.stow-kpi{background:rgba(30,41,59,.6);border:1px solid var(--border-soft);border-radius:7px;padding:5px 7px}
+.stow-kpi b{display:block;font-family:var(--ui);font-size:14px;color:#fff;line-height:1.2}
+.stow-kpi span{display:block;font-size:7.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;margin-top:2px}
+.stow-actions{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+.ops-field-select{background:rgba(15,23,42,.85);border:1px solid var(--border-soft);border-radius:6px;color:var(--text);font-family:var(--mono);font-size:9px;padding:6px 7px}
+.stow-profile{border:1px solid rgba(59,130,246,.3);background:rgba(59,130,246,.05);border-radius:8px;padding:8px;margin-bottom:7px}
+.stow-profile-title{font-family:var(--mono);font-size:9px;color:var(--text-soft);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px}
+.stow-bays{display:flex;gap:4px;overflow-x:auto;padding-bottom:5px;margin-bottom:6px}
+.stow-bay-chip{border:1px solid var(--border-soft);background:rgba(30,41,59,.5);color:var(--muted);border-radius:6px;padding:5px 8px;font-family:var(--mono);font-size:8.5px;cursor:pointer;white-space:nowrap}
+.stow-bay-chip b{display:block;font-size:10px;color:var(--text-soft)}
+.stow-bay-chip:hover{color:#fff;border-color:var(--accent)}
+.stow-bay-chip.active{border-color:var(--accent);background:rgba(59,130,246,.15);color:#fff}
+.stow-body{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(180px,.85fr);gap:8px}
+.stow-plan{min-width:0;border:1px solid var(--border-soft);border-radius:8px;padding:7px;background:rgba(15,23,42,.35)}
+.stow-bay-title{font-family:var(--ui);font-size:11px;font-weight:700;color:#fff;margin-bottom:2px}
+.stow-legend{display:flex;gap:5px;flex-wrap:wrap;font-size:7.5px;color:var(--muted);margin-bottom:5px;align-items:center}
+.stow-legend span{display:inline-flex;align-items:center;gap:3px;white-space:nowrap}
+.stow-legend i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:1px;vertical-align:middle;border:1px solid rgba(255,255,255,.15)}
+.stow-grid-scroll{overflow:auto;max-height:430px}
+.stow-grid{min-width:max-content;padding-bottom:3px}
+.stow-row{display:flex;align-items:stretch;gap:3px;margin-bottom:2px}
+.stow-tier{width:26px;flex:none;text-align:right;font-family:var(--mono);font-size:8px;color:var(--muted);padding-top:11px}
+.stow-cells{display:grid;gap:2px}
+.stow-col{width:44px;text-align:center;font-family:var(--mono);font-size:7px;color:var(--muted);padding:2px 0}
+.stow-head .stow-cells{border-bottom:1px solid rgba(148,163,184,.18)}
+.stow-cell{width:44px;height:30px;border-radius:2px;border:1px solid rgba(148,163,184,.22);background:rgba(30,41,59,.45);color:#fff;font-family:var(--mono);font-size:8px;padding:1px 2px;cursor:pointer;overflow:hidden;text-align:left;position:relative;line-height:1.05}
+.stow-cell:hover{border-color:#fff;z-index:2;box-shadow:0 0 0 1px #fff;transform:scale(1.04)}
+.stow-cell.empty{cursor:default;background:rgba(15,23,42,.45);color:var(--muted)}
+.stow-cell.empty.available{background:rgba(241,245,249,.92);border-color:#cbd5e1}
+.stow-cell.empty.unavailable{background:rgba(30,41,59,.32);color:#475569;text-align:center;padding-top:7px;font-size:8px}
+.stow-cell.empty:hover{transform:none;box-shadow:none;border-color:rgba(148,163,184,.22)}
+.stow-cell.center-right{border-left:2px solid rgba(226,232,240,.7)}
+.stow-cell .sc-c{display:block;font-size:9px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.05}
+.stow-cell .sc-m{display:block;font-size:6px;opacity:.8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stow-casp-overlay{position:fixed;inset:0;z-index:650;background:rgba(2,6,23,.72);display:flex;align-items:center;justify-content:center;padding:16px}
+.stow-casp-overlay[hidden]{display:none}
+.stow-casp-card{width:640px;max-width:100%;max-height:92vh;overflow:auto;background:#0f172a;border:1px solid #334155;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.55);padding:14px 16px}
+.stow-casp-card h3{margin:0 0 10px;font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:#e2e8f0}
+.stow-casp-grid{display:grid;grid-template-columns:1.35fr .8fr;gap:12px}
+.stow-casp-grid label{display:block;font-size:7px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+.stow-casp-grid select{width:100%;min-height:210px;background:#111c30;color:#dbeafe;border:1px solid #334155;border-radius:5px;padding:3px;font-family:var(--mono);font-size:9px}
+.stow-casp-grid select option{padding:3px 5px;border-radius:3px}
+.stow-casp-grid select option:checked{background:#1d4ed8;color:#fff}
+.stow-casp-name{margin:10px 0;padding:7px 9px;border:1px solid #334155;border-radius:5px;font-size:9px;color:var(--muted);background:rgba(30,41,59,.45)}
+.stow-casp-name b{color:#fff;font-family:var(--mono);font-size:10px}
+.stow-casp-actions{display:flex;gap:6px;align-items:center;margin-top:10px}
+@media(max-width:600px){.stow-casp-grid{grid-template-columns:1fr}.stow-casp-grid select{min-height:120px}}
+.stow-deck{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:7px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin:4px 0}
+.stow-deck::after{content:'';flex:1;height:1px;background:rgba(148,163,184,.2)}
+.stow-side{min-width:0;display:flex;flex-direction:column;gap:7px}
+.stow-box{border:1px solid var(--border-soft);border-radius:7px;padding:6px 7px;background:rgba(30,41,59,.35)}
+.stow-box h4{margin:0 0 4px;font-family:var(--mono);font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;font-weight:500}
+.stow-stat{display:flex;justify-content:space-between;gap:5px;font-size:8.5px;color:var(--text-soft);padding:2px 0;border-bottom:1px solid rgba(51,65,85,.25)}
+.stow-stat b{color:#fff;font-family:var(--mono);font-size:8.5px}
+.stow-stat:last-child{border-bottom:none}
+.stow-bar{height:4px;background:rgba(148,163,184,.15);border-radius:3px;overflow:hidden;margin-top:2px}
+.stow-bar i{display:block;height:100%;border-radius:3px}
+.stow-list{display:flex;flex-direction:column;gap:3px;max-height:160px;overflow:auto}
+.stow-line{display:flex;gap:4px;align-items:center;font-size:8px;color:var(--text-soft);border-bottom:1px solid rgba(51,65,85,.2);padding:2px 0}
+.stow-line b{color:#fff;font-family:var(--mono);font-size:8px}
+.stow-line span{margin-left:auto;color:var(--muted)}
+.stow-unplanned{margin-top:6px;border-top:1px solid var(--border-soft);padding-top:5px}
+.stow-unplanned h4{font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin:0 0 3px}
+.stow-warn{color:#fca5a5!important}
+.stow-amber{color:#fcd34d!important}
+@media(max-width:760px){.stow-body{grid-template-columns:1fr}.stow-side{display:grid;grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.stow-actions{width:100%}.ops-field-select{flex:1}}
 @media(max-width:700px){#opsOverlay{padding:6px}#opsModal{max-height:96vh}.ops-body{padding:10px}}
 
 </style>
@@ -1168,20 +1238,23 @@ body.shared-view #rcSection{display:none!important}
       <button class="multi-filter-btn" id="fSzTpBtn" type="button"><span id="fSzTpLabel">All Size/Types</span><span class="mf-caret">▾</span></button>
     </div>
     <div class="filter-group">
-      <label class="filter-label" for="fFE">Full / Empty</label>
-      <select class="drawer-select" id="fFE">
+      <label class="filter-label" for="fFEBtn">Full / Empty</label>
+      <select class="drawer-select" id="fFE" multiple hidden>
         <option value="">All</option>
         <option value="F">Full</option>
         <option value="E">Empty</option>
       </select>
+      <button class="multi-filter-btn" id="fFEBtn" type="button"><span id="fFELabel">All Full/Empty</span><span class="mf-caret">▾</span></button>
     </div>
     <div class="filter-group">
-      <label class="filter-label" for="fPOL">Port of Loading</label>
-      <select class="drawer-select" id="fPOL"><option value="">All POL</option></select>
+      <label class="filter-label" for="fPOLBtn">Port of Loading</label>
+      <select class="drawer-select" id="fPOL" multiple hidden><option value="">All POL</option></select>
+      <button class="multi-filter-btn" id="fPOLBtn" type="button"><span id="fPOLLabel">All POL</span><span class="mf-caret">▾</span></button>
     </div>
     <div class="filter-group">
-      <label class="filter-label" for="fPOD">Port of Discharge</label>
-      <select class="drawer-select" id="fPOD"><option value="">All POD</option></select>
+      <label class="filter-label" for="fPODBtn">Port of Discharge</label>
+      <select class="drawer-select" id="fPOD" multiple hidden><option value="">All POD</option></select>
+      <button class="multi-filter-btn" id="fPODBtn" type="button"><span id="fPODLabel">All POD</span><span class="mf-caret">▾</span></button>
     </div>
     <div class="drawer-ai">
       <div class="filter-label">AI Assistant</div>
@@ -1389,10 +1462,6 @@ body.shared-view #rcSection{display:none!important}
           <div class="kpi-sub">containers total</div>
         </div>
       </div>
-      <div id="kpiOprPop" role="dialog" aria-label="Filter by operator">
-        <div class="kop-head"><span id="kpiOprTitle">Filter by operator</span><button type="button" class="kop-x" id="kpiOprClose" aria-label="Close">✕</button></div>
-        <div id="kpiOprList"></div>
-      </div>
 
       <!-- BOOKING & LOADING RECONCILIATION -->
       <section class="rc" id="rcSection" aria-label="Booking and loading list reconciliation">
@@ -1560,6 +1629,11 @@ body.shared-view #rcSection{display:none!important}
     </div><!-- /#dashboard -->
   </main>
 </div><!-- /.container -->
+
+<div id="kpiOprPop" role="dialog" aria-label="Filter by operator">
+  <div class="kop-head"><span id="kpiOprTitle">Filter by operator</span><button type="button" class="kop-x" id="kpiOprClose" aria-label="Close">✕</button></div>
+  <div id="kpiOprList"></div>
+</div>
 
 <!-- ADD CONTAINER MODAL -->
 <div id="modalOverlay" onclick="if(event.target===this)closeAddCtnrModal()">
@@ -2183,6 +2257,7 @@ grant select, insert, update, delete on public.team_change_requests to authentic
       <button class="ops-tab" type="button" data-ops-tab="views">Saved Views</button>
       <button class="ops-tab" type="button" data-ops-tab="mapping">Import Mapping</button>
       <button class="ops-tab" type="button" data-ops-tab="export">Export &amp; Print</button>
+      <button class="ops-tab" type="button" data-ops-tab="stowage">Stowage</button>
     </div>
     <div class="ops-body">
       <section class="ops-pane" id="opsAlertsPane" role="tabpanel">
@@ -2348,6 +2423,79 @@ grant execute on function public.get_shared_snapshot(text) to anon, authenticate
           <div class="ops-note" id="opsPwaStatus">Install is available when the dashboard is served over HTTPS (GitHub Pages). Offline edits are stored in this browser until you upload them.</div>
         </div>
       </section>
+
+      <section class="ops-pane" id="opsStowagePane" role="tabpanel" hidden>
+        <div class="stow-top">
+          <div class="stow-kpis" id="stowKpis"></div>
+          <div class="stow-actions">
+            <select class="ops-field-select" id="stowColor" aria-label="Colour by">
+              <option value="pod">Colour by POD</option>
+              <option value="pol">Colour by POL</option>
+              <option value="opr" selected>Colour by operator</option>
+              <option value="fe">Colour by full/empty</option>
+              <option value="weight">Colour by weight</option>
+            </select>
+            <button class="ops-btn" type="button" id="stowProfileBtn">⚙ Vessel profile</button>
+            <button class="ops-btn" type="button" id="stowPrint">🖨 Bay plan</button>
+          </div>
+        </div>
+
+        <div class="stow-profile" id="stowProfile" hidden>
+          <div class="stow-profile-title">Vessel profile · <span id="stowProfileName"></span></div>
+          <div class="ops-row">
+            <div class="ops-field"><label for="stowTeuCap">TEU capacity</label><input id="stowTeuCap" type="number" min="0" placeholder="e.g. 2400"></div>
+            <div class="ops-field"><label for="stowPlugs">Reefer plugs</label><input id="stowPlugs" type="number" min="0" placeholder="e.g. 120"></div>
+            <div class="ops-field"><label for="stowStackMax">Max stack weight (T)</label><input id="stowStackMax" type="number" min="0" step="0.1" placeholder="optional"></div>
+            <button class="ops-btn primary" type="button" id="stowProfileSave">Save profile</button>
+            <button class="ops-btn" type="button" id="stowProfileClose">Close</button>
+          </div>
+          <div class="ops-row">
+            <input type="file" id="stowCaspFile" accept=".asc,.ASC,.def,.DEF" hidden>
+            <button class="ops-btn" type="button" id="stowCaspBtn">Vessel and Route</button>
+            <button class="ops-btn" type="button" id="stowCaspAscBtn">Load ASC slots</button>
+            <span class="ops-note" id="stowCaspInfo">No vessel/route selected.</span>
+          </div>
+          <div class="ops-note">Capacity is estimated from the slot range until a TEU capacity is entered. Reefer plug positions are not mapped; the plug count is used for utilisation only.</div>
+        </div>
+
+        <div class="stow-casp-overlay" id="stowVesselModal" hidden>
+          <div class="stow-casp-card" role="dialog" aria-modal="true" aria-labelledby="stowVesselTitle">
+            <h3 id="stowVesselTitle">Vessel and Route</h3>
+            <div class="stow-casp-grid">
+              <div>
+                <label for="stowVesselSelect">Vessel</label>
+                <select id="stowVesselSelect" size="12"></select>
+              </div>
+              <div>
+                <label for="stowRouteSelect">Route</label>
+                <select id="stowRouteSelect" size="12"></select>
+              </div>
+            </div>
+            <div class="stow-casp-name">Vessel Name: <b id="stowVesselName">—</b></div>
+            <div class="stow-casp-actions">
+              <button class="ops-btn" type="button" id="stowVesselAsc">Load ASC slots</button>
+              <span style="flex:1"></span>
+              <button class="ops-btn" type="button" id="stowVesselCancel">Cancel</button>
+              <button class="ops-btn primary" type="button" id="stowVesselOk">OK</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="stow-bays" id="stowBays"></div>
+        <div class="stow-body">
+          <div class="stow-plan">
+            <div class="stow-bay-title" id="stowBayTitle">Select a bay</div>
+            <div class="stow-legend" id="stowLegend"></div>
+            <div class="stow-grid-scroll"><div id="stowGrid" class="stow-grid"></div></div>
+            <div class="stow-unplanned" id="stowUnplanned"></div>
+          </div>
+          <aside class="stow-side">
+            <div id="stowBayStats"></div>
+            <div id="stowWeight"></div>
+            <div id="stowReefers"></div>
+          </aside>
+        </div>
+      </section>
     </div>
   </div>
 </div>
@@ -2378,7 +2526,7 @@ function fmt24h(d){
 let valCache = { invalidCtnrs:[], emptyWarnings:[], duplicateCtnrs:[] };
 let activeFilterCount = 0;
 let kpiCategory = '';
-let multiFilters = { fOPR: [], fSzTp: [] };
+let multiFilters = { fOPR: [], fSzTp: [], fFE: [], fPOL: [], fPOD: [] };
 
 // ── Raw ASC tracking (for "Save ASC File") ──
 let rawASCLoaded    = false;   // true only when the currently loaded file was parsed as ASC
@@ -2410,7 +2558,7 @@ function nFE(v){
 }
 function cf(row, keys){ for(const k of keys) if(row[k]!==undefined) return row[k]; return ''; }
 function filterValues(id){
-  if(id === 'fOPR' || id === 'fSzTp') return (multiFilters[id] || []).slice();
+  if(multiFilters[id]) return (multiFilters[id] || []).slice();
   const el = document.getElementById(id);
   if(!el) return [];
   if(el.multiple) return Array.prototype.map.call(el.selectedOptions||[], o=>o.value).filter(Boolean);
@@ -2420,7 +2568,7 @@ function setFilterValues(id, vals){
   const el = document.getElementById(id);
   if(!el) return;
   const list = Array.isArray(vals) ? vals.map(String) : (vals ? [String(vals)] : []);
-  if(id === 'fOPR' || id === 'fSzTp') multiFilters[id] = list.filter(Boolean).slice();
+  if(multiFilters[id]) multiFilters[id] = list.filter(Boolean).slice();
   if(el.multiple){
     Array.prototype.forEach.call(el.options, o=>{ o.selected = list.indexOf(o.value) >= 0; });
   } else {
@@ -2433,13 +2581,17 @@ function updateFilterButton(id){
   const lab = document.getElementById(id + 'Label');
   if(!btn || !lab) return;
   const vals = filterValues(id);
-  const placeholder = id === 'fOPR' ? 'All Operators' : 'All Size/Types';
-  lab.textContent = !vals.length ? placeholder : vals.length === 1 ? vals[0] : vals.length + ' selected';
-  btn.title = vals.length ? vals.join(' · ') : placeholder;
+  const placeholder = id === 'fOPR' ? 'All Operators' : id === 'fSzTp' ? 'All Size/Types' : id === 'fFE' ? 'All Full/Empty' : id === 'fPOL' ? 'All POL' : 'All POD';
+  const shown = vals.map(v=>id==='fFE'?(v==='F'?'Full':'Empty'):v);
+  lab.textContent = !vals.length ? placeholder : vals.length === 1 ? shown[0] : vals.length + ' selected';
+  btn.title = vals.length ? shown.join(' · ') : placeholder;
 }
 function updateFilterButtons(){
   updateFilterButton('fOPR');
   updateFilterButton('fSzTp');
+  updateFilterButton('fFE');
+  updateFilterButton('fPOL');
+  updateFilterButton('fPOD');
 }
 function calcTEU(sztp){
   if(!sztp) return 1;
@@ -3455,14 +3607,19 @@ function fillSel(id,ph,opts){
   const sel=document.getElementById(id);
   sel.innerHTML=`<option value="">${ph}</option>`;
   opts.forEach(o=>{const op=document.createElement('option');op.value=o;op.textContent=o;sel.appendChild(op);});
-  if(id === 'fOPR' || id === 'fSzTp') multiFilters[id] = [];
+  if(multiFilters[id]) multiFilters[id] = [];
   updateFilterButton(id);
 }
 ['fOPR','fSzTp','fFE','fPOL','fPOD'].forEach(id=>{
   document.getElementById(id).addEventListener('change',()=>{
-    if(id==='fOPR'||id==='fSzTp'){
+    if(multiFilters[id]){
       const el=document.getElementById(id);
-      multiFilters[id]=Array.prototype.map.call(el.selectedOptions||[],o=>o.value).filter(Boolean);
+      if(el && el.value !== ''){
+        multiFilters[id]=Array.prototype.map.call(el.selectedOptions||[],o=>o.value).filter(Boolean);
+      } else if(el){
+        Array.prototype.forEach.call(el.options||[],o=>{o.selected=false;});
+        multiFilters[id]=[];
+      }
       updateFilterButton(id);
     }
     renderAll();
@@ -3480,7 +3637,7 @@ document.getElementById('resetBtn').addEventListener('click',()=>{
 document.getElementById('tableSearch').addEventListener('input',renderTable);
 
 function updateActiveBadge(){
-  const n = ['fOPR','fSzTp','fFE','fPOL','fPOD'].filter(id=>id==='fOPR'||id==='fSzTp'?filterValues(id).length>0:document.getElementById(id).value!=='').length + (kpiCategory?1:0);
+  const n = ['fOPR','fSzTp','fFE','fPOL','fPOD'].filter(id=>multiFilters[id]?filterValues(id).length>0:document.getElementById(id).value!=='').length + (kpiCategory?1:0);
   activeFilterCount = n;
   ['activeBadge','activeBadge2'].forEach(id=>{
     const el=document.getElementById(id);
@@ -3493,14 +3650,14 @@ function updateActiveBadge(){
   syncKpiTiles();
 }
 function syncKpiTiles(){
-  const fe = document.getElementById('fFE').value;
+  const fes = filterValues('fFE');
   const oprs = filterValues('fOPR');
   const sizes = filterValues('fSzTp');
   document.querySelectorAll('.kpi[data-kpi]').forEach(el=>{
     const k = el.dataset.kpi;
     let active = false;
-    if(k==='full') active = fe==='F';
-    else if(k==='empty') active = fe==='E';
+    if(k==='full') active = fes.indexOf('F')>=0;
+    else if(k==='empty') active = fes.indexOf('E')>=0;
     else if(k==='operators') active = oprs.length>0;
     else if(k==='sizes') active = sizes.length>0;
     else active = kpiCategory===k;
@@ -3518,16 +3675,14 @@ function toggleKpi(kind){
   }
   closeOprPop();
   if(kind==='full'||kind==='empty'){
-    const sel = document.getElementById('fFE');
     const want = kind==='full'?'F':'E';
-    sel.value = sel.value===want ? '' : want;
+    const vals = filterValues('fFE');
+    setFilterValues('fFE', vals.length===1 && vals[0]===want ? [] : [want]);
   } else {
     kpiCategory = kpiCategory===kind ? '' : kind;
   }
   renderAll();
   updateActiveBadge();
-  const section = document.getElementById('ctnrTableSection');
-  if(section) section.scrollIntoView({behavior:'smooth',block:'start'});
 }
 document.querySelectorAll('.kpi[data-kpi]').forEach(el=>{
   el.addEventListener('click',()=>toggleKpi(el.dataset.kpi));
@@ -3539,6 +3694,11 @@ function closeOprPop(){
   const pop = document.getElementById('kpiOprPop');
   if(pop) pop.classList.remove('open');
 }
+let kpiRenderTimer = 0;
+function scheduleKpiRender(){
+  clearTimeout(kpiRenderTimer);
+  kpiRenderTimer = setTimeout(()=>{ renderAll(); updateActiveBadge(); }, 50);
+}
 function toggleFilterValue(id, val){
   const vals = filterValues(id).slice();
   const i = vals.indexOf(val);
@@ -3548,30 +3708,39 @@ function toggleFilterValue(id, val){
 function renderFilterList(id){
   const list = document.getElementById('kpiOprList');
   if(!list) return;
-  const isOpr = id === 'fOPR';
-  const keys = isOpr ? ['OPR','Opr','opr'] : ['SzTp','SZTP','SzTP','Size Type','SizeType'];
+  const meta = {
+    fOPR: { keys:['OPR','Opr','opr'], all:'operators' },
+    fSzTp: { keys:['SzTp','SZTP','SzTP','Size Type','SizeType'], all:'size/types' },
+    fFE: { keys:['F/E','FE','fe','f/e','Full/Empty'], all:'Full/Empty', norm:function(v){ return nFE(v); }, label:function(v){ return v==='F'?'Full':v==='E'?'Empty':v; } },
+    fPOL: { keys:['POL','Pol','pol'], all:'POLs' },
+    fPOD: { keys:['POD','Pod','pod'], all:'PODs' }
+  }[id] || { keys:['OPR','Opr','opr'], all:'values' };
+  const keys = meta.keys;
   const counts = {};
   allData.forEach(r=>{
-    const v = String(cf(r,keys)||'').trim();
+    var raw = String(cf(r,keys)||'').trim();
+    var v = meta.norm ? meta.norm(raw) : raw;
     if(v) counts[v] = (counts[v]||0)+1;
   });
   const names = Object.keys(counts).sort();
   const vals = filterValues(id);
-  list.innerHTML = `<button type="button" class="kop-item${vals.length===0?' active':''}" data-val=""><span class="kop-check">${vals.length===0?'✓':''}</span>All ${isOpr?'operators':'size/types'} <b>${allData.length}</b></button>` +
-    names.map(v=>`<button type="button" class="kop-item${vals.indexOf(v)>=0?' active':''}" data-val="${v.replace(/"/g,'&quot;')}"><span class="kop-check">${vals.indexOf(v)>=0?'✓':''}</span>${v} <b>${counts[v]}</b></button>`).join('');
+  const allLabel = meta.all;
+  function shown(v){ return meta.label ? meta.label(v) : v; }
+  list.innerHTML = `<button type="button" class="kop-item${vals.length===0?' active':''}" data-val=""><span class="kop-check">${vals.length===0?'✓':''}</span>All ${allLabel} <b>${allData.length}</b></button>` +
+    names.map(v=>`<button type="button" class="kop-item${vals.indexOf(v)>=0?' active':''}" data-val="${v.replace(/"/g,'&quot;')}"><span class="kop-check">${vals.indexOf(v)>=0?'✓':''}</span>${shown(v)} <b>${counts[v]}</b></button>`).join('');
   list.querySelectorAll('[data-val]').forEach(btn=>btn.addEventListener('click',()=>{
     if(btn.dataset.val === '') setFilterValues(id, []);
     else toggleFilterValue(id, btn.dataset.val);
-    renderAll();
-    updateActiveBadge();
     renderFilterList(id);
+    scheduleKpiRender();
   }));
 }
 function openFilterPop(id, anchor){
   const pop = document.getElementById('kpiOprPop');
   if(!pop || !anchor) return;
   pop.dataset.kind = id;
-  document.getElementById('kpiOprTitle').textContent = id === 'fOPR' ? 'Filter by operator' : 'Filter by size/type';
+  const titles = { fOPR:'Filter by operator', fSzTp:'Filter by size/type', fFE:'Filter by full/empty', fPOL:'Filter by POL', fPOD:'Filter by POD' };
+  document.getElementById('kpiOprTitle').textContent = titles[id] || 'Filter';
   renderFilterList(id);
   const r = anchor.getBoundingClientRect();
   pop.style.left = Math.max(8, Math.min(window.innerWidth-244, r.left)) + 'px';
@@ -3579,7 +3748,7 @@ function openFilterPop(id, anchor){
   pop.classList.add('open');
 }
 document.getElementById('kpiOprClose').addEventListener('click',closeOprPop);
-['fOPR','fSzTp'].forEach(id=>{
+['fOPR','fSzTp','fFE','fPOL','fPOD'].forEach(id=>{
   const el = document.getElementById(id);
   if(el) el.addEventListener('change',closeOprPop);
   const btn = document.getElementById(id+'Btn');
@@ -3592,7 +3761,7 @@ document.getElementById('kpiOprClose').addEventListener('click',closeOprPop);
 document.addEventListener('click',e=>{
   const pop=document.getElementById('kpiOprPop');
   if(!pop || !pop.classList.contains('open')) return;
-  if(pop.contains(e.target) || e.target.closest('[data-kpi="operators"]') || e.target.closest('[data-kpi="sizes"]') || e.target.closest('#fOPRBtn') || e.target.closest('#fSzTpBtn')) return;
+  if(pop.contains(e.target) || e.target.closest('[data-kpi="operators"]') || e.target.closest('[data-kpi="sizes"]') || e.target.closest('#fOPRBtn') || e.target.closest('#fSzTpBtn') || e.target.closest('#fFEBtn') || e.target.closest('#fPOLBtn') || e.target.closest('#fPODBtn')) return;
   closeOprPop();
 });
 document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeOprPop(); });
@@ -3600,15 +3769,15 @@ document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeOprPop(); });
 function getFiltered(){
   const oprs = filterValues('fOPR');
   const sztps = filterValues('fSzTp');
-  const fe   = document.getElementById('fFE').value;
-  const pol  = document.getElementById('fPOL').value;
-  const pod  = document.getElementById('fPOD').value;
+  const fes = filterValues('fFE');
+  const pols = filterValues('fPOL');
+  const pods = filterValues('fPOD');
   return allData.filter(r=>{
     if(oprs.length && oprs.indexOf(String(cf(r,['OPR','Opr','opr'])||'').trim()) < 0) return false;
     if(sztps.length && sztps.indexOf(String(cf(r,['SzTp','SZTP','SzTP','Size Type','SizeType'])||'').trim()) < 0) return false;
-    if(fe   && nFE(cf(r,['F/E','FE','fe','f/e','Full/Empty']))!==fe) return false;
-    if(pol  && String(cf(r,['POL','Pol','pol'])||'').trim()!==pol)   return false;
-    if(pod  && String(cf(r,['POD','Pod','pod'])||'').trim()!==pod)   return false;
+    if(fes.length && fes.indexOf(nFE(cf(r,['F/E','FE','fe','f/e','Full/Empty']))) < 0) return false;
+    if(pols.length && pols.indexOf(String(cf(r,['POL','Pol','pol'])||'').trim()) < 0) return false;
+    if(pods.length && pods.indexOf(String(cf(r,['POD','Pod','pod'])||'').trim()) < 0) return false;
     if(kpiCategory){
       const sz = String(cf(r,['SzTp','SZTP','SzTP','Size Type','SizeType'])||'').trim();
       if(kpiCategory==='reefer' && !isReefer(sz)) return false;
@@ -3743,6 +3912,7 @@ function renderIndicators(agg){
 function dChart(id){if(charts[id]){charts[id].destroy();delete charts[id];}}
 const CD = ()=>({
   color:'#94a3b8',
+  animation:{duration:0},
   plugins:{
     legend:{labels:{color:'#94a3b8',font:{family:'Roboto Mono',size:10},boxWidth:10,padding:12}},
     tooltip:{backgroundColor:'#1e293b',borderColor:'#334155',borderWidth:1,titleColor:'#fff',bodyColor:'#94a3b8',titleFont:{family:'Inter',size:11,weight:'600'},bodyFont:{family:'Roboto Mono',size:10},padding:10,cornerRadius:8}
@@ -3974,7 +4144,7 @@ function setFieldValue(prefix, value){
 
 // Opens the modal in "Add" mode (no argument) or "Edit" mode (pass the row
 // object from allData — matched earlier by its _rid on the table's edit button).
-function openAddCtnrModal(row){
+function openAddCtnrModal(row, presetSlot){
   if(window.Team && Team.isViewer()){ alert('Your team role is Viewer. Ask an admin to change you to Editor before changing containers.'); return; }
   addCtnrForm.reset();
   ['mOPR','mSzTp','mPOL','mPOD'].forEach(p=>{ document.getElementById(p+'Custom').style.display='none'; document.getElementById(p+'Custom').value=''; });
@@ -4001,6 +4171,10 @@ function openAddCtnrModal(row){
     document.getElementById('mTemp').value = t!=null ? t : '';
   } else {
     document.getElementById('mPOLSelect').value='MWA';
+    if(presetSlot){
+      const cleanSlot = String(presetSlot).replace(/[^0-9]/g,'').slice(0,6);
+      if(cleanSlot.length === 6) document.getElementById('mSlot').value = cleanSlot;
+    }
   }
 
   modalOverlay.classList.add('active');
@@ -4034,6 +4208,9 @@ function closeAddCtnrModal(){
   modalOverlay.classList.remove('active');
   document.body.style.overflow='';
   editingRid = null;
+  if(window.Stowage && document.getElementById('opsStowagePane') && !document.getElementById('opsStowagePane').hidden) {
+    try { Stowage.refresh(); } catch(e) {}
+  }
 }
 document.getElementById('addCtnrBtn').addEventListener('click', ()=>openAddCtnrModal());
 document.addEventListener('keydown', e=>{ if(e.key==='Escape' && modalOverlay.classList.contains('active')) closeAddCtnrModal(); });
@@ -5684,11 +5861,11 @@ window.addEventListener('beforeunload', function(e){
     var defs = [['fOPR', 'Operator'], ['fSzTp', 'Size/Type'], ['fFE', 'F/E'], ['fPOL', 'POL'], ['fPOD', 'POD']];
     var labels = [], values = {};
     defs.forEach(function (d) {
-      var el = document.getElementById(d[0]);
-      var v = el ? String(el.value || '').trim() : '';
-      if (!v) return;
-      values[d[0]] = v;
-      labels.push(d[1] + ' = ' + (d[0] === 'fFE' ? (v === 'F' ? 'Full' : 'Empty') : v));
+      var vs = (typeof filterValues === 'function') ? filterValues(d[0]) : (function () { var el = document.getElementById(d[0]); return el && el.value ? [String(el.value).trim()] : []; })();
+      if (!vs.length) return;
+      values[d[0]] = vs.length > 1 ? vs : vs[0];
+      var display = d[0] === 'fFE' ? vs.map(function (v) { return v === 'F' ? 'Full' : v === 'E' ? 'Empty' : v; }).join(' / ') : vs.join(', ');
+      labels.push(d[1] + ' = ' + display);
     });
     var count = 0;
     try { count = filteredRows().length; } catch (e) {}
@@ -6715,7 +6892,7 @@ window.addEventListener('beforeunload', function(e){
         sel.appendChild(op);
       }
     }
-    if ((id === 'fOPR' || id === 'fSzTp') && typeof setFilterValues === 'function') {
+    if ((id === 'fOPR' || id === 'fSzTp' || id === 'fFE' || id === 'fPOL' || id === 'fPOD') && typeof setFilterValues === 'function') {
       setFilterValues(id, val ? [val] : []);
       return;
     }
@@ -6749,7 +6926,10 @@ window.addEventListener('beforeunload', function(e){
   function focusContainer(c) {
     if (!c) return;
     ['fOPR', 'fSzTp', 'fFE', 'fPOL', 'fPOD'].forEach(function (id) {
-      if ((id === 'fOPR' || id === 'fSzTp') && typeof setFilterValues === 'function') setFilterValues(id, []);
+      if (id === 'fOPR' || id === 'fSzTp' || id === 'fFE' || id === 'fPOL' || id === 'fPOD') {
+        if (typeof setFilterValues === 'function') setFilterValues(id, []);
+        else { var sel0 = $(id); if (sel0) sel0.value = ''; }
+      }
       else { var sel = $(id); if (sel) sel.value = ''; }
     });
     var s = $('tableSearch');
@@ -7977,8 +8157,10 @@ window.addEventListener('beforeunload', function(e){
       try {
         var vals = (typeof filterValues === 'function') ? filterValues(d[0]) : (function () { var el = document.getElementById(d[0]); return el && el.value ? [el.value] : []; })();
         if (!vals.length) return;
-        var shown = vals.length > 1 ? vals.length + ' selected (' + vals.slice(0, 3).join(', ') + (vals.length > 3 ? '…' : '') + ')' : vals[0];
-        out.push(d[1] + ' = ' + (d[0] === 'fFE' ? (vals[0] === 'F' ? 'Full' : 'Empty') : shown));
+        var shown = d[0] === 'fFE'
+          ? vals.map(function (v) { return v === 'F' ? 'Full' : v === 'E' ? 'Empty' : v; }).join(' / ')
+          : (vals.length > 1 ? vals.length + ' selected (' + vals.slice(0, 3).join(', ') + (vals.length > 3 ? '…' : '') + ')' : vals[0]);
+        out.push(d[1] + ' = ' + shown);
       } catch (e) {}
     });
     try {
@@ -8348,9 +8530,8 @@ window.addEventListener('beforeunload', function(e){
     var rs = filteredRows();
     if (!bkg || !bkg.rows.length) return [];
     var oprFilter = activeOprFilter();
-    var podEl = document.getElementById('fPOD'), polEl = document.getElementById('fPOL');
-    var podFilter = podEl ? up(podEl.value) : '';
-    var polFilter = polEl ? up(polEl.value) : '';
+    var podFilters = (typeof filterValues === 'function' ? filterValues('fPOD') : []).map(up);
+    var polFilters = (typeof filterValues === 'function' ? filterValues('fPOL') : []).map(up);
     var loaded = {}, loadedSz = {};
     rs.forEach(function (r) {
       var o = oprOf(r), p = podOf(r);
@@ -8368,8 +8549,8 @@ window.addEventListener('beforeunload', function(e){
     bkg.rows.forEach(function (b) {
       var t = bkgTarget(b.opr);
       if (oprFilter.length && (!t || oprFilter.indexOf(t) < 0)) return;
-      if (podFilter && up(b.pod) !== podFilter) return;
-      if (polFilter && b.pol && up(b.pol) !== polFilter) return;
+      if (podFilters.length && podFilters.indexOf(up(b.pod)) < 0) return;
+      if (polFilters.length && b.pol && polFilters.indexOf(up(b.pol)) < 0) return;
       if (!t) {
         var u = unmapped[b.opr] || (unmapped[b.opr] = { opr: b.opr, teu: 0, pods: {} });
         u.teu += b.teu; u.pods[b.pod] = 1;
@@ -10550,7 +10731,7 @@ window.addEventListener('beforeunload', function(e){
   function switchOpsTab(name) {
     activeTab = name;
     document.querySelectorAll('.ops-tab').forEach(function (b) { b.classList.toggle('active', b.dataset.opsTab === name); });
-    var panes = { alerts: 'opsAlertsPane', archive: 'opsArchivePane', audit: 'opsAuditPane', views: 'opsViewsPane', mapping: 'opsMappingPane', export: 'opsExportPane' };
+    var panes = { alerts: 'opsAlertsPane', archive: 'opsArchivePane', audit: 'opsAuditPane', views: 'opsViewsPane', mapping: 'opsMappingPane', export: 'opsExportPane', stowage: 'opsStowagePane' };
     Object.keys(panes).forEach(function (k) { var p = $(panes[k]); if (p) p.hidden = (k !== name); });
     if (name === 'archive') renderArchives();
     if (name === 'audit') renderAudit();
@@ -10558,6 +10739,7 @@ window.addEventListener('beforeunload', function(e){
     if (name === 'mapping') { renderTemplates(); renderMapFields(); }
     if (name === 'alerts') updateAlerts();
     if (name === 'export') { if (window.PWA) PWA.refresh(); }
+    if (name === 'stowage' && window.Stowage) Stowage.refresh();
   }
   function openOps(tab) {
     $('opsOverlay').classList.add('open');
@@ -10687,7 +10869,7 @@ window.addEventListener('beforeunload', function(e){
     });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && $('opsOverlay').classList.contains('open')) closeOps(); });
     updateAlerts();
-    setInterval(updateAlerts, 5000);
+    setInterval(function () { if (!document.hidden) updateAlerts(); }, 15000);
   }
 
   window.Ops = {
@@ -11089,6 +11271,697 @@ window.addEventListener('beforeunload', function(e){
 <script>
 (function () {
   'use strict';
+  var OP_COLORS = {
+    OCL: '#f59e0b', IAL: '#facc15', ESL: '#2563eb', GSS: '#0ea5e9', TSL: '#8b5cf6',
+    PIL: '#ef4444', ONE: '#06b6d4', EMA: '#10b981', SCS: '#84cc16', UFC: '#f97316',
+    MSC: '#a855f7', CMA: '#ec4899', HAP: '#14b8a6', COS: '#3b82f6', EVG: '#22c55e',
+    YML: '#eab308', ZIM: '#f43f5e', HMM: '#64748b', KKF: '#f97316'
+  };
+  var POL_COLORS = {
+    SGP: '#22c55e', DFL: '#3b82f6', MWA: '#06b6d4', QND: '#d946ef', CMB: '#f97316',
+    SHG: '#115e59', PKL: '#7f1d1d', PEN: '#7c3aed', XTH: '#ef4444', KHI: '#84cc16',
+    KSC: '#111827', OFT: '#f59e0b', NBO: '#14b8a6', MBA: '#0ea5e9', TZ: '#fb7185'
+  };
+  var ROW_ORDER = ['12','10','08','06','04','02','00','01','03','05','07','09','11'];
+  var CASP_VESSELS = [
+    ["ABLE","EVER ABLE"],
+    ["ACRD","UNI-ACCORD"],
+    ["ACTV","UNI-ACTIVE"],
+    ["ADNT","UNI-ARDENT"],
+    ["ADRT","UNI-ADROIT"],
+    ["AHED","UNI-AHEAD"],
+    ["ALLY","EVER ALLY"],
+    ["AMPL","UNI-AMPLE"],
+    ["ANGL","UNI-ANGEL"],
+    ["APDT","APHRODITE"],
+    ["APEX","EVER APEX"],
+    ["ARIS","UNI-ARISE"],
+    ["ARPL","AREOPOLIS"],
+    ["ARTE","ARTEMIS"],
+    ["ASNT","UNI-ASSENT"],
+    ["ASPR","UNI-ASPIRE"],
+    ["ASUR","UNI-ASSURE"],
+    ["BRAC","EVER BRACE"],
+    ["CHIV","EVER CHIVALRY"],
+    ["CHPN","M/V EVER CHAMPION"],
+    ["CHRM","EVER CHARMING"],
+    ["CHRT","UNI-CHART"],
+    ["CNCD","UNI-CONCORD"],
+    ["CNCT","UNI-CONCERT"],
+    ["CODL","CORDELIA"],
+    ["CONQ","EVER CONQUEST"],
+    ["CONT","ITAL CONTESSA"],
+    ["CORT","LT CORTESIA"],
+    ["COUR","HATSU COURAGE"],
+    ["CPAS","CAPE MASS"],
+    ["CPMN","CAPE MAGNUS"],
+    ["CPMS","CAPE MOSS"],
+    ["CRNA","UNI-CORONA"],
+    ["CRVD","CORCOVADO"],
+    ["CRWN","UNI-CROWN"],
+    ["CRYS","HATSU CRYSTAL"],
+    ["DADM","EVER DIADEM"],
+    ["DANT","EVER DAINTY"],
+    ["DCNT","EVER DECENT"],
+    ["DEVP","EVER DEVELOP"],
+    ["DIMN","DIMAN II"],
+    ["DIVN","EVER DIVINE"],
+    ["DLGT","EVER DELIGHT"],
+    ["DLXE","EVER DELUXE"],
+    ["DMLI","DAMALI"],
+    ["DMND","EVER DIAMOND"],
+    ["DVOT","EVER DEVOTE"],
+    ["DYNA","EVER DYNAMIC"],
+    ["EGLE","HATSU EAGLE"],
+    ["ELTE","HATSU ELITE"],
+    ["ETHC","HATSU ETHIC"],
+    ["EVOY","HATSU ENVOY"],
+    ["EXCL","HATSU EXCEL"],
+    ["GAIN","EVER GAINING"],
+    ["GARL","ITAL GARLAND"],
+    ["GIFT","EVER GIFTED"],
+    ["GIVN","EVER GIVEN"],
+    ["GLMY","EVER GLEAMY"],
+    ["GNRL","EVER GENERAL"],
+    ["GNTL","EVER GENTLE"],
+    ["GNUS","EVER GENIUS"],
+    ["GODN","EVER GOLDEN"],
+    ["GOOD","EVER GOODS"],
+    ["GOVN","EVER GOVERN"],
+    ["GRAC","ITAL GRACE"],
+    ["GRDN","EVER GARDEN"],
+    ["GRTH","EVER GROWTH"],
+    ["GTHR","EVER GATHER"],
+    ["GTRY","EVER GENTRY"],
+    ["GUST","EVER GUEST"],
+    ["I004","I004"],
+    ["IMRA","IMARA"],
+    ["ISON","IASON"],
+    ["KRMN","KARMEN"],
+    ["LAGU","ITAL LAGUNA"],
+    ["LAUS","LAUSANNE"],
+    ["LEMN","LEO MONO"],
+    ["LGIN","LT GOING"],
+    ["LGMR","LT GLAMOUR"],
+    ["LGRT","LT GREET"],
+    ["LIBE","ITAL LIBERA"],
+    ["LIRI","ITAL LIRICA"],
+    ["LNGE","LT GENOVA"],
+    ["LNOY","LT LLOYDIANA"],
+    ["LNTR","LT TRIESTE"],
+    ["LUDM","LT USODIMARE"],
+    ["LUNA","ITAL  LUNARE"],
+    ["LUNC","LT UNICA"],
+    ["MASS","ITAL MASSIMA"],
+    ["MESN","MESSINI"],
+    ["MLOD","ITAL MELODIA"],
+    ["NIAR","M/V NIARA"],
+    ["ODER","UNI-ORDER"],
+    ["ONES","ITAL ONESTA"],
+    ["ONOR","ITAL ONORE"],
+    ["OTTI","ITAL OTTIMA"],
+    ["PCFC","UNI-PACIFIC"],
+    ["PECE","EVER PEACE"],
+    ["PERL","EVER PEARL"],
+    ["PFCT","UNI-PERFECT"],
+    ["PHNX","UNI-PHOENIX"],
+    ["POWR","EVER POWER"],
+    ["PPLR","UNI-POPULAR"],
+    ["PRBT","UNI-PROBITY"],
+    ["PRDE","HATSU PRIDE"],
+    ["PRDT","UNI-PRUDENT"],
+    ["PRMA","HATSU PRIMA"],
+    ["PRMR","UNI-PREMIER"],
+    ["PRMT","UNI-PROMOTE"],
+    ["PRSP","UNI-PROSPER"],
+    ["PTRT","UNI-PATRIOT"],
+    ["RACR","EVER RACER"],
+    ["RANE","RANEE"],
+    ["RECH","EVER REACH"],
+    ["REFN","EVER REFINE"],
+    ["RELI","IRENES RELIANCE"],
+    ["REMD","IRENES REMEDY"],
+    ["RENO","EVER RENOWN"],
+    ["REWD","EVER REWARD"],
+    ["RIGH","SUN RIGHT"],
+    ["ROAD","SUN ROAD"],
+    ["ROUN","SUN ROUND"],
+    ["RPUT","EVER REPUTE"],
+    ["RSLT","EVER RESULT"],
+    ["SBBN","SEASPAN BRISBANE"],
+    ["SCTL","SCOTLAND"],
+    ["SHIN","HATSU SHINE"],
+    ["SIGM","HATSU SIGMA"],
+    ["SMIL","HATSU SMILE"],
+    ["SNRS","SANTA ROSA"],
+    ["SPND","SEASPAN NEW DELHI"],
+    ["STDY","EVER STEADY"],
+    ["STMD","SANTA MADDALENA"],
+    ["STRO","EVER STRONG"],
+    ["SUPB","EVER SUPERB"],
+    ["SYXB","SEASPAN YINGKOU"],
+    ["TAGD","AGIOS DIMITRIOS I"],
+    ["TAHS","ATHOS I"],
+    ["TAMS","ARAMIS"],
+    ["TAPD","APHRODITE I"],
+    ["TDMS","DIMITRIS Y II"],
+    ["TFAH","FAITH 1"],
+    ["TIGR","TIGER"],
+    ["TLAH","ATHENA I"],
+    ["TLAP","APOLLON I"],
+    ["TLAS","ARIS I"],
+    ["TLHM","HERMES III"],
+    ["TLPD","POSEIDON VII"],
+    ["TMAS","THOMAS MANN"],
+    ["TPNP","PELOPONESIAN PRIDE"],
+    ["TPNT","PANAGIA TINOU"],
+    ["TPTS","PORTHOS"],
+    ["TRET","TRIESTE"],
+    ["UBTY","EVER UBERTY"],
+    ["ULYS","EVER ULYSSES"],
+    ["UNCN","EVER UNICORN"],
+    ["UNFC","EVER UNIFIC"],
+    ["UNIC","ITAL UNICA"],
+    ["UNID","EVER UNITED"],
+    ["UNIO","EVER UNION"],
+    ["UNIQ","EVER UNIQUE"],
+    ["UNIS","EVER UNISON"],
+    ["UNIV","ITAL UNIVERSO"],
+    ["UNTY","EVER UNITY"],
+    ["URBN","EVER URBAN"],
+    ["URNS","EVER URANUS"],
+    ["URSL","EVER URSULA"],
+    ["USFL","EVER USEFUL"],
+    ["UTLE","EVER UTILE"],
+    ["UTRA","EVER ULTRA"],
+    ["VERR","EVER VERA"],
+    ["VIBE","EVER VIBE"],
+    ["VIMM","EVER VIM"],
+    ["VOWW","EVER VOW"],
+    ["VRGO","VIGRO"],
+    ["WELE","WELLE"],
+  ];
+  var CASP_ROUTES = ["AEF", "AEF2", "AEF4", "APG", "AUE", "CEM", "CIX", "CPN", "CPS", "CSI", "CUE", "EAF", "ESA", "FAX", "FEM", "FRS", "HBH", "HTW", "IDEA", "ISE", "JTH", "LKX", "NCA", "NSA", "NSB", "NSC", "NSD", "NUE", "PRD", "THX", "TPI", "TPS", "UAM", "WAE"];
+  var PROFILE_KEY = 'oprStowageProfile.v1';
+  var state = { rows: [], containers: [], planned: [], unplanned: [], byBay: {}, bays: [], selected: '', color: 'opr', profile: null, scope: '' };
+  var $ = function (id) { return document.getElementById(id); };
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function up(v) { return String(v == null ? '' : v).trim().toUpperCase(); }
+  function podColorSafe(p) {
+    try { if (typeof podColor === 'function') return podColor(p, 0); } catch (e) {}
+    return '#3b82f6';
+  }
+  function hashColor(s) {
+    var pal = ['#3b82f6','#06b6d4','#8b5cf6','#10b981','#f59e0b','#ec4899','#f97316','#84cc16','#0ea5e9','#a855f7','#14b8a6','#ef4444'];
+    var h = 0; s = String(s || 'â€”');
+    for (var i = 0; i < s.length; i++) h = ((h * 31) + s.charCodeAt(i)) | 0;
+    return pal[Math.abs(h) % pal.length];
+  }
+  function slotOf(r) {
+    try { if (typeof cf === 'function') return String(cf(r, ['Slot','slot','SLOT','Cell','cell']) || '').trim(); } catch (e) {}
+    return String(r.Slot || r.slot || r.SLOT || r.Cell || r.cell || '').trim();
+  }
+  function ctnrOf(r) { try { return typeof cf === 'function' ? String(cf(r, ['Container','container','CONTAINER','CTR','Ctnr']) || '').trim() : String(r.Container || '').trim(); } catch (e) { return ''; } }
+  function oprOf(r) { try { return up(typeof cf === 'function' ? cf(r, ['OPR','Opr','opr']) : r.OPR); } catch (e) { return ''; } }
+  function podOf(r) { try { return up(typeof cf === 'function' ? cf(r, ['POD','Pod','pod']) : r.POD) || 'BLANK'; } catch (e) { return 'BLANK'; } }
+  function polOf(r) { try { return up(typeof cf === 'function' ? cf(r, ['POL','Pol','pol']) : r.POL) || 'BLANK'; } catch (e) { return 'BLANK'; } }
+  function szOf(r) { try { return up(typeof cf === 'function' ? cf(r, ['SzTp','SZTP','SzTP','Size Type','SizeType']) : r.SzTp); } catch (e) { return ''; } }
+  function feOf(r) { try { return typeof nFE === 'function' ? nFE(cf(r, ['F/E','FE','fe','f/e','Full/Empty'])) : up(r['F/E']); } catch (e) { return ''; } }
+  function num(v) { var n = parseFloat(String(v == null ? '' : v).replace(/[^0-9.\-]/g, '')); return isNaN(n) ? null : n; }
+  function vgmOf(r) { try { if (typeof getVGM === 'function') return getVGM(r); } catch (e) {} return num(r.VGM); }
+  function tempOf(r) { try { if (typeof getReeferTemp === 'function') return getReeferTemp(r); } catch (e) {} return null; }
+  function isReeferSz(s) { try { return typeof isReefer === 'function' ? isReefer(s) : /R[0-9A-Z]$/.test(up(s)); } catch (e) { return false; } }
+  function teuOfSz(s) { try { return typeof calcTEU === 'function' ? calcTEU(s) : (/^2/.test(up(s)) ? 1 : 2); } catch (e) { return 1; } }
+  function ftOf(s) { s = up(s).replace(/[^A-Z0-9]/g, ''); if (s.charAt(0) === '2') return 20; if (s.charAt(0) === '4' || s.charAt(0) === 'L' || s.charAt(0) === 'P') return 40; return ''; }
+
+  function parseSlot(raw) {
+    var s = up(raw).replace(/[^A-Z0-9]/g, '');
+    if (!s) return null;
+    var bay, row, tier;
+    if (s.length >= 6 && /^\d{6}/.test(s)) { bay = s.slice(0, 2); row = s.slice(2, 4); tier = s.slice(4, 6); }
+    else if (s.length === 5 && /^\d{5}$/.test(s)) { bay = s.slice(0, 2); row = s.slice(2, 3).padStart(2, '0'); tier = s.slice(3, 5); }
+    else if (s.length === 4 && /^\d{4}$/.test(s)) { bay = s.slice(0, 2); row = s.slice(2, 3).padStart(2, '0'); tier = s.slice(3, 4).padStart(2, '0'); }
+    else return null;
+    if (!/^\d{2}$/.test(bay) || !/^\d{2}$/.test(row) || !/^\d{2}$/.test(tier)) return null;
+    var b = parseInt(bay, 10), r = parseInt(row, 10), t = parseInt(tier, 10);
+    if (!b || !r || !t) return null;
+    return { bay: bay, row: row, tier: tier, key: bay + '|' + row + '|' + tier, deck: t >= 80 };
+  }
+  function profileKey() {
+    var m = (typeof vesselMeta !== 'undefined' && vesselMeta) || {};
+    return (m.vesselName || 'VESSEL') + '|' + (m.voyage || '');
+  }
+  function allProfiles() {
+    try { var v = JSON.parse(localStorage.getItem(PROFILE_KEY) || '{}'); return v && typeof v === 'object' ? v : {}; } catch (e) { return {}; }
+  }
+  function loadProfile() {
+    var all = allProfiles();
+    state.profile = all[profileKey()] || { teuCapacity: 0, reeferPlugs: 0, maxStackWeight: 0 };
+    state.profile.__key = profileKey();
+    return state.profile;
+  }
+  function ensureProfile() {
+    if (!state.profile || state.profile.__key !== profileKey()) loadProfile();
+    return state.profile;
+  }
+  function saveProfile(p) {
+    p.__key = profileKey();
+    var all = allProfiles();
+    all[profileKey()] = p;
+    try { localStorage.setItem(PROFILE_KEY, JSON.stringify(all)); } catch (e) {}
+    state.profile = p;
+  }
+  function parseAscText(text) {
+    var seen = {}, capByBay = {}, bays = {}, rows = {}, tiers = {}, reefs = 0, slots = 0, teu = 0, keys = [];
+    String(text || '').split(/\r?\n/).forEach(function (line) {
+      if (!/^\d{6}/.test(line) || line.length < 48) return;
+      var slot = line.slice(0, 6), p = parseSlot(slot);
+      if (!p || p.bay === '00') return;
+      var key = p.key;
+      if (seen[key]) return;
+      seen[key] = 1; slots++; keys.push(key);
+      var sz = line.slice(44, 48).trim().toUpperCase();
+      var t = sz ? teuOfSz(sz) : 1;
+      teu += t;
+      capByBay[p.bay] = (capByBay[p.bay] || 0) + 1;
+      bays[p.bay] = 1; rows[p.row] = 1; tiers[p.tier] = 1;
+      if (/R[0-9A-Z]$/.test(sz) || /H[0-9]$/.test(sz)) reefs++;
+    });
+    return { slots: slots, teu: teu, capacityByBay: capByBay, slotKeys: keys, bays: Object.keys(bays).length, rows: Object.keys(rows).length, tiers: Object.keys(tiers).length, reefers: reefs };
+  }
+  function importCasp(file) {
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      var p = Object.assign({}, state.profile || {});
+      var name = String(file.name || '').toLowerCase();
+      try {
+        if (name.endsWith('.asc')) {
+          var parsed = parseAscText(e.target.result);
+          if (!parsed.slots) { setCaspInfo('No stowage slots found in that ASC.'); return; }
+          p.casp = Object.assign({ source: file.name }, parsed);
+          p.teuCapacity = parsed.teu;
+          saveProfile(p);
+          setCaspInfo('CASP ASC: ' + parsed.slots + ' slots Â· ' + parsed.teu + ' TEU Â· ' + parsed.bays + ' bays Â· ' + parsed.reefers + ' reefer slots.');
+          render();
+        } else {
+          var raw = e.target.result;
+          var txt = typeof raw === 'string' ? raw : new TextDecoder('latin1').decode(new Uint8Array(raw));
+          var nm = (txt.match(/CASP SHIP DEFINE FILE[\s\S]{0,200}?\n([^\r\n]{4,60})/) || [])[1] || '';
+          p.caspDef = { source: file.name, name: nm.trim() };
+          saveProfile(p);
+          setCaspInfo('CASP DEF recognised' + (nm ? ': ' + nm.trim() : '') + '. Import the vessel .ASC for slot capacity.');
+          render();
+        }
+      } catch (err) { setCaspInfo('CASP import failed: ' + err.message); }
+    };
+    if (String(file.name || '').toLowerCase().endsWith('.asc')) reader.readAsText(file);
+    else reader.readAsArrayBuffer(file);
+  }
+  function setCaspInfo(msg) { var el = $('stowCaspInfo'); if (el) el.textContent = msg; }
+  function vesselByCode(code) {
+    for (var i = 0; i < CASP_VESSELS.length; i++) if (CASP_VESSELS[i][0] === code) return CASP_VESSELS[i];
+    return CASP_VESSELS[0] || ['', 'VESSEL'];
+  }
+  function populateVesselRoute() {
+    var vs = $('stowVesselSelect'), rs = $('stowRouteSelect');
+    if (vs && !vs.options.length) {
+      CASP_VESSELS.forEach(function (v) {
+        var o = document.createElement('option'); o.value = v[0]; o.textContent = v[0] + ' · ' + v[1]; vs.appendChild(o);
+      });
+    }
+    if (rs && !rs.options.length) {
+      CASP_ROUTES.forEach(function (r) {
+        var o = document.createElement('option'); o.value = r; o.textContent = r; rs.appendChild(o);
+      });
+    }
+  }
+  function showVesselName() {
+    var vs = $('stowVesselSelect'), el = $('stowVesselName');
+    if (!vs || !el) return;
+    el.textContent = vesselByCode(vs.value)[1] || '—';
+  }
+  function openVesselModal() {
+    populateVesselRoute();
+    var m = (typeof vesselMeta !== 'undefined' && vesselMeta) || {};
+    var vs = $('stowVesselSelect'), rs = $('stowRouteSelect');
+    if (vs) {
+      var code = m.caspVessel || '';
+      if (!code) {
+        for (var i = 0; i < CASP_VESSELS.length; i++) if (CASP_VESSELS[i][1] === m.vesselName) { code = CASP_VESSELS[i][0]; break; }
+      }
+      vs.value = code || (CASP_VESSELS[0] ? CASP_VESSELS[0][0] : '');
+    }
+    if (rs) {
+      var route = m.caspRoute || m.voyage || '';
+      if (CASP_ROUTES.indexOf(route) < 0) route = CASP_ROUTES[0] || '';
+      rs.value = route;
+    }
+    showVesselName();
+    var modal = $('stowVesselModal'); if (modal) modal.hidden = false;
+  }
+  function closeVesselModal() { var modal = $('stowVesselModal'); if (modal) modal.hidden = true; }
+  function applyVesselRoute() {
+    var vs = $('stowVesselSelect'), rs = $('stowRouteSelect');
+    if (!vs || !rs) return;
+    var v = vesselByCode(vs.value);
+    var m = (typeof vesselMeta !== 'undefined' && vesselMeta) || {};
+    m.vesselName = v[1] || v[0];
+    m.voyage = rs.value || '';
+    m.caspVessel = v[0];
+    m.caspRoute = rs.value || '';
+    if (typeof vesselMeta !== 'undefined') vesselMeta = m;
+    closeVesselModal();
+    ensureProfile();
+    renderProfile();
+    if (typeof renderAll === 'function') renderAll();
+    refresh();
+    setCaspInfo('Vessel / Route: ' + v[0] + ' ' + v[1] + ' · ' + (rs.value || '—') + '. Load ASC slots for CASP capacity.');
+  }
+
+  function scopeLabel() {
+    var out = [];
+    try {
+      if (typeof filterValues === 'function') {
+        var o = filterValues('fOPR'), s = filterValues('fSzTp'), fe = filterValues('fFE'), po = filterValues('fPOL'), pd = filterValues('fPOD');
+        if (o.length) out.push('OPR ' + o.join('/'));
+        if (s.length) out.push('SIZE ' + s.join('/'));
+        if (fe.length) out.push('F/E ' + fe.join('/'));
+        if (po.length) out.push('POL ' + po.join('/'));
+        if (pd.length) out.push('POD ' + pd.join('/'));
+        if (typeof kpiCategory !== 'undefined' && kpiCategory) out.push('CAT ' + kpiCategory);
+      }
+    } catch (e) {}
+    return out.join(' Â· ') || 'all filtered rows';
+  }
+
+  function build() {
+    ensureProfile();
+    state.rows = (typeof getFiltered === 'function') ? getFiltered() : ((typeof allData !== 'undefined') ? allData : []);
+    // When the manifest itself came from a CASP ASC plan, the raw file contains
+    // every bay/row/tier slot â€” including empty positions â€” so use it as the
+    // real slot capacity instead of estimating from the loaded containers.
+    try {
+      if (!state.profile.casp && typeof rawASCLoaded !== 'undefined' && rawASCLoaded && Array.isArray(rawASCLines) && rawASCLines.length) {
+        var fromAsc = parseAscText(rawASCLines.join('\n'));
+        if (fromAsc.slots) {
+          state.profile = Object.assign({}, state.profile, { casp: Object.assign({ source: rawASCFileName || 'loaded ASC' }, fromAsc) });
+          if (!state.profile.teuCapacity) state.profile.teuCapacity = fromAsc.teu;
+        }
+      }
+    } catch (e) {}
+    state.containers = [];
+    state.planned = [];
+    state.unplanned = [];
+    state.byBay = {};
+    state.scope = scopeLabel();
+    state.rows.forEach(function (r) {
+      var p = parseSlot(slotOf(r));
+      var c = {
+        rid: r._rid, row: r, ctnr: ctnrOf(r), opr: oprOf(r), pod: podOf(r), pol: polOf(r), sz: szOf(r),
+        fe: feOf(r), vgm: vgmOf(r), temp: tempOf(r), reefer: isReeferSz(szOf(r)), ft: ftOf(szOf(r))
+      };
+      state.containers.push(c);
+      if (!p) { c.reason = 'Missing or invalid slot'; state.unplanned.push(c); return; }
+      c.slot = p;
+      state.planned.push(c);
+      var b = state.byBay[p.bay] || (state.byBay[p.bay] = { bay: p.bay, cells: {}, rows: {}, tiers: {}, containers: 0, teu: 0, weight: 0, reefers: 0, missingTemp: 0 });
+      b.containers++;
+      b.teu += teuOfSz(c.sz);
+      if (c.vgm != null) b.weight += c.vgm;
+      if (c.reefer) { b.reefers++; if (c.temp == null) b.missingTemp++; }
+      b.rows[p.row] = 1; b.tiers[p.tier] = 1;
+      if (!b.cells[p.key]) b.cells[p.key] = { bay: p.bay, row: p.row, tier: p.tier, deck: p.deck, items: [], key: p.key };
+      b.cells[p.key].items.push(c);
+    });
+    state.bays = Object.keys(state.byBay).sort(function (a, b) { return a.localeCompare(b, undefined, { numeric: true }); });
+    if (!state.selected || !state.byBay[state.selected]) state.selected = state.bays[0] || '';
+    return state;
+  }
+  function bayStats(b) {
+    if (!b) return { est: 0, pos: 0, util: null, teu: 0 };
+    var rowMax = 0, underMax = 0, deckMax = 0;
+    Object.keys(b.rows).forEach(function (r) { rowMax = Math.max(rowMax, parseInt(r, 10) || 0); });
+    Object.keys(b.tiers).forEach(function (t) {
+      var n = parseInt(t, 10) || 0;
+      if (n >= 80) deckMax = Math.max(deckMax, n); else underMax = Math.max(underMax, n);
+    });
+    var rowCount = Math.ceil(rowMax / 2) || 1;
+    var underCount = Math.floor(underMax / 2);
+    var deckCount = deckMax >= 80 ? Math.floor((deckMax - 80) / 2) : 0;
+    if (!deckCount) deckCount = 0;
+    var est = rowCount * Math.max(1, underCount + deckCount);
+    var caspCap = state.profile && state.profile.casp && state.profile.casp.capacityByBay && state.profile.casp.capacityByBay[b.bay];
+    if (caspCap) est = caspCap;
+    var pos = Object.keys(b.cells).length;
+    return { est: est, pos: pos, util: est ? Math.min(100, pos / est * 100) : null, teu: b.teu || 0 };
+  }
+  function kpi(label, value, cls) {
+    return '<div class="stow-kpi ' + (cls || '') + '"><b>' + esc(value) + '</b><span>' + esc(label) + '</span></div>';
+  }
+  function colorFor(c) {
+    if (state.color === 'fe') return c.fe === 'E' ? '#f59e0b' : c.fe === 'F' ? '#10b981' : '#64748b';
+    if (state.color === 'opr') return OP_COLORS[up(c.opr)] || hashColor(c.opr || 'â€”');
+    if (state.color === 'pol') return POL_COLORS[up(c.pol)] || hashColor(c.pol || 'â€”');
+    if (state.color === 'weight') {
+      var max = 0; state.planned.forEach(function (x) { if (x.vgm != null && x.vgm > max) max = x.vgm; });
+      var pct = max ? Math.min(1, (c.vgm || 0) / max) : 0;
+      if (pct > 0.8) return '#ef4444'; if (pct > 0.55) return '#f59e0b'; if (pct > 0.3) return '#3b82f6'; return '#10b981';
+    }
+    return POL_COLORS[up(c.pod)] || podColorSafe(c.pod);
+  }
+  function cellLabel(c) {
+    if (state.color === 'opr') return c.opr || 'â€”';
+    if (state.color === 'pol') return c.pol || 'â€”';
+    if (state.color === 'fe') return c.fe || 'â€”';
+    if (state.color === 'weight') return c.vgm == null ? 'â€”' : c.vgm.toFixed(1);
+    return c.pod || 'â€”';
+  }
+  function renderKpis() {
+    var el = $('stowKpis'); if (!el) return;
+    var totalTeu = state.planned.reduce(function (s, c) { return s + teuOfSz(c.sz); }, 0);
+    var totalWeight = state.planned.reduce(function (s, c) { return s + (c.vgm || 0); }, 0);
+    var totalPos = 0, totalEst = 0;
+    state.bays.forEach(function (b) { var s = bayStats(state.byBay[b]); totalPos += s.pos; totalEst += s.est; });
+    var p = state.profile || {};
+    var util = p.teuCapacity ? (totalTeu / p.teuCapacity * 100) : (totalEst ? totalPos / totalEst * 100 : null);
+    var plugs = p.reeferPlugs || 0;
+    var reefers = state.planned.filter(function (c) { return c.reefer; }).length;
+    el.innerHTML =
+      kpi('Planned', state.planned.length) +
+      kpi('Unplanned', state.unplanned.length, state.unplanned.length ? 'stow-warn' : '') +
+      kpi('Positions', totalPos + (totalEst ? ' / ' + totalEst : '')) +
+      kpi('Utilisation', util == null ? 'â€”' : util.toFixed(0) + '%', util != null && util > 90 ? 'stow-amber' : '') +
+      kpi('TEU', totalTeu) +
+      kpi('Weight T', totalWeight.toFixed(1)) +
+      kpi('Reefers', reefers) +
+      kpi('Plugs', plugs ? reefers + ' / ' + plugs : 'not set', plugs && reefers > plugs ? 'stow-warn' : '');
+  }
+  function renderBays() {
+    var el = $('stowBays'); if (!el) return;
+    el.innerHTML = state.bays.map(function (b) {
+      var s = bayStats(state.byBay[b]);
+      return '<button type="button" class="stow-bay-chip' + (b === state.selected ? ' active' : '') + '" data-stow-bay="' + esc(b) + '"><b>BAY ' + esc(b) + '</b>' + state.byBay[b].containers + ' boxes Â· ' + s.teu + ' TEU</button>';
+    }).join('') || '<div class="ops-empty">No planned slots.</div>';
+    el.querySelectorAll('[data-stow-bay]').forEach(function (btn) { btn.addEventListener('click', function () { state.selected = btn.dataset.stowBay; render(); }); });
+  }
+  function cellHtml(cell, color, available, row, slot) {
+    var slotText = String(slot || '').replace(/\|/g, '');
+    if (!cell) {
+      return '<button type="button" class="stow-cell empty ' + (available ? 'available' : 'unavailable') + '" data-stow-slot="' + esc(slotText) + '" title="Add a container at slot ' + esc(slotText) + '">' + (available ? '' : 'Ã—') + '</button>';
+    }
+    var c = cell.items[0];
+    var title = cell.items.map(function (x) { return x.ctnr + ' Â· ' + x.opr + ' / ' + x.pol + ' â†’ ' + x.pod; }).join('\n') + '\nSlot ' + cell.bay + cell.row + cell.tier;
+    return '<button type="button" class="stow-cell' + (row === '01' ? ' center-right' : '') + '" style="background:' + color + '22;border-color:' + color + '99" title="' + esc(title) + '" data-stow-rid="' + (c.rid != null ? c.rid : '') + '">' +
+      '<span class="sc-c">' + esc(cellLabel(c)) + '</span>' +
+      '<span class="sc-m">' + esc(String(c.ctnr || '').slice(-4)) + (cell.items.length > 1 ? ' +' + (cell.items.length - 1) : '') + '</span>' +
+      (c.reefer ? '<span class="sc-r">â„</span>' : '') + (c.ft === 40 ? '<span class="sc-r" style="right:12px;font-size:6px">40</span>' : '') +
+      '</button>';
+  }
+  function renderLegend() {
+    var el = $('stowLegend'); if (!el) return;
+    if (state.color === 'weight') {
+      el.innerHTML = '<span>Weight scale: <i style="background:#10b981"></i>light <i style="background:#f59e0b"></i>medium <i style="background:#ef4444"></i>heavy</span>';
+      return;
+    }
+    var b = state.byBay[state.selected], seen = {}, vals = [];
+    if (b) Object.keys(b.cells).forEach(function (k) {
+      var c = b.cells[k].items[0];
+      var val = state.color === 'opr' ? c.opr : state.color === 'pol' ? c.pol : state.color === 'fe' ? c.fe : c.pod;
+      val = val || 'â€”';
+      if (!seen[val]) { seen[val] = 1; vals.push(val); }
+    });
+    var label = state.color === 'opr' ? 'Operator' : state.color === 'pol' ? 'POL' : state.color === 'fe' ? 'Full/Empty' : 'POD';
+    el.innerHTML = '<span>' + label + ':</span>' + vals.slice(0, 16).map(function (v) {
+      var c = { opr: v, pol: v, fe: v, pod: v };
+      return '<span><i style="background:' + colorFor(c) + '"></i>' + esc(v) + '</span>';
+    }).join('') + '<span style="color:var(--muted)">â„ reefer Â· 40 ft Â· click a cell</span>';
+  }
+  function renderGrid() {
+    var grid = $('stowGrid'), title = $('stowBayTitle');
+    if (!grid) return;
+    var b = state.byBay[state.selected];
+    if (!b) {
+      grid.innerHTML = '<div class="ops-empty">No planned containers for the current filter.</div>';
+      if (title) title.textContent = 'No bay';
+      if ($('stowLegend')) $('stowLegend').innerHTML = '';
+      return;
+    }
+    if (title) title.textContent = 'BAY ' + b.bay + ' Â· ' + b.containers + ' boxes Â· ' + b.teu + ' TEU Â· ' + b.weight.toFixed(2) + ' T';
+    var rowKeys = ROW_ORDER.slice();
+    var capKeys = (state.profile && state.profile.casp && state.profile.casp.slotKeys) || [];
+    var capSet = {};
+    capKeys.forEach(function (k) { capSet[k] = 1; });
+    var maxDeck = 94, maxUnder = 14;
+    function extend(k) {
+      var p = parseSlot(k); if (!p || p.bay !== b.bay) return;
+      var n = parseInt(p.tier, 10);
+      if (n >= 80) maxDeck = Math.max(maxDeck, n); else maxUnder = Math.max(maxUnder, n);
+    }
+    capKeys.forEach(extend);
+    state.planned.forEach(function (c) { if (c.slot && c.slot.bay === b.bay) extend(c.slot.key); });
+    var deckTiers = [], underTiers = [];
+    for (var d = 82; d <= maxDeck; d += 2) deckTiers.push(String(d).padStart(2, '0'));
+    for (var u = 2; u <= maxUnder; u += 2) underTiers.push(String(u).padStart(2, '0'));
+    renderLegend();
+    function headerRow() {
+      return '<div class="stow-row stow-head"><div class="stow-cells" style="grid-template-columns:repeat(' + rowKeys.length + ',44px)">' +
+        rowKeys.map(function (r) { return '<div class="stow-col' + (r === '01' ? ' center-right' : '') + '">' + esc(r) + '</div>'; }).join('') + '</div><div class="stow-tier"></div></div>';
+    }
+    function tierRow(tier) {
+      var cells = rowKeys.map(function (r) {
+        var key = b.bay + '|' + r + '|' + tier;
+        var cell = b.cells[key];
+        var avail = !!cell || !!capSet[key];
+        return cellHtml(cell, colorFor((cell || { items: [{ opr: '', pol: '', pod: '', fe: '' }] }).items[0]), avail, r, key);
+      }).join('');
+      return '<div class="stow-row"><div class="stow-cells" style="grid-template-columns:repeat(' + rowKeys.length + ',44px)">' + cells + '</div><div class="stow-tier">' + esc(tier) + '</div></div>';
+    }
+    var html = headerRow();
+    html += '<div class="stow-deck">ON DECK Â· TIER 80+</div>';
+    deckTiers.forEach(function (t) { html += tierRow(t); });
+    html += '<div class="stow-deck">UNDER DECK</div>';
+    underTiers.forEach(function (t) { html += tierRow(t); });
+    html += headerRow();
+    grid.innerHTML = html;
+    grid.querySelectorAll('[data-stow-rid]').forEach(function (el) {
+      el.addEventListener('click', function () { var rid = Number(el.dataset.stowRid); if (!isNaN(rid) && typeof openEditFromRid === 'function') openEditFromRid(rid); });
+    });
+    grid.querySelectorAll('[data-stow-slot]').forEach(function (el) {
+      el.addEventListener('click', function () { if (typeof openAddCtnrModal === 'function') openAddCtnrModal(null, el.dataset.stowSlot); });
+    });
+  }
+  function renderSide() {
+    var b = state.byBay[state.selected], stats = bayStats(b);
+    var statEl = $('stowBayStats'), weightEl = $('stowWeight'), reeferEl = $('stowReefers');
+    if (!statEl) return;
+    if (!b) { statEl.innerHTML = ''; weightEl.innerHTML = ''; reeferEl.innerHTML = ''; return; }
+    var miss = state.planned.filter(function (c) { return c.slot && c.slot.bay === state.selected && c.reefer && c.temp == null; }).length;
+    statEl.innerHTML = '<div class="stow-box"><h4>Bay ' + esc(b.bay) + ' utilisation</h4>' +
+      '<div class="stow-stat"><span>Containers</span><b>' + b.containers + '</b></div>' +
+      '<div class="stow-stat"><span>Positions</span><b>' + stats.pos + ' / ' + stats.est + ' est.</b></div>' +
+      '<div class="stow-stat"><span>TEU</span><b>' + b.teu + '</b></div>' +
+      '<div class="stow-stat"><span>Weight</span><b>' + b.weight.toFixed(2) + ' T</b></div>' +
+      '<div class="stow-stat"><span>Reefers</span><b>' + b.reefers + (b.missingTemp ? ' Â· ' + b.missingTemp + ' no temp' : '') + '</b></div>' +
+      '<div class="stow-bar"><i style="width:' + Math.min(100, stats.util || 0) + '%;background:' + ((stats.util || 0) > 90 ? '#ef4444' : '#3b82f6') + '"></i></div></div>';
+    var rowW = {};
+    state.planned.forEach(function (c) { if (c.slot && c.slot.bay === state.selected && c.vgm != null) rowW[c.slot.row] = (rowW[c.slot.row] || 0) + c.vgm; });
+    var rows = Object.keys(rowW).sort(function (a, c) { return parseInt(a, 10) - parseInt(c, 10); });
+    var maxW = rows.reduce(function (m, r) { return Math.max(m, rowW[r]); }, 0);
+    var maxLimit = state.profile && state.profile.maxStackWeight ? state.profile.maxStackWeight : 0;
+    weightEl.innerHTML = '<div class="stow-box"><h4>Row weight distribution</h4>' + (rows.length ? rows.map(function (r) {
+      var w = rowW[r]; var over = maxLimit && w > maxLimit;
+      return '<div class="stow-stat"><span>Row ' + esc(r) + '</span><b class="' + (over ? 'stow-warn' : '') + '">' + w.toFixed(2) + ' T' + (over ? ' âš ' : '') + '</b></div><div class="stow-bar"><i style="width:' + (maxW ? Math.min(100, w / maxW * 100) : 0) + '%;background:' + (over ? '#ef4444' : '#3b82f6') + '"></i></div>';
+    }).join('') : '<div class="stow-line">No weights.</div>') + (maxLimit ? '<div class="ops-note">Max stack ' + maxLimit + ' T (profile).</div>' : '') + '</div>';
+    var reefers = state.planned.filter(function (c) { return c.slot && c.slot.bay === state.selected && c.reefer; });
+    reeferEl.innerHTML = '<div class="stow-box"><h4>Reefers in bay ' + esc(b.bay) + '</h4>' + (reefers.length ? '<div class="stow-list">' + reefers.slice(0, 8).map(function (c) {
+      return '<div class="stow-line"><b>' + esc(c.ctnr || 'â€”') + '</b>' + esc(c.slot.row + '/' + c.slot.tier) + '<span class="' + (c.temp == null ? 'stow-amber' : '') + '">' + (c.temp == null ? 'no temp' : esc(c.temp) + 'Â°C') + '</span></div>';
+    }).join('') + '</div>' : '<div class="stow-line">No reefers.</div>') + '</div>';
+    if (miss) statEl.innerHTML += '<div class="ops-note stow-amber">' + miss + ' reefer(s) in this bay have no temperature.</div>';
+  }
+  function renderUnplanned() {
+    var el = $('stowUnplanned'); if (!el) return;
+    if (!state.unplanned.length) { el.innerHTML = ''; return; }
+    el.innerHTML = '<h4>Unplanned / invalid slots (' + state.unplanned.length + ')</h4><div class="stow-list">' + state.unplanned.slice(0, 20).map(function (c) {
+      return '<div class="stow-line" data-stow-unplanned="' + (c.rid != null ? c.rid : '') + '"><b>' + esc(c.ctnr || 'â€”') + '</b>' + esc(c.opr || 'â€”') + ' / ' + esc(c.pod || 'â€”') + '<span class="stow-amber">' + esc(c.reason || 'no slot') + '</span></div>';
+    }).join('') + '</div>';
+    el.querySelectorAll('[data-stow-unplanned]').forEach(function (row) {
+      row.addEventListener('click', function () { var rid = Number(row.dataset.stowUnplanned); if (!isNaN(rid) && typeof openEditFromRid === 'function') openEditFromRid(rid); });
+    });
+  }
+  function renderProfile() {
+    var p = state.profile || {};
+    if ($('stowProfileName')) $('stowProfileName').textContent = profileKey();
+    if ($('stowTeuCap')) $('stowTeuCap').value = p.teuCapacity || '';
+    if ($('stowPlugs')) $('stowPlugs').value = p.reeferPlugs || '';
+    if ($('stowStackMax')) $('stowStackMax').value = p.maxStackWeight || '';
+    if ($('stowCaspInfo')) {
+      if (p.casp) setCaspInfo('CASP ASC: ' + p.casp.slots + ' slots Â· ' + p.casp.teu + ' TEU Â· ' + p.casp.bays + ' bays Â· ' + p.casp.reefers + ' reefer slots.' + (p.casp.source ? ' (' + p.casp.source + ')' : ''));
+      else if (p.caspDef) setCaspInfo('CASP DEF: ' + (p.caspDef.name || p.caspDef.source) + '. Import the vessel .ASC for slot capacity.');
+    }
+  }
+  function render() {
+    ensureProfile();
+    renderKpis();
+    renderBays();
+    renderGrid();
+    renderSide();
+    renderUnplanned();
+    renderProfile();
+  }
+  function refresh() { build(); render(); }
+  function printPlan() {
+    var b = state.byBay[state.selected]; if (!b) return;
+    var rowKeys = Object.keys(b.rows).sort(function (a, c) { return parseInt(a, 10) - parseInt(c, 10); });
+    var tierKeys = Object.keys(b.tiers).sort(function (a, c) { return parseInt(c, 10) - parseInt(a, 10); });
+    var head = '<tr><th>Tier</th>' + rowKeys.map(function (r) { return '<th>R' + esc(r) + '</th>'; }).join('') + '</tr>';
+    var body = tierKeys.map(function (t) { return '<tr><td>' + esc(t) + '</td>' + rowKeys.map(function (r) { var cell = b.cells[b.bay + '|' + r + '|' + t]; return '<td>' + (cell ? esc(cell.items.map(function (x) { return x.ctnr; }).join(' / ')) : '') + '</td>'; }).join('') + '</tr>'; }).join('');
+    var w = window.open('', '_blank'); if (!w) return;
+    w.document.open();
+    w.document.write('<!doctype html><html><head><meta charset="utf-8"><title>Bay ' + esc(b.bay) + '</title><style>body{font-family:Arial;margin:14px}h1{font-size:16px}table{border-collapse:collapse;width:100%;font-size:9px}td,th{border:1px solid #999;padding:2px 4px}th{background:#eee}</style></head><body><h1>Bay ' + esc(b.bay) + ' Â· ' + esc(state.scope) + '</h1><p>' + b.containers + ' boxes Â· ' + b.teu + ' TEU Â· ' + b.weight.toFixed(2) + ' T</p><table>' + head + body + '</table></bo' + 'dy></html>');
+    w.document.close(); setTimeout(function () { w.focus(); w.print(); }, 250);
+  }
+  function bind() {
+    if (!$('opsStowagePane') || $('opsStowagePane').__stowBound) return;
+    $('opsStowagePane').__stowBound = true;
+    if ($('stowColor')) $('stowColor').addEventListener('change', function () { state.color = this.value; renderGrid(); });
+    if ($('stowProfileBtn')) $('stowProfileBtn').addEventListener('click', function () { var p = $('stowProfile'); if (p) p.hidden = !p.hidden; renderProfile(); });
+    if ($('stowProfileClose')) $('stowProfileClose').addEventListener('click', function () { $('stowProfile').hidden = true; });
+    if ($('stowProfileSave')) $('stowProfileSave').addEventListener('click', function () {
+      var p = Object.assign({}, state.profile || {});
+      p.teuCapacity = Number($('stowTeuCap').value) || 0;
+      p.reeferPlugs = Number($('stowPlugs').value) || 0;
+      p.maxStackWeight = Number($('stowStackMax').value) || 0;
+      saveProfile(p);
+      $('stowProfile').hidden = true; render();
+    });
+    if ($('stowCaspBtn')) $('stowCaspBtn').addEventListener('click', openVesselModal);
+    if ($('stowCaspAscBtn')) $('stowCaspAscBtn').addEventListener('click', function () { if ($('stowCaspFile')) $('stowCaspFile').click(); });
+    if ($('stowVesselAsc')) $('stowVesselAsc').addEventListener('click', function () { if ($('stowCaspFile')) $('stowCaspFile').click(); });
+    if ($('stowVesselCancel')) $('stowVesselCancel').addEventListener('click', closeVesselModal);
+    if ($('stowVesselOk')) $('stowVesselOk').addEventListener('click', applyVesselRoute);
+    if ($('stowVesselSelect')) $('stowVesselSelect').addEventListener('change', showVesselName);
+    if ($('stowVesselModal')) $('stowVesselModal').addEventListener('click', function (e) { if (e.target === this) closeVesselModal(); });
+    if ($('stowCaspFile')) $('stowCaspFile').addEventListener('change', function () { importCasp(this.files && this.files[0]); this.value = ''; });
+    if ($('stowPrint')) $('stowPrint').addEventListener('click', printPlan);
+    ['fOPR','fSzTp','fFE','fPOL','fPOD'].forEach(function (id) {
+      var el = $(id); if (el) el.addEventListener('change', function () { if (!$('opsOverlay').classList.contains('open') || $('opsStowagePane').hidden) return; refresh(); });
+    });
+  }
+  window.Stowage = {
+    refresh: refresh,
+    print: printPlan,
+    _debug: { build: build, parseSlot: parseSlot, parseAscText: parseAscText, state: state, bayStats: bayStats }
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind);
+  else bind();
+})();
+
+
+</script>
+<script>
+(function () {
+  'use strict';
   var DRAFT_KEY = 'oprOfflineDraft.v1', PENDING_KEY = 'oprOfflinePending.v1';
   var deferredPrompt = null, timer = 0;
   var $ = function (id) { return document.getElementById(id); };
@@ -11207,9 +12080,14 @@ window.addEventListener('beforeunload', function(e){
     });
     window.addEventListener('online', function () { flushPending(); refresh(); });
     window.addEventListener('beforeunload', function () { if (hasData()) saveDraft(true); });
+    var lastSig = '';
     timer = setInterval(function () {
-      if (hasData()) saveDraft(true);
-      if (!navigator.onLine && typeof dataDirty !== 'undefined' && dataDirty) setPending();
+      if (!hasData()) return;
+      var dirty = typeof dataDirty !== 'undefined' && !!dataDirty;
+      var sig = allData.length + '|' + (dirty ? 1 : 0);
+      if (dirty || sig !== lastSig) saveDraft(true);
+      lastSig = sig;
+      if (!navigator.onLine && dirty) setPending();
     }, 5000);
     refresh();
     setTimeout(flushPending, 1500);
