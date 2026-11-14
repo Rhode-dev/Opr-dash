@@ -1475,8 +1475,9 @@ body.shared-view #rcSection{display:none!important}
             <button type="button" class="rc-btn" id="rcLlBtn"><span class="ico">📋</span> Loading lists</button>
           </div>
         </div>
-        <input type="file" id="rcBkgInput" accept=".xls,.xlsx,.csv" hidden>
-        <input type="file" id="rcLlInput" accept=".xls,.xlsx,.csv" multiple hidden>
+        <input type="file" id="rcBkgInput" accept=".xls,.xlsx,.csv,.pdf,.png,.jpg,.jpeg,.webp,.bmp,.gif,.tif,.tiff,application/pdf,image/*" hidden>
+        <input type="file" id="rcLlInput" accept=".xls,.xlsx,.csv,.pdf,.png,.jpg,.jpeg,.webp,.bmp,.gif,.tif,.tiff,application/pdf,image/*" multiple hidden>
+        <div class="rc-note">Accepted: XLS/XLSX/CSV, text PDFs, scanned PDFs and photos. PDFs and photos are read with PDF text extraction/OCR — check the parsed quantities and numbers.</div>
 
         <div class="rc-chips" id="rcChips"></div>
 
@@ -8274,8 +8275,150 @@ window.addEventListener('beforeunload', function(e){
     try { localStorage.setItem(MAP_KEY, JSON.stringify(opMap)); } catch (e) {}
   }
 
-  /* ── workbook reading ────────────────────────────────────────────── */
+  /* ── workbook / PDF / image reading ──────────────────────────────── */
+  function fileExt(file) {
+    var n = String(file && file.name || '').toLowerCase();
+    var i = n.lastIndexOf('.');
+    return i >= 0 ? n.slice(i + 1) : '';
+  }
+  function isPdfFile(file) {
+    return fileExt(file) === 'pdf' || String(file && file.type || '') === 'application/pdf';
+  }
+  function isImageFile(file) {
+    var e = fileExt(file);
+    return ['png','jpg','jpeg','webp','bmp','gif','tif','tiff'].indexOf(e) >= 0 || /^image\//.test(String(file && file.type || ''));
+  }
+  var scriptCache = {};
+  function loadScriptOnce(url) {
+    if (scriptCache[url]) return scriptCache[url];
+    scriptCache[url] = new Promise(function (resolve, reject) {
+      var s = document.createElement('script');
+      s.src = url; s.async = true;
+      s.onload = function () { resolve(); };
+      s.onerror = function () { reject(new Error('Could not load ' + url + '. Check the internet connection.')); };
+      document.head.appendChild(s);
+    });
+    return scriptCache[url];
+  }
+  async function ensurePdfJs() {
+    if (window.pdfjsLib) return window.pdfjsLib;
+    await loadScriptOnce('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');
+    if (!window.pdfjsLib) throw new Error('PDF reader did not load.');
+    window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    return window.pdfjsLib;
+  }
+  async function ensureTesseract() {
+    if (window.Tesseract) return window.Tesseract;
+    await loadScriptOnce('https://cdn.jsdelivr.net/npm/tesseract.js@5.1.0/dist/tesseract.min.js');
+    if (!window.Tesseract) throw new Error('OCR engine did not load.');
+    return window.Tesseract;
+  }
+  function clusterColumns(values, tolerance) {
+    var xs = values.slice().sort(function (a, b) { return a - b; }), out = [];
+    xs.forEach(function (x) {
+      var last = out[out.length - 1];
+      if (last && Math.abs(x - last.x) <= tolerance) { last.n++; last.x = (last.x * (last.n - 1) + x) / last.n; }
+      else out.push({ x: x, n: 1 });
+    });
+    return out;
+  }
+  function nearestColumn(x, cols) {
+    var best = 0, d = Infinity;
+    for (var i = 0; i < cols.length; i++) {
+      var dd = Math.abs(x - cols[i].x);
+      if (dd < d) { d = dd; best = i; }
+    }
+    return best;
+  }
+  function wordsToMatrix(words, yUp) {
+    if (!words || !words.length) return [];
+    var lines = [];
+    words.slice().sort(function (a, b) { return yUp ? ((b.y - a.y) || (a.x - b.x)) : ((a.y - b.y) || (a.x - b.x)); }).forEach(function (w) {
+      var line = lines[lines.length - 1];
+      if (!line || Math.abs(line.y - w.y) > 8) { line = { y: w.y, words: [] }; lines.push(line); }
+      line.words.push(w);
+    });
+    var cols = clusterColumns(words.map(function (w) { return w.x; }), 14);
+    return lines.map(function (line) {
+      var row = new Array(cols.length).fill('');
+      line.words.sort(function (a, b) { return a.x - b.x; }).forEach(function (w) {
+        var idx = nearestColumn(w.x, cols);
+        row[idx] += (row[idx] ? ' ' : '') + w.text;
+      });
+      return row;
+    }).filter(function (r) { return r.some(function (v) { return String(v).trim(); }); });
+  }
+  function textToMatrix(text) {
+    return String(text || '').split(/\r?\n/).map(function (line) {
+      return line.trim().split(/\t+|\s{2,}/).map(function (s) { return s.trim(); }).filter(Boolean);
+    }).filter(function (r) { return r.length; });
+  }
+  function ocrResultToWords(data) {
+    if (data && Array.isArray(data.words) && data.words.length) {
+      return data.words.map(function (w) {
+        var b = w.bbox || {};
+        return { text: String(w.text || '').trim(), x: Number(b.x0 || 0), y: Number(b.y0 || 0) };
+      }).filter(function (w) { return w.text; });
+    }
+    var out = [];
+    (data && data.lines || []).forEach(function (l, li) {
+      var b = l.bbox || {};
+      String(l.text || '').split(/\s+/).forEach(function (t, ti) {
+        if (t) out.push({ text: t, x: Number(b.x0 || 0) + ti * 8, y: Number(b.y0 || 0) });
+      });
+    });
+    return out;
+  }
+  async function pdfToMatrix(file) {
+    var pdfjs = await ensurePdfJs();
+    var data = new Uint8Array(await file.arrayBuffer());
+    var pdf = await pdfjs.getDocument({ data: data }).promise;
+    var matrix = [];
+    for (var p = 1; p <= pdf.numPages; p++) {
+      if (typeof toast === 'function' && p === 1) toast('Reading PDF page 1…');
+      var page = await pdf.getPage(p);
+      var tc = await page.getTextContent();
+      var words = tc.items.map(function (it) {
+        var tr = it.transform || [1,0,0,1,0,0];
+        return { text: String(it.str || '').trim(), x: Number(tr[4] || 0), y: Number(tr[5] || 0) };
+      }).filter(function (w) { return w.text; });
+      var pageMatrix = wordsToMatrix(words, true);
+      var textLen = words.reduce(function (n, w) { return n + w.text.length; }, 0);
+      if (textLen < 8) {
+        var viewport = page.getViewport({ scale: 2 });
+        var canvas = document.createElement('canvas');
+        canvas.width = viewport.width; canvas.height = viewport.height;
+        var ctx = canvas.getContext('2d');
+        await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+        var Tess = await ensureTesseract();
+        if (typeof toast === 'function') toast('OCR reading PDF page ' + p + '…');
+        var rec = await Tess.recognize(canvas, 'eng');
+        pageMatrix = wordsToMatrix(ocrResultToWords(rec.data), false);
+        canvas.width = canvas.height = 1;
+      }
+      matrix = matrix.concat(pageMatrix);
+    }
+    return matrix;
+  }
+  async function imageToMatrix(file) {
+    var Tess = await ensureTesseract();
+    if (typeof toast === 'function') toast('OCR reading image…');
+    var rec = await Tess.recognize(file, 'eng');
+    var words = ocrResultToWords(rec.data);
+    return words.length ? wordsToMatrix(words, false) : textToMatrix(rec.data && rec.data.text);
+  }
+  async function documentToWorkbook(file) {
+    var matrix = [];
+    if (isPdfFile(file)) matrix = await pdfToMatrix(file);
+    else if (isImageFile(file)) matrix = await imageToMatrix(file);
+    if (!matrix.length) throw new Error('No readable table text was found in this file. Try a clearer scan or a text PDF.');
+    var sheetName = String(file.name || 'Extracted').replace(/[\\\/\?\*\[\]:]/g, ' ').slice(0, 31) || 'Extracted';
+    var wb = { SheetNames: [sheetName], Sheets: {} };
+    wb.Sheets[sheetName] = XLSX.utils.aoa_to_sheet(matrix);
+    return wb;
+  }
   function readWorkbook(file) {
+    if (isPdfFile(file) || isImageFile(file)) return documentToWorkbook(file);
     return new Promise(function (resolve, reject) {
       if (!HAS_XLSX()) return reject(new Error('The spreadsheet engine (SheetJS) is not available. Check the internet connection and reload the page.'));
       var fr = new FileReader();
@@ -9530,6 +9673,10 @@ window.addEventListener('beforeunload', function(e){
     _debug: {
       parseBookingWorkbook: parseBookingWorkbook,
       parseLoadingWorkbook: parseLoadingWorkbook,
+      wordsToMatrix: wordsToMatrix,
+      textToMatrix: textToMatrix,
+      isPdfFile: isPdfFile,
+      isImageFile: isImageFile,
       computeBookingRows: computeBookingRows,
       computeIssues: computeIssues,
       lev: lev, sizeClass: sizeClass, bookingSize: bookingSize,
@@ -9925,11 +10072,13 @@ window.addEventListener('beforeunload', function(e){
     $('syncOverlay').setAttribute('aria-hidden', 'false');
     if (signedIn()) startPolling();
     checkDirty();
+    if (window.UIHistory) UIHistory.push('sync', close);
   }
   function close() {
     $('syncOverlay').classList.remove('open');
     $('syncOverlay').setAttribute('aria-hidden', 'true');
     configFromForm();
+    if (window.UIHistory) UIHistory.remove('sync');
   }
   function bind() {
     if (!$('syncOverlay') || $('syncOverlay').__bound) return;
