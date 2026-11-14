@@ -137,29 +137,26 @@ h1 span{color:var(--accent)}
 .drawer-ai-grid button:hover{border-color:var(--accent);background:rgba(59,130,246,.12);color:#fff}
 .drawer-ai-grid button:active{transform:scale(.98)}
 .drawer-divider{height:1px;background:var(--border-soft);margin:14px 0}
-.drawer-footer{padding:14px 16px;border-top:1px solid var(--border-soft);display:flex;flex-direction:column;gap:8px;flex-shrink:0}
-.btn-reset,.btn-export{
+.drawer-footer{padding:12px 14px;border-top:1px solid var(--border-soft);display:flex;flex-direction:column;gap:7px;flex-shrink:0}
+.drawer-import{display:flex;flex-direction:column;gap:4px;padding:7px;border:1px solid var(--border-soft);border-radius:7px;background:rgba(30,41,59,.42)}
+.drawer-import .filter-label{margin:0;flex:none;font-size:8px;font-weight:700;letter-spacing:.1em;color:#cbd5e1;white-space:nowrap}
+.btn-import-manifest,.btn-save-asc,.btn-export,.btn-reset{
   display:flex;align-items:center;justify-content:center;gap:7px;
-  width:100%;padding:11px 16px;border-radius:var(--r-sm);
-  font-family:var(--mono);font-size:12px;cursor:pointer;
-  transition:all .2s;-webkit-tap-highlight-color:transparent;
-  border:1px solid var(--border-soft);background:transparent;color:var(--muted);
+  width:100%;height:38px;padding:0 12px;border-radius:6px;
+  font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.01em;cursor:pointer;
+  transition:border-color .18s,background .18s,color .18s,transform .12s;
+  -webkit-tap-highlight-color:transparent;
+  border:1px solid #334155;background:rgba(30,41,59,.55);color:#cbd5e1;
 }
-.btn-reset:active,.btn-export:active{transform:scale(.97)}
-.btn-reset:hover,.btn-reset:active{border-color:var(--empty);color:var(--empty);background:rgba(249,115,22,.07)}
-.btn-export:hover,.btn-export:active{border-color:var(--green);color:var(--green);background:rgba(16,185,129,.07)}
+.btn-import-manifest:active,.btn-save-asc:active,.btn-export:active,.btn-reset:active{transform:scale(.985)}
+.btn-import-manifest:hover,.btn-import-manifest:active{border-color:rgba(96,165,250,.7);background:rgba(59,130,246,.12);color:#dbeafe}
+.btn-save-asc:hover,.btn-save-asc:active{border-color:rgba(34,211,238,.7);background:rgba(6,182,212,.1);color:#a5f3fc}
+.btn-export:hover,.btn-export:active{border-color:rgba(52,211,153,.7);background:rgba(16,185,129,.1);color:#6ee7b7}
+.btn-reset:hover,.btn-reset:active{border-color:rgba(251,146,60,.7);background:rgba(249,115,22,.1);color:#fdba74}
+.drawer-import-note{display:none}
 .filter-stat{font-size:10px;color:var(--muted);text-align:center;padding-top:4px}
 
-/* ── SAVE ASC BUTTON ── */
-.btn-save-asc{
-  display:flex;align-items:center;justify-content:center;gap:7px;
-  width:100%;padding:11px 16px;border-radius:var(--r-sm);
-  font-family:var(--mono);font-size:12px;cursor:pointer;
-  transition:all .2s;-webkit-tap-highlight-color:transparent;
-  border:1px solid var(--border-soft);background:transparent;color:var(--muted);
-}
-.btn-save-asc:active{transform:scale(.97)}
-.btn-save-asc:hover,.btn-save-asc:active{border-color:var(--accent2);color:var(--accent2);background:rgba(6,182,212,.07)}
+/* ── SAVE ASC BUTTON (follows the shared drawer action style) ── */
 
 /* ── ADD CONTAINER BUTTON ── */
 .btn-add-ctnr{
@@ -390,6 +387,17 @@ main{padding:20px 0;position:relative;z-index:1}
 #kpiOprPop button.kop-item:hover,#kpiOprPop button.kop-item.active{background:rgba(59,130,246,.15);color:#fff}
 #kpiOprPop button.kop-item b{margin-left:auto;color:var(--accent3);font-weight:700}
 #kpiOprPop .kop-check{width:10px;color:var(--accent3);font-size:9px;flex:none}
+.recon-load-overlay{position:fixed;inset:0;z-index:800;background:rgba(2,6,23,.74);display:flex;align-items:center;justify-content:center;padding:16px}
+.recon-load-overlay[hidden]{display:none}
+.recon-load-card{width:520px;max-width:100%;background:#0f172a;border:1px solid #334155;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.6);padding:16px}
+.recon-load-card h3{margin:0 0 8px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#e2e8f0}
+.recon-load-card p{margin:0 0 12px;font-size:10px;line-height:1.55;color:#94a3b8}
+.recon-load-actions{display:flex;gap:6px;flex-wrap:wrap}
+.recon-load-btn{border:1px solid #334155;background:#172033;color:#dbeafe;border-radius:5px;padding:7px 10px;font:600 9px var(--mono,monospace);cursor:pointer}
+.recon-load-btn:hover{border-color:#64748b;background:#1e293b}
+.recon-load-btn.primary{background:#1d4ed8;border-color:#2563eb;color:#fff}
+.recon-load-btn.danger{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.45);color:#fca5a5}
+.recon-load-btn.ghost{background:transparent;color:#94a3b8;margin-left:auto}
 
 /* ── INDICATORS ── */
 .indicators{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:24px;padding:20px;background:rgba(30,41,59,.6);border:1px solid var(--border-soft);border-radius:var(--r-lg);animation:fadeUp .4s ease-out both}
@@ -1279,6 +1287,11 @@ body.shared-view #rcSection{display:none!important}
     <p class="filter-stat" id="filterStat">Showing all records</p>
   </div>
   <div class="drawer-footer">
+    <div class="drawer-import">
+      <div class="filter-label">Import manifest</div>
+      <button class="btn-import-manifest" id="importManifestBtn" type="button">📥 Choose file</button>
+      <input type="file" id="importManifestInput" accept=".asc,.ASC,.baplie,.BAPLIE,.edi,.EDI,.edifact,.EDIFACT,.txt,.xls,.xlsx,.xlsm,.csv" hidden>
+    </div>
     <button class="btn-save-asc" id="saveAscBtn">💾 Save ASC File</button>
     <button class="btn-export" id="exportBtn">⬇ Export Filtered Data</button>
     <button class="btn-reset"  id="resetBtn">↺ Reset All Filters</button>
@@ -1652,6 +1665,19 @@ body.shared-view #rcSection{display:none!important}
 <div id="kpiOprPop" role="dialog" aria-label="Filter by operator">
   <div class="kop-head"><span id="kpiOprTitle">Filter by operator</span><button type="button" class="kop-x" id="kpiOprClose" aria-label="Close">✕</button></div>
   <div id="kpiOprList"></div>
+</div>
+
+<div id="reconLoadPrompt" class="recon-load-overlay" hidden>
+  <div class="recon-load-card" role="dialog" aria-modal="true" aria-labelledby="reconLoadTitle">
+    <h3 id="reconLoadTitle">Booking &amp; Loading Files</h3>
+    <p id="reconLoadText">A booking file and loading list are already loaded.</p>
+    <div class="recon-load-actions">
+      <button type="button" class="recon-load-btn primary" id="reconKeepRefs">Keep existing files</button>
+      <button type="button" class="recon-load-btn" id="reconLoadNewRefs">Load new ones</button>
+      <button type="button" class="recon-load-btn danger" id="reconRemoveRefs">Ignore &amp; remove</button>
+      <button type="button" class="recon-load-btn ghost" id="reconCancelRefs">Cancel</button>
+    </div>
+  </div>
 </div>
 
 <!-- ADD CONTAINER MODAL -->
@@ -3206,6 +3232,48 @@ uploadZone.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.pre
 fileInput.addEventListener('change',e=>{if(e.target.files[0])processFile(e.target.files[0]);});
 
 function processFile(file, origin){
+  if(!window.Recon || !Recon.hasRefs || !Recon.hasRefs()){ processFileNow(file, origin); return; }
+  askReconLoadChoice().then(function(choice){
+    if(!choice) return;
+    if(choice==='remove' || choice==='new'){
+      try { Recon.clear(); } catch(e) {}
+    }
+    if(choice==='new') window.__reconLoadNewPending = true;
+    if(choice==='new') window.__reconLoadNewLists = true;
+    processFileNow(file, origin);
+  });
+}
+var reconChoiceResolve = null;
+function askReconLoadChoice(){
+  return new Promise(function(resolve){
+    var modal = document.getElementById('reconLoadPrompt');
+    var text = document.getElementById('reconLoadText');
+    if(!modal){ resolve('keep'); return; }
+    var booking = window.Recon && Recon.getBookingFile ? Recon.getBookingFile() : null;
+    var lists = window.Recon && Recon.getLists ? Recon.getLists() : [];
+    var bits = [];
+    if(booking) bits.push('Booking: ' + (booking.fileName || 'loaded'));
+    if(lists.length) bits.push('Loading lists: ' + lists.length);
+    if(text) text.textContent = (bits.length ? bits.join(' · ') + '. ' : '') + 'Keep the same reference files for the newly loaded manifest, choose new ones, or ignore and remove them?';
+    reconChoiceResolve = resolve;
+    modal.hidden = false;
+    if(window.UIHistory) UIHistory.push('reconload', function(){ settleReconChoice(null); });
+  });
+}
+function settleReconChoice(choice){
+  var modal = document.getElementById('reconLoadPrompt');
+  if(modal) modal.hidden = true;
+  if(window.UIHistory) UIHistory.remove('reconload');
+  var fn = reconChoiceResolve; reconChoiceResolve = null;
+  if(fn) fn(choice);
+}
+document.getElementById('reconKeepRefs').addEventListener('click', function(){ settleReconChoice('keep'); });
+document.getElementById('reconLoadNewRefs').addEventListener('click', function(){ settleReconChoice('new'); });
+document.getElementById('reconRemoveRefs').addEventListener('click', function(){ settleReconChoice('remove'); });
+document.getElementById('reconCancelRefs').addEventListener('click', function(){ settleReconChoice(null); });
+document.getElementById('reconLoadPrompt').addEventListener('click', function(e){ if(e.target === this) settleReconChoice(null); });
+
+function processFileNow(file, origin){
   if(HoopShot.isBusy()) return;                     // one shot at a time
   if(window.Ops) Ops.beforeLoad(file.name);
   const shot = HoopShot.launch(file, origin);       // null if the upload zone isn't on screen
@@ -3283,6 +3351,13 @@ function processFile(file, origin){
           populateFilters();
           renderAll();
           if(window.Ops) Ops.audit('upload', file.name + ' · ' + allData.length + ' records');
+          if(window.__reconLoadNewPending){
+            window.__reconLoadNewPending = false;
+            setTimeout(function(){
+              try { if(window.Recon) Recon.pickBooking(); } catch(e) {}
+              if(typeof toast === 'function') toast('Choose the new booking file; then add the loading lists.');
+            }, 400);
+          }
         } catch(err){ fail(err); }
       };
       // Let the ball finish its shot before the dashboard takes over the screen.
@@ -3833,6 +3908,18 @@ function closeDrawer(){
 document.getElementById('menuBtn').addEventListener('click',()=>{
   document.getElementById('drawer').classList.contains('open') ? closeDrawer() : openDrawer();
 });
+if(document.getElementById('importManifestBtn')){
+  document.getElementById('importManifestBtn').addEventListener('click',()=>document.getElementById('importManifestInput').click());
+}
+if(document.getElementById('importManifestInput')){
+  document.getElementById('importManifestInput').addEventListener('change',function(){
+    const f=this.files && this.files[0];
+    this.value='';
+    if(!f) return;
+    closeDrawer();
+    processFile(f);
+  });
+}
 document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeDrawer(); });
 
 /* ════════════════════════════════════════════════════════════
@@ -9573,7 +9660,12 @@ window.addEventListener('beforeunload', function(e){
       bkg = parsed;
       tab = 'booking';
       refresh();
+      persistRecon();
       toast('Booking loaded: ' + fmt(parsed.teu) + ' TEU across ' + parsed.operators.length + ' operator(s).');
+      if (window.__reconLoadNewLists) {
+        window.__reconLoadNewLists = false;
+        setTimeout(function () { try { Recon.pickLists(); } catch (e) {} }, 350);
+      }
     }).catch(function (err) {
       window.__reconError = String(err && err.message ? err.message : err);
       window.__reconStage = 'error:' + window.__reconError;
@@ -9599,6 +9691,7 @@ window.addEventListener('beforeunload', function(e){
       if (!added) { alert('No container numbers were found in the selected loading list file(s).'); return; }
       tab = 'lists';
       refresh();
+      persistRecon();
       var boxes = 0;
       lists.forEach(function (l) { boxes += l.items.length; });
       toast('Loaded ' + added + ' loading list' + (added === 1 ? '' : 's') + ' · ' + fmt(boxes) + ' boxes.');
@@ -9639,12 +9732,13 @@ window.addEventListener('beforeunload', function(e){
     var chips = $('rcChips');
     chips.addEventListener('click', function (e) {
       var rm = e.target.closest('[data-rm-bkg]');
-      if (rm) { bkg = null; if (lists.length) tab = 'lists'; refresh(); return; }
+      if (rm) { bkg = null; if (lists.length) tab = 'lists'; refresh(); persistRecon(); return; }
       var rl = e.target.closest('[data-rm-list]');
       if (rl) {
         lists = lists.filter(function (l) { return l.id !== rl.dataset.rmList; });
         if (!lists.length && bkg) tab = 'booking';
         refresh();
+        persistRecon();
       }
     });
     chips.addEventListener('change', function (e) {
@@ -9664,6 +9758,7 @@ window.addEventListener('beforeunload', function(e){
       if (sel.value) opMap[code] = sel.value; else delete opMap[code];
       saveMap();
       refresh();
+      persistRecon();
     });
 
     $('rcOverOnly').addEventListener('change', function () {
@@ -9707,11 +9802,45 @@ window.addEventListener('beforeunload', function(e){
   }
 
   /* ── public API (used by the AI agent) ──────────────────────────── */
+  function persistRecon() {
+    if (typeof dataDirty !== 'undefined') dataDirty = true;
+    try { if (window.PWA && PWA.saveDraft) PWA.saveDraft(true); } catch (e) {}
+    try {
+      if (window.CloudSync && CloudSync.session && CloudSync.session()) {
+        var c = CloudSync.config ? CloudSync.config() : {};
+        if (c.autoPush && CloudSync.push) CloudSync.push({ auto: true });
+      }
+    } catch (e) {}
+  }
+  function exportState() {
+    var clone = function (v) { try { return v == null ? v : JSON.parse(JSON.stringify(v)); } catch (e) { return v; } };
+    return { bkg: clone(bkg), lists: clone(lists) || [], map: Object.assign({}, opMap), bookingFe: bookingFe };
+  }
+  function importState(s) {
+    s = s || {};
+    bkg = s.bkg || null;
+    lists = Array.isArray(s.lists) ? s.lists : [];
+    opMap = s.map && typeof s.map === 'object' ? s.map : {};
+    bookingFe = s.bookingFe || 'auto';
+    saveMap();
+    refresh();
+    try { if (window.PWA && PWA.saveDraft) PWA.saveDraft(true); } catch (e) {}
+  }
+  function clearRefs() {
+    bkg = null;
+    lists = [];
+    refresh();
+    persistRecon();
+  }
   window.Recon = {
     version: '1.0.0',
     refresh: refresh,
     hasBooking: function () { return !!bkg; },
     hasLists: function () { return lists.length > 0; },
+    hasRefs: function () { return !!bkg || lists.length > 0; },
+    exportState: exportState,
+    importState: importState,
+    clear: clearRefs,
     getBooking: function (opr, pod) { return bookingSnapshot(opr, pod); },
     getIssues: function (opr, pod) { return issueSnapshot(opr, pod); },
     getLists: function () { return lists; },
@@ -9977,6 +10106,7 @@ window.addEventListener('beforeunload', function(e){
       savedAt: new Date().toISOString(),
       fileName: st ? st.textContent.trim() : '',
       vesselMeta: (typeof vesselMeta !== 'undefined' && vesselMeta) ? Object.assign({}, vesselMeta) : {},
+      recon: (window.Recon && Recon.exportState) ? Recon.exportState() : null,
       rows: rows
     };
   }
@@ -10042,6 +10172,9 @@ window.addEventListener('beforeunload', function(e){
     ridSeq = 0;
     allData.forEach(function (r) { r._rid = ++ridSeq; });
     vesselMeta = payload.vesselMeta || {};
+    try {
+      if (window.Recon && Recon.importState) Recon.importState(payload.recon || { bkg: null, lists: [] });
+    } catch (e) { console.warn('Recon restore', e); }
     dataDirty = false;
     rawASCLoaded = false;
     rawASCLines = null;
@@ -12232,6 +12365,7 @@ window.addEventListener('beforeunload', function(e){
         dirty: typeof dataDirty !== 'undefined' ? !!dataDirty : false,
         rows: allData.map(function (r) { return Object.assign({}, r); }),
         vesselMeta: (typeof vesselMeta !== 'undefined' && vesselMeta) ? Object.assign({}, vesselMeta) : {},
+        recon: (window.Recon && Recon.exportState) ? Recon.exportState() : null,
         fileName: ($('statusText') ? $('statusText').textContent.trim() : '')
       };
       localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
@@ -12257,6 +12391,9 @@ window.addEventListener('beforeunload', function(e){
     var seq = 0; allData.forEach(function (r) { r._rid = ++seq; });
     try { ridSeq = seq; rawASCLoaded = false; rawASCLines = null; rawASCFileName = ''; } catch (e) {}
     if (typeof vesselMeta !== 'undefined') vesselMeta = d.vesselMeta || {};
+    try {
+      if (window.Recon && Recon.importState) Recon.importState(d.recon || { bkg: null, lists: [] });
+    } catch (e) { console.warn('Recon draft restore', e); }
     if (typeof dataDirty !== 'undefined') dataDirty = !!d.dirty;
     var dash = $('dashboard'), upSec = $('uploadSection'), mb = $('menuBtn');
     if (dash) dash.style.display = 'block';
