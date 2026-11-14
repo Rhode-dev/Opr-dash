@@ -123,6 +123,10 @@ h1 span{color:var(--accent)}
 }
 .drawer-select:focus,.drawer-select:hover{border-color:var(--accent);background-color:rgba(59,130,246,.06)}
 .drawer-select option{background:#1e293b;color:var(--text)}
+.multi-filter-btn{width:100%;display:flex;align-items:center;gap:8px;background:rgba(15,23,42,.8);border:1px solid var(--border-soft);color:var(--text);padding:10px 12px;border-radius:var(--r-sm);font-family:var(--mono);font-size:12px;cursor:pointer;text-align:left;transition:border-color .2s,background .2s}
+.multi-filter-btn:hover,.multi-filter-btn:focus-visible{border-color:var(--accent);background:rgba(59,130,246,.06);outline:none}
+.multi-filter-btn span:first-child{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.multi-filter-btn .mf-caret{color:var(--muted);font-size:9px}
 .drawer-ai{margin:4px 0 12px}
 .drawer-ai-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px}
 .drawer-ai-grid button{
@@ -352,6 +356,7 @@ main{padding:20px 0;position:relative;z-index:1}
 .kpi.c-teu::after{background:var(--yellow)}
 .kpi.c-tons::after{background:#a78bfa}
 .kpi.c-flatrack::after{background:#f97316}
+.kpi.c-breakbulk::after{background:#fb923c}
 .kpi.c-reefer::after{background:var(--full)}
 .kpi.c-tank::after{background:var(--accent3)}
 .kpi.c-ops::after{background:var(--accent3)}
@@ -365,11 +370,26 @@ main{padding:20px 0;position:relative;z-index:1}
 .kpi.c-teu:hover .kpi-val{color:var(--yellow)}
 .kpi.c-tons:hover .kpi-val{color:#a78bfa}
 .kpi.c-flatrack:hover .kpi-val{color:#f97316}
+.kpi.c-breakbulk:hover .kpi-val{color:#fb923c}
 .kpi.c-reefer:hover .kpi-val{color:var(--full)}
 .kpi.c-tank:hover .kpi-val{color:var(--accent3)}
 .kpi.c-ops:hover .kpi-val{color:var(--accent3)}
 .kpi.c-sizes:hover .kpi-val{color:var(--green)}
 .kpi-sub{font-size:10px;color:var(--muted);margin-top:6px}
+.kpi-clickable{cursor:pointer}
+.kpi-clickable:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.kpi-clickable.active{border-color:var(--accent);box-shadow:0 0 0 1px rgba(59,130,246,.35),0 10px 24px rgba(0,0,0,.3);background:rgba(30,64,175,.18)}
+.kpi-clickable.active .kpi-label::after{content:' ✓';color:var(--accent3);font-weight:800}
+#kpiOprPop{position:fixed;z-index:500;display:none;width:230px;max-height:300px;overflow:auto;background:rgba(15,23,42,.98);border:1px solid var(--border);border-radius:9px;box-shadow:0 16px 40px rgba(0,0,0,.5);padding:7px}
+#kpiOprPop.open{display:block}
+#kpiOprPop .kop-head{display:flex;align-items:center;gap:6px;padding:3px 4px 7px;border-bottom:1px solid var(--border-soft);font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+#kpiOprPop .kop-head span{flex:1}
+#kpiOprPop .kop-x{border:none;background:none;color:var(--muted);cursor:pointer;font-size:11px}
+#kpiOprPop .kop-x:hover{color:#fff}
+#kpiOprPop button.kop-item{display:flex;width:100%;align-items:center;gap:7px;padding:6px 7px;margin-top:2px;border:none;border-radius:5px;background:transparent;color:var(--text-soft);font-family:var(--mono);font-size:10px;text-align:left;cursor:pointer}
+#kpiOprPop button.kop-item:hover,#kpiOprPop button.kop-item.active{background:rgba(59,130,246,.15);color:#fff}
+#kpiOprPop button.kop-item b{margin-left:auto;color:var(--accent3);font-weight:700}
+#kpiOprPop .kop-check{width:10px;color:var(--accent3);font-size:9px;flex:none}
 
 /* ── INDICATORS ── */
 .indicators{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:24px;padding:20px;background:rgba(30,41,59,.6);border:1px solid var(--border-soft);border-radius:var(--r-lg);animation:fadeUp .4s ease-out both}
@@ -432,6 +452,7 @@ td.td-opr{font-family:var(--ui);font-weight:700;color:var(--white);font-size:12p
 .fe-chip.empty{background:rgba(249,115,22,.12);color:var(--empty);border:1px solid rgba(249,115,22,.25)}
 .spec-flag{margin-left:4px;font-size:10px}
 .wt-cell{color:var(--text-soft)}
+.reefer-temp{font-family:var(--mono);font-size:11px;color:#7dd3fc;white-space:nowrap}
 
 /* ── DIVIDER ── */
 .divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:4px 0 24px}
@@ -523,6 +544,10 @@ footer strong{color:var(--accent);font-weight:500}
 
 .ai-body{flex:1;display:flex;flex-direction:column;min-height:0}
 .ai-body[hidden]{display:none!important}
+.ai-convo-bar{display:flex;align-items:center;gap:5px;padding:5px 10px;border-bottom:1px solid var(--border-soft);background:rgba(15,23,42,.55);flex:none}
+.ai-convo-bar span{flex:1;font-family:var(--mono);font-size:8.5px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+.ai-convo-bar button{border:1px solid var(--border-soft);background:transparent;color:var(--muted);border-radius:5px;padding:2px 6px;font-family:var(--mono);font-size:8.5px;cursor:pointer}
+.ai-convo-bar button:hover{color:#fff;border-color:var(--accent);background:rgba(59,130,246,.12)}
 .ai-pane{overflow-y:auto;padding:14px;display:block}
 .ai-pane::-webkit-scrollbar{width:5px}
 .ai-pane::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
@@ -1133,12 +1158,14 @@ body.shared-view #rcSection{display:none!important}
   </div>
   <div class="drawer-body">
     <div class="filter-group">
-      <label class="filter-label" for="fOPR">Operator</label>
-      <select class="drawer-select" id="fOPR"><option value="">All Operators</option></select>
+      <label class="filter-label" for="fOPRBtn">Operator</label>
+      <select class="drawer-select" id="fOPR" multiple hidden><option value="">All Operators</option></select>
+      <button class="multi-filter-btn" id="fOPRBtn" type="button"><span id="fOPRLabel">All Operators</span><span class="mf-caret">▾</span></button>
     </div>
     <div class="filter-group">
-      <label class="filter-label" for="fSzTp">Size / Type</label>
-      <select class="drawer-select" id="fSzTp"><option value="">All Size/Types</option></select>
+      <label class="filter-label" for="fSzTpBtn">Size / Type</label>
+      <select class="drawer-select" id="fSzTp" multiple hidden><option value="">All Size/Types</option></select>
+      <button class="multi-filter-btn" id="fSzTpBtn" type="button"><span id="fSzTpLabel">All Size/Types</span><span class="mf-caret">▾</span></button>
     </div>
     <div class="filter-group">
       <label class="filter-label" for="fFE">Full / Empty</label>
@@ -1306,12 +1333,12 @@ body.shared-view #rcSection{display:none!important}
 
       <!-- KPI ROW -->
       <div class="kpi-row" role="region" aria-label="KPIs">
-        <div class="kpi c-full">
+        <div class="kpi c-full kpi-clickable" data-kpi="full" role="button" tabindex="0" aria-pressed="false" title="Filter to full containers">
           <div class="kpi-label">Total Full</div>
           <div class="kpi-val" id="kFull">0</div>
           <div class="kpi-sub">loaded containers</div>
         </div>
-        <div class="kpi c-empty">
+        <div class="kpi c-empty kpi-clickable" data-kpi="empty" role="button" tabindex="0" aria-pressed="false" title="Filter to empty containers">
           <div class="kpi-label">Total Empty</div>
           <div class="kpi-val" id="kEmpty">0</div>
           <div class="kpi-sub">empty containers</div>
@@ -1326,27 +1353,32 @@ body.shared-view #rcSection{display:none!important}
           <div class="kpi-val" id="kTons">0</div>
           <div class="kpi-sub">gross weight in tonnes</div>
         </div>
-        <div class="kpi c-flatrack">
-          <div class="kpi-label">Flat Rack / Break Bulk</div>
+        <div class="kpi c-flatrack kpi-clickable" data-kpi="flat" role="button" tabindex="0" aria-pressed="false" title="Filter to flat rack containers">
+          <div class="kpi-label">Flat Rack</div>
           <div class="kpi-val" id="kFlatRack">0</div>
-          <div class="kpi-sub">flat rack, bundle &amp; break bulk</div>
+          <div class="kpi-sub">platform / flat rack</div>
         </div>
-        <div class="kpi c-reefer">
+        <div class="kpi c-breakbulk kpi-clickable" data-kpi="bb" role="button" tabindex="0" aria-pressed="false" title="Filter to break bulk / bundle cargo">
+          <div class="kpi-label">Break Bulk</div>
+          <div class="kpi-val" id="kBreakBulk">0</div>
+          <div class="kpi-sub">bundle &amp; break bulk</div>
+        </div>
+        <div class="kpi c-reefer kpi-clickable" data-kpi="reefer" role="button" tabindex="0" aria-pressed="false" title="Filter to reefer units">
           <div class="kpi-label">Reefer Units</div>
           <div class="kpi-val" id="kReefer">0</div>
           <div class="kpi-sub">temp-controlled</div>
         </div>
-        <div class="kpi c-tank">
+        <div class="kpi c-tank kpi-clickable" data-kpi="tank" role="button" tabindex="0" aria-pressed="false" title="Filter to ISO tanks">
           <div class="kpi-label">ISO Tanks</div>
           <div class="kpi-val" id="kTank">0</div>
           <div class="kpi-sub">liquid bulk</div>
         </div>
-        <div class="kpi c-ops">
+        <div class="kpi c-ops kpi-clickable" data-kpi="operators" role="button" tabindex="0" aria-pressed="false" title="Filter by operator">
           <div class="kpi-label">Operators</div>
           <div class="kpi-val" id="kOPR">0</div>
           <div class="kpi-sub">unique operators</div>
         </div>
-        <div class="kpi c-sizes">
+        <div class="kpi c-sizes kpi-clickable" data-kpi="sizes" role="button" tabindex="0" aria-pressed="false" title="Filter by size/type">
           <div class="kpi-label">Size Types</div>
           <div class="kpi-val" id="kSzTp">0</div>
           <div class="kpi-sub">container types</div>
@@ -1356,6 +1388,10 @@ body.shared-view #rcSection{display:none!important}
           <div class="kpi-val" id="kTotal">0</div>
           <div class="kpi-sub">containers total</div>
         </div>
+      </div>
+      <div id="kpiOprPop" role="dialog" aria-label="Filter by operator">
+        <div class="kop-head"><span id="kpiOprTitle">Filter by operator</span><button type="button" class="kop-x" id="kpiOprClose" aria-label="Close">✕</button></div>
+        <div id="kpiOprList"></div>
       </div>
 
       <!-- BOOKING & LOADING RECONCILIATION -->
@@ -1507,6 +1543,7 @@ body.shared-view #rcSection{display:none!important}
                 <th data-col="POL">POL <span class="si">↕</span></th>
                 <th data-col="POD">POD <span class="si">↕</span></th>
                 <th data-col="VGM">VGM (T) <span class="si">↕</span></th>
+                <th data-col="Temp">Reefer Temp <span class="si">↕</span></th>
                 <th style="text-align:center">Edit</th>
               </tr>
             </thead>
@@ -1631,6 +1668,12 @@ body.shared-view #rcSection{display:none!important}
 
   <!-- CHAT -->
   <section class="ai-body" id="aiChatPane" role="tabpanel" aria-label="Chat">
+    <div class="ai-convo-bar">
+      <span id="aiConvoCount">Conversation</span>
+      <button type="button" id="aiRetry" title="Ask the last question again">↻ Retry</button>
+      <button type="button" id="aiCopyChat" title="Copy the whole conversation">⧉ Copy</button>
+      <button type="button" id="aiClearChat" title="Clear conversation history">Clear</button>
+    </div>
     <div id="aiMessages" aria-live="polite" aria-relevant="additions"></div>
     <div class="ai-suggest" id="aiSuggest"></div>
     <form class="ai-inputbar" id="aiForm" autocomplete="off">
@@ -2330,6 +2373,8 @@ function fmt24h(d){
 }
 let valCache = { invalidCtnrs:[], emptyWarnings:[], duplicateCtnrs:[] };
 let activeFilterCount = 0;
+let kpiCategory = '';
+let multiFilters = { fOPR: [], fSzTp: [] };
 
 // ── Raw ASC tracking (for "Save ASC File") ──
 let rawASCLoaded    = false;   // true only when the currently loaded file was parsed as ASC
@@ -2360,6 +2405,38 @@ function nFE(v){
   return s;
 }
 function cf(row, keys){ for(const k of keys) if(row[k]!==undefined) return row[k]; return ''; }
+function filterValues(id){
+  if(id === 'fOPR' || id === 'fSzTp') return (multiFilters[id] || []).slice();
+  const el = document.getElementById(id);
+  if(!el) return [];
+  if(el.multiple) return Array.prototype.map.call(el.selectedOptions||[], o=>o.value).filter(Boolean);
+  return el.value ? [el.value] : [];
+}
+function setFilterValues(id, vals){
+  const el = document.getElementById(id);
+  if(!el) return;
+  const list = Array.isArray(vals) ? vals.map(String) : (vals ? [String(vals)] : []);
+  if(id === 'fOPR' || id === 'fSzTp') multiFilters[id] = list.filter(Boolean).slice();
+  if(el.multiple){
+    Array.prototype.forEach.call(el.options, o=>{ o.selected = list.indexOf(o.value) >= 0; });
+  } else {
+    el.value = list[0] || '';
+  }
+  updateFilterButton(id);
+}
+function updateFilterButton(id){
+  const btn = document.getElementById(id + 'Btn');
+  const lab = document.getElementById(id + 'Label');
+  if(!btn || !lab) return;
+  const vals = filterValues(id);
+  const placeholder = id === 'fOPR' ? 'All Operators' : 'All Size/Types';
+  lab.textContent = !vals.length ? placeholder : vals.length === 1 ? vals[0] : vals.length + ' selected';
+  btn.title = vals.length ? vals.join(' · ') : placeholder;
+}
+function updateFilterButtons(){
+  updateFilterButton('fOPR');
+  updateFilterButton('fSzTp');
+}
 function calcTEU(sztp){
   if(!sztp) return 1;
   const f = String(sztp).trim()[0];
@@ -2388,6 +2465,20 @@ function getVGM(row){
   if(v===''||v===null||v===undefined) return null;
   const n = parseFloat(String(v).replace(/[^\d.]/g,''));
   return isNaN(n)?null:n;
+}
+function getReeferTemp(row){
+  const v = cf(row,['Reefer Temp','ReeferTemp','Reefer Temperature','ReeferTemperature','Temperature','Temp','TEMP','Set Temp','SetTemp','SET TEMP','Temp Setpoint','Temperature Setpoint','Setpoint','Setting','TMP']);
+  if(v===''||v===null||v===undefined) return null;
+  const s = String(v).trim();
+  if(!s) return null;
+  const n = parseFloat(s.replace(',','.').replace(/[^0-9.+-]/g,''));
+  return isNaN(n) ? s : n;
+}
+function fmtReeferTemp(v){
+  if(v===null||v===undefined||v==='') return '—';
+  if(typeof v === 'number') return `${v.toFixed(1).replace(/\.0$/,'')}°C`;
+  const s = String(v).trim();
+  return /[°]|C$/i.test(s) ? s : `${s}°C`;
 }
 
 /* ════════════════════════════════════════════════════════════
@@ -2495,7 +2586,8 @@ function showDuplicateGroup(ctnr){
   const row = allData.find(r => String(cf(r,['Container','container','CONTAINER','CTR','Ctnr'])||'').trim().toUpperCase().replace(/\s+/g,'') === target);
   if(!row){ alert('Could not locate ' + ctnr + ' in the current dataset.'); return; }
   closeDrawer();
-  ['fOPR','fSzTp','fFE','fPOL','fPOD'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  ['fOPR','fSzTp','fFE','fPOL','fPOD'].forEach(id=>{ const el=document.getElementById(id); if(el){ if(el.multiple) setFilterValues(id, []); else el.value=''; } });
+  kpiCategory='';
   document.getElementById('tableSearch').value = ctnr;
   renderAll();
   updateActiveBadge();
@@ -3061,7 +3153,7 @@ function processFile(file, origin){
     const rows=[];
     let cur=null, globalOpr=meta.opr||'';
     function blank(){
-      return {opr:globalOpr,sztp:'',fe:'',pol:'',pod:'',slot:'',ctnr:'',vgm:null};
+      return {opr:globalOpr,sztp:'',fe:'',pol:'',pod:'',slot:'',ctnr:'',vgm:null,temp:null};
     }
     function push(){
       if(!cur) return;
@@ -3075,7 +3167,8 @@ function processFile(file, origin){
         POD: ediClean(cur.pod)||meta.pod||'',
         Slot: ediClean(cur.slot),
         Container: c,
-        VGM: cur.vgm
+        VGM: cur.vgm,
+        Temp: cur.temp || null
       });
       cur=null;
     }
@@ -3126,6 +3219,11 @@ function processFile(file, origin){
             if(unit==='LBR'||unit==='LB') num=num*0.453592;
             else if(unit==='TNE'||unit==='T') num=num*1000;
             cur.vgm=num/1000;
+          }
+        } else if(joined.includes('TMP')||joined.includes('TEMP')){
+          for(let i=2;i<el.length;i++){
+            const m=String(el[i]||'').match(/(-?[0-9]+(?:\.[0-9]+)?)/);
+            if(m){ cur.temp=parseFloat(m[1]); break; }
           }
         }
       } else if(tag==='EQA'){
@@ -3199,6 +3297,7 @@ function processFile(file, origin){
     if(s==='pod'||s==='portofdischarge'||s==='dischargeport'||s==='destination'||s==='podport'||s==='discharge') return 'POD';
     if(s==='slot'||s==='stow'||s==='stowposition'||s==='position'||s==='cell'||s==='location'||s==='bayrowtier') return 'Slot';
     if(s==='vgm'||s==='wgt'||s==='weight'||s==='grossweight'||s==='gross'||s==='kg'||s==='kgs'||s==='gwt'||s.indexOf('vgm')>=0||s.indexOf('weight')>=0) return 'VGM';
+    if(s==='temp'||s==='temperature'||s==='reefertemp'||s==='reefertemperature'||s==='settemp'||s==='temperaturesetpoint'||s==='setpoint'||s==='tempc'||s==='tempf'||s.indexOf('temperature')>=0) return 'Temp';
     return '';
   }
   function xlsFindHeader(matrix){
@@ -3269,7 +3368,8 @@ function processFile(file, origin){
       const pod=String(get('POD')||'').trim().toUpperCase();
       const slot=String(get('Slot')||'').trim().toUpperCase();
       const vgm=xlsNum(get('VGM')) != null ? xlsNum(get('VGM')) : xlsNum(get('VGM2'));
-      rows.push({Container:ctnr,OPR:opr||inferOpr(ctnr),SzTp:sz,'F/E':fe,POL:pol,POD:pod,Slot:slot,VGM:vgm});
+      const temp=String(get('Temp')||'').trim();
+      rows.push({Container:ctnr,OPR:opr||inferOpr(ctnr),SzTp:sz,'F/E':fe,POL:pol,POD:pod,Slot:slot,VGM:vgm,Temp:temp||null});
     }
     return {rows:rows,header:h};
   }
@@ -3351,12 +3451,24 @@ function fillSel(id,ph,opts){
   const sel=document.getElementById(id);
   sel.innerHTML=`<option value="">${ph}</option>`;
   opts.forEach(o=>{const op=document.createElement('option');op.value=o;op.textContent=o;sel.appendChild(op);});
+  if(id === 'fOPR' || id === 'fSzTp') multiFilters[id] = [];
+  updateFilterButton(id);
 }
 ['fOPR','fSzTp','fFE','fPOL','fPOD'].forEach(id=>{
-  document.getElementById(id).addEventListener('change',()=>{ renderAll(); updateActiveBadge(); });
+  document.getElementById(id).addEventListener('change',()=>{
+    if(id==='fOPR'||id==='fSzTp'){
+      const el=document.getElementById(id);
+      multiFilters[id]=Array.prototype.map.call(el.selectedOptions||[],o=>o.value).filter(Boolean);
+      updateFilterButton(id);
+    }
+    renderAll();
+    updateActiveBadge();
+  });
 });
 document.getElementById('resetBtn').addEventListener('click',()=>{
-  ['fOPR','fSzTp','fFE','fPOL','fPOD'].forEach(id=>document.getElementById(id).value='');
+  setFilterValues('fOPR', []); setFilterValues('fSzTp', []); setFilterValues('fFE', []); setFilterValues('fPOL', []); setFilterValues('fPOD', []);
+  kpiCategory='';
+  closeOprPop();
   document.getElementById('tableSearch').value='';
   renderAll();
   updateActiveBadge();
@@ -3364,7 +3476,7 @@ document.getElementById('resetBtn').addEventListener('click',()=>{
 document.getElementById('tableSearch').addEventListener('input',renderTable);
 
 function updateActiveBadge(){
-  const n = ['fOPR','fSzTp','fFE','fPOL','fPOD'].filter(id=>document.getElementById(id).value!=='').length;
+  const n = ['fOPR','fSzTp','fFE','fPOL','fPOD'].filter(id=>id==='fOPR'||id==='fSzTp'?filterValues(id).length>0:document.getElementById(id).value!=='').length + (kpiCategory?1:0);
   activeFilterCount = n;
   ['activeBadge','activeBadge2'].forEach(id=>{
     const el=document.getElementById(id);
@@ -3373,20 +3485,133 @@ function updateActiveBadge(){
   });
   document.getElementById('filterStat').textContent =
     n>0 ? `${n} filter${n!==1?'s':''} active — ${getFiltered().length.toLocaleString()} of ${allData.length.toLocaleString()} records` : `Showing all ${allData.length.toLocaleString()} records`;
+  updateFilterButtons();
+  syncKpiTiles();
 }
+function syncKpiTiles(){
+  const fe = document.getElementById('fFE').value;
+  const oprs = filterValues('fOPR');
+  const sizes = filterValues('fSzTp');
+  document.querySelectorAll('.kpi[data-kpi]').forEach(el=>{
+    const k = el.dataset.kpi;
+    let active = false;
+    if(k==='full') active = fe==='F';
+    else if(k==='empty') active = fe==='E';
+    else if(k==='operators') active = oprs.length>0;
+    else if(k==='sizes') active = sizes.length>0;
+    else active = kpiCategory===k;
+    el.classList.toggle('active',active);
+    el.setAttribute('aria-pressed',active?'true':'false');
+  });
+}
+function toggleKpi(kind){
+  if(kind==='operators'||kind==='sizes'){
+    const id = kind==='operators' ? 'fOPR' : 'fSzTp';
+    const pop = document.getElementById('kpiOprPop');
+    if(pop && pop.classList.contains('open') && pop.dataset.kind===id){ closeOprPop(); return; }
+    openFilterPop(id, document.querySelector('[data-kpi="'+kind+'"]'));
+    return;
+  }
+  closeOprPop();
+  if(kind==='full'||kind==='empty'){
+    const sel = document.getElementById('fFE');
+    const want = kind==='full'?'F':'E';
+    sel.value = sel.value===want ? '' : want;
+  } else {
+    kpiCategory = kpiCategory===kind ? '' : kind;
+  }
+  renderAll();
+  updateActiveBadge();
+  const section = document.getElementById('ctnrTableSection');
+  if(section) section.scrollIntoView({behavior:'smooth',block:'start'});
+}
+document.querySelectorAll('.kpi[data-kpi]').forEach(el=>{
+  el.addEventListener('click',()=>toggleKpi(el.dataset.kpi));
+  el.addEventListener('keydown',e=>{
+    if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggleKpi(el.dataset.kpi); }
+  });
+});
+function closeOprPop(){
+  const pop = document.getElementById('kpiOprPop');
+  if(pop) pop.classList.remove('open');
+}
+function toggleFilterValue(id, val){
+  const vals = filterValues(id).slice();
+  const i = vals.indexOf(val);
+  if(i >= 0) vals.splice(i,1); else vals.push(val);
+  setFilterValues(id, vals);
+}
+function renderFilterList(id){
+  const list = document.getElementById('kpiOprList');
+  if(!list) return;
+  const isOpr = id === 'fOPR';
+  const keys = isOpr ? ['OPR','Opr','opr'] : ['SzTp','SZTP','SzTP','Size Type','SizeType'];
+  const counts = {};
+  allData.forEach(r=>{
+    const v = String(cf(r,keys)||'').trim();
+    if(v) counts[v] = (counts[v]||0)+1;
+  });
+  const names = Object.keys(counts).sort();
+  const vals = filterValues(id);
+  list.innerHTML = `<button type="button" class="kop-item${vals.length===0?' active':''}" data-val=""><span class="kop-check">${vals.length===0?'✓':''}</span>All ${isOpr?'operators':'size/types'} <b>${allData.length}</b></button>` +
+    names.map(v=>`<button type="button" class="kop-item${vals.indexOf(v)>=0?' active':''}" data-val="${v.replace(/"/g,'&quot;')}"><span class="kop-check">${vals.indexOf(v)>=0?'✓':''}</span>${v} <b>${counts[v]}</b></button>`).join('');
+  list.querySelectorAll('[data-val]').forEach(btn=>btn.addEventListener('click',()=>{
+    if(btn.dataset.val === '') setFilterValues(id, []);
+    else toggleFilterValue(id, btn.dataset.val);
+    renderAll();
+    updateActiveBadge();
+    renderFilterList(id);
+  }));
+}
+function openFilterPop(id, anchor){
+  const pop = document.getElementById('kpiOprPop');
+  if(!pop || !anchor) return;
+  pop.dataset.kind = id;
+  document.getElementById('kpiOprTitle').textContent = id === 'fOPR' ? 'Filter by operator' : 'Filter by size/type';
+  renderFilterList(id);
+  const r = anchor.getBoundingClientRect();
+  pop.style.left = Math.max(8, Math.min(window.innerWidth-244, r.left)) + 'px';
+  pop.style.top = Math.max(8, Math.min(window.innerHeight-312, r.bottom+8)) + 'px';
+  pop.classList.add('open');
+}
+document.getElementById('kpiOprClose').addEventListener('click',closeOprPop);
+['fOPR','fSzTp'].forEach(id=>{
+  const el = document.getElementById(id);
+  if(el) el.addEventListener('change',closeOprPop);
+  const btn = document.getElementById(id+'Btn');
+  if(btn) btn.addEventListener('click',()=>{
+    const pop = document.getElementById('kpiOprPop');
+    if(pop && pop.classList.contains('open') && pop.dataset.kind===id){ closeOprPop(); return; }
+    openFilterPop(id, btn);
+  });
+});
+document.addEventListener('click',e=>{
+  const pop=document.getElementById('kpiOprPop');
+  if(!pop || !pop.classList.contains('open')) return;
+  if(pop.contains(e.target) || e.target.closest('[data-kpi="operators"]') || e.target.closest('[data-kpi="sizes"]') || e.target.closest('#fOPRBtn') || e.target.closest('#fSzTpBtn')) return;
+  closeOprPop();
+});
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeOprPop(); });
 
 function getFiltered(){
-  const opr  = document.getElementById('fOPR').value;
-  const sztp = document.getElementById('fSzTp').value;
+  const oprs = filterValues('fOPR');
+  const sztps = filterValues('fSzTp');
   const fe   = document.getElementById('fFE').value;
   const pol  = document.getElementById('fPOL').value;
   const pod  = document.getElementById('fPOD').value;
   return allData.filter(r=>{
-    if(opr  && String(cf(r,['OPR','Opr','opr'])||'').trim()!==opr)  return false;
-    if(sztp && String(cf(r,['SzTp','SZTP','SzTP','Size Type','SizeType'])||'').trim()!==sztp) return false;
+    if(oprs.length && oprs.indexOf(String(cf(r,['OPR','Opr','opr'])||'').trim()) < 0) return false;
+    if(sztps.length && sztps.indexOf(String(cf(r,['SzTp','SZTP','SzTP','Size Type','SizeType'])||'').trim()) < 0) return false;
     if(fe   && nFE(cf(r,['F/E','FE','fe','f/e','Full/Empty']))!==fe) return false;
     if(pol  && String(cf(r,['POL','Pol','pol'])||'').trim()!==pol)   return false;
     if(pod  && String(cf(r,['POD','Pod','pod'])||'').trim()!==pod)   return false;
+    if(kpiCategory){
+      const sz = String(cf(r,['SzTp','SZTP','SzTP','Size Type','SizeType'])||'').trim();
+      if(kpiCategory==='reefer' && !isReefer(sz)) return false;
+      if(kpiCategory==='tank' && !isISOTank(sz)) return false;
+      if(kpiCategory==='flat' && !isFlatRack(sz)) return false;
+      if(kpiCategory==='bb' && !isBreakBulk(sz)) return false;
+    }
     return true;
   });
 }
@@ -3445,7 +3670,8 @@ function renderKPIs(filtered, agg){
 
   const reefer   = filtered.filter(r=>isReefer(String(cf(r,['SzTp','SZTP','SzTP','Size Type','SizeType'])||'').trim())).length;
   const tank     = filtered.filter(r=>isISOTank(String(cf(r,['SzTp','SZTP','SzTP','Size Type','SizeType'])||'').trim())).length;
-  const flatRack = filtered.filter(r=>isFlatRackOrBreakBulk(String(cf(r,['SzTp','SZTP','SzTP','Size Type','SizeType'])||'').trim())).length;
+  const flatRack = filtered.filter(r=>isFlatRack(String(cf(r,['SzTp','SZTP','SzTP','Size Type','SizeType'])||'').trim())).length;
+  const breakBulk= filtered.filter(r=>isBreakBulk(String(cf(r,['SzTp','SZTP','SzTP','Size Type','SizeType'])||'').trim())).length;
 
   // Weight: sum VGM in tonnes
   let tons = 0;
@@ -3457,6 +3683,7 @@ function renderKPIs(filtered, agg){
   document.getElementById('kTEU').textContent    = teu.toLocaleString();
   document.getElementById('kTons').textContent   = tonsDisplay;
   document.getElementById('kFlatRack').textContent = flatRack.toLocaleString();
+  document.getElementById('kBreakBulk').textContent = breakBulk.toLocaleString();
   document.getElementById('kReefer').textContent = reefer.toLocaleString();
   document.getElementById('kTank').textContent   = tank.toLocaleString();
   document.getElementById('kOPR').textContent    = oprs;
@@ -3573,8 +3800,9 @@ function renderTable(input){
     FE:        nFE(cf(r,['F/E','FE','fe','f/e','Full/Empty'])),
     POL:       String(cf(r,['POL','Pol','pol'])||'').trim(),
     POD:       String(cf(r,['POD','Pod','pod'])||'BLANK').trim(),
-    VGM:       getVGM(r)
-  })).filter(v=>!q||[v.Container,v.Slot,v.OPR,v.SzTp,v.FE,v.POL,v.POD].some(s=>s.toLowerCase().includes(q)));
+    VGM:       getVGM(r),
+    Temp:      getReeferTemp(r)
+  })).filter(v=>!q||[v.Container,v.Slot,v.OPR,v.SzTp,v.FE,v.POL,v.POD,String(v.Temp??'')].some(s=>s.toLowerCase().includes(q)));
 
   const sorted = view.slice().sort((a,b)=>{
     const av=a[sortState.col]??'', bv=b[sortState.col]??'';
@@ -3606,6 +3834,7 @@ function renderTable(input){
       : `<span style="color:var(--muted)">—</span>`;
     const sDisp  = v.Slot ? `<span class="badge-slot">${v.Slot}</span>` : `<span style="color:var(--muted)">—</span>`;
     const vDisp  = v.VGM!==null ? `<span class="wt-cell">${v.VGM.toFixed(3)} T</span>` : `<span style="color:var(--muted)">—</span>`;
+    const tDisp  = isReefer(v.SzTp) ? `<span class="reefer-temp">${fmtReeferTemp(v.Temp)}</span>` : `<span style="color:var(--muted)">—</span>`;
     const rowCls = [isInv?'inv-row':'', isDup?'dup-row':''].filter(Boolean).join(' ');
     return `<tr${rowCls?` class="${rowCls}"`:''}>
       <td>${cDisp}</td>
@@ -3616,6 +3845,7 @@ function renderTable(input){
       <td style="color:var(--text-soft)">${v.POL||'—'}</td>
       <td><span style="font-family:var(--ui);font-weight:600;color:var(--accent)">${v.POD}</span></td>
       <td>${vDisp}</td>
+      <td>${tDisp}</td>
       <td style="text-align:center">${v._rid!=null?`<button type="button" class="btn-row-edit" title="Edit this line item" onclick="openEditFromRid(${v._rid})">✎</button>`:''}</td>
     </tr>`;
   }).join('');
@@ -3784,7 +4014,9 @@ function jumpToContainerEdit(ctnr){
   if(!row){ alert(`Could not locate container ${ctnr} in the current dataset — it may have already been edited or removed.`); return; }
 
   closeDrawer();
-  ['fOPR','fSzTp','fFE','fPOL','fPOD'].forEach(id=>document.getElementById(id).value='');
+  ['fOPR','fSzTp','fFE','fPOL','fPOD'].forEach(id=>{ const el=document.getElementById(id); if(!el) return; if(el.multiple) setFilterValues(id, []); else el.value=''; });
+  kpiCategory='';
+  closeOprPop();
   document.getElementById('tableSearch').value = ctnr;
   renderAll();
   updateActiveBadge();
@@ -4752,6 +4984,7 @@ window.addEventListener('beforeunload', function(e){
         return t ? { text: t, ts: (u && u.ts) || Date.now() } : null;
       }).filter(Boolean);
     }
+    if (saved.ctx && typeof saved.ctx === 'object') out.ctx = saved.ctx;
     return out;
   }
   function save() {
@@ -4759,7 +4992,8 @@ window.addEventListener('beforeunload', function(e){
       localStorage.setItem(STORE_KEY, JSON.stringify({
         v: 1, examples: state.examples, facts: state.facts, commands: state.commands,
         sizes: state.sizes,
-        vocab: state.vocab, unresolved: state.unresolved, stats: state.stats
+        vocab: state.vocab, unresolved: state.unresolved, stats: state.stats,
+        ctx: state.ctx || null
       }));
       storageOk = true;
     } catch (e) { storageOk = false; }
@@ -6469,8 +6703,12 @@ window.addEventListener('beforeunload', function(e){
         op.value = val; op.textContent = val;
         sel.appendChild(op);
       }
-      sel.value = val;
-    } else sel.value = '';
+    }
+    if ((id === 'fOPR' || id === 'fSzTp') && typeof setFilterValues === 'function') {
+      setFilterValues(id, val ? [val] : []);
+      return;
+    }
+    sel.value = val || '';
   }
   function applyFilters(f, silent) {
     setSel('fOPR', f.opr || '');
@@ -6500,7 +6738,8 @@ window.addEventListener('beforeunload', function(e){
   function focusContainer(c) {
     if (!c) return;
     ['fOPR', 'fSzTp', 'fFE', 'fPOL', 'fPOD'].forEach(function (id) {
-      var sel = $(id); if (sel) sel.value = '';
+      if ((id === 'fOPR' || id === 'fSzTp') && typeof setFilterValues === 'function') setFilterValues(id, []);
+      else { var sel = $(id); if (sel) sel.value = ''; }
     });
     var s = $('tableSearch');
     if (s) s.value = c;
@@ -6609,7 +6848,13 @@ window.addEventListener('beforeunload', function(e){
   }
   function buildDsMessages(userText) {
     var msgs = [{ role: 'system', content: buildDsSystemPrompt() }];
-    dsTurns.slice(-6).forEach(function (t) { msgs.push(t); });
+    var hist = chatLog.slice(-12);
+    var last = hist[hist.length - 1];
+    if (last && last.role === 'user' && last.text === String(userText || '').trim()) hist = hist.slice(0, -1);
+    hist.forEach(function (m) {
+      if (!m.text) return;
+      msgs.push({ role: m.role, content: String(m.text).slice(0, 2000) });
+    });
     msgs.push({ role: 'user', content: String(userText || '').slice(0, 4000) });
     return msgs;
   }
@@ -6775,6 +7020,84 @@ window.addEventListener('beforeunload', function(e){
   /* ───────────────────────────── chat UI ─────────────────────────────── */
   var messages = null, suggestBox = null, input = null, form = null;
   var answers = new Map(), answerSeq = 0, welcomed = false, dataWelcomed = false;
+  var CHAT_KEY = 'oprAIChat.v1', chatLog = [], chatLoaded = false;
+
+  function loadChatLog() {
+    if (chatLoaded) return;
+    chatLoaded = true;
+    try {
+      var raw = localStorage.getItem(CHAT_KEY);
+      var arr = raw ? JSON.parse(raw) : [];
+      if (Array.isArray(arr)) {
+        chatLog = arr.filter(function (e) {
+          return e && (e.role === 'user' || e.role === 'assistant') && String(e.text || '').trim();
+        }).map(function (e) {
+          return { role: e.role, text: String(e.text).slice(0, 6000), mode: e.mode || 'local', title: e.title || '', ts: e.ts || Date.now() };
+        }).slice(-80);
+      }
+    } catch (e) { chatLog = []; }
+  }
+  function saveChatLog() {
+    try { localStorage.setItem(CHAT_KEY, JSON.stringify(chatLog.slice(-80))); } catch (e) {}
+  }
+  function updateConvoBar() {
+    var el = $('aiConvoCount');
+    if (el) el.textContent = chatLog.length ? chatLog.length + ' message' + (chatLog.length === 1 ? '' : 's') : 'Conversation';
+  }
+  function appendChat(role, text, mode, title) {
+    var t = String(text == null ? '' : text).trim();
+    if (!t) return;
+    chatLog.push({ role: role, text: t.slice(0, 6000), mode: mode || 'local', title: title || '', ts: Date.now() });
+    if (chatLog.length > 80) chatLog = chatLog.slice(-80);
+    saveChatLog();
+    updateConvoBar();
+  }
+  function plainHtml(html) {
+    var d = document.createElement('div');
+    d.innerHTML = html || '';
+    return (d.textContent || '').trim();
+  }
+  function restoreChat() {
+    loadChatLog();
+    if (!chatLog.length) { updateConvoBar(); return; }
+    chatLog.slice(-40).forEach(function (e) {
+      if (e.role === 'user') {
+        addMsg('user', esc(e.text).replace(/\n/g, '<br>'));
+      } else {
+        var mode = e.mode === 'deepseek' ? 'DeepSeek' : 'Local AI';
+        addMsg('bot', '<div class="ai-card"><div class="ai-note" style="margin:0 0 5px;font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">' + esc(mode) + (e.title ? ' · ' + esc(e.title) : '') + '</div><div class="ai-note" style="margin:0">' + esc(e.text).replace(/\n/g, '<br>') + '</div></div>');
+      }
+    });
+    welcomed = true;
+    dataWelcomed = true;
+    updateConvoBar();
+  }
+  function clearChat() {
+    chatLog = [];
+    saveChatLog();
+    if (messages) messages.innerHTML = '';
+    answers.clear();
+    welcomed = false;
+    dataWelcomed = false;
+    chatLoaded = true;
+    try { dsTurns = []; } catch (e) {}
+    state.ctx = null;
+    try { save(); } catch (e) {}
+    updateConvoBar();
+    welcome();
+  }
+  function copyChat() {
+    var txt = chatLog.map(function (e) {
+      return (e.role === 'user' ? 'You: ' : 'AI: ') + e.text;
+    }).join('\n\n');
+    if (!txt) return;
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt);
+  }
+  function retryChat() {
+    for (var i = chatLog.length - 1; i >= 0; i--) {
+      if (chatLog[i].role === 'user') { ask(chatLog[i].text); return; }
+    }
+  }
 
   function addMsg(kind, html) {
     var d = document.createElement('div');
@@ -6789,7 +7112,8 @@ window.addEventListener('beforeunload', function(e){
     if (!messages) return;
     messages.scrollTop = messages.scrollHeight;
   }
-  function addBot(res) {
+  function addBot(res, opts) {
+    opts = opts || {};
     var id = 'a' + (++answerSeq);
     res.id = id;
     answers.set(id, { query: res.query || '', intent: res.intent || null, exampleId: res.exampleId || null });
@@ -6801,6 +7125,10 @@ window.addEventListener('beforeunload', function(e){
     }
     var html = '<div class="ai-card">' + tags(res) + (res.html || '') + actionsHTML(res.actions) + fb + '</div>';
     addMsg('bot', html);
+    if (!opts.noSave) {
+      var mode = res.tag && /^deepseek/i.test(res.tag) ? 'deepseek' : 'local';
+      appendChat('assistant', res.plain || plainHtml(res.html) || res.title || '', mode, res.title || '');
+    }
     if (res.suggestions && res.suggestions.length) renderSuggestions(res.suggestions);
     updateStatus();
     return id;
@@ -6841,7 +7169,7 @@ window.addEventListener('beforeunload', function(e){
         { label: 'Where is the API key?', action: 'opendeepseek' }
       ],
       suggestions: defaultSuggestions()
-    });
+    }, { noSave: true });
   }
   function ask(text, opts) {
     opts = opts || {};
@@ -6850,7 +7178,10 @@ window.addEventListener('beforeunload', function(e){
     var forceDS = /^@deepseek\b[:,]?\s*/i.test(text);
     if (forceDS) text = text.replace(/^@deepseek\b[:,]?\s*/i, '').trim();
     if (!messages) initDom();
-    if (!opts.silent) addMsg('user', esc(text).replace(/\n/g, '<br>'));
+    if (!opts.silent) {
+      addMsg('user', esc(text).replace(/\n/g, '<br>'));
+      appendChat('user', text, forceDS ? 'deepseek' : 'local', '');
+    }
     if (forceDS && !text) {
       var q = answer({
         tag: 'deepseek', tagClass: 'warn', title: 'Ask DeepSeek a question',
@@ -7444,6 +7775,10 @@ window.addEventListener('beforeunload', function(e){
 
     bindDeepSeek();
     renderDeepSeek();
+    if ($('aiClearChat')) $('aiClearChat').addEventListener('click', clearChat);
+    if ($('aiCopyChat')) $('aiCopyChat').addEventListener('click', copyChat);
+    if ($('aiRetry')) $('aiRetry').addEventListener('click', retryChat);
+    restoreChat();
     renderSuggestions(defaultSuggestions());
     updateStatus();
   }
@@ -7619,28 +7954,36 @@ window.addEventListener('beforeunload', function(e){
   }
   function activeOprFilter() {
     try {
+      if (typeof filterValues === 'function') return filterValues('fOPR').map(up);
       var el = document.getElementById('fOPR');
-      return el ? up(el.value) : '';
-    } catch (e) { return ''; }
+      return el && el.value ? [up(el.value)] : [];
+    } catch (e) { return []; }
   }
   function activeFilterLabels() {
     var defs = [['fOPR', 'Operator'], ['fSzTp', 'Size/Type'], ['fFE', 'F/E'], ['fPOL', 'POL'], ['fPOD', 'POD']];
     var out = [];
     defs.forEach(function (d) {
       try {
-        var el = document.getElementById(d[0]);
-        var v = el ? String(el.value || '').trim() : '';
-        if (!v) return;
-        out.push(d[1] + ' = ' + (d[0] === 'fFE' ? (v === 'F' ? 'Full' : 'Empty') : v));
+        var vals = (typeof filterValues === 'function') ? filterValues(d[0]) : (function () { var el = document.getElementById(d[0]); return el && el.value ? [el.value] : []; })();
+        if (!vals.length) return;
+        var shown = vals.length > 1 ? vals.length + ' selected (' + vals.slice(0, 3).join(', ') + (vals.length > 3 ? '…' : '') + ')' : vals[0];
+        out.push(d[1] + ' = ' + (d[0] === 'fFE' ? (vals[0] === 'F' ? 'Full' : 'Empty') : shown));
       } catch (e) {}
     });
+    try {
+      if (typeof kpiCategory !== 'undefined' && kpiCategory) {
+        var names = { reefer: 'Reefer', tank: 'ISO Tank', flat: 'Flat Rack', bb: 'Break Bulk' };
+        out.push('Category = ' + (names[kpiCategory] || kpiCategory));
+      }
+    } catch (e) {}
     return out;
   }
   function itemInScope(item, l, oprFilter) {
-    if (!oprFilter) return true;
+    var list = Array.isArray(oprFilter) ? oprFilter : (oprFilter ? [oprFilter] : []);
+    if (!list.length) return true;
     var io = up(item.opr);
-    if (io) return io === oprFilter;
-    return up(l.opr) === oprFilter;
+    if (io) return list.indexOf(io) >= 0;
+    return list.indexOf(up(l.opr)) >= 0;
   }
   function ctnrOf(r) { return up(pick(r, 'ctnr')).replace(/[^A-Z0-9]/g, ''); }
   function slotOf(r) { return String(pick(r, 'slot') || '').trim(); }
@@ -7991,8 +8334,12 @@ window.addEventListener('beforeunload', function(e){
     return '';
   }
   function computeBookingRows() {
-    var rs = rows();
+    var rs = filteredRows();
     if (!bkg || !bkg.rows.length) return [];
+    var oprFilter = activeOprFilter();
+    var podEl = document.getElementById('fPOD'), polEl = document.getElementById('fPOL');
+    var podFilter = podEl ? up(podEl.value) : '';
+    var polFilter = polEl ? up(polEl.value) : '';
     var loaded = {}, loadedSz = {};
     rs.forEach(function (r) {
       var o = oprOf(r), p = podOf(r);
@@ -8009,6 +8356,9 @@ window.addEventListener('beforeunload', function(e){
     var agg = {}, unmapped = {};
     bkg.rows.forEach(function (b) {
       var t = bkgTarget(b.opr);
+      if (oprFilter.length && (!t || oprFilter.indexOf(t) < 0)) return;
+      if (podFilter && up(b.pod) !== podFilter) return;
+      if (polFilter && b.pol && up(b.pol) !== polFilter) return;
       if (!t) {
         var u = unmapped[b.opr] || (unmapped[b.opr] = { opr: b.opr, teu: 0, pods: {} });
         u.teu += b.teu; u.pods[b.pod] = 1;
@@ -8155,7 +8505,7 @@ window.addEventListener('beforeunload', function(e){
     });
 
     var activeLists = lists.filter(function (l) {
-      return !oprFilter || up(l.opr) === oprFilter;
+      return !oprFilter.length || oprFilter.indexOf(up(l.opr)) >= 0;
     });
     issueStats.checkedLists = activeLists.length;
 
@@ -8408,7 +8758,7 @@ window.addEventListener('beforeunload', function(e){
   function chipList(l) {
     var ops = manifestOps();
     var opf = activeOprFilter();
-    var off = !!opf && up(l.opr) !== opf;
+    var off = opf.length > 0 && opf.indexOf(up(l.opr)) < 0;
     var opts = '<option value="">— set operator —</option>';
     ops.forEach(function (o) {
       opts += '<option value="' + esc(o) + '"' + (l.opr === o ? ' selected' : '') + '>' + esc(o) + '</option>';
@@ -8570,10 +8920,12 @@ window.addEventListener('beforeunload', function(e){
       '<td class="r">' + totalUsed + '</td>' +
       '<td>' + statusPill(totalStatus) + '</td></tr>';
     var noBookingOps = manifestOps().filter(function (o) {
-      return !bkg.operators.some(function (b) { return bkgTarget(b) === o; }) && rows().some(function (r) { return oprOf(r) === o; });
+      return !bkg.operators.some(function (b) { return bkgTarget(b) === o; }) && filteredRows().some(function (r) { return oprOf(r) === o; });
     });
     var notes = [];
     notes.push('Loaded TEU counts every container in the manifest (full + empty) using its size/type.');
+    var fl = activeFilterLabels();
+    notes.push(fl.length ? '<b>Filter scope:</b> ' + esc(fl.join(' · ')) + '.' : '<b>Filter scope:</b> all manifest rows.');
     notes.push('<b>20′</b> = 2SD · 22G0 · 2TK &nbsp;·&nbsp; <b>40′</b> = 4SD · 42G0 &nbsp;·&nbsp; <b>HC</b> = 4SH · 45G0. Size cells show <b>booked / loaded</b> boxes; red means more loaded than booked.');
     notes.push('Balance 20′ / 40′ is booked minus loaded boxes (40′ includes HC). The <b>TOTAL</b> row and column cover all sizes and all operator/POD rows.');
     if (t.lother) notes.push('<b>' + fmt(t.lother) + '</b> container(s) have a size code outside 20′/40′/HC and are only counted in the TEU totals.');
@@ -9746,12 +10098,21 @@ window.addEventListener('beforeunload', function(e){
   function saveViews(v) { try { localStorage.setItem(VIEW_KEY, JSON.stringify(v)); } catch (e) {} }
   function captureView() {
     var f = {};
-    ['fOPR', 'fSzTp', 'fFE', 'fPOL', 'fPOD'].forEach(function (id) { var el = $(id); f[id] = el ? el.value : ''; });
+    ['fOPR', 'fSzTp', 'fFE', 'fPOL', 'fPOD'].forEach(function (id) {
+      if (typeof filterValues === 'function') f[id] = filterValues(id);
+      else { var el = $(id); f[id] = el ? el.value : ''; }
+    });
     return { filters: f, search: ($('tableSearch') ? $('tableSearch').value : '') };
   }
   function applyView(v) {
     ['fOPR', 'fSzTp', 'fFE', 'fPOL', 'fPOD'].forEach(function (id) {
-      var el = $(id); if (el) el.value = (v.filters && v.filters[id]) || '';
+      var el = $(id); if (!el) return;
+      var val = v.filters && v.filters[id];
+      if (el.multiple && typeof setFilterValues === 'function') {
+        setFilterValues(id, Array.isArray(val) ? val : (val ? [val] : []));
+      } else {
+        el.value = Array.isArray(val) ? (val[0] || '') : (val || '');
+      }
     });
     if ($('tableSearch')) $('tableSearch').value = v.search || '';
     if (typeof renderAll === 'function') renderAll();
@@ -9764,7 +10125,10 @@ window.addEventListener('beforeunload', function(e){
     if (!views.length) { list.innerHTML = '<div class="ops-empty">No saved views yet.</div>'; return; }
     list.innerHTML = views.map(function (v) {
       var f = v.filters || {};
-      var summary = ['fOPR', 'fSzTp', 'fFE', 'fPOL', 'fPOD'].filter(function (k) { return f[k]; }).map(function (k) { return k.replace('f', '') + '=' + f[k]; }).join(' · ');
+      var summary = ['fOPR', 'fSzTp', 'fFE', 'fPOL', 'fPOD'].filter(function (k) { return f[k] && (!Array.isArray(f[k]) || f[k].length); }).map(function (k) {
+        var val = Array.isArray(f[k]) ? f[k].join(', ') : f[k];
+        return k.replace('f', '') + '=' + val;
+      }).join(' · ');
       return '<div class="ops-item"><span class="tag">view</span><div class="main"><div class="t">' + esc(v.name) + '</div><div class="d">' + esc(summary || 'no filters') + (v.search ? ' · search: ' + esc(v.search) : '') + '</div></div><div class="meta"><button class="ops-btn" type="button" data-view-apply="' + esc(v.id) + '">Apply</button> <button class="ops-btn danger" type="button" data-view-del="' + esc(v.id) + '">Delete</button></div></div>';
     }).join('');
   }
