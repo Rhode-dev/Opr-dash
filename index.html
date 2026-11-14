@@ -1634,6 +1634,10 @@ body.shared-view #rcSection{display:none!important}
           </select>
           <input class="mf-input" id="mPODCustom" style="display:none;margin-top:6px" placeholder="Enter POD code" maxlength="6" autocomplete="off">
         </div>
+        <div>
+          <label class="mf-label" for="mTemp">Reefer Temp (°C)</label>
+          <input class="mf-input" id="mTemp" type="number" step="0.1" placeholder="e.g. -18.0" autocomplete="off">
+        </div>
         <div class="full">
           <label class="mf-label" for="mVGM">VGM (Tonnes)</label>
           <input class="mf-input" id="mVGM" type="number" step="0.001" min="0" placeholder="e.g. 2.200" autocomplete="off">
@@ -3993,6 +3997,8 @@ function openAddCtnrModal(row){
     setFieldValue('mPOD', cf(row,['POD','Pod','pod']));
     const vgm = getVGM(row);
     document.getElementById('mVGM').value = vgm!=null ? vgm.toFixed(3) : '';
+    const t = getReeferTemp(row);
+    document.getElementById('mTemp').value = t!=null ? t : '';
   } else {
     document.getElementById('mPOLSelect').value='MWA';
   }
@@ -4080,11 +4086,14 @@ addCtnrForm.addEventListener('submit', function(e){
   const pod  = getFieldValue('mPOD');
   const vgmRaw = document.getElementById('mVGM').value.trim();
   const vgm  = vgmRaw!=='' && !isNaN(parseFloat(vgmRaw)) ? +parseFloat(vgmRaw).toFixed(3) : null;
+  const tempRaw = document.getElementById('mTemp').value.trim();
+  const temp = tempRaw!=='' && !isNaN(parseFloat(tempRaw)) ? +parseFloat(tempRaw).toFixed(1) : null;
 
   const beforeEdit = editingRid!=null ? allData.find(r=>r._rid===editingRid) : null;
   const beforeVals = beforeEdit ? {
     Slot: beforeEdit.Slot, Container: beforeEdit.Container, OPR: beforeEdit.OPR,
-    SzTp: beforeEdit.SzTp, FE: beforeEdit['F/E'], POL: beforeEdit.POL, POD: beforeEdit.POD, VGM: beforeEdit.VGM
+    SzTp: beforeEdit.SzTp, FE: beforeEdit['F/E'], POL: beforeEdit.POL, POD: beforeEdit.POD, VGM: beforeEdit.VGM,
+    Temp: getReeferTemp(beforeEdit)
   } : null;
 
   if(editingRid!=null){
@@ -4095,6 +4104,7 @@ addCtnrForm.addEventListener('submit', function(e){
     row.SzTp = sztp||'UNKNOWN'; row['F/E'] = fe;
     row.POL = pol; row.POD = pod||'BLANK';
     row.VGM = vgm; row._vgmKg = vgm!==null ? Math.round(vgm*1000) : null;
+    row.Temp = temp;
     // _lineIndex (if any) is left untouched, so Save ASC File still patches
     // this exact source line with the edited values.
   } else {
@@ -4106,6 +4116,7 @@ addCtnrForm.addEventListener('submit', function(e){
       SzTp: sztp||'UNKNOWN', 'F/E': fe,
       POL: pol, POD: pod||'BLANK',
       VGM: vgm,
+      Temp: temp,
       _vgmKg: vgm!==null ? Math.round(vgm*1000) : null,
       _manualEntry: true,
       _manualId: manualEntrySeq,
@@ -4127,7 +4138,7 @@ addCtnrForm.addEventListener('submit', function(e){
   dataDirty = true;
   if(window.Ops){
     if(beforeVals){
-      const after = { Slot: slot, Container: ctnr, OPR: opr||'MANUAL', SzTp: sztp||'UNKNOWN', FE: fe, POL: pol, POD: pod||'BLANK', VGM: vgm };
+      const after = { Slot: slot, Container: ctnr, OPR: opr||'MANUAL', SzTp: sztp||'UNKNOWN', FE: fe, POL: pol, POD: pod||'BLANK', VGM: vgm, Temp: temp };
       const changes = Object.keys(after).filter(k=>String(after[k]??'')!==String(beforeVals[k]??''))
         .map(k=>k+': '+(beforeVals[k]??'—')+' → '+(after[k]??'—'));
       Ops.audit('edit', (beforeVals.Container||ctnr)+' · '+(changes.length?changes.join(' · '):'no field changes'));
