@@ -2415,6 +2415,7 @@ grant select, insert, update, delete on public.team_change_requests to authentic
           <div class="ops-export-title">EDIFACT drafts</div>
           <div class="ops-row">
             <button class="ops-btn" type="button" id="opsEdiBaplie">BAPLIE</button>
+            <button class="ops-btn" type="button" id="opsEdiCasp">CASP</button>
             <button class="ops-btn" type="button" id="opsEdiCoprar">COPRAR</button>
             <button class="ops-btn" type="button" id="opsEdiMovins">MOVINS</button>
           </div>
@@ -3380,9 +3381,17 @@ function processFileNow(file, origin){
   }
   function ediFE(v){
     const s=ediClean(v);
-    if(s==='F'||s==='FULL'||s==='LADEN'||s==='LOADED') return 'F';
-    if(s==='E'||s==='EMPTY'||s==='MT'||s==='MTY') return 'E';
+    if(s==='F'||s==='FULL'||s==='LADEN'||s==='LOADED'||s==='5') return 'F';
+    if(s==='E'||s==='EMPTY'||s==='MT'||s==='MTY'||s==='4') return 'E';
     return '';
+  }
+  function ediPort(v){
+    var s=ediClean(v).replace(/[^A-Z0-9]/g,'');
+    return s.length>3 ? s.slice(-3) : s;
+  }
+  function ediSlot(v){
+    var s=ediClean(v);
+    return /^\d{7}$/.test(s) ? s.slice(-6) : s;
   }
   function inferOpr(ctnr){
     const p=String(ctnr||'').replace(/[^A-Za-z0-9]/g,'').toUpperCase().slice(0,3);
@@ -3403,19 +3412,20 @@ function processFileNow(file, origin){
     const rows=[];
     let cur=null, globalOpr=meta.opr||'';
     function blank(){
-      return {opr:globalOpr,sztp:'',fe:'',pol:'',pod:'',slot:'',ctnr:'',vgm:null,temp:null};
+      return {opr:'',sztp:'',fe:'',pol:'',pod:'',slot:'',ctnr:'',vgm:null,temp:null};
     }
     function push(){
       if(!cur) return;
-      if(!cur.ctnr && !cur.slot){ cur=null; return; }
-      const c=ediClean(cur.ctnr), sz=ediClean(cur.sztp);
+      const c=ediClean(cur.ctnr);
+      if(!c){ cur=null; return; }
+      const sz=ediClean(cur.sztp);
       rows.push({
-        OPR: ediClean(cur.opr)||inferOpr(c),
+        OPR: ediClean(cur.opr)||globalOpr||inferOpr(c),
         SzTp: sz,
         'F/E': cur.fe || (cur.vgm!=null && cur.vgm<=0.05 ? 'E' : 'F'),
-        POL: ediClean(cur.pol)||meta.pol||'',
-        POD: ediClean(cur.pod)||meta.pod||'',
-        Slot: ediClean(cur.slot),
+        POL: ediPort(cur.pol)||ediPort(meta.pol)||'',
+        POD: ediPort(cur.pod)||ediPort(meta.pod)||'',
+        Slot: ediSlot(cur.slot),
         Container: c,
         VGM: cur.vgm,
         Temp: cur.temp || null
@@ -3427,8 +3437,8 @@ function processFileNow(file, origin){
       if(tag==='NAD'){
         const q=String(el[1]||'').toUpperCase(), code=ediClean(el[2]);
         if(q==='CF'||q==='CA'||q==='CZ'){
-          if(cur){ if(q==='CF'||!cur.opr) cur.opr=code; }
-          else if(q==='CF'||!globalOpr) globalOpr=code;
+          if(cur){ if(code) cur.opr=code; }
+          else if(!globalOpr) globalOpr=code;
         }
         continue;
       }
@@ -3440,7 +3450,7 @@ function processFileNow(file, origin){
           cur.ctnr=ediClean(el[2]);
           for(let i=3;i<=6;i++){
             const v=ediClean(el[i]);
-            if(!cur.sztp && /^(?:[0-9]{2}[A-Z0-9]{2}|[0-9][A-Z][0-9])$/.test(v)) cur.sztp=v;
+            if(!cur.sztp && /^[0-9]{1,2}[A-Z][A-Z0-9]?$/.test(v)) cur.sztp=v;
             const f=ediFE(el[i]);
             if(f && !cur.fe) cur.fe=f;
           }
@@ -3448,14 +3458,19 @@ function processFileNow(file, origin){
         continue;
       }
       if(!cur && tag==='LOC' && String(el[1])==='147'){
-        cur=blank(); cur.slot=ediClean(el[2]); continue;
+        cur=blank(); cur.slot=ediSlot(el[2]); continue;
       }
       if(!cur) continue;
       if(tag==='LOC'){
-        const q=String(el[1]||''), val=ediClean(el[2]);
-        if(q==='147') cur.slot=val;
+        const q=String(el[1]||''), val=ediPort(el[2]);
+        if(q==='147') cur.slot=ediSlot(el[2]);
         else if(q==='9'||q==='5'||q==='190'||q==='159'){ if(!cur.pol) cur.pol=val; }
-        else if(q==='11'||q==='12'||q==='7'){ if(!cur.pod) cur.pod=val; }
+        else if(q==='11'||q==='12'||q==='13'||q==='7'){ if(!cur.pod) cur.pod=val; }
+      } else if(tag==='RFF'){
+        const comp=String(el[1]||'').split(':');
+        const q=String(comp[0]||'').toUpperCase(), v=ediPort(comp[1]);
+        if((q==='BN'||q==='POD') && !cur.pod) cur.pod=v;
+        else if((q==='POL'||q==='PP') && !cur.pol) cur.pol=v;
       } else if(tag==='MEA'){
         const joined=el.join('+').toUpperCase();
         if(joined.includes('VGM')||joined.includes('WT')){
@@ -3495,19 +3510,38 @@ function processFileNow(file, origin){
       const el=seg.split('+'), tag=String(el[0]||'').toUpperCase();
       if(tag==='TDT'){
         meta.voyage=ediClean(el[2]);
-        const e5=ediText(el[5]), e6=ediText(el[6]);
-        if(e6){
-          meta.callSign=ediClean(e5);
-          meta.vesselName=e6;
-        } else if(e5){
-          if(/^[A-Z0-9]{4,7}$/.test(e5)) meta.callSign=ediClean(e5);
-          else meta.vesselName=e5;
+        var parties=[];
+        for(var pi=3;pi<el.length;pi++){
+          var pp=String(el[pi]||'').split(':');
+          if(pp[0] && pp[0].trim()) parties.push({index:pi,parts:pp});
         }
-        if(!meta.carrier && el[4]) meta.carrier=ediClean(el[4]);
+        var carrier=parties.filter(function(x){return /^\d{1,4}$/.test(x.parts[0]) || (x.parts[1]==='103' && x.parts[0].indexOf(' ')<0);})[0];
+        var vessel=parties.filter(function(x){return !/^\d{1,4}$/.test(x.parts[0]) && (x.parts[0].indexOf(' ')>=0 || x.parts[0].length>4);}).pop() || parties[parties.length-1];
+        if(carrier) meta.carrier=ediClean(carrier.parts[0]);
+        if(vessel){
+          if(vessel.parts[3] && String(vessel.parts[3]).trim()){
+            meta.vesselName=String(vessel.parts[3]).trim();
+            meta.callSign=ediClean(vessel.parts[0]);
+          } else {
+            meta.vesselName=String(vessel.parts[0]).trim();
+          }
+        }
+        if(vessel && vessel.parts[3]) meta.callSign=ediClean(vessel.parts[0]);
+        if(vessel){
+          for(var pi2=vessel.index+1;pi2<el.length;pi2++){
+            var plain=ediClean(el[pi2]);
+            if(plain && plain!=='ZZZ' && /^[A-Z0-9-]{3,10}$/i.test(plain)){ meta.callSign=plain; break; }
+          }
+        }
+      } else if(tag==='RFF'){
+        const comp=String(el[1]||'').split(':');
+        const q=String(comp[0]||'').toUpperCase(), v=String(comp[1]||'').trim();
+        if(q==='VM' && v && !meta.vesselName) meta.vesselName=v;
+        if((q==='CS'||q==='VM') && v && !meta.callSign && /^[A-Z0-9-]{3,10}$/i.test(v)) meta.callSign=ediClean(v);
       } else if(tag==='LOC'){
-        const q=String(el[1]||''), v=ediClean(el[2]);
+        const q=String(el[1]||''), v=ediPort(el[2]);
         if((q==='5'||q==='9'||q==='190') && !meta.pol) meta.pol=v;
-        if((q==='11'||q==='12') && !meta.pod) meta.pod=v;
+        if((q==='11'||q==='12'||q==='13') && !meta.pod) meta.pod=v;
       } else if(tag==='NAD' && (el[1]==='CF'||el[1]==='CA') && !meta.opr){
         meta.opr=ediClean(el[2]);
       }
@@ -3521,7 +3555,7 @@ function processFileNow(file, origin){
       if(!m) continue;
       const ctnr=m[1].toUpperCase();
       const tokens=line.toUpperCase().split(/[^A-Z0-9]+/).filter(Boolean);
-      let sz=tokens.find(function(t){ return /^[0-9]{2}[A-Z0-9]{2}$/.test(t) && t!==ctnr; })||'';
+      let sz=tokens.find(function(t){ return /^[0-9]{1,2}[A-Z][A-Z0-9]?$/.test(t) && t!==ctnr; })||'';
       if(!sz){ if(tokens.indexOf('20')>=0) sz='22G0'; else if(tokens.indexOf('40')>=0) sz='42G0'; }
       let vgm=null;
       for(const t of tokens){
@@ -3586,9 +3620,11 @@ function processFileNow(file, origin){
     else if(/\bT(ON|ONNES|NE)?\b/i.test(s)) unit='T';
     const n=parseFloat(s.replace(/[^0-9.\-]/g,''));
     if(isNaN(n)) return null;
-    if(unit==='LB') return n*0.453592;
-    if(unit==='T') return n*1000;
-    return n;
+    if(unit==='LB') return n*0.453592/1000;
+    if(unit==='KG') return n/1000;
+    if(unit==='T') return n;
+    /* Header-only weights are usually kilograms when the raw value is large. */
+    return n>100 ? n/1000 : n;
   }
   function xlsRowsFromMatrix(matrix){
     const h=xlsFindHeader(matrix);
@@ -10907,46 +10943,130 @@ window.addEventListener('beforeunload', function(e){
   function buildEdifact(kind) {
     var rows = filteredRows();
     var m = (typeof vesselMeta !== 'undefined' && vesselMeta) || {};
-    var dt = ediDate(), ref = (m.voyage || 'VOY') + '-' + Date.now().toString(36).toUpperCase();
+    function val(r, keys) {
+      try { return String((typeof cf === 'function' ? cf(r, keys) : r[keys[0]]) || '').trim(); } catch (e) { return ''; }
+    }
+    function podOfRow(r) { return val(r, ['POD','Pod','pod']).toUpperCase(); }
+    function polOfRow(r) { return val(r, ['POL','Pol','pol']).toUpperCase(); }
+    var firstPod = (rows[0] && podOfRow(rows[0])) || '';
+    var firstPol = (rows[0] && polOfRow(rows[0])) || '';
+    var vessel = m.vesselName || '';
+    var voyage = m.voyage || '';
+    var callSign = m.callSign || '';
+    var pol = m.pol || firstPol;
+    var pod = m.pod || firstPod;
+    var dt = ediDate(), ref = (voyage || 'VOY') + '-' + Date.now().toString(36).toUpperCase();
     var seg = [];
     seg.push('UNA:+.? \'');
     seg.push('UNB+UNOC:3+OPRDASHBOARD+RECIPIENT+' + dt.ymd + ':' + dt.hm + '+' + ref + '+++' + kind + '\'');
     seg.push('UNH+1+' + kind + ':D:95B:UN\'');
     seg.push('BGM+++' + (kind === 'BAPLIE' ? '224' : '9') + '\'');
     seg.push('DTM+137:' + dt.ymd + ':102\'');
-    seg.push('TDT+20+' + (m.voyage || '') + '+++172:' + (m.vesselName || '') + ':103\'');
+    seg.push('TDT+20+' + voyage + '+++172:103:ZZZ+' + vessel + ':103:ZZZ\'');
+    if (callSign) seg.push('RFF+CS:' + callSign + '\'');
     if (kind === 'COPRAR') {
-      seg.push('LOC+9+' + (m.pol || rows[0] && rows[0].POL || '') + '\'');
-      seg.push('LOC+11+' + (rows[0] && rows[0].POD || '') + '\'');
+      if (pol) seg.push('LOC+9+' + pol + '\'');
+      if (pod) seg.push('LOC+11+' + pod + '\'');
     } else {
-      seg.push('LOC+5+' + (m.pol || rows[0] && rows[0].POL || '') + '\'');
-      seg.push('LOC+13+' + (rows[0] && rows[0].POD || '') + '\'');
+      if (pol) seg.push('LOC+5+' + pol + '\'');
+      if (pod) seg.push('LOC+13+' + pod + '\'');
     }
     rows.forEach(function (r) {
-      var c = String(r.Container || '').replace(/[^A-Z0-9]/gi, '').toUpperCase();
+      var c = val(r, ['Container','container','CONTAINER','CTR','Ctnr']).replace(/[^A-Z0-9]/gi, '').toUpperCase();
       if (!c) return;
-      var iso = String(r.SzTp || '').replace(/[^A-Z0-9]/gi, '').toUpperCase();
-      seg.push('EQD+CN+' + c + '+' + iso + '+++5\'');
+      var iso = val(r, ['SzTp','SZTP','SzTP','Size Type','SizeType']).replace(/[^A-Z0-9]/gi, '').toUpperCase();
+      var opr = val(r, ['OPR','Opr','opr']).toUpperCase();
+      var slot = val(r, ['Slot','slot','SLOT','Cell','cell']).replace(/[^A-Z0-9]/gi, '');
+      var rowPod = podOfRow(r) || pod;
+      var fe = '';
+      try { fe = nFE(cf(r, ['F/E','FE','fe','f/e','Full/Empty'])); } catch (e) {}
+      seg.push('EQD+CN+' + c + '+' + iso + '+++' + (fe === 'E' ? '4' : '5') + '\'');
+      if (opr) seg.push('NAD+CA+' + opr + '\'');
+      if (fe) seg.push('FTX+AAI+++' + (fe === 'E' ? 'EMPTY' : 'FULL') + '\'');
       var v = (typeof getVGM === 'function') ? getVGM(r) : null;
       if (v != null) seg.push('MEA+AAE+VGM+KGM:' + Math.round(v * 1000) + '\'');
-      if (r.Slot) seg.push('LOC+147+' + String(r.Slot).replace(/[^A-Z0-9]/gi, '') + '\'');
-      if (r.POD) seg.push('RFF+BN:' + String(r.POD).toUpperCase() + '\'');
-      if (kind === 'MOVINS' && r.Slot) seg.push('FTX+AAI+++' + String(r.Slot) + '\'');
+      if (slot) seg.push('LOC+147+' + slot + '\'');
+      if (rowPod) seg.push('RFF+BN:' + rowPod + '\'');
+      if (kind === 'MOVINS' && slot) seg.push('FTX+AAI+++' + slot + '\'');
     });
     var bodyCount = seg.length - 3 + 1;
     seg.push('UNT+' + (bodyCount + 1) + '+1\'');
     seg.push('UNZ+1+' + ref + '\'');
     return seg.join('\n');
   }
+  function buildCaspEdi(kind) {
+    var rows = filteredRows();
+    var m = (typeof vesselMeta !== 'undefined' && vesselMeta) || {};
+    function val(r, keys) {
+      try { return String((typeof cf === 'function' ? cf(r, keys) : r[keys[0]]) || '').trim(); } catch (e) { return ''; }
+    }
+    function podOfRow(r) { return val(r, ['POD','Pod','pod']).toUpperCase().slice(-3); }
+    function polOfRow(r) { return val(r, ['POL','Pol','pol']).toUpperCase().slice(-3); }
+    var firstPod = (rows[0] && podOfRow(rows[0])) || '';
+    var firstPol = (rows[0] && polOfRow(rows[0])) || '';
+    var vessel = m.vesselName || '';
+    var voyage = m.voyage || '';
+    var callSign = m.callSign || '';
+    var pol = (m.pol || firstPol || '').toUpperCase().slice(-3);
+    var pod = (m.pod || firstPod || '').toUpperCase().slice(-3);
+    var dt = ediDate();
+    var pc = { MWA:'KE', NBO:'KE', MBA:'KE', SGP:'SG', QND:'CN', CMB:'LK', PKL:'PK', PEN:'MY', XTH:'TH', KHI:'PK', KSC:'SA', OFT:'AE', SHG:'CN', JEA:'AE', HAM:'DE', RTM:'NL', ANR:'BE', FXT:'GB', LGP:'ES', VLC:'ES', ALG:'DZ', TUN:'TN', CAS:'MA', DXB:'AE', JED:'SA', DMM:'SA' };
+    function port5(p) { p = String(p || '').toUpperCase().replace(/[^A-Z]/g, '').slice(-3); return (pc[p] || 'XX') + p; }
+    function line(s) { return s + '\''; }
+    var seg = [];
+    seg.push('UNB+UNOA:2+EVG+CASP+' + dt.ymd + ':' + dt.hm + '+0\'');
+    seg.push('UNH+1+BAPLIE:D:95B:UN:SMDG22\'');
+    seg.push('BGM++0+9\'');
+    seg.push('DTM+137:' + dt.ymd + dt.hm + ':203\'');
+    seg.push('TDT+20+' + voyage + '+++:172:20+++' + callSign + ':103::' + vessel + '\'');
+    if (pol) seg.push('LOC+5+XX' + pol + ':139:6\'');
+    seg.push('DTM+178:' + dt.ymd.slice(2) + dt.hm + ':203\'');
+    rows.forEach(function (r) {
+      var c = val(r, ['Container','container','CONTAINER','CTR','Ctnr']).replace(/[^A-Z0-9]/gi, '').toUpperCase();
+      if (!c) return;
+      var iso = val(r, ['SzTp','SZTP','SzTP','Size Type','SizeType']).replace(/[^A-Z0-9]/gi, '').toUpperCase();
+      var opr = val(r, ['OPR','Opr','opr']).toUpperCase();
+      var slot = val(r, ['Slot','slot','SLOT','Cell','cell']).replace(/[^A-Z0-9]/gi, '');
+      if (slot.length === 7) slot = slot.slice(-6);
+      slot = slot.padStart(6, '0');
+      var rowPod = podOfRow(r) || pod;
+      var rowPol = polOfRow(r) || pol;
+      var fe = '';
+      try { fe = nFE(cf(r, ['F/E','FE','fe','f/e','Full/Empty'])); } catch (e) {}
+      var v = (typeof getVGM === 'function') ? getVGM(r) : null;
+      var kg = v == null ? '00000' : String(Math.round(v * 1000)).padStart(5, '0').slice(-5);
+      seg.push(line('EQD+CN+' + c + '+' + iso + '+++' + (fe === 'E' ? '4' : '5')));
+      seg.push(line('NAD+CA+' + (opr || 'UNKNOWN') + ':172:20'));
+      seg.push(line('LOC+147+0' + slot + '::5'));
+      seg.push(line('MEA+WT++KGM:' + kg));
+      if (rowPol) seg.push(line('LOC+9+' + port5(rowPol)));
+      if (rowPod) seg.push(line('LOC+11+' + port5(rowPod)));
+      seg.push(line('RFF+BM:1'));
+    });
+    seg.push('UNT+' + seg.length + '+1\'');
+    seg.push('UNZ+1+0\'');
+    return seg.join('\n');
+  }
+  function exportCaspEdi() {
+    if (!filteredRows().length) { alert('No data to export.'); return; }
+    downloadText(edifactFileName('casp'), buildCaspEdi('BAPLIE'), 'text/plain;charset=iso-8859-1');
+    if (window.Ops) Ops.audit('casp edi export', 'CASP BAPLIE draft');
+  }
+
   function downloadText(name, text, mime) {
     var blob = new Blob([text], { type: mime || 'text/plain;charset=utf-8' }), url = URL.createObjectURL(blob), a = document.createElement('a');
     a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
   }
+  function edifactFileName(kind) {
+    var m = (typeof vesselMeta !== 'undefined' && vesselMeta) || {};
+    var vessel = String(m.vesselName || '').replace(/^m\.?v\.?\s+/i, '').replace(/[^a-zA-Z0-9]+/g, '_').replace(/^_|_$/g, '').toLowerCase();
+    var voyage = String(m.voyage || '').replace(/[^a-zA-Z0-9]+/g, '').toUpperCase();
+    var base = [vessel || 'manifest', voyage].filter(Boolean).join('_');
+    return base + '_' + String(kind || 'baplie').toLowerCase() + '.edi';
+  }
   function exportEdifact(kind) {
     if (!filteredRows().length) { alert('No data to export.'); return; }
-    var m = (typeof vesselMeta !== 'undefined' && vesselMeta) || {};
-    var base = ((m.vesselName || 'MANIFEST') + (m.voyage ? '_' + m.voyage : '')).replace(/[^a-zA-Z0-9]+/g, '_').replace(/^_|_$/g, '');
-    downloadText((base || 'manifest') + '_' + kind + '_DRAFT.edi', buildEdifact(kind), 'text/plain;charset=utf-8');
+    downloadText(edifactFileName(kind), buildEdifact(kind), 'text/plain;charset=utf-8');
     if (window.Ops) Ops.audit('edifact export', kind + ' · draft');
   }
 
@@ -11183,6 +11303,7 @@ window.addEventListener('beforeunload', function(e){
     if ($('opsPrintSummary')) $('opsPrintSummary').addEventListener('click', function () { printView('summary'); });
     if ($('opsExcelFormula')) $('opsExcelFormula').addEventListener('click', exportFormulaWorkbook);
     if ($('opsEdiBaplie')) $('opsEdiBaplie').addEventListener('click', function () { exportEdifact('BAPLIE'); });
+    if ($('opsEdiCasp')) $('opsEdiCasp').addEventListener('click', exportCaspEdi);
     if ($('opsEdiCoprar')) $('opsEdiCoprar').addEventListener('click', function () { exportEdifact('COPRAR'); });
     if ($('opsEdiMovins')) $('opsEdiMovins').addEventListener('click', function () { exportEdifact('MOVINS'); });
     if ($('opsShareCreate')) $('opsShareCreate').addEventListener('click', makeShareLink);
@@ -11268,6 +11389,8 @@ window.addEventListener('beforeunload', function(e){
     _debug: {
       formulaWorkbook: formulaWorkbook,
       buildEdifact: buildEdifact,
+      buildCaspEdi: buildCaspEdi,
+      edifactFileName: edifactFileName,
       restoreArchive: restoreArchive,
       renderArchives: renderArchives,
       importMatrix: function (matrix, map, fileName) {
