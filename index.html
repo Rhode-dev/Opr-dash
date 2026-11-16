@@ -2406,7 +2406,7 @@ grant select, insert, update, delete on public.team_change_requests to authentic
         <div class="ops-export-group">
           <div class="ops-export-title">Excel with formulas</div>
           <div class="ops-row">
-            <button class="ops-btn primary" type="button" id="opsExcelFormula">⬇ Formula workbook (.xls)</button>
+            <button class="ops-btn primary" type="button" id="opsExcelFormula">⬇ Formula workbook (.xlsx)</button>
             <span class="ops-note">Manifest + operator/POD summary using COUNTIFS, SUMIFS and totals. Excel recalculates on open.</span>
           </div>
         </div>
@@ -10856,6 +10856,8 @@ window.addEventListener('beforeunload', function(e){
     var ws = XLSX.utils.aoa_to_sheet(data);
     ws['!cols'] = [{ wch: 14 }, { wch: 8 }, { wch: 10 }, { wch: 10 }, { wch: 6 }, { wch: 7 }, { wch: 7 }, { wch: 7 }, { wch: 10 }, { wch: 9 }, { wch: 9 }];
     var wb = XLSX.utils.book_new();
+    wb.Workbook = wb.Workbook || {};
+    wb.Workbook.CalcPr = { fullCalcOnLoad: true, forceFullCalc: true, calcMode: 'auto' };
     XLSX.utils.book_append_sheet(wb, ws, 'Manifest');
     var n = rows.length + 1;
     var fullRows = rows.filter(function (r) { return feOf(r) === 'F'; });
@@ -10865,7 +10867,13 @@ window.addEventListener('beforeunload', function(e){
       var g = {};
       list.forEach(function (r) {
         var k = (r.OPR || '—') + '|||' + (r.POD || '—');
-        if (!g[k]) g[k] = { opr: r.OPR || '—', pod: r.POD || '—' };
+        var x = g[k] || (g[k] = { opr: r.OPR || '—', pod: r.POD || '—', c20: 0, c40: 0, teu: 0, vgm: 0 });
+        var ft = ftOf(r.SzTp || r.SZTP || '');
+        if (ft === 20) x.c20++;
+        else if (ft === 40) x.c40++;
+        x.teu += teuOf(r.SzTp || r.SZTP || '');
+        var v = (typeof getVGM === 'function') ? getVGM(r) : null;
+        if (v != null) x.vgm += v;
       });
       return Object.keys(g).map(function (k) { return g[k]; }).sort(function (a, b) {
         return String(a.opr).localeCompare(String(b.opr)) || String(a.pod).localeCompare(String(b.pod));
@@ -10873,8 +10881,17 @@ window.addEventListener('beforeunload', function(e){
     }
     function operatorGroups(list) {
       var g = {};
-      list.forEach(function (r) { g[r.OPR || '—'] = 1; });
-      return Object.keys(g).sort();
+      list.forEach(function (r) {
+        var name = r.OPR || '—';
+        var x = g[name] || (g[name] = { name: name, c20: 0, c40: 0, teu: 0, vgm: 0 });
+        var ft = ftOf(r.SzTp || r.SZTP || '');
+        if (ft === 20) x.c20++;
+        else if (ft === 40) x.c40++;
+        x.teu += teuOf(r.SzTp || r.SZTP || '');
+        var v = (typeof getVGM === 'function') ? getVGM(r) : null;
+        if (v != null) x.vgm += v;
+      });
+      return Object.keys(g).sort().map(function (k) { return g[k]; });
     }
     function summaryBlock(aoa, title, fe, list) {
       aoa.push([title]);
@@ -10884,15 +10901,17 @@ window.addEventListener('beforeunload', function(e){
       groups.forEach(function (g) {
         var r = aoa.length + 1;
         aoa.push([g.opr, g.pod,
-          { t: 'n', f: 'COUNTIFS(Manifest!$C$2:$C$' + n + ',$A' + r + ',Manifest!$H$2:$H$' + n + ',$B' + r + ',Manifest!$F$2:$F$' + n + ',"' + fe + '",Manifest!$K$2:$K$' + n + ',20)' },
-          { t: 'n', f: 'COUNTIFS(Manifest!$C$2:$C$' + n + ',$A' + r + ',Manifest!$H$2:$H$' + n + ',$B' + r + ',Manifest!$F$2:$F$' + n + ',"' + fe + '",Manifest!$K$2:$K$' + n + ',40)' },
-          { t: 'n', f: 'SUMIFS(Manifest!$E$2:$E$' + n + ',Manifest!$C$2:$C$' + n + ',$A' + r + ',Manifest!$H$2:$H$' + n + ',$B' + r + ',Manifest!$F$2:$F$' + n + ',"' + fe + '")' },
-          { t: 'n', f: 'SUMIFS(Manifest!$I$2:$I$' + n + ',Manifest!$C$2:$C$' + n + ',$A' + r + ',Manifest!$H$2:$H$' + n + ',$B' + r + ',Manifest!$F$2:$F$' + n + ',"' + fe + '")' }
+          { t: 'n', f: 'COUNTIFS(Manifest!$C$2:$C$' + n + ',$A' + r + ',Manifest!$H$2:$H$' + n + ',$B' + r + ',Manifest!$F$2:$F$' + n + ',"' + fe + '",Manifest!$K$2:$K$' + n + ',20)', v: g.c20 },
+          { t: 'n', f: 'COUNTIFS(Manifest!$C$2:$C$' + n + ',$A' + r + ',Manifest!$H$2:$H$' + n + ',$B' + r + ',Manifest!$F$2:$F$' + n + ',"' + fe + '",Manifest!$K$2:$K$' + n + ',40)', v: g.c40 },
+          { t: 'n', f: 'SUMIFS(Manifest!$E$2:$E$' + n + ',Manifest!$C$2:$C$' + n + ',$A' + r + ',Manifest!$H$2:$H$' + n + ',$B' + r + ',Manifest!$F$2:$F$' + n + ',"' + fe + '")', v: g.teu },
+          { t: 'n', f: 'SUMIFS(Manifest!$I$2:$I$' + n + ',Manifest!$C$2:$C$' + n + ',$A' + r + ',Manifest!$H$2:$H$' + n + ',$B' + r + ',Manifest!$F$2:$F$' + n + ',"' + fe + '")', v: Math.round(g.vgm * 1000) }
         ]);
       });
       if (groups.length) {
         var start = headerRow + 1, end = aoa.length;
-        aoa.push(['TOTAL', '', { t: 'n', f: 'SUM(C' + start + ':C' + end + ')' }, { t: 'n', f: 'SUM(D' + start + ':D' + end + ')' }, { t: 'n', f: 'SUM(E' + start + ':E' + end + ')' }, { t: 'n', f: 'SUM(F' + start + ':F' + end + ')' }]);
+        var total = { c20: 0, c40: 0, teu: 0, vgm: 0 };
+        groups.forEach(function (g) { total.c20 += g.c20; total.c40 += g.c40; total.teu += g.teu; total.vgm += g.vgm; });
+        aoa.push(['TOTAL', '', { t: 'n', f: 'SUM(C' + start + ':C' + end + ')', v: total.c20 }, { t: 'n', f: 'SUM(D' + start + ':D' + end + ')', v: total.c40 }, { t: 'n', f: 'SUM(E' + start + ':E' + end + ')', v: total.teu }, { t: 'n', f: 'SUM(F' + start + ':F' + end + ')', v: Math.round(total.vgm * 1000) }]);
       } else {
         aoa.push(['No ' + title.toLowerCase() + ' containers', '', '', '', '', '']);
       }
@@ -10910,18 +10929,20 @@ window.addEventListener('beforeunload', function(e){
       aoa.push(['Operator', "20'", "40'", 'TEU', 'VGM kg']);
       var headerRow = aoa.length;
       var names = operatorGroups(list);
-      names.forEach(function (name) {
+      names.forEach(function (g) {
         var r = aoa.length + 1;
-        aoa.push([name,
-          { t: 'n', f: 'COUNTIFS(Manifest!$C$2:$C$' + n + ',$A' + r + ',Manifest!$F$2:$F$' + n + ',"' + fe + '",Manifest!$K$2:$K$' + n + ',20)' },
-          { t: 'n', f: 'COUNTIFS(Manifest!$C$2:$C$' + n + ',$A' + r + ',Manifest!$F$2:$F$' + n + ',"' + fe + '",Manifest!$K$2:$K$' + n + ',40)' },
-          { t: 'n', f: 'SUMIFS(Manifest!$E$2:$E$' + n + ',Manifest!$C$2:$C$' + n + ',$A' + r + ',Manifest!$F$2:$F$' + n + ',"' + fe + '")' },
-          { t: 'n', f: 'SUMIFS(Manifest!$I$2:$I$' + n + ',Manifest!$C$2:$C$' + n + ',$A' + r + ',Manifest!$F$2:$F$' + n + ',"' + fe + '")' }
+        aoa.push([g.name,
+          { t: 'n', f: 'COUNTIFS(Manifest!$C$2:$C$' + n + ',$A' + r + ',Manifest!$F$2:$F$' + n + ',"' + fe + '",Manifest!$K$2:$K$' + n + ',20)', v: g.c20 },
+          { t: 'n', f: 'COUNTIFS(Manifest!$C$2:$C$' + n + ',$A' + r + ',Manifest!$F$2:$F$' + n + ',"' + fe + '",Manifest!$K$2:$K$' + n + ',40)', v: g.c40 },
+          { t: 'n', f: 'SUMIFS(Manifest!$E$2:$E$' + n + ',Manifest!$C$2:$C$' + n + ',$A' + r + ',Manifest!$F$2:$F$' + n + ',"' + fe + '")', v: g.teu },
+          { t: 'n', f: 'SUMIFS(Manifest!$I$2:$I$' + n + ',Manifest!$C$2:$C$' + n + ',$A' + r + ',Manifest!$F$2:$F$' + n + ',"' + fe + '")', v: Math.round(g.vgm * 1000) }
         ]);
       });
       if (names.length) {
         var start = headerRow + 1, end = aoa.length;
-        aoa.push(['TOTAL', { t: 'n', f: 'SUM(B' + start + ':B' + end + ')' }, { t: 'n', f: 'SUM(C' + start + ':C' + end + ')' }, { t: 'n', f: 'SUM(D' + start + ':D' + end + ')' }, { t: 'n', f: 'SUM(E' + start + ':E' + end + ')' }]);
+        var total = { c20: 0, c40: 0, teu: 0, vgm: 0 };
+        names.forEach(function (g) { total.c20 += g.c20; total.c40 += g.c40; total.teu += g.teu; total.vgm += g.vgm; });
+        aoa.push(['TOTAL', { t: 'n', f: 'SUM(B' + start + ':B' + end + ')', v: total.c20 }, { t: 'n', f: 'SUM(C' + start + ':C' + end + ')', v: total.c40 }, { t: 'n', f: 'SUM(D' + start + ':D' + end + ')', v: total.teu }, { t: 'n', f: 'SUM(E' + start + ':E' + end + ')', v: Math.round(total.vgm * 1000) }]);
       } else {
         aoa.push(['No ' + title.toLowerCase() + ' containers', '', '', '', '']);
       }
@@ -10937,7 +10958,7 @@ window.addEventListener('beforeunload', function(e){
     var meta = [['Field', 'Value'], ['Vessel', m.vesselName || ''], ['Voyage', m.voyage || ''], ['POL', m.pol || ''], ['Prepared', new Date().toLocaleString()], ['Filtered rows', rows.length], ['Full containers', fullRows.length], ['Empty containers', emptyRows.length]];
     XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(meta), 'Vessel');
     var base = exportBaseName();
-    return { wb: wb, filename: (base || 'manifest') + '.xls' };
+    return { wb: wb, filename: (base || 'manifest') + '.xlsx' };
   }
 
   function exportFormulaWorkbook() {
