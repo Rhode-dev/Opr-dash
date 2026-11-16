@@ -2406,7 +2406,7 @@ grant select, insert, update, delete on public.team_change_requests to authentic
         <div class="ops-export-group">
           <div class="ops-export-title">Excel with formulas</div>
           <div class="ops-row">
-            <button class="ops-btn primary" type="button" id="opsExcelFormula">⬇ Formula workbook (.xlsx)</button>
+            <button class="ops-btn primary" type="button" id="opsExcelFormula">⬇ Formula workbook (.xls)</button>
             <span class="ops-note">Manifest + operator/POD summary using COUNTIFS, SUMIFS and totals. Excel recalculates on open.</span>
           </div>
         </div>
@@ -10744,11 +10744,22 @@ window.addEventListener('beforeunload', function(e){
   function filteredRows() {
     try { return typeof getFiltered === 'function' ? getFiltered() : allData; } catch (e) { return allData; }
   }
+  function exportBaseName() {
+    var m = (typeof vesselMeta !== 'undefined' && vesselMeta) || {};
+    var vessel = String(m.vesselName || '').replace(/^m\.?v\.?\s+/i, '').replace(/[^a-zA-Z0-9]+/g, '_').replace(/^_|_$/g, '').toLowerCase();
+    var voyage = String(m.voyage || '').replace(/[^a-zA-Z0-9]+/g, '').toUpperCase();
+    return [vessel || 'manifest', voyage].filter(Boolean).join('_');
+  }
+  function printDocumentTitle(kind) {
+    var suffix = { manifest: 'manifest', loading: 'loading_list', summary: 'voyage_summary', exceptions: 'exceptions' }[kind] || 'manifest';
+    return exportBaseName() + '_' + suffix;
+  }
   function buildPrintHTML(kind) {
     var rows = filteredRows().slice();
     var m = (typeof vesselMeta !== 'undefined' && vesselMeta) || {};
     var titles = { manifest: 'Manifest', loading: 'Loading List', summary: 'Voyage Summary', exceptions: 'Operational Exceptions' };
     var title = titles[kind] || 'Manifest';
+    var docTitle = printDocumentTitle(kind);
     var teu = rows.reduce(function (s, r) { return s + teuOf(r.SzTp || r.SZTP || ''); }, 0);
     var body = '';
     if (kind === 'exceptions') {
@@ -10807,7 +10818,7 @@ window.addEventListener('beforeunload', function(e){
           return '<tr><td>' + esc(r.Container || '') + '</td><td>' + esc(r.Slot || '') + '</td><td>' + esc(r.OPR || '') + '</td><td>' + esc(r.SzTp || '') + '</td><td>' + esc(r['F/E'] || '') + '</td><td>' + esc(r.POL || '') + '</td><td>' + esc(r.POD || '') + '</td>' + (kind === 'loading' ? '' : '<td>' + (v == null ? '' : esc(v.toFixed(2))) + '</td>') + '</tr>';
         }).join('') + '</tbody></table>';
     }
-    return '<!doctype html><html><head><meta charset="utf-8"><title>' + esc(title) + '</title><style>' +
+    return '<!doctype html><html><head><meta charset="utf-8"><title>' + esc(docTitle) + '</title><style>' +
       'body{font-family:Arial,sans-serif;margin:18px;color:#111}h1{font-size:17px;margin:0 0 4px}h2{font-size:12px;font-weight:400;color:#555;margin:0 0 10px}h3{font-size:11px;margin:14px 0 5px}' +
       '.meta{font-size:10px;color:#444;margin-bottom:10px}table{width:100%;border-collapse:collapse;font-size:9px}th,td{border:1px solid #bbb;padding:3px 4px;text-align:left}th{background:#eee}' +
       '.kpis{display:flex;gap:8px;margin:10px 0}.kpis div{border:1px solid #ccc;border-radius:4px;padding:5px 8px;min-width:80px}.kpis b{display:block;font-size:16px}.kpis span{font-size:8px;color:#666}' +
@@ -10818,6 +10829,7 @@ window.addEventListener('beforeunload', function(e){
     var w = window.open('', '_blank');
     if (!w) { alert('Allow pop-ups to print/PDF this report.'); return; }
     w.document.open(); w.document.write(buildPrintHTML(kind)); w.document.close();
+    try { w.document.title = printDocumentTitle(kind); } catch (e) {}
     setTimeout(function () { try { w.focus(); w.print(); } catch (e) {} }, 250);
   }
 
@@ -10924,8 +10936,8 @@ window.addEventListener('beforeunload', function(e){
 
     var meta = [['Field', 'Value'], ['Vessel', m.vesselName || ''], ['Voyage', m.voyage || ''], ['POL', m.pol || ''], ['Prepared', new Date().toLocaleString()], ['Filtered rows', rows.length], ['Full containers', fullRows.length], ['Empty containers', emptyRows.length]];
     XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(meta), 'Vessel');
-    var base = ((m.vesselName || 'Manifest') + (m.voyage ? '_' + m.voyage : '')).replace(/[^a-zA-Z0-9]+/g, '_').replace(/^_|_$/g, '');
-    return { wb: wb, filename: (base || 'manifest') + '.xlsx' };
+    var base = exportBaseName();
+    return { wb: wb, filename: (base || 'manifest') + '.xls' };
   }
 
   function exportFormulaWorkbook() {
@@ -11058,11 +11070,7 @@ window.addEventListener('beforeunload', function(e){
     a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
   }
   function edifactFileName(kind) {
-    var m = (typeof vesselMeta !== 'undefined' && vesselMeta) || {};
-    var vessel = String(m.vesselName || '').replace(/^m\.?v\.?\s+/i, '').replace(/[^a-zA-Z0-9]+/g, '_').replace(/^_|_$/g, '').toLowerCase();
-    var voyage = String(m.voyage || '').replace(/[^a-zA-Z0-9]+/g, '').toUpperCase();
-    var base = [vessel || 'manifest', voyage].filter(Boolean).join('_');
-    return base + '_' + String(kind || 'baplie').toLowerCase() + '.edi';
+    return exportBaseName() + '_' + String(kind || 'baplie').toLowerCase() + '.edi';
   }
   function exportEdifact(kind) {
     if (!filteredRows().length) { alert('No data to export.'); return; }
@@ -11391,6 +11399,8 @@ window.addEventListener('beforeunload', function(e){
       buildEdifact: buildEdifact,
       buildCaspEdi: buildCaspEdi,
       edifactFileName: edifactFileName,
+      exportBaseName: exportBaseName,
+      printDocumentTitle: printDocumentTitle,
       restoreArchive: restoreArchive,
       renderArchives: renderArchives,
       importMatrix: function (matrix, map, fileName) {
