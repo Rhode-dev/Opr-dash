@@ -1071,7 +1071,84 @@ body.team-viewer #addCtnrBtn,body.team-viewer .btn-row-edit{display:none!importa
 #syncPrompt .sp-btn:hover{background:rgba(245,158,11,.28);color:#fff}
 #syncPrompt .sp-x{border:none;background:none;color:var(--muted);cursor:pointer;font-size:11px;padding:2px 4px}
 #syncPrompt .sp-x:hover{color:#fff}
-@media(max-width:640px){#syncOverlay{padding:8px}.sync-grid{grid-template-columns:1fr}}
+.auth-gate{position:fixed;inset:0;z-index:1000;background:radial-gradient(circle at 30% 20%,rgba(37,99,235,.2),transparent 38%),rgba(3,7,18,.94);display:flex;align-items:center;justify-content:center;padding:18px;overflow:auto}
+.auth-gate[hidden]{display:none}
+body.auth-locked{overflow:hidden}
+.auth-card{width:430px;max-width:100%;background:#0c1526;border:1px solid #263449;border-radius:12px;box-shadow:0 28px 80px rgba(0,0,0,.7);padding:20px}
+.auth-brand{font-family:var(--ui);font-size:20px;font-weight:800;letter-spacing:.02em;color:#f8fafc;margin-bottom:12px}
+.auth-brand span{color:#60a5fa}
+.auth-card h2{margin:0 0 5px;font-size:16px;color:#f8fafc}
+.auth-lead{margin:0 0 14px;font-size:10px;line-height:1.55;color:#94a3b8}
+.auth-section{padding:11px;border:1px solid #263449;border-radius:8px;background:rgba(30,41,59,.35);margin-bottom:10px}
+.auth-step{font-size:7px;letter-spacing:.11em;text-transform:uppercase;color:#93c5fd;font-weight:700;margin-bottom:8px}
+.auth-section label{display:block;font-size:8px;letter-spacing:.07em;text-transform:uppercase;color:#94a3b8;margin:6px 0 4px}
+.auth-section input{width:100%;height:34px;border:1px solid #334155;border-radius:5px;background:#111c30;color:#e2e8f0;padding:0 9px;font-family:var(--mono);font-size:10px;outline:none}
+.auth-section input:focus{border-color:#60a5fa;box-shadow:0 0 0 2px rgba(59,130,246,.16)}
+.auth-btn{height:34px;border:1px solid #334155;border-radius:6px;background:#172033;color:#dbeafe;padding:0 12px;font-family:var(--mono);font-size:10px;font-weight:700;cursor:pointer;margin-top:8px}
+.auth-btn.primary{background:#1d4ed8;border-color:#2563eb;color:#fff}
+.auth-btn:hover{border-color:#64748b}.auth-btn.primary:hover{background:#2563eb}
+.auth-btn.link{width:100%;margin-top:6px;background:transparent;border-color:transparent;color:#93c5fd;font-weight:600}
+.auth-btn.link:hover{color:#dbeafe;background:rgba(59,130,246,.08);border-color:rgba(59,130,246,.25)}
+.auth-btn:disabled{opacity:.55;cursor:wait}
+.auth-actions{display:flex;gap:6px}.auth-actions .auth-btn{flex:1}
+.auth-change{display:block;margin-top:9px;border:none;background:none;color:#64748b;font-family:var(--mono);font-size:8px;text-decoration:underline;cursor:pointer;padding:0}
+.auth-change:hover{color:#93c5fd}
+.auth-msg{min-height:14px;font-size:9px;line-height:1.45;color:#fca5a5;margin:4px 0}
+.auth-msg.ok{color:#6ee7b7}
+.auth-foot{font-size:8px;color:#64748b;text-align:center;margin-top:4px}
+@media(max-width:640px){#syncOverlay{padding:8px}.sync-grid{grid-template-columns:1fr}.auth-card{padding:16px}.auth-gate{padding:10px}}
+
+
+/* Team workspace redesign */
+.team-setup-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:9px}
+.team-card{border:1px solid var(--border-soft);border-radius:9px;background:rgba(20,31,48,.65);padding:11px}
+.team-card-head{display:flex;align-items:flex-start;gap:8px;margin-bottom:9px}
+.team-card-head>div{flex:1;min-width:0}
+.team-eyebrow{font-family:var(--mono);font-size:7px;letter-spacing:.12em;text-transform:uppercase;color:#60a5fa;margin-bottom:2px}
+.team-card h4{font-family:var(--ui);font-size:12px;color:#f1f5f9;margin:0 0 3px}
+.team-card p{font-size:8.5px;line-height:1.45;color:var(--muted);margin:0}
+.team-label{display:block;font-family:var(--mono);font-size:7.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:7px 0 3px}
+.team-input{width:100%;height:31px;border:1px solid #334155;border-radius:5px;background:#111c30;color:#e2e8f0;padding:0 8px;font-family:var(--mono);font-size:9.5px;outline:none}
+.team-input:focus{border-color:#60a5fa;box-shadow:0 0 0 2px rgba(59,130,246,.14)}
+.team-wide{width:100%;margin-top:8px}
+.team-wide.ghost{background:transparent}
+.team-hero{display:flex;align-items:center;gap:10px;padding:11px 12px;border:1px solid var(--border-soft);border-radius:9px;background:linear-gradient(100deg,rgba(37,99,235,.12),rgba(6,182,212,.05));margin-bottom:7px}
+.team-hero-main{flex:1;min-width:0}
+.team-hero h3{font-family:var(--ui);font-size:14px;color:#fff;margin:1px 0 2px}
+.team-meta{font-family:var(--mono);font-size:8px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.team-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:7px}
+.team-stat{border:1px solid var(--border-soft);border-radius:6px;background:rgba(30,41,59,.38);padding:6px 8px}
+.team-stat b{display:block;font-family:var(--mono);font-size:12px;color:#f8fafc}
+.team-stat span{font-size:7px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.team-actions-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:9px}
+.team-actions-bar .sync-btn{flex:1;min-width:110px}
+.team-dashboard{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.team-invite-card,.team-history-card{grid-column:1/-1}
+.team-copy-row{display:flex;gap:5px;align-items:center}
+.team-copy-row .team-input{flex:1}
+.team-copy-row .sync-btn{flex:none;margin:0;white-space:nowrap}
+.team-count{font-family:var(--mono);font-size:8px;padding:2px 7px;border-radius:100px;border:1px solid var(--border);color:#cbd5e1;background:rgba(148,163,184,.08)}
+.team-hint{font-size:8px;line-height:1.45;color:var(--muted);margin-top:7px;padding-top:7px;border-top:1px solid rgba(148,163,184,.12)}
+.team-switch{margin:0 0 8px;font-size:8px}
+.team-members,.team-requests,.team-history{display:flex;flex-direction:column;gap:4px;max-height:250px;overflow:auto;margin-top:2px}
+.team-row{display:flex;align-items:center;gap:7px;padding:6px 7px;border:1px solid var(--border-soft);border-radius:6px;background:rgba(15,23,42,.36);font-size:9px}
+.team-avatar{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none;background:rgba(59,130,246,.18);border:1px solid rgba(59,130,246,.35);color:#bfdbfe;font-family:var(--mono);font-size:8px;font-weight:700;text-transform:uppercase}
+.team-row .who{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px;overflow:hidden;white-space:normal}
+.team-row .who b{font-family:var(--ui);font-size:9px;color:#e2e8f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.team-row .who span{font-family:var(--mono);font-size:7px;color:var(--muted)}
+.team-row select{padding:3px 5px;background:var(--surface2);border:1px solid var(--border-soft);border-radius:4px;color:var(--text-soft);font-family:var(--mono);font-size:8px}
+.team-row button{padding:3px 7px;font-size:8px;border-radius:4px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.28);color:#fca5a5;cursor:pointer}
+.team-row button:hover{background:rgba(239,68,68,.16)}
+.team-history .team-row{display:block}
+.team-history .team-row b{color:var(--text)}
+.team-conflict{margin-top:8px;padding:9px;border:1px solid rgba(245,158,11,.4);border-radius:8px;background:rgba(245,158,11,.06)}
+.team-conflict[hidden]{display:none}
+@media(max-width:680px){.team-setup-grid,.team-dashboard{grid-template-columns:1fr}.team-invite-card,.team-history-card{grid-column:auto}.team-stats{grid-template-columns:1fr 1fr}.team-actions-bar .sync-btn{min-width:45%}}
+
+.team-row .sync-btn{background:#172033;border:1px solid #334155;color:#dbeafe;padding:3px 7px;font-size:8px;border-radius:4px}
+.team-row .sync-btn:hover{background:#1e293b;border-color:#64748b;color:#fff}
+.team-row .sync-btn.danger{background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.35);color:#fca5a5}
+.team-row .sync-btn.danger:hover{background:rgba(239,68,68,.18)}
 
 /* ── OPERATIONS CENTRE ── */
 #opsOpenBtn{display:flex;align-items:center;gap:7px;padding:9px 14px;margin:0;width:auto;justify-content:flex-start;color:#fcd34d}
@@ -1214,6 +1291,89 @@ body.shared-view #rcSection{display:none!important}
 @media(max-width:760px){.stow-body{grid-template-columns:1fr}.stow-side{display:grid;grid-template-columns:1fr 1fr}}
 @media(max-width:480px){.stow-actions{width:100%}.ops-field-select{flex:1}}
 @media(max-width:700px){#opsOverlay{padding:6px}#opsModal{max-height:96vh}.ops-body{padding:10px}}
+
+
+/* CASP-style stowage workbench */
+.stow-command{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:9px 10px;border:1px solid var(--border-soft);border-radius:9px;background:linear-gradient(100deg,rgba(37,99,235,.11),rgba(6,182,212,.04));margin-bottom:7px}
+.stow-command-left{flex:1;min-width:180px}
+.stow-eyebrow{font-family:var(--mono);font-size:7px;letter-spacing:.14em;text-transform:uppercase;color:#60a5fa;margin-bottom:1px}
+.stow-command-title{font-family:var(--ui);font-size:14px;color:#fff;display:flex;align-items:baseline;gap:7px;flex-wrap:wrap}
+.stow-command-title span{font-family:var(--mono);font-size:8px;color:var(--muted);font-weight:400}
+.stow-command-actions{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+.stow-viewtoggle{display:inline-flex;border:1px solid #334155;border-radius:5px;overflow:hidden}
+.stow-viewtoggle button{height:27px;border:0;background:#111c30;color:#94a3b8;padding:0 9px;font-family:var(--mono);font-size:8px;cursor:pointer}
+.stow-viewtoggle button+button{border-left:1px solid #334155}
+.stow-viewtoggle button.active{background:#1d4ed8;color:#fff}
+.stow-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(210px,260px);gap:8px;align-items:start}
+.stow-plan{min-width:0;border:1px solid var(--border-soft);border-radius:8px;padding:8px;background:rgba(15,23,42,.55)}
+.stow-plan-head{display:flex;align-items:flex-start;gap:8px;justify-content:space-between}
+.stow-plan-head>div:first-child{min-width:0}
+.stow-plan-meta{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-family:var(--mono);font-size:7.5px;color:var(--muted);margin:2px 0 6px}
+.stow-statusbar{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;padding-top:5px;border-top:1px solid var(--border-soft)}
+.stow-statusbar span{font-family:var(--mono);font-size:7.5px;color:var(--muted);border:1px solid var(--border-soft);background:rgba(30,41,59,.4);border-radius:3px;padding:2px 5px;white-space:nowrap}
+.stow-statusbar b{color:#e2e8f0;font-weight:600}
+.stow-matrix{display:grid;gap:2px;min-width:max-content;align-items:stretch}
+.stow-mx-corner,.stow-mx-bay,.stow-mx-tier{font-family:var(--mono);font-size:7px;color:var(--muted);display:flex;align-items:center;justify-content:center;min-height:19px}
+.stow-mx-bay{color:#bfdbfe;font-weight:700;font-size:7.5px;border:0;background:transparent;cursor:pointer;padding:0}
+.stow-mx-bay:hover{color:#fff}
+.stow-mx-tier{width:26px;justify-content:flex-end;padding-right:3px}
+.stow-mx-cell{height:23px;min-width:29px;border:1px solid rgba(148,163,184,.22);border-radius:2px;background:rgba(15,23,42,.6);color:#64748b;font-family:var(--mono);font-size:7px;line-height:1;display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:pointer;padding:0}
+.stow-mx-cell:hover{border-color:#fff;box-shadow:0 0 0 1px rgba(255,255,255,.6);z-index:2}
+.stow-mx-cell.empty.available{background:rgba(241,245,249,.88);border-color:#cbd5e1;color:#475569;font-size:9px}
+.stow-mx-cell.empty.unavailable{background:rgba(30,41,59,.28);border-color:rgba(71,85,105,.3);color:#334155;cursor:default}
+.stow-mx-cell.empty.unavailable:hover{box-shadow:none;border-color:rgba(71,85,105,.3)}
+.stow-mx-cell.occupied{color:#fff;font-weight:700;font-size:7.5px}
+.stow-mx-cell.selected{outline:2px solid #60a5fa;outline-offset:-2px}
+.stow-mx-cell .mx-count{font-size:8px}
+.stow-mx-cell .mx-sub{font-size:5.5px;opacity:.8;margin-left:1px}
+.stow-mx-hatch{height:9px;border-radius:1px;background:#020617;border:1px solid #1e293b;margin:1px 1px}
+.stow-mx-hatch-label{font-family:var(--mono);font-size:5.5px;letter-spacing:.08em;color:#64748b;display:flex;align-items:center;justify-content:center}
+.stow-mx-deck{grid-column:1/-1;display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:6.5px;letter-spacing:.1em;color:#64748b;margin:3px 0 1px}
+.stow-mx-deck::after{content:'';flex:1;height:1px;background:rgba(148,163,184,.15)}
+.stow-mx-legend{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-family:var(--mono);font-size:7px;color:var(--muted);margin-top:5px}
+.stow-mx-legend i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:3px;vertical-align:-1px}
+.stow-inspector{border:1px solid rgba(59,130,246,.28);border-radius:8px;padding:8px;background:rgba(30,58,138,.1)}
+.stow-inspector h4{margin:0 0 2px;font-family:var(--ui);font-size:11px;color:#fff}
+.stow-inspector .si-meta{font-family:var(--mono);font-size:7.5px;color:var(--muted);margin-bottom:6px}
+.stow-inspector-actions{display:flex;gap:4px;margin:6px 0}
+.stow-inspector-actions button{flex:1;padding:3px 4px;font-size:7.5px}
+.stow-inspector-list{display:flex;flex-direction:column;gap:3px;max-height:190px;overflow:auto}
+.stow-inspector-item{display:flex;align-items:center;gap:5px;padding:3px 4px;border:1px solid var(--border-soft);border-radius:4px;background:rgba(15,23,42,.35);font-family:var(--mono);font-size:7px;color:var(--text-soft)}
+.stow-inspector-item b{color:#fff;font-size:7.5px}
+.stow-inspector-item span{margin-left:auto;color:var(--muted)}
+.stow-empty-badge{font-family:var(--mono);font-size:7px;color:var(--muted);border:1px dashed var(--border-soft);border-radius:4px;padding:6px;text-align:center}
+@media(max-width:900px){.stow-layout{grid-template-columns:1fr}.stow-side{display:grid;grid-template-columns:1fr 1fr}.stow-command-actions{width:100%}}
+@media(max-width:600px){.stow-side{grid-template-columns:1fr}.stow-command-title{font-size:12px}.stow-viewtoggle button{padding:0 7px}}
+
+.stow-mx-cell.blank{background:transparent;border-color:transparent;cursor:default;box-shadow:none}
+.stow-mx-cell.blank:hover{box-shadow:none;border-color:transparent}
+
+.stow-cell.blank{background:transparent;border-color:transparent;box-shadow:none;pointer-events:none}
+.stow-cell.blank:hover{transform:none;box-shadow:none;border-color:transparent}
+
+/* Stowage window controls and full-page plan */
+.ops-window-actions{display:flex;align-items:center;gap:4px;flex:none}
+.ops-stow-controls{display:none;align-items:center;gap:4px}
+#opsModal.stow-active .ops-stow-controls{display:flex}
+.ops-winbtn{background:none;border:1px solid var(--border-soft);color:var(--muted);width:28px;height:28px;border-radius:7px;cursor:pointer;font-family:var(--mono);font-size:13px;line-height:1}
+.ops-winbtn:hover{color:#fff;background:var(--surface2)}
+.ops-winbtn:disabled{opacity:.35;cursor:default}
+.ops-winbtn:disabled:hover{color:var(--muted);background:none}
+#opsOverlay.ops-maximized{padding:0;background:#020617}
+#opsModal.ops-maximized{width:100vw;height:100vh;max-height:100vh;border-radius:0;border:0}
+#opsModal.ops-maximized .ops-body{flex:1;min-height:0;overflow:hidden;display:flex;padding:8px}
+#opsModal.ops-maximized .ops-pane{flex:1;min-width:0;min-height:0;overflow:auto}
+#opsModal.ops-maximized #opsStowagePane{display:flex;flex-direction:column}
+#opsModal.ops-maximized .stow-command,#opsModal.ops-maximized .stow-kpis,#opsModal.ops-maximized .stow-bays{flex:none}
+#opsModal.ops-maximized .stow-layout{flex:1;min-height:0}
+#opsModal.ops-maximized .stow-plan{display:flex;flex-direction:column;min-height:0}
+#opsModal.ops-maximized .stow-grid-scroll{flex:1;max-height:none;min-height:0}
+#opsModal.ops-maximized .stow-side{max-height:100%;overflow:auto}
+@media(max-width:680px){#opsModal.ops-maximized .ops-body{padding:5px}}
+
+.stow-matrix{width:100%;justify-content:center}
+#opsModal.ops-maximized .stow-mx-cell{height:30px;min-width:40px;font-size:8px}
+#opsModal.ops-maximized .stow-mx-cell.empty.available{font-size:11px}
 
 </style>
 </head>
@@ -2109,6 +2269,7 @@ create policy "own manifest snapshot"
       <div class="sync-actions">
         <button type="button" class="sync-btn primary" id="syncSignIn">Sign in</button>
         <button type="button" class="sync-btn" id="syncSignUp">Create account</button>
+        <button type="button" class="sync-btn" id="syncMagic">Email sign-in link</button>
         <button type="button" class="sync-btn danger" id="syncSignOut" disabled>Sign out</button>
       </div>
       <div class="sync-account" id="syncAccount">Not signed in.</div>
@@ -2124,55 +2285,133 @@ create policy "own manifest snapshot"
     </div>
 
     <div class="sync-body" id="syncTeamPane" hidden>
-      <div class="sync-status" id="teamStatus">Sign in on the Personal tab first.</div>
-      <div class="sync-note">
-        A team workspace is shared by several Supabase users. <b>Viewer</b> can only read, <b>Editor</b> can upload or submit changes,
-        and <b>Admin</b> can manage members and approve changes. Team data is separate from your personal snapshot.
-      </div>
+      <div class="sync-status" id="teamStatus">Sign in on the Personal sync tab first.</div>
 
-      <div id="teamSetup">
-        <div class="sync-grid">
-          <div class="sync-field full">
-            <label for="teamName">New workspace name</label>
-            <input id="teamName" placeholder="e.g. OPR Operations Team">
-          </div>
-          <div class="sync-field full">
-            <label for="teamCode">Join code (to join an existing workspace)</label>
-            <input id="teamCode" placeholder="e.g. OPR-7K3P">
+      <section class="team-card team-signedout" id="teamSignedOut">
+        <div class="team-card-head">
+          <div>
+            <div class="team-eyebrow">Account required</div>
+            <h4>Sign in to use the Team workspace</h4>
+            <p>Team members, roles, approvals and shared uploads are tied to Supabase accounts.</p>
           </div>
         </div>
-        <div class="sync-actions">
-          <button class="sync-btn primary" type="button" id="teamCreate">Create workspace</button>
-          <button class="sync-btn" type="button" id="teamJoin">Join workspace</button>
-          <button class="sync-btn" type="button" id="teamRefresh">Refresh</button>
+        <button class="sync-btn primary team-wide" type="button" id="teamGoSignIn">Go to Personal sign-in</button>
+      </section>
+
+      <div id="teamSetup" class="team-setup" hidden>
+        <div class="team-setup-grid">
+          <section class="team-card team-create-card">
+            <div class="team-card-head">
+              <div>
+                <div class="team-eyebrow">Create</div>
+                <h4>Start a team workspace</h4>
+                <p>You become the owner and first admin. Share an invite link with your team.</p>
+              </div>
+            </div>
+            <label class="team-label" for="teamName">Workspace name</label>
+            <input class="team-input" id="teamName" placeholder="e.g. OPR Operations Team">
+            <button class="sync-btn primary team-wide" type="button" id="teamCreate">Create workspace</button>
+          </section>
+
+          <section class="team-card team-join-card">
+            <div class="team-card-head">
+              <div>
+                <div class="team-eyebrow">Join</div>
+                <h4>Join an existing workspace</h4>
+                <p>Use the join code or open the invite link your admin sent you.</p>
+              </div>
+            </div>
+            <label class="team-label" for="teamCode">Join code</label>
+            <input class="team-input" id="teamCode" placeholder="e.g. OPR-7K3P">
+            <button class="sync-btn team-wide" type="button" id="teamJoin">Join workspace</button>
+            <button class="sync-btn team-wide ghost" type="button" id="teamRefresh">Refresh</button>
+          </section>
         </div>
       </div>
 
-      <div id="teamWorkspace" hidden>
-        <div class="team-head">
-          <div><b id="teamWsName">Workspace</b><div class="sync-account" id="teamWsMeta"></div></div>
+      <div id="teamWorkspace" class="team-workspace" hidden>
+        <div class="team-hero">
+          <div class="team-hero-main">
+            <div class="team-eyebrow">Team workspace</div>
+            <h3 id="teamWsName">Workspace</h3>
+            <div class="team-meta" id="teamWsMeta">—</div>
+          </div>
           <span class="team-role" id="teamRole">—</span>
         </div>
-        <div class="sync-actions">
-          <button class="sync-btn primary" type="button" id="teamPull">⬇ Pull team data</button>
-          <button class="sync-btn" type="button" id="teamUpload">⬆ Upload team data</button>
-          <button class="sync-btn" type="button" id="teamSubmit">📤 Submit for approval</button>
+
+        <div class="team-stats">
+          <div class="team-stat"><b id="teamMemberCount">0</b><span>Members</span></div>
+          <div class="team-stat"><b id="teamRevision">—</b><span>Revision</span></div>
+          <div class="team-stat"><b id="teamApprovalMode">—</b><span>Upload policy</span></div>
+          <div class="team-stat"><b id="teamMyRole">—</b><span>Your role</span></div>
+        </div>
+
+        <div class="team-actions-bar">
+          <button class="sync-btn primary" type="button" id="teamPull">Pull team data</button>
+          <button class="sync-btn" type="button" id="teamUpload">Upload team data</button>
+          <button class="sync-btn" type="button" id="teamSubmit">Submit for approval</button>
           <button class="sync-btn danger" type="button" id="teamLeave">Leave</button>
         </div>
-        <label class="sync-check" id="teamApprovalWrap"><input type="checkbox" id="teamApproval"> Require admin approval for editor uploads</label>
 
-        <div class="sync-help" style="margin-top:8px">
-          <summary style="cursor:default;font-size:10px;font-weight:700;color:var(--text-soft)">Team members</summary>
-          <div id="teamMembers" class="team-members"></div>
-        </div>
+        <div class="team-dashboard">
+          <section class="team-card team-invite-card">
+            <div class="team-card-head">
+              <div>
+                <div class="team-eyebrow">Invite</div>
+                <h4>Invite team members</h4>
+                <p>They join as Editors. Promote them after they accept.</p>
+              </div>
+            </div>
+            <label class="team-label" for="teamInviteLink">Invite link</label>
+            <div class="team-copy-row">
+              <input class="team-input" id="teamInviteLink" readonly>
+              <button class="sync-btn primary" type="button" id="teamInvite">Copy link</button>
+            </div>
+            <label class="team-label" for="teamInviteEmailTo">Email invite</label>
+            <div class="team-copy-row">
+              <input class="team-input" id="teamInviteEmailTo" type="email" placeholder="teammate@example.com">
+              <button class="sync-btn" type="button" id="teamInviteEmail">Send email</button>
+            </div>
+            <div class="team-hint" id="teamInviteHint">The invite link opens this dashboard, signs the person in, and joins them to this workspace automatically.</div>
+          </section>
 
-        <div class="sync-help" style="margin-top:8px">
-          <summary style="cursor:default;font-size:10px;font-weight:700;color:var(--text-soft)">Pending approvals</summary>
-          <div id="teamRequests" class="team-requests"></div>
+          <section class="team-card team-members-card">
+            <div class="team-card-head">
+              <div>
+                <div class="team-eyebrow">People</div>
+                <h4>Team members</h4>
+              </div>
+              <span class="team-count" id="teamMemberCountBadge">0</span>
+            </div>
+            <div id="teamMembers" class="team-members"></div>
+          </section>
+
+          <section class="team-card team-approvals-card">
+            <div class="team-card-head">
+              <div>
+                <div class="team-eyebrow">Control</div>
+                <h4>Approvals</h4>
+              </div>
+              <span class="team-count" id="teamRequestCount">0</span>
+            </div>
+            <label class="sync-check team-switch" id="teamApprovalWrap"><input type="checkbox" id="teamApproval"> Require admin approval for editor uploads</label>
+            <div id="teamRequests" class="team-requests"></div>
+          </section>
+
+          <section class="team-card team-history-card">
+            <div class="team-card-head">
+              <div>
+                <div class="team-eyebrow">Activity</div>
+                <h4>Row edit history</h4>
+              </div>
+            </div>
+            <input class="team-input" id="teamHistoryFilter" placeholder="Filter by container, e.g. CSNU1234567">
+            <div id="teamHistory" class="team-history"></div>
+          </section>
         </div>
 
         <div id="teamConflict" class="team-conflict" hidden>
-          <b>⚠ Remote data changed</b>
+          <b>Remote data changed</b>
           <div id="teamConflictMsg" class="sync-note"></div>
           <div class="sync-actions">
             <button class="sync-btn primary" type="button" id="teamConflictMerge">Merge rows</button>
@@ -2180,14 +2419,6 @@ create policy "own manifest snapshot"
             <button class="sync-btn danger" type="button" id="teamConflictOverwrite">Overwrite remote</button>
             <button class="sync-btn" type="button" id="teamConflictCancel">Cancel</button>
           </div>
-        </div>
-
-        <div class="sync-help" style="margin-top:8px">
-          <summary style="cursor:default;font-size:10px;font-weight:700;color:var(--text-soft)">Row edit history</summary>
-          <div class="sync-grid">
-            <div class="sync-field full"><label for="teamHistoryFilter">Filter by container</label><input id="teamHistoryFilter" placeholder="CSNU1234567"></div>
-          </div>
-          <div id="teamHistory" class="team-history"></div>
         </div>
       </div>
 
@@ -2281,6 +2512,40 @@ grant select, insert, update, delete on public.team_change_requests to authentic
   </div>
 </div>
 
+<div id="authGate" class="auth-gate" hidden>
+  <div class="auth-card" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+    <div class="auth-brand">OPR <span>Load</span></div>
+    <h2 id="authTitle">Sign in to continue</h2>
+    <p class="auth-lead">A linked Supabase account is required before any manifest, booking or loading file can be uploaded.</p>
+
+    <div id="authLinkBox" class="auth-section">
+      <div class="auth-step">Step 1 · Link Supabase</div>
+      <label for="authUrl">Project URL</label>
+      <input id="authUrl" type="url" placeholder="https://xxxxx.supabase.co" spellcheck="false" autocomplete="url">
+      <label for="authAnon">Anon public key</label>
+      <input id="authAnon" type="password" placeholder="eyJhbGciOi..." spellcheck="false" autocomplete="off">
+      <button type="button" class="auth-btn primary" id="authLinkBtn">Link Supabase</button>
+    </div>
+
+    <div id="authCredBox" class="auth-section" hidden>
+      <div class="auth-step">Step 2 · Account</div>
+      <label for="authEmail">Email</label>
+      <input id="authEmail" type="email" placeholder="you@example.com" autocomplete="username">
+      <label for="authPassword">Password</label>
+      <input id="authPassword" type="password" placeholder="Account password" autocomplete="current-password">
+      <div class="auth-actions">
+        <button type="button" class="auth-btn primary" id="authSignIn">Sign in</button>
+        <button type="button" class="auth-btn" id="authSignUp">Create account</button>
+      </div>
+      <button type="button" class="auth-btn link" id="authMagic">Email me a sign-in link</button>
+      <button type="button" class="auth-change" id="authChangeLink">Change Supabase project</button>
+    </div>
+
+    <div class="auth-msg" id="authMsg" role="status" aria-live="polite"></div>
+    <div class="auth-foot">Session stays on this device after the first sign-in.</div>
+  </div>
+</div>
+
 <div id="syncPrompt" role="status" aria-live="polite">
   <span class="sp-ico">☁</span>
   <span class="sp-text">Cloud Sync: local changes are not uploaded.</span>
@@ -2292,8 +2557,14 @@ grant select, insert, update, delete on public.team_change_requests to authentic
 <div id="opsOverlay" aria-hidden="true">
   <div id="opsModal" role="dialog" aria-modal="true" aria-labelledby="opsTitle">
     <div class="ops-head">
-      <h3 id="opsTitle">⚠ Operations Centre</h3>
-      <button type="button" class="ops-close" id="opsClose" aria-label="Close operations">✕</button>
+      <h3 id="opsTitle">&#9888; Operations Centre</h3>
+      <div class="ops-window-actions">
+        <div class="ops-stow-controls" id="opsStowControls">
+          <button type="button" class="ops-winbtn" id="opsStowMin" title="Restore stowage window" aria-label="Minimize stowage" disabled>&#8722;</button>
+          <button type="button" class="ops-winbtn" id="opsStowMax" title="Maximize stowage to full page" aria-label="Maximize stowage">&#9633;</button>
+        </div>
+        <button type="button" class="ops-close" id="opsClose" aria-label="Close stowage" title="Close stowage">&#10005;</button>
+      </div>
     </div>
     <div class="ops-tabs" role="tablist" aria-label="Operations sections">
       <button class="ops-tab active" type="button" data-ops-tab="alerts">Alerts &amp; Exceptions</button>
@@ -2471,23 +2742,33 @@ grant execute on function public.get_shared_snapshot(text) to anon, authenticate
       </section>
 
       <section class="ops-pane" id="opsStowagePane" role="tabpanel" hidden>
-        <div class="stow-top">
-          <div class="stow-kpis" id="stowKpis"></div>
-          <div class="stow-actions">
+        <div class="stow-command">
+          <div class="stow-command-left">
+            <div class="stow-eyebrow">Stowage control</div>
+            <div class="stow-command-title"><b id="stowVesselLabel">Vessel not selected</b><span id="stowVoyageLabel"></span></div>
+          </div>
+          <div class="stow-command-actions">
+            <div class="stow-viewtoggle" role="group" aria-label="Stowage view">
+              <button type="button" class="active" data-stow-view="all">All bays</button>
+              <button type="button" data-stow-view="detail">Bay detail</button>
+            </div>
             <select class="ops-field-select" id="stowColor" aria-label="Colour by">
+              <option value="opr" selected>Colour by operator</option>
               <option value="pod">Colour by POD</option>
               <option value="pol">Colour by POL</option>
-              <option value="opr" selected>Colour by operator</option>
               <option value="fe">Colour by full/empty</option>
               <option value="weight">Colour by weight</option>
             </select>
-            <button class="ops-btn" type="button" id="stowProfileBtn">⚙ Vessel profile</button>
-            <button class="ops-btn" type="button" id="stowPrint">🖨 Bay plan</button>
+            <button class="ops-btn" type="button" id="stowProfileBtn">Vessel data</button>
+            <button class="ops-btn" type="button" id="stowAuto">Auto-place</button>
+            <button class="ops-btn" type="button" id="stowPrint">Print plan</button>
           </div>
         </div>
 
+        <div class="stow-kpis" id="stowKpis"></div>
+
         <div class="stow-profile" id="stowProfile" hidden>
-          <div class="stow-profile-title">Vessel profile · <span id="stowProfileName"></span></div>
+          <div class="stow-profile-title">Vessel data · <span id="stowProfileName"></span></div>
           <div class="ops-row">
             <div class="ops-field"><label for="stowTeuCap">TEU capacity</label><input id="stowTeuCap" type="number" min="0" placeholder="e.g. 2400"></div>
             <div class="ops-field"><label for="stowPlugs">Reefer plugs</label><input id="stowPlugs" type="number" min="0" placeholder="e.g. 120"></div>
@@ -2497,16 +2778,16 @@ grant execute on function public.get_shared_snapshot(text) to anon, authenticate
           </div>
           <div class="ops-row">
             <input type="file" id="stowCaspFile" accept=".asc,.ASC,.def,.DEF" hidden>
-            <button class="ops-btn" type="button" id="stowCaspBtn">Vessel and Route</button>
+            <button class="ops-btn" type="button" id="stowCaspBtn">Vessel and route</button>
             <button class="ops-btn" type="button" id="stowCaspAscBtn">Load ASC slots</button>
             <span class="ops-note" id="stowCaspInfo">No vessel/route selected.</span>
           </div>
-          <div class="ops-note">Capacity is estimated from the slot range until a TEU capacity is entered. Reefer plug positions are not mapped; the plug count is used for utilisation only.</div>
+          <div class="ops-note">The ASC slot file gives the true bay/tier positions. Without it, capacity is estimated from containers already planned.</div>
         </div>
 
         <div class="stow-casp-overlay" id="stowVesselModal" hidden>
           <div class="stow-casp-card" role="dialog" aria-modal="true" aria-labelledby="stowVesselTitle">
-            <h3 id="stowVesselTitle">Vessel and Route</h3>
+            <h3 id="stowVesselTitle">Vessel and route</h3>
             <div class="stow-casp-grid">
               <div>
                 <label for="stowVesselSelect">Vessel</label>
@@ -2517,7 +2798,7 @@ grant execute on function public.get_shared_snapshot(text) to anon, authenticate
                 <select id="stowRouteSelect" size="12"></select>
               </div>
             </div>
-            <div class="stow-casp-name">Vessel Name: <b id="stowVesselName">—</b></div>
+            <div class="stow-casp-name">Vessel name: <b id="stowVesselName">—</b></div>
             <div class="stow-casp-actions">
               <button class="ops-btn" type="button" id="stowVesselAsc">Load ASC slots</button>
               <span style="flex:1"></span>
@@ -2528,14 +2809,23 @@ grant execute on function public.get_shared_snapshot(text) to anon, authenticate
         </div>
 
         <div class="stow-bays" id="stowBays"></div>
-        <div class="stow-body">
-          <div class="stow-plan">
-            <div class="stow-bay-title" id="stowBayTitle">Select a bay</div>
-            <div class="stow-legend" id="stowLegend"></div>
+
+        <div class="stow-layout">
+          <section class="stow-plan">
+            <div class="stow-plan-head">
+              <div>
+                <div class="stow-eyebrow" id="stowPlanKicker">BAY PLAN</div>
+                <div class="stow-bay-title" id="stowBayTitle">Select a bay</div>
+              </div>
+              <div class="stow-legend" id="stowLegend"></div>
+            </div>
+            <div class="stow-plan-meta"><span id="stowPlanSub"></span><span id="stowPlanMode"></span></div>
             <div class="stow-grid-scroll"><div id="stowGrid" class="stow-grid"></div></div>
+            <div class="stow-statusbar" id="stowStatusBar"></div>
             <div class="stow-unplanned" id="stowUnplanned"></div>
-          </div>
+          </section>
           <aside class="stow-side">
+            <div id="stowInspector"></div>
             <div id="stowBayStats"></div>
             <div id="stowWeight"></div>
             <div id="stowReefers"></div>
@@ -9914,12 +10204,14 @@ window.addEventListener('beforeunload', function(e){
 <script>
 (function () {
   'use strict';
+  var PRELINK = window.OPR_SUPABASE_CONFIG || { url: 'https://xpsbofwxhzmwtrsmtnym.supabase.co', anon: 'sb_publishable_lKAtg7EEVlBVYAdADkF0YA_4o-tfO3-' };
   var CFG_KEY = 'oprCloudSync.v1';
   var SESSION_KEY = 'oprCloudSyncSession.v1';
   var TABLE = 'manifest_snapshots';
   var cfg = loadCfg();
   var session = loadSession();
   var timer = 0, keeper = 0, syncing = false, lastRemoteAt = '', remoteSeen = false, dirtyPrompted = false;
+  var lastAuthError = '';
   var $ = function (id) { return document.getElementById(id); };
 
   function loadCfg() {
@@ -9928,6 +10220,8 @@ window.addEventListener('beforeunload', function(e){
       var v = JSON.parse(localStorage.getItem(CFG_KEY) || '{}');
       Object.keys(out).forEach(function (k) { if (v[k] !== undefined) out[k] = v[k]; });
     } catch (e) {}
+    if (PRELINK.url && !out.url) out.url = PRELINK.url;
+    if (PRELINK.anon && !out.anon) out.anon = PRELINK.anon;
     return out;
   }
   function saveCfg() {
@@ -9947,6 +10241,7 @@ window.addEventListener('beforeunload', function(e){
     } catch (e) {}
   }
   function base() { return String(cfg.url || '').trim().replace(/\/+$/, ''); }
+  function linked() { return !!(base() && cfg.anon); }
   function signedIn() { return !!(session && session.access_token && session.user); }
   function idleStatus() {
     if (!signedIn()) {
@@ -10069,12 +10364,112 @@ window.addEventListener('beforeunload', function(e){
       user: { id: data.user.id, email: data.user.email || cfg.email }
     };
   }
+  function linkProject(url, key) {
+    var u = String(url || '').trim().replace(/\/+$/, '');
+    var k = String(key || '').trim();
+    if (!/^https?:\/\//i.test(u)) return 'Enter a valid Supabase project URL (https://...).';
+    if (!k) return 'Enter the anon public key.';
+    cfg.url = u;
+    cfg.anon = k;
+    saveCfg();
+    if ($('syncUrl')) $('syncUrl').value = u;
+    if ($('syncAnon')) $('syncAnon').value = k;
+    render();
+    return '';
+  }
+  function authRedirectUrl() {
+    return location.origin + location.pathname;
+  }
+  async function sendMagicLink(email) {
+    lastAuthError = '';
+    email = String(email || '').trim();
+    if (!base() || !cfg.anon) { lastAuthError = 'Supabase project is not linked.'; return false; }
+    if (!email) { lastAuthError = 'Enter your email address first.'; return false; }
+    try {
+      var resp = await fetch(base() + '/auth/v1/otp', {
+        method: 'POST',
+        headers: { 'apikey': cfg.anon, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email, create_user: true, gotrue_meta_security: {}, options: { email_redirect_to: authRedirectUrl() } })
+      });
+      var raw = await resp.text(), data = null;
+      try { data = raw ? JSON.parse(raw) : null; } catch (e) {}
+      if (!resp.ok) throw new Error(errText(data, resp));
+      cfg.email = email; saveCfg(); render();
+      return true;
+    } catch (err) {
+      lastAuthError = err.message;
+      return false;
+    }
+  }
+  async function handleAuthRedirect() {
+    if (!location.hash || location.hash.length < 8) return false;
+    var p = new URLSearchParams(location.hash.replace(/^#/, ''));
+    var err = p.get('error_description') || p.get('error');
+    var token = p.get('access_token');
+    if (!token && !err) return false;
+    if (err) {
+      lastAuthError = decodeURIComponent(err.replace(/\+/g, ' '));
+      try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+      return false;
+    }
+    if (!base() || !cfg.anon) {
+      lastAuthError = 'Sign-in link could not be completed because this device has no linked Supabase project.';
+      return false;
+    }
+    try {
+      var resp = await fetch(base() + '/auth/v1/user', {
+        headers: { 'apikey': cfg.anon, 'Authorization': 'Bearer ' + token }
+      });
+      var raw = await resp.text(), user = null;
+      try { user = raw ? JSON.parse(raw) : null; } catch (e) {}
+      if (!resp.ok || !user || !user.id) throw new Error('Sign-in link is invalid or expired.');
+      session = {
+        access_token: token,
+        refresh_token: p.get('refresh_token') || '',
+        expires_at: Date.now() + (Number(p.get('expires_in')) || 3600) * 1000,
+        user: { id: user.id, email: user.email || cfg.email }
+      };
+      saveSession();
+      try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+      render();
+      startPolling();
+      if (window.AuthGate) AuthGate.hide();
+      return true;
+    } catch (e) {
+      lastAuthError = e.message;
+      return false;
+    }
+  }
+  async function signInWith(email, password, url, key) {
+    lastAuthError = '';
+    if (url !== undefined || key !== undefined) {
+      var linkErr = linkProject(url || cfg.url, key || cfg.anon);
+      if (linkErr) { lastAuthError = linkErr; return false; }
+    }
+    cfg.email = String(email || '').trim();
+    saveCfg();
+    if ($('syncEmail')) $('syncEmail').value = cfg.email;
+    if ($('syncPassword')) $('syncPassword').value = String(password || '');
+    return await signIn();
+  }
+  async function signUpWith(email, password, url, key) {
+    lastAuthError = '';
+    if (url !== undefined || key !== undefined) {
+      var linkErr = linkProject(url || cfg.url, key || cfg.anon);
+      if (linkErr) { lastAuthError = linkErr; return false; }
+    }
+    cfg.email = String(email || '').trim();
+    saveCfg();
+    if ($('syncEmail')) $('syncEmail').value = cfg.email;
+    if ($('syncPassword')) $('syncPassword').value = String(password || '');
+    return await signUp();
+  }
   async function signIn() {
     configFromForm();
-    if (!base() || !cfg.anon) { setStatus('Enter the Supabase project URL and anon key first.', 'err'); return false; }
+    if (!base() || !cfg.anon) { lastAuthError = 'Enter the Supabase project URL and anon key first.'; setStatus(lastAuthError, 'err'); return false; }
     var email = String($('syncEmail').value || '').trim();
     var password = String($('syncPassword').value || '');
-    if (!email || !password) { setStatus('Enter the account email and password.', 'err'); return false; }
+    if (!email || !password) { lastAuthError = 'Enter the account email and password.'; setStatus(lastAuthError, 'err'); return false; }
     setStatus('Signing in…');
     try {
       var resp = await fetch(base() + '/auth/v1/token?grant_type=password', {
@@ -10093,18 +10488,20 @@ window.addEventListener('beforeunload', function(e){
       setStatus('Signed in. Upload or download the manifest snapshot.', 'ok');
       render();
       startPolling();
+      if (window.AuthGate && signedIn()) AuthGate.hide();
       return true;
     } catch (err) {
+      lastAuthError = err.message;
       setStatus('Sign-in failed: ' + err.message, 'err');
       return false;
     }
   }
   async function signUp() {
     configFromForm();
-    if (!base() || !cfg.anon) { setStatus('Enter the Supabase project URL and anon key first.', 'err'); return false; }
+    if (!base() || !cfg.anon) { lastAuthError = 'Enter the Supabase project URL and anon key first.'; setStatus(lastAuthError, 'err'); return false; }
     var email = String($('syncEmail').value || '').trim();
     var password = String($('syncPassword').value || '');
-    if (!email || !password) { setStatus('Enter an email and password.', 'err'); return false; }
+    if (!email || !password) { lastAuthError = 'Enter an email and password.'; setStatus(lastAuthError, 'err'); return false; }
     setStatus('Creating account…');
     try {
       var resp = await fetch(base() + '/auth/v1/signup', {
@@ -10118,11 +10515,13 @@ window.addEventListener('beforeunload', function(e){
       if (data.access_token) {
         session = sessionFrom(data); saveSession(); $('syncPassword').value = '';
         setStatus('Account created and signed in.', 'ok'); render(); startPolling();
+        if (window.AuthGate && signedIn()) AuthGate.hide();
       } else {
         setStatus('Account created. Confirm the email (or disable confirmation in Supabase Auth), then sign in.', 'warn');
       }
       return true;
     } catch (err) {
+      lastAuthError = err.message;
       setStatus('Could not create account: ' + err.message, 'err');
       return false;
     }
@@ -10306,6 +10705,100 @@ window.addEventListener('beforeunload', function(e){
     configFromForm();
     if (window.UIHistory) UIHistory.remove('sync');
   }
+  var authLinkEditing = false;
+  function gateMsg(text, ok) {
+    var el = $('authMsg');
+    if (!el) return;
+    el.textContent = text || '';
+    el.className = 'auth-msg' + (ok ? ' ok' : '');
+  }
+  function refreshAuthGate() {
+    if (!$('authGate')) return;
+    var link = !!linked();
+    if ($('authLinkBox')) $('authLinkBox').hidden = link && !authLinkEditing;
+    if ($('authCredBox')) $('authCredBox').hidden = !link || authLinkEditing;
+    if ($('authUrl')) $('authUrl').value = cfg.url || '';
+    if ($('authAnon')) $('authAnon').value = cfg.anon || '';
+    if ($('authEmail')) $('authEmail').value = cfg.email || '';
+    if ($('authChangeLink')) $('authChangeLink').hidden = !link || authLinkEditing;
+  }
+  function showAuthGate() {
+    hideAuthGate();
+  }
+  function openPendingTeamInvite() {
+    var pending = window.__pendingTeamInvite;
+    if (!pending) { try { pending = localStorage.getItem('oprPendingTeamInvite.v1'); } catch (e) {} }
+    if (!pending || !signedIn()) return;
+    setTimeout(function () {
+      if (!signedIn() || !window.CloudSync || !window.Team) return;
+      try {
+        CloudSync.open();
+        var b = document.querySelector('[data-sync-tab="team"]');
+        if (b) b.click();
+      } catch (e) {}
+    }, 500);
+  }
+  function hideAuthGate() {
+    if ($('authGate')) $('authGate').hidden = true;
+    document.body.classList.remove('auth-locked');
+    gateMsg('');
+    openPendingTeamInvite();
+  }
+  function authBusy(on) {
+    ['authLinkBtn', 'authSignIn', 'authSignUp'].forEach(function (id) { if ($(id)) $(id).disabled = !!on; });
+  }
+  function initAuthGate() {
+    if (!$('authGate') || $('authGate').__bound) return;
+    $('authGate').__bound = true;
+    $('authLinkBtn').addEventListener('click', function () {
+      var err = linkProject($('authUrl').value, $('authAnon').value);
+      if (err) { gateMsg(err); return; }
+      authLinkEditing = false;
+      refreshAuthGate();
+      gateMsg('Supabase project linked. Now sign in with your account.', true);
+      if ($('authEmail')) $('authEmail').focus();
+    });
+    $('authSignIn').addEventListener('click', async function () {
+      var email = String($('authEmail').value || '').trim();
+      var pass = String($('authPassword').value || '');
+      if (!email || !pass) { gateMsg('Enter your account email and password.'); return; }
+      authBusy(true); gateMsg('Signing in…');
+      var ok = await signInWith(email, pass);
+      authBusy(false);
+      if (ok && signedIn()) { hideAuthGate(); }
+      else gateMsg(lastAuthError || 'Sign-in failed. Check the email and password.');
+    });
+    $('authSignUp').addEventListener('click', async function () {
+      var email = String($('authEmail').value || '').trim();
+      var pass = String($('authPassword').value || '');
+      if (!email || !pass) { gateMsg('Enter an email and password.'); return; }
+      authBusy(true); gateMsg('Creating account…');
+      var ok = await signUpWith(email, pass);
+      authBusy(false);
+      if (ok && signedIn()) { hideAuthGate(); }
+      else if (lastAuthError) gateMsg(lastAuthError);
+      else gateMsg('Account created. Confirm the email, then sign in.', true);
+    });
+    $('authMagic').addEventListener('click', async function () {
+      var email = String($('authEmail').value || '').trim();
+      if (!email) { gateMsg('Enter your email address first.'); return; }
+      authBusy(true); gateMsg('Sending sign-in link…');
+      var ok = await sendMagicLink(email);
+      authBusy(false);
+      gateMsg(ok ? 'Check your email and open the sign-in link on this device.' : (lastAuthError || 'Could not send the sign-in link.'), ok);
+    });
+    $('authChangeLink').addEventListener('click', function () {
+      authLinkEditing = true; refreshAuthGate(); gateMsg('Enter the new Supabase project details.'); if ($('authUrl')) $('authUrl').focus();
+    });
+    $('authPassword').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('authSignIn').click(); });
+    $('authEmail').addEventListener('keydown', function (e) { if (e.key === 'Enter') { if (linked()) $('authPassword').focus(); else $('authChangeLink').click(); } });
+    hideAuthGate();
+    handleAuthRedirect().then(function () {
+      if (signedIn()) hideAuthGate();
+    });
+  }
+  window.AuthGate = { show: showAuthGate, hide: hideAuthGate, refresh: refreshAuthGate };
+
   function bind() {
     if (!$('syncOverlay') || $('syncOverlay').__bound) return;
     $('syncOverlay').__bound = true;
@@ -10315,6 +10808,12 @@ window.addEventListener('beforeunload', function(e){
     if (openBtn) openBtn.addEventListener('click', open);
     $('syncSignIn').addEventListener('click', signIn);
     $('syncSignUp').addEventListener('click', signUp);
+    if ($('syncMagic')) $('syncMagic').addEventListener('click', async function () {
+      var email = String($('syncEmail').value || '').trim();
+      if (!email) { setStatus('Enter your email address first.', 'err'); return; }
+      var ok = await sendMagicLink(email);
+      setStatus(ok ? 'Sign-in link sent. Open it on this device.' : (lastAuthError || 'Could not send the sign-in link.'), ok ? 'ok' : 'err');
+    });
     $('syncSignOut').addEventListener('click', signOut);
     $('syncPush').addEventListener('click', function () { push({ force: true }); });
     $('syncPull').addEventListener('click', function () { pull({ force: false }); });
@@ -10344,6 +10843,7 @@ window.addEventListener('beforeunload', function(e){
     render();
     setInterval(checkDirty, 1500);
     if (signedIn()) startPolling();
+    initAuthGate();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind);
   else bind();
@@ -10352,11 +10852,18 @@ window.addEventListener('beforeunload', function(e){
     open: open,
     close: close,
     config: function () { return Object.assign({}, cfg); },
+    linked: linked,
+    linkProject: linkProject,
+    signInWith: signInWith,
+    signUpWith: signUpWith,
+    lastError: function () { return lastAuthError; },
     session: function () { return session ? { user: session.user, expires_at: session.expires_at } : null; },
     token: function () { return session ? session.access_token : ''; },
     ensure: ensureSession,
     signIn: signIn,
     signUp: signUp,
+    magicLink: sendMagicLink,
+    authRedirect: handleAuthRedirect,
     signOut: signOut,
     push: push,
     pull: pull,
@@ -11256,11 +11763,64 @@ window.addEventListener('beforeunload', function(e){
 
   /* ── modal/tabs ─────────────────────────────────────────────────── */
   var activeTab = 'alerts';
+  var stowMaximized = false;
+  function setStowMaximized(on) {
+    stowMaximized = !!on;
+    var modal = $('opsModal'), overlay = $('opsOverlay');
+    if (modal) {
+      modal.classList.toggle('ops-maximized', stowMaximized);
+      if (stowMaximized) {
+        modal.style.position = 'fixed';
+        modal.style.left = '0';
+        modal.style.right = '0';
+        modal.style.top = '0';
+        modal.style.bottom = '0';
+        modal.style.width = 'auto';
+        modal.style.maxWidth = 'none';
+        modal.style.height = 'auto';
+        modal.style.maxHeight = 'none';
+        modal.style.borderRadius = '0';
+        modal.style.border = '0';
+        modal.style.display = 'grid';
+        modal.style.gridTemplateRows = 'auto auto minmax(0,1fr)';
+      } else {
+        ['position', 'left', 'right', 'top', 'bottom', 'width', 'maxWidth', 'height', 'maxHeight', 'borderRadius', 'border', 'display', 'gridTemplateRows'].forEach(function (k) { modal.style[k] = ''; });
+      }
+      var body = modal.querySelector('.ops-body');
+      if (body) {
+        body.style.display = stowMaximized ? 'block' : '';
+        body.style.overflow = stowMaximized ? 'auto' : '';
+        body.style.minHeight = stowMaximized ? '0' : '';
+      }
+    }
+    if (overlay) {
+      overlay.classList.toggle('ops-maximized', stowMaximized);
+      overlay.style.padding = stowMaximized ? '0' : '';
+    }
+    var max = $('opsStowMax'), min = $('opsStowMin');
+    if (max) {
+      max.textContent = stowMaximized ? '\u2750' : '\u25A1';
+      max.title = stowMaximized ? 'Restore stowage window' : 'Maximize stowage to full page';
+      max.setAttribute('aria-label', stowMaximized ? 'Restore stowage' : 'Maximize stowage');
+    }
+    if (min) min.disabled = !stowMaximized;
+    if (window.Stowage && window.Stowage.refresh) {
+      setTimeout(function () { try { Stowage.refresh(); } catch (e) {} }, 30);
+    }
+  }
   function switchOpsTab(name) {
     activeTab = name;
     document.querySelectorAll('.ops-tab').forEach(function (b) { b.classList.toggle('active', b.dataset.opsTab === name); });
     var panes = { alerts: 'opsAlertsPane', archive: 'opsArchivePane', audit: 'opsAuditPane', views: 'opsViewsPane', mapping: 'opsMappingPane', export: 'opsExportPane', stowage: 'opsStowagePane' };
     Object.keys(panes).forEach(function (k) { var p = $(panes[k]); if (p) p.hidden = (k !== name); });
+    var modal = $('opsModal');
+    if (modal) modal.classList.toggle('stow-active', name === 'stowage');
+    if (name !== 'stowage' && stowMaximized) setStowMaximized(false);
+    var close = $('opsClose');
+    if (close) {
+      close.title = name === 'stowage' ? 'Close stowage' : 'Close operations';
+      close.setAttribute('aria-label', name === 'stowage' ? 'Close stowage' : 'Close operations');
+    }
     if (name === 'archive') renderArchives();
     if (name === 'audit') renderAudit();
     if (name === 'views') renderViews();
@@ -11279,6 +11839,8 @@ window.addEventListener('beforeunload', function(e){
     if (window.UIHistory) UIHistory.push('ops', closeOps);
   }
   function closeOps() {
+    setStowMaximized(false);
+    var modal = $('opsModal'); if (modal) modal.classList.remove('stow-active');
     $('opsOverlay').classList.remove('open');
     $('opsOverlay').setAttribute('aria-hidden', 'true');
     if (window.UIHistory) UIHistory.remove('ops');
@@ -11313,6 +11875,8 @@ window.addEventListener('beforeunload', function(e){
     $('opsOverlay').__bound = true;
     if ($('opsOpenBtn')) $('opsOpenBtn').addEventListener('click', function () { openOps('alerts'); });
     $('opsClose').addEventListener('click', closeOps);
+    if ($('opsStowMax')) $('opsStowMax').addEventListener('click', function () { setStowMaximized(!stowMaximized); });
+    if ($('opsStowMin')) $('opsStowMin').addEventListener('click', function () { setStowMaximized(false); });
     $('opsOverlay').addEventListener('click', function (e) { if (e.target === this) closeOps(); });
     document.querySelectorAll('.ops-tab').forEach(function (b) { b.addEventListener('click', function () { switchOpsTab(b.dataset.opsTab); }); });
     ensureAlertBar();
@@ -11441,6 +12005,7 @@ window.addEventListener('beforeunload', function(e){
 (function () {
   'use strict';
   var state = { ws: null, role: '', members: [], revision: 0, baseRows: null, history: [], conflict: null, loaded: false };
+  var INVITE_KEY = 'oprPendingTeamInvite.v1';
   var $ = function (id) { return document.getElementById(id); };
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function up(v) { return String(v == null ? '' : v).trim().toUpperCase(); }
@@ -11448,6 +12013,64 @@ window.addEventListener('beforeunload', function(e){
   function anon() { var c = window.CloudSync ? CloudSync.config() : {}; return c.anon || ''; }
   function user() { var s = window.CloudSync && CloudSync.session(); return s && s.user || null; }
   function isSignedIn() { return !!(user() && CloudSync.token()); }
+  function readTeamInvite() {
+    var code = '';
+    if (location.hash && location.hash.indexOf('access_token=') < 0) {
+      var m = location.hash.match(/[#&]team=([A-Z0-9-]+)/i);
+      if (m) code = decodeURIComponent(m[1]).toUpperCase();
+    }
+    if (!code && location.search) {
+      var q = location.search.match(/[?&]team=([A-Z0-9-]+)/i);
+      if (q) code = decodeURIComponent(q[1]).toUpperCase();
+    }
+    if (code) {
+      window.__pendingTeamInvite = code;
+      try { localStorage.setItem(INVITE_KEY, code); } catch (e) {}
+      try { history.replaceState(null, '', location.pathname); } catch (e) {}
+    } else {
+      try { code = localStorage.getItem(INVITE_KEY) || ''; } catch (e) {}
+      if (!window.__pendingTeamInvite && code) window.__pendingTeamInvite = code;
+    }
+    return window.__pendingTeamInvite || '';
+  }
+  function clearTeamInvite() {
+    window.__pendingTeamInvite = '';
+    try { localStorage.removeItem(INVITE_KEY); } catch (e) {}
+  }
+  function teamInviteUrl() {
+    if (!state.ws || !state.ws.join_code) return '';
+    return location.origin + location.pathname + '#team=' + encodeURIComponent(state.ws.join_code);
+  }
+  function refreshInvitePanel() {
+    if ($('teamInviteLink')) $('teamInviteLink').value = teamInviteUrl();
+    if ($('teamInviteHint')) $('teamInviteHint').textContent = location.protocol === 'file:'
+      ? 'Invite links need the hosted dashboard URL. Open the GitHub Pages version before sharing an invite.'
+      : 'The invite link opens this dashboard, signs the person in, and joins them to this workspace automatically.';
+    if ($('teamMemberCount') && state.members) $('teamMemberCount').textContent = state.members.length;
+    if ($('teamMemberCountBadge') && state.members) $('teamMemberCountBadge').textContent = state.members.length;
+    if ($('teamRevision')) $('teamRevision').textContent = state.revision || '—';
+    if ($('teamMyRole')) $('teamMyRole').textContent = roleLabel(state.role);
+    if ($('teamApprovalMode')) $('teamApprovalMode').textContent = state.ws ? (state.ws.approval_required ? 'Approval' : 'Direct') : '—';
+  }
+  function copyTeamInvite(emailMode) {
+    var url = teamInviteUrl();
+    if (!url) { setStatus('No join code is available yet.'); return; }
+    if (emailMode) {
+      var to = String(($('teamInviteEmailTo') && $('teamInviteEmailTo').value) || '').trim();
+      if (to && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)) { setStatus('Enter a valid email address.'); return; }
+      var subject = encodeURIComponent('Join the OPR team workspace');
+      var body = encodeURIComponent('You are invited to join our OPR team workspace.\n\n' + url + '\n\nSign in with your email to join.');
+      location.href = 'mailto:' + encodeURIComponent(to) + '?subject=' + subject + '&body=' + body;
+      return;
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(function () { setStatus('Invite link copied to clipboard.'); }, function () { setStatus('Could not copy. Join code: ' + state.ws.join_code); });
+    } else {
+      var ta = document.createElement('textarea'); ta.value = url; document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); setStatus('Invite link copied to clipboard.'); } catch (e) { setStatus('Join code: ' + state.ws.join_code); }
+      ta.remove();
+    }
+  }
   function setStatus(msg) { var el = $('teamStatus'); if (el) el.textContent = msg; }
   async function req(path, opts) {
     opts = opts || {};
@@ -11471,7 +12094,14 @@ window.addEventListener('beforeunload', function(e){
   }
 
   async function loadTeam(force) {
-    if (!isSignedIn()) { setStatus('Sign in on the Personal sync tab first.'); $('teamSetup').hidden = false; $('teamWorkspace').hidden = true; setRole(''); return; }
+    if (!isSignedIn()) {
+      setStatus('Sign in on the Personal sync tab first.');
+      if ($('teamSignedOut')) $('teamSignedOut').hidden = false;
+      if ($('teamSetup')) $('teamSetup').hidden = true;
+      if ($('teamWorkspace')) $('teamWorkspace').hidden = true;
+      setRole(''); return;
+    }
+    if ($('teamSignedOut')) $('teamSignedOut').hidden = true;
     if (state.loaded && !force) return;
     setStatus('Loading team workspace…');
     try {
@@ -11479,27 +12109,41 @@ window.addEventListener('beforeunload', function(e){
       var rows = await req('/rest/v1/team_members?select=workspace_id,role,email,team_workspaces(id,name,join_code,approval_required,owner)&user_id=eq.' + encodeURIComponent(uid) + '&limit=1');
       var row = rows && rows[0];
       if (!row) {
-        state.ws = null; state.loaded = true; setRole('');
+        state.ws = null; state.loaded = false; setRole('');
+        if ($('teamSignedOut')) $('teamSignedOut').hidden = true;
         $('teamSetup').hidden = false; $('teamWorkspace').hidden = true;
+        if ($('teamMemberCount')) $('teamMemberCount').textContent = '0';
+        if ($('teamMemberCountBadge')) $('teamMemberCountBadge').textContent = '0';
+        if ($('teamRequestCount')) $('teamRequestCount').textContent = '0';
+        if ($('teamRevision')) $('teamRevision').textContent = '—';
+        if ($('teamApprovalMode')) $('teamApprovalMode').textContent = '—';
+        if ($('teamMyRole')) $('teamMyRole').textContent = '—';
+        if ($('teamInviteLink')) $('teamInviteLink').value = '';
+        var invite = readTeamInvite();
+        if (invite) { await joinWithCode(invite, true); return; }
+        state.loaded = true;
         setStatus('No team workspace yet. Create one or join with a code.');
         return;
       }
       state.ws = row.team_workspaces || { id: row.workspace_id, name: 'Workspace' };
       state.ws.id = state.ws.id || row.workspace_id;
       state.loaded = true;
+      if ($('teamSignedOut')) $('teamSignedOut').hidden = true;
       $('teamSetup').hidden = true; $('teamWorkspace').hidden = false;
       setRole(row.role);
       $('teamWsName').textContent = state.ws.name || 'Team workspace';
-      $('teamWsMeta').textContent = 'Join code: ' + (state.ws.join_code || '—') + ' · member ' + (user().email || uid.slice(0, 8));
+      $('teamWsMeta').textContent = 'Join code ' + (state.ws.join_code || '—') + ' · owner ' + (state.ws.owner === uid ? 'you' : 'admin');
       $('teamApproval').checked = !!state.ws.approval_required;
       $('teamApproval').disabled = state.role !== 'admin';
       $('teamApprovalWrap').style.display = state.role === 'admin' ? '' : 'none';
       $('teamUpload').hidden = state.role === 'viewer' || (!!state.ws.approval_required && state.role !== 'admin');
       $('teamSubmit').hidden = !(!!state.ws.approval_required && state.role !== 'admin');
       $('teamLeave').hidden = state.ws.owner === uid;
+      refreshInvitePanel();
       await loadSnapshot(false);
       await loadMembers();
       await loadRequests();
+      refreshInvitePanel();
       setStatus('Team: ' + state.ws.name + ' · ' + roleLabel(state.role) + ' · revision ' + state.revision + '.');
     } catch (e) {
       state.loaded = false;
@@ -11514,6 +12158,7 @@ window.addEventListener('beforeunload', function(e){
     if (!row) { state.revision = 0; state.baseRows = []; return; }
     state.revision = Number(row.revision || 0);
     state.baseRows = ((row.payload && row.payload.rows) || []).map(function (r) { return Object.assign({}, r); });
+    if ($('teamRevision')) $('teamRevision').textContent = state.revision || '—';
     state.history = ((row.payload && row.payload.history) || []).slice(-1000);
     renderHistory();
     if (apply && row.payload && Array.isArray(row.payload.rows)) {
@@ -11652,15 +12297,31 @@ window.addEventListener('beforeunload', function(e){
     try {
       var rows = await req('/rest/v1/team_members?select=user_id,email,role,joined_at&workspace_id=eq.' + encodeURIComponent(state.ws.id) + '&order=role.asc');
       state.members = rows || [];
+      if ($('teamMemberCount')) $('teamMemberCount').textContent = state.members.length;
+      if ($('teamMemberCountBadge')) $('teamMemberCountBadge').textContent = state.members.length;
       var box = $('teamMembers'); if (!box) return;
       if (!state.members.length) { box.innerHTML = '<div class="ops-empty">No members.</div>'; return; }
       box.innerHTML = state.members.map(function (m) {
         var me = user() && m.user_id === user().id;
         var owner = state.ws.owner === m.user_id;
+        var name = m.email || m.user_id.slice(0, 8);
+        var initials = String(name).replace(/[^a-z0-9]/gi, '').slice(0, 2) || '?';
         var roleCtl = state.role === 'admin' && !owner ? '<select data-team-role="' + esc(m.user_id) + '">' + ['viewer', 'editor', 'admin'].map(function (r) { return '<option value="' + r + '"' + (m.role === r ? ' selected' : '') + '>' + roleLabel(r) + '</option>'; }).join('') + '</select>' : '<span class="team-role ' + esc(m.role) + '">' + roleLabel(m.role) + '</span>';
-        return '<div class="team-row"><span class="who">' + esc(m.email || m.user_id.slice(0, 8)) + (me ? ' (you)' : '') + (owner ? ' · owner' : '') + '</span>' + roleCtl + '</div>';
+        var remove = state.role === 'admin' && !owner && !me ? '<button type="button" data-team-remove="' + esc(m.user_id) + '" title="Remove member">Remove</button>' : '';
+        var meta = [];
+        if (owner) meta.push('Owner');
+        if (m.joined_at) meta.push('joined ' + new Date(m.joined_at).toLocaleDateString());
+        return '<div class="team-row"><span class="team-avatar">' + esc(initials) + '</span><span class="who"><b>' + esc(name) + (me ? ' (you)' : '') + '</b><span>' + esc(meta.join(' · ') || 'Member') + '</span></span>' + roleCtl + remove + '</div>';
       }).join('');
     } catch (e) { /* non-admin may still read */ }
+  }
+  async function removeMember(uid) {
+    if (!state.ws || state.role !== 'admin' || uid === state.ws.owner || uid === (user() && user().id)) return;
+    if (!confirm('Remove this member from the workspace?')) return;
+    try {
+      await req('/rest/v1/team_members?workspace_id=eq.' + encodeURIComponent(state.ws.id) + '&user_id=eq.' + encodeURIComponent(uid), { method: 'DELETE' });
+      setStatus('Member removed.'); await loadMembers();
+    } catch (e) { setStatus('Remove failed: ' + e.message); }
   }
   async function changeRole(uid, role) {
     try {
@@ -11672,11 +12333,14 @@ window.addEventListener('beforeunload', function(e){
     if (!state.ws) return;
     try {
       var rows = await req('/rest/v1/team_change_requests?workspace_id=eq.' + encodeURIComponent(state.ws.id) + '&status=eq.pending&select=id,user_id,email,note,created_at&order=created_at.desc');
+      if ($('teamRequestCount')) $('teamRequestCount').textContent = (rows || []).length;
       var box = $('teamRequests'); if (!box) return;
       if (!rows || !rows.length) { box.innerHTML = '<div class="ops-empty">No pending approvals.</div>'; return; }
       box.innerHTML = rows.map(function (r) {
-        return '<div class="team-row"><span class="who">' + esc(r.email || r.user_id.slice(0, 8)) + ' · ' + new Date(r.created_at).toLocaleString() + (r.note ? '<br><span style="color:var(--muted)">' + esc(r.note) + '</span>' : '') + '</span>' +
-          (state.role === 'admin' ? '<button class="ops-btn" type="button" data-team-approve="' + esc(r.id) + '">Approve</button><button class="ops-btn danger" type="button" data-team-reject="' + esc(r.id) + '">Reject</button>' : '<span class="team-role">pending</span>') + '</div>';
+        var name = r.email || r.user_id.slice(0, 8);
+        var initials = String(name).replace(/[^a-z0-9]/gi, '').slice(0, 2) || '?';
+        return '<div class="team-row"><span class="team-avatar">' + esc(initials) + '</span><span class="who"><b>' + esc(name) + '</b><span>' + new Date(r.created_at).toLocaleString() + (r.note ? ' · ' + esc(r.note) : '') + '</span></span>' +
+          (state.role === 'admin' ? '<button class="sync-btn" type="button" data-team-approve="' + esc(r.id) + '">Approve</button><button class="sync-btn danger" type="button" data-team-reject="' + esc(r.id) + '">Reject</button>' : '<span class="team-role">pending</span>') + '</div>';
       }).join('');
     } catch (e) { /* ignored */ }
   }
@@ -11724,13 +12388,21 @@ window.addEventListener('beforeunload', function(e){
       state.loaded = false; await loadTeam(true);
     } catch (e) { setStatus('Create failed: ' + e.message); }
   }
-  async function joinTeam() {
-    var code = ($('teamCode').value || '').trim().toUpperCase(); if (!code) return setStatus('Enter a join code.');
+  async function joinWithCode(code, auto) {
+    code = String(code || '').trim().toUpperCase();
+    if (!code) return setStatus('Enter a join code.');
     try {
-      setStatus('Joining workspace…');
+      setStatus(auto ? 'Joining team from invite…' : 'Joining workspace…');
       await req('/rest/v1/rpc/join_team', { method: 'POST', body: JSON.stringify({ p_code: code }) });
+      clearTeamInvite();
       state.loaded = false; await loadTeam(true);
-    } catch (e) { setStatus('Join failed: ' + e.message); }
+    } catch (e) {
+      state.loaded = true;
+      setStatus('Join failed: ' + e.message);
+    }
+  }
+  async function joinTeam() {
+    return joinWithCode($('teamCode').value, false);
   }
   async function leaveTeam() {
     if (!state.ws || state.ws.owner === (user() && user().id)) return;
@@ -11751,19 +12423,29 @@ window.addEventListener('beforeunload', function(e){
   function bind() {
     if (!$('syncTeamPane') || $('syncTeamPane').__bound) return;
     $('syncTeamPane').__bound = true;
+    readTeamInvite();
     document.querySelectorAll('.sync-tab').forEach(function (b) { b.addEventListener('click', function () { switchTab(b.dataset.syncTab); }); });
+    if ($('teamGoSignIn')) $('teamGoSignIn').addEventListener('click', function () {
+      var b = document.querySelector('[data-sync-tab="personal"]'); if (b) b.click();
+    });
     ['teamCreate'].forEach(function (id) { if ($(id)) $(id).addEventListener('click', createTeam); });
     if ($('teamJoin')) $('teamJoin').addEventListener('click', joinTeam);
     if ($('teamRefresh')) $('teamRefresh').addEventListener('click', function () { state.loaded = false; loadTeam(true); });
     if ($('teamPull')) $('teamPull').addEventListener('click', pullTeam);
     if ($('teamUpload')) $('teamUpload').addEventListener('click', uploadTeam);
     if ($('teamSubmit')) $('teamSubmit').addEventListener('click', submitRequest);
+    if ($('teamInvite')) $('teamInvite').addEventListener('click', function () { copyTeamInvite(false); });
+    if ($('teamInviteEmail')) $('teamInviteEmail').addEventListener('click', function () { copyTeamInvite(true); });
     if ($('teamLeave')) $('teamLeave').addEventListener('click', leaveTeam);
     if ($('teamApproval')) $('teamApproval').addEventListener('change', async function () {
-      try { await req('/rest/v1/team_workspaces?id=eq.' + encodeURIComponent(state.ws.id), { method: 'PATCH', body: JSON.stringify({ approval_required: this.checked }) }); state.ws.approval_required = this.checked; setStatus('Approval setting saved.'); await loadTeam(true); }
+      try { await req('/rest/v1/team_workspaces?id=eq.' + encodeURIComponent(state.ws.id), { method: 'PATCH', body: JSON.stringify({ approval_required: this.checked }) }); state.ws.approval_required = this.checked; setStatus('Approval setting saved.'); refreshInvitePanel(); await loadTeam(true); }
       catch (e) { setStatus('Setting failed: ' + e.message); }
     });
     if ($('teamMembers')) $('teamMembers').addEventListener('change', function (e) { if (e.target.dataset.teamRole) changeRole(e.target.dataset.teamRole, e.target.value); });
+    if ($('teamMembers')) $('teamMembers').addEventListener('click', function (e) {
+      var b = e.target.closest('[data-team-remove]');
+      if (b) removeMember(b.dataset.teamRemove);
+    });
     if ($('teamRequests')) $('teamRequests').addEventListener('click', function (e) {
       if (e.target.dataset.teamApprove) reviewRequest(e.target.dataset.teamApprove, true);
       else if (e.target.dataset.teamReject) reviewRequest(e.target.dataset.teamReject, false);
@@ -11788,6 +12470,9 @@ window.addEventListener('beforeunload', function(e){
     isViewer: function () { return state.role === 'viewer'; },
     role: function () { return state.role; },
     isActive: function () { return !!state.ws; },
+    inviteUrl: teamInviteUrl,
+    acceptInvite: function (code) { return joinWithCode(code, true); },
+    pendingInvite: readTeamInvite,
     recordHistory: recordHistory,
     syncNow: function () { return uploadTeam(); },
     refresh: function () { state.loaded = false; return loadTeam(true); },
@@ -11795,12 +12480,21 @@ window.addEventListener('beforeunload', function(e){
     reset: function () {
       state.ws = null; state.role = ''; state.loaded = false; state.revision = 0; state.baseRows = null; state.conflict = null; state.history = [];
       setRole('');
-      if ($('teamSetup')) $('teamSetup').hidden = false;
+      if ($('teamSignedOut')) $('teamSignedOut').hidden = false;
+      if ($('teamSetup')) $('teamSetup').hidden = true;
       if ($('teamWorkspace')) $('teamWorkspace').hidden = true;
+      if ($('teamMemberCount')) $('teamMemberCount').textContent = '0';
+      if ($('teamMemberCountBadge')) $('teamMemberCountBadge').textContent = '0';
+      if ($('teamRequestCount')) $('teamRequestCount').textContent = '0';
+      if ($('teamRevision')) $('teamRevision').textContent = '—';
+      if ($('teamApprovalMode')) $('teamApprovalMode').textContent = '—';
+      if ($('teamMyRole')) $('teamMyRole').textContent = '—';
+      if ($('teamInviteLink')) $('teamInviteLink').value = '';
       setStatus('Sign in on the Personal sync tab first.');
     },
     _debug: { switchTab: switchTab, mergeRows: mergeRows, setRole: setRole, state: state }
   };
+  readTeamInvite();
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind);
   else bind();
 })();
@@ -11820,7 +12514,7 @@ window.addEventListener('beforeunload', function(e){
     SHG: '#115e59', PKL: '#7f1d1d', PEN: '#7c3aed', XTH: '#ef4444', KHI: '#84cc16',
     KSC: '#111827', OFT: '#f59e0b', NBO: '#14b8a6', MBA: '#0ea5e9', TZ: '#fb7185'
   };
-  var ROW_ORDER = ['12','10','08','06','04','02','00','01','03','05','07','09','11'];
+  var ROW_ORDER = ['12','10','08','06','04','02','01','03','05','07','09','11'];
   var CASP_VESSELS = [
     ["ABLE","EVER ABLE"],
     ["ACRD","UNI-ACCORD"],
@@ -12001,7 +12695,7 @@ window.addEventListener('beforeunload', function(e){
   ];
   var CASP_ROUTES = ["AEF", "AEF2", "AEF4", "APG", "AUE", "CEM", "CIX", "CPN", "CPS", "CSI", "CUE", "EAF", "ESA", "FAX", "FEM", "FRS", "HBH", "HTW", "IDEA", "ISE", "JTH", "LKX", "NCA", "NSA", "NSB", "NSC", "NSD", "NUE", "PRD", "THX", "TPI", "TPS", "UAM", "WAE"];
   var PROFILE_KEY = 'oprStowageProfile.v1';
-  var state = { rows: [], containers: [], planned: [], unplanned: [], byBay: {}, bays: [], selected: '', color: 'opr', profile: null, scope: '' };
+  var state = { rows: [], containers: [], planned: [], unplanned: [], byBay: {}, bays: [], selected: '', color: 'opr', profile: null, scope: '', view: 'all' };
   var $ = function (id) { return document.getElementById(id); };
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function up(v) { return String(v == null ? '' : v).trim().toUpperCase(); }
@@ -12011,7 +12705,7 @@ window.addEventListener('beforeunload', function(e){
   }
   function hashColor(s) {
     var pal = ['#3b82f6','#06b6d4','#8b5cf6','#10b981','#f59e0b','#ec4899','#f97316','#84cc16','#0ea5e9','#a855f7','#14b8a6','#ef4444'];
-    var h = 0; s = String(s || 'â€”');
+    var h = 0; s = String(s || '—');
     for (var i = 0; i < s.length; i++) h = ((h * 31) + s.charCodeAt(i)) | 0;
     return pal[Math.abs(h) % pal.length];
   }
@@ -12100,7 +12794,7 @@ window.addEventListener('beforeunload', function(e){
           p.casp = Object.assign({ source: file.name }, parsed);
           p.teuCapacity = parsed.teu;
           saveProfile(p);
-          setCaspInfo('CASP ASC: ' + parsed.slots + ' slots Â· ' + parsed.teu + ' TEU Â· ' + parsed.bays + ' bays Â· ' + parsed.reefers + ' reefer slots.');
+          setCaspInfo('CASP ASC: ' + parsed.slots + ' slots · ' + parsed.teu + ' TEU · ' + parsed.bays + ' bays · ' + parsed.reefers + ' reefer slots.');
           render();
         } else {
           var raw = e.target.result;
@@ -12194,14 +12888,14 @@ window.addEventListener('beforeunload', function(e){
         if (typeof kpiCategory !== 'undefined' && kpiCategory) out.push('CAT ' + kpiCategory);
       }
     } catch (e) {}
-    return out.join(' Â· ') || 'all filtered rows';
+    return out.join(' · ') || 'all filtered rows';
   }
 
   function build() {
     ensureProfile();
     state.rows = (typeof getFiltered === 'function') ? getFiltered() : ((typeof allData !== 'undefined') ? allData : []);
     // When the manifest itself came from a CASP ASC plan, the raw file contains
-    // every bay/row/tier slot â€” including empty positions â€” so use it as the
+    // every bay/row/tier slot — including empty positions — so use it as the
     // real slot capacity instead of estimating from the loaded containers.
     try {
       if (!state.profile.casp && typeof rawASCLoaded !== 'undefined' && rawASCLoaded && Array.isArray(rawASCLines) && rawASCLines.length) {
@@ -12224,7 +12918,7 @@ window.addEventListener('beforeunload', function(e){
         fe: feOf(r), vgm: vgmOf(r), temp: tempOf(r), reefer: isReeferSz(szOf(r)), ft: ftOf(szOf(r))
       };
       state.containers.push(c);
-      if (!p) { c.reason = 'Missing or invalid slot'; state.unplanned.push(c); return; }
+      if (!p || p.bay === '00') { c.reason = p && p.bay === '00' ? 'Bay 00 is not a valid bay' : 'Missing or invalid slot'; state.unplanned.push(c); return; }
       c.slot = p;
       state.planned.push(c);
       var b = state.byBay[p.bay] || (state.byBay[p.bay] = { bay: p.bay, cells: {}, rows: {}, tiers: {}, containers: 0, teu: 0, weight: 0, reefers: 0, missingTemp: 0 });
@@ -12236,9 +12930,230 @@ window.addEventListener('beforeunload', function(e){
       if (!b.cells[p.key]) b.cells[p.key] = { bay: p.bay, row: p.row, tier: p.tier, deck: p.deck, items: [], key: p.key };
       b.cells[p.key].items.push(c);
     });
-    state.bays = Object.keys(state.byBay).sort(function (a, b) { return a.localeCompare(b, undefined, { numeric: true }); });
+    state.bays = Object.keys(state.byBay).filter(function (b) { return b !== '00'; }).sort(function (a, b) { return a.localeCompare(b, undefined, { numeric: true }); });
     if (!state.selected || !state.byBay[state.selected]) state.selected = state.bays[0] || '';
     return state;
+  }
+  function displayBays() {
+    var seen = {};
+    state.bays.forEach(function (b) { seen[b] = 1; });
+    var cap = state.profile && state.profile.casp && state.profile.casp.capacityByBay;
+    if (cap) Object.keys(cap).forEach(function (b) { if (b !== '00') seen[b] = 1; });
+    var arr = Object.keys(seen).filter(function (b) { return /^\d{2}$/.test(b) && b !== '00'; });
+    var even = arr.filter(function (b) { return parseInt(b, 10) % 2 === 0; }).sort(function (a, b) { return parseInt(b, 10) - parseInt(a, 10); });
+    var odd = arr.filter(function (b) { return parseInt(b, 10) % 2 === 1; }).sort(function (a, b) { return parseInt(a, 10) - parseInt(b, 10); });
+    return even.concat(odd);
+  }
+  function displayTiers() {
+    var maxDeck = 90, maxUnder = 14;
+    var cap = state.profile && state.profile.casp && state.profile.casp.slotKeys;
+    function add(k) {
+      var p = parseSlot(k); if (!p) return;
+      var n = parseInt(p.tier, 10);
+      if (n >= 80) maxDeck = Math.max(maxDeck, n); else maxUnder = Math.max(maxUnder, n);
+    }
+    (cap || []).forEach(add);
+    state.planned.forEach(function (c) { if (c.slot) add(c.slot.key); });
+    maxDeck = Math.min(98, maxDeck); maxUnder = Math.min(18, maxUnder);
+    var deck = [], under = [];
+    for (var d = 80; d <= maxDeck; d += 2) deck.push(String(d).padStart(2, '0'));
+    for (var u = maxUnder; u >= 2; u -= 2) under.push(String(u).padStart(2, '0'));
+    deck.reverse();
+    return { deck: deck, under: under };
+  }
+  var BAY_BASE = { '01': 84, '02': 84, '03': 84, '41': 80, '42': 80, '43': 80, '46': 80 };
+  function bayBase(bay) { return BAY_BASE[bay] || 82; }
+  function baySupportsTier(bay, tier) {
+    var n = parseInt(tier, 10);
+    if (n < 80) return true;
+    return n >= bayBase(bay);
+  }
+  function evenCovered(bay, tier) {
+    var n = parseInt(bay, 10);
+    if (!n || n % 2 === 1) return false;
+    return state.planned.some(function (c) {
+      if (!c.slot || c.slot.tier !== tier) return false;
+      var ob = parseInt(c.slot.bay, 10);
+      return ob % 2 === 1 && Math.abs(ob - n) === 1;
+    });
+  }
+  function tierItems(b, tier) {
+    var out = [];
+    if (!b) return out;
+    Object.keys(b.cells).forEach(function (k) {
+      var cell = b.cells[k];
+      if (cell.tier === tier) out = out.concat(cell.items || []);
+    });
+    return out;
+  }
+  function renderCommand() {
+    var m = (typeof vesselMeta !== 'undefined' && vesselMeta) || {};
+    if ($('stowVesselLabel')) $('stowVesselLabel').textContent = m.vesselName || m.vessel || 'Vessel not selected';
+    if ($('stowVoyageLabel')) $('stowVoyageLabel').textContent = [m.voyage ? 'VOY ' + m.voyage : '', m.caspVessel || '', m.caspRoute || ''].filter(Boolean).join(' · ');
+  }
+  function renderInspector() {
+    var el = $('stowInspector'); if (!el) return;
+    var b = state.byBay[state.selected];
+    if (!b) {
+      el.innerHTML = '<div class="stow-inspector"><div class="stow-eyebrow">Bay inspector</div><h4>No bay selected</h4><div class="si-meta">Choose a bay column or chip.</div></div>';
+      return;
+    }
+    var list = state.planned.filter(function (c) { return c.slot && c.slot.bay === b.bay; });
+    var stats = bayStats(b);
+    el.innerHTML = '<div class="stow-inspector"><div class="stow-eyebrow">Bay inspector</div><h4>BAY ' + esc(b.bay) + '</h4>' +
+      '<div class="si-meta">' + b.containers + ' boxes · ' + b.teu + ' TEU · ' + b.weight.toFixed(1) + ' T · ' + stats.pos + '/' + stats.est + ' positions</div>' +
+      '<div class="stow-inspector-actions"><button class="ops-btn" type="button" id="stowFocusBay">Open bay detail</button><button class="ops-btn" type="button" id="stowAddBay">Add container</button></div>' +
+      (list.length ? '<div class="stow-inspector-list">' + list.slice(0, 18).map(function (c) {
+        return '<div class="stow-inspector-item"><b>' + esc(c.ctnr || '—') + '</b> ' + esc(c.opr || '—') + '<span>' + esc(c.slot.row + '/' + c.slot.tier) + '</span></div>';
+      }).join('') + '</div>' : '<div class="stow-empty-badge">No containers planned in this bay.</div>') + '</div>';
+    if ($('stowFocusBay')) $('stowFocusBay').addEventListener('click', function () { state.view = 'detail'; setView('detail'); render(); });
+    if ($('stowAddBay')) $('stowAddBay').addEventListener('click', function () { if (typeof openAddCtnrModal === 'function') openAddCtnrModal(null, b.bay + '0102'); });
+  }
+  function renderStatus() {
+    var el = $('stowStatusBar'); if (!el) return;
+    var teu = state.planned.reduce(function (s, c) { return s + teuOfSz(c.sz); }, 0);
+    var wt = state.planned.reduce(function (s, c) { return s + (c.vgm || 0); }, 0);
+    var reefers = state.planned.filter(function (c) { return c.reefer; }).length;
+    var p = state.profile || {};
+    var util = p.teuCapacity ? (teu / p.teuCapacity * 100) : null;
+    el.innerHTML = '<span>BAYS <b>' + state.bays.length + '</b></span>' +
+      '<span>BOXES <b>' + state.planned.length + '</b></span>' +
+      '<span>TEU <b>' + teu + '</b></span>' +
+      '<span>WEIGHT <b>' + wt.toFixed(1) + ' T</b></span>' +
+      '<span>UTIL <b>' + (util == null ? '—' : util.toFixed(0) + '%') + '</b></span>' +
+      '<span>REEFER <b>' + reefers + '</b></span>' +
+      '<span>UNPLANNED <b class="' + (state.unplanned.length ? 'stow-warn' : '') + '">' + state.unplanned.length + '</b></span>';
+  }
+  function renderAllBays() {
+    var grid = $('stowGrid');
+    if (!grid) return;
+    var bays = displayBays();
+    var tiers = displayTiers();
+    if ($('stowPlanKicker')) $('stowPlanKicker').textContent = 'BAY PLAN · ALL BAYS';
+    if ($('stowBayTitle')) $('stowBayTitle').textContent = (typeof vesselMeta !== 'undefined' && vesselMeta && vesselMeta.vesselName ? vesselMeta.vesselName : 'Vessel') + ' · ' + state.planned.length + ' boxes';
+    if ($('stowPlanSub')) $('stowPlanSub').textContent = bays.length + ' bays · ' + (tiers.deck.length + tiers.under.length) + ' tiers · odd = 20 ft / even = 40 ft · ' + state.scope;
+    if ($('stowPlanMode')) $('stowPlanMode').textContent = 'Click a bay or slot · double-click a container to edit';
+    renderLegend();
+    if (!bays.length) {
+      grid.innerHTML = '<div class="ops-empty">No planned containers or ASC slot capacity. Load an ASC file or add containers.</div>';
+      if ($('stowLegend')) $('stowLegend').innerHTML = '';
+      renderStatus(); return;
+    }
+    var cols = '26px repeat(' + bays.length + ',minmax(34px,64px))';
+    var html = '<div class="stow-matrix" style="grid-template-columns:' + cols + '">';
+    html += '<div class="stow-mx-corner"></div>' + bays.map(function (b) {
+      var type = parseInt(b, 10) % 2 === 1 ? '20 ft' : '40 ft';
+      return '<button type="button" class="stow-mx-bay" data-stow-bay="' + esc(b) + '" title="' + type + ' bay ' + esc(b) + ' · base tier ' + bayBase(b) + '" style="' + (b === state.selected ? 'color:#60a5fa;text-decoration:underline' : '') + '">' + esc(b) + '</button>';
+    }).join('');
+    html += '<div class="stow-mx-deck">ON DECK · TIER 80+</div>';
+    tiers.deck.forEach(function (t) {
+      html += '<div class="stow-mx-tier">' + esc(t) + '</div>';
+      html += bays.map(function (b) { return matrixCell(state.byBay[b], b, t); }).join('');
+    });
+    html += '<div class="stow-mx-tier">HATCH</div><div class="stow-mx-hatch" style="grid-column:2 / span ' + bays.length + '"></div>';
+    html += '<div class="stow-mx-deck">UNDER DECK</div>';
+    tiers.under.forEach(function (t) {
+      html += '<div class="stow-mx-tier">' + esc(t) + '</div>';
+      html += bays.map(function (b) { return matrixCell(state.byBay[b], b, t); }).join('');
+    });
+    html += '<div class="stow-mx-corner"></div>' + bays.map(function (b) {
+      var type = parseInt(b, 10) % 2 === 1 ? '20 ft' : '40 ft';
+      return '<button type="button" class="stow-mx-bay" data-stow-bay="' + esc(b) + '" title="' + type + ' bay ' + esc(b) + ' · base tier ' + bayBase(b) + '">' + esc(b) + '</button>';
+    }).join('');
+    html += '</div>';
+    var b = state.byBay[state.selected];
+    if (b) {
+      html += '<div class="stow-mx-legend"><span><i style="background:#10b981"></i>occupied</span><span><i style="background:#f8fafc"></i>available</span><span><i style="background:#1e293b"></i>not in slot plan</span><span>Odd bays 20 ft · even bays 40 ft</span><span>Bases: 01–03 = 84 · 41/42/43/46 = 80 · others = 82</span></div>';
+    }
+    grid.innerHTML = html;
+    grid.querySelectorAll('[data-stow-bay]').forEach(function (el) {
+      el.addEventListener('click', function () { state.selected = el.dataset.stowBay; render(); });
+    });
+    grid.querySelectorAll('[data-stow-rid]').forEach(function (el) {
+      el.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var bay = el.dataset.stowBay;
+        if (bay) { state.selected = bay; render(); }
+      });
+      el.addEventListener('dblclick', function (e) {
+        e.stopPropagation();
+        var rid = Number(el.dataset.stowRid);
+        if (!isNaN(rid) && typeof openEditFromRid === 'function') openEditFromRid(rid);
+      });
+    });
+    grid.querySelectorAll('[data-stow-slot]').forEach(function (el) {
+      el.addEventListener('click', function (e) {
+        e.stopPropagation();
+        if (el.dataset.stowSlot && typeof openAddCtnrModal === 'function') openAddCtnrModal(null, el.dataset.stowSlot);
+      });
+    });
+    renderStatus();
+  }
+  function matrixCell(b, bay, tier) {
+    var items = tierItems(b, tier);
+    var key = bay + '|01|' + tier;
+    var slotText = bay + '01' + tier;
+    if (!baySupportsTier(bay, tier)) return '<div class="stow-mx-cell blank" title="Tier ' + esc(tier) + ' is not available in bay ' + esc(bay) + '"></div>';
+    if (!items.length && evenCovered(bay, tier)) return '<div class="stow-mx-cell blank" title="40 ft bay ' + esc(bay) + ' tier ' + esc(tier) + ' is covered by a 20 ft container"></div>';
+    var cap = state.profile && state.profile.casp && state.profile.casp.slotKeys;
+    var hasCap = !!(cap && cap.length);
+    var available = !hasCap;
+    if (hasCap) available = cap.some(function (k) { var p = parseSlot(k); return p && p.bay === bay && p.tier === tier; });
+    if (!b) b = { bay: bay, cells: {}, containers: 0, teu: 0, weight: 0 };
+    if (!items.length) {
+      return '<button type="button" class="stow-mx-cell empty ' + (available ? 'available' : 'unavailable') + '" data-stow-slot="' + esc(available ? slotText : '') + '" title="' + (available ? 'Add a container at bay ' + bay + ' tier ' + tier : 'No slot in loaded plan') + '">' + (available ? 'X' : '') + '</button>';
+    }
+    var c = items[0];
+    var color = colorFor(c);
+    var selected = bay === state.selected ? ' selected' : '';
+    var label = items.length > 1 ? items.length : (c.opr || '•');
+    var title = items.map(function (x) { return x.ctnr + ' · ' + x.opr + ' / ' + x.pol + ' → ' + x.pod; }).join('\n') + '\nBay ' + bay + ' tier ' + tier;
+    return '<button type="button" class="stow-mx-cell occupied' + selected + '" style="background:' + color + '33;border-color:' + color + 'aa" data-stow-rid="' + (c.rid != null ? c.rid : '') + '" data-stow-bay="' + esc(bay) + '" title="' + esc(title) + '"><span class="mx-count">' + esc(label) + '</span></button>';
+  }
+  function setView(v) {
+    state.view = v;
+    document.querySelectorAll('[data-stow-view]').forEach(function (b) { b.classList.toggle('active', b.dataset.stowView === v); });
+    if ($('stowPlanKicker')) $('stowPlanKicker').textContent = v === 'all' ? 'BAY PLAN · ALL BAYS' : 'BAY PLAN · DETAIL';
+    renderGrid();
+  }
+  function candidateSlots() {
+    var cap = (state.profile && state.profile.casp && state.profile.casp.slotKeys) || [];
+    var occupied = {};
+    state.planned.forEach(function (c) { if (c.slot) occupied[c.slot.key] = 1; });
+    var out = [], seen = {};
+    function add(key) {
+      var p = parseSlot(key); if (!p || occupied[p.key] || seen[p.key]) return;
+      if (!baySupportsTier(p.bay, p.tier) || evenCovered(p.bay, p.tier)) return;
+      seen[p.key] = 1; out.push({ key: p.bay + p.row + p.tier, p: p });
+    }
+    cap.forEach(add);
+    if (!out.length) {
+      var tiers = displayTiers();
+      displayBays().forEach(function (b) {
+        tiers.deck.concat(tiers.under).forEach(function (t) {
+          ROW_ORDER.forEach(function (r) { add(b + '|' + r + '|' + t); });
+        });
+      });
+    }
+    return out.sort(function (a, b) { return (parseInt(a.p.tier, 10) >= 80 ? 1 : 0) - (parseInt(b.p.tier, 10) >= 80 ? 1 : 0) || a.p.bay.localeCompare(b.p.bay) || parseInt(a.p.tier, 10) - parseInt(b.p.tier, 10) || parseInt(a.p.row, 10) - parseInt(b.p.row, 10); });
+  }
+  function autoPlace() {
+    if (!state.unplanned.length) { setCaspInfo('No unplanned containers to place.'); return; }
+    var slots = candidateSlots();
+    if (!slots.length) { setCaspInfo('No empty slot positions are available. Load the vessel ASC slot file first.'); return; }
+    var list = state.unplanned.slice().sort(function (a, b) { return (b.vgm || 0) - (a.vgm || 0); });
+    var n = Math.min(list.length, slots.length);
+    if (!confirm('Place ' + n + ' unplanned container(s) into the first available slots?\n\nThis updates their Slot values; review the bay plan before saving the ASC file.')) return;
+    for (var i = 0; i < n; i++) {
+      var c = list[i], s = slots[i];
+      c.row.Slot = s.key;
+      c.row._manualEntry = true;
+      c.slot = s.p;
+    }
+    if (typeof dataDirty !== 'undefined') dataDirty = true;
+    setCaspInfo('Placed ' + n + ' container(s). Review the bay plan, then save the ASC file.');
+    refresh();
+    if (typeof renderAll === 'function') renderAll();
   }
   function bayStats(b) {
     if (!b) return { est: 0, pos: 0, util: null, teu: 0 };
@@ -12263,8 +13178,8 @@ window.addEventListener('beforeunload', function(e){
   }
   function colorFor(c) {
     if (state.color === 'fe') return c.fe === 'E' ? '#f59e0b' : c.fe === 'F' ? '#10b981' : '#64748b';
-    if (state.color === 'opr') return OP_COLORS[up(c.opr)] || hashColor(c.opr || 'â€”');
-    if (state.color === 'pol') return POL_COLORS[up(c.pol)] || hashColor(c.pol || 'â€”');
+    if (state.color === 'opr') return OP_COLORS[up(c.opr)] || hashColor(c.opr || '—');
+    if (state.color === 'pol') return POL_COLORS[up(c.pol)] || hashColor(c.pol || '—');
     if (state.color === 'weight') {
       var max = 0; state.planned.forEach(function (x) { if (x.vgm != null && x.vgm > max) max = x.vgm; });
       var pct = max ? Math.min(1, (c.vgm || 0) / max) : 0;
@@ -12273,11 +13188,11 @@ window.addEventListener('beforeunload', function(e){
     return POL_COLORS[up(c.pod)] || podColorSafe(c.pod);
   }
   function cellLabel(c) {
-    if (state.color === 'opr') return c.opr || 'â€”';
-    if (state.color === 'pol') return c.pol || 'â€”';
-    if (state.color === 'fe') return c.fe || 'â€”';
-    if (state.color === 'weight') return c.vgm == null ? 'â€”' : c.vgm.toFixed(1);
-    return c.pod || 'â€”';
+    if (state.color === 'opr') return c.opr || '—';
+    if (state.color === 'pol') return c.pol || '—';
+    if (state.color === 'fe') return c.fe || '—';
+    if (state.color === 'weight') return c.vgm == null ? '—' : c.vgm.toFixed(1);
+    return c.pod || '—';
   }
   function renderKpis() {
     var el = $('stowKpis'); if (!el) return;
@@ -12293,7 +13208,7 @@ window.addEventListener('beforeunload', function(e){
       kpi('Planned', state.planned.length) +
       kpi('Unplanned', state.unplanned.length, state.unplanned.length ? 'stow-warn' : '') +
       kpi('Positions', totalPos + (totalEst ? ' / ' + totalEst : '')) +
-      kpi('Utilisation', util == null ? 'â€”' : util.toFixed(0) + '%', util != null && util > 90 ? 'stow-amber' : '') +
+      kpi('Utilisation', util == null ? '—' : util.toFixed(0) + '%', util != null && util > 90 ? 'stow-amber' : '') +
       kpi('TEU', totalTeu) +
       kpi('Weight T', totalWeight.toFixed(1)) +
       kpi('Reefers', reefers) +
@@ -12301,23 +13216,23 @@ window.addEventListener('beforeunload', function(e){
   }
   function renderBays() {
     var el = $('stowBays'); if (!el) return;
-    el.innerHTML = state.bays.map(function (b) {
+    el.innerHTML = state.bays.filter(function (b) { return b !== '00'; }).map(function (b) {
       var s = bayStats(state.byBay[b]);
-      return '<button type="button" class="stow-bay-chip' + (b === state.selected ? ' active' : '') + '" data-stow-bay="' + esc(b) + '"><b>BAY ' + esc(b) + '</b>' + state.byBay[b].containers + ' boxes Â· ' + s.teu + ' TEU</button>';
+      return '<button type="button" class="stow-bay-chip' + (b === state.selected ? ' active' : '') + '" data-stow-bay="' + esc(b) + '"><b>BAY ' + esc(b) + '</b>' + state.byBay[b].containers + ' boxes · ' + s.teu + ' TEU</button>';
     }).join('') || '<div class="ops-empty">No planned slots.</div>';
     el.querySelectorAll('[data-stow-bay]').forEach(function (btn) { btn.addEventListener('click', function () { state.selected = btn.dataset.stowBay; render(); }); });
   }
   function cellHtml(cell, color, available, row, slot) {
     var slotText = String(slot || '').replace(/\|/g, '');
     if (!cell) {
-      return '<button type="button" class="stow-cell empty ' + (available ? 'available' : 'unavailable') + '" data-stow-slot="' + esc(slotText) + '" title="Add a container at slot ' + esc(slotText) + '">' + (available ? '' : 'Ã—') + '</button>';
+      return '<button type="button" class="stow-cell empty ' + (available ? 'available' : 'unavailable') + '" data-stow-slot="' + esc(slotText) + '" title="Add a container at slot ' + esc(slotText) + '">' + (available ? '' : 'X') + '</button>';
     }
     var c = cell.items[0];
-    var title = cell.items.map(function (x) { return x.ctnr + ' Â· ' + x.opr + ' / ' + x.pol + ' â†’ ' + x.pod; }).join('\n') + '\nSlot ' + cell.bay + cell.row + cell.tier;
+    var title = cell.items.map(function (x) { return x.ctnr + ' · ' + x.opr + ' / ' + x.pol + ' → ' + x.pod; }).join('\n') + '\nSlot ' + cell.bay + cell.row + cell.tier;
     return '<button type="button" class="stow-cell' + (row === '01' ? ' center-right' : '') + '" style="background:' + color + '22;border-color:' + color + '99" title="' + esc(title) + '" data-stow-rid="' + (c.rid != null ? c.rid : '') + '">' +
       '<span class="sc-c">' + esc(cellLabel(c)) + '</span>' +
       '<span class="sc-m">' + esc(String(c.ctnr || '').slice(-4)) + (cell.items.length > 1 ? ' +' + (cell.items.length - 1) : '') + '</span>' +
-      (c.reefer ? '<span class="sc-r">â„</span>' : '') + (c.ft === 40 ? '<span class="sc-r" style="right:12px;font-size:6px">40</span>' : '') +
+      (c.reefer ? '<span class="sc-r">❄</span>' : '') + (c.ft === 40 ? '<span class="sc-r" style="right:12px;font-size:6px">40</span>' : '') +
       '</button>';
   }
   function renderLegend() {
@@ -12327,19 +13242,25 @@ window.addEventListener('beforeunload', function(e){
       return;
     }
     var b = state.byBay[state.selected], seen = {}, vals = [];
-    if (b) Object.keys(b.cells).forEach(function (k) {
-      var c = b.cells[k].items[0];
+    var source = state.view === 'all' ? state.planned : (b ? Object.keys(b.cells).map(function (k) { return b.cells[k].items[0]; }) : []);
+    if (source) source.forEach(function (c) {
       var val = state.color === 'opr' ? c.opr : state.color === 'pol' ? c.pol : state.color === 'fe' ? c.fe : c.pod;
-      val = val || 'â€”';
+      val = val || '—';
       if (!seen[val]) { seen[val] = 1; vals.push(val); }
     });
     var label = state.color === 'opr' ? 'Operator' : state.color === 'pol' ? 'POL' : state.color === 'fe' ? 'Full/Empty' : 'POD';
     el.innerHTML = '<span>' + label + ':</span>' + vals.slice(0, 16).map(function (v) {
       var c = { opr: v, pol: v, fe: v, pod: v };
       return '<span><i style="background:' + colorFor(c) + '"></i>' + esc(v) + '</span>';
-    }).join('') + '<span style="color:var(--muted)">â„ reefer Â· 40 ft Â· click a cell</span>';
+    }).join('') + '<span style="color:var(--muted)">❄ reefer · 40 ft · click a cell</span>';
   }
   function renderGrid() {
+    if (state.view === 'detail' && state.byBay[state.selected]) renderDetailGrid();
+    else renderAllBays();
+    renderInspector();
+    renderStatus();
+  }
+  function renderDetailGrid() {
     var grid = $('stowGrid'), title = $('stowBayTitle');
     if (!grid) return;
     var b = state.byBay[state.selected];
@@ -12349,12 +13270,15 @@ window.addEventListener('beforeunload', function(e){
       if ($('stowLegend')) $('stowLegend').innerHTML = '';
       return;
     }
-    if (title) title.textContent = 'BAY ' + b.bay + ' Â· ' + b.containers + ' boxes Â· ' + b.teu + ' TEU Â· ' + b.weight.toFixed(2) + ' T';
+    if ($('stowPlanKicker')) $('stowPlanKicker').textContent = 'BAY PLAN · DETAIL';
+    if ($('stowPlanSub')) $('stowPlanSub').textContent = state.scope;
+    if ($('stowPlanMode')) $('stowPlanMode').textContent = 'Click a slot to add · click a container to edit';
+    if (title) title.textContent = 'BAY ' + b.bay + ' · ' + (parseInt(b.bay, 10) % 2 === 1 ? '20 ft' : '40 ft') + ' · base ' + bayBase(b.bay) + ' · ' + b.containers + ' boxes · ' + b.teu + ' TEU · ' + b.weight.toFixed(2) + ' T';
     var rowKeys = ROW_ORDER.slice();
     var capKeys = (state.profile && state.profile.casp && state.profile.casp.slotKeys) || [];
     var capSet = {};
     capKeys.forEach(function (k) { capSet[k] = 1; });
-    var maxDeck = 94, maxUnder = 14;
+    var maxDeck = 90, maxUnder = 14;
     function extend(k) {
       var p = parseSlot(k); if (!p || p.bay !== b.bay) return;
       var n = parseInt(p.tier, 10);
@@ -12363,7 +13287,7 @@ window.addEventListener('beforeunload', function(e){
     capKeys.forEach(extend);
     state.planned.forEach(function (c) { if (c.slot && c.slot.bay === b.bay) extend(c.slot.key); });
     var deckTiers = [], underTiers = [];
-    for (var d = 82; d <= maxDeck; d += 2) deckTiers.push(String(d).padStart(2, '0'));
+    for (var d = Math.max(80, bayBase(b.bay)); d <= maxDeck; d += 2) deckTiers.push(String(d).padStart(2, '0'));
     for (var u = 2; u <= maxUnder; u += 2) underTiers.push(String(u).padStart(2, '0'));
     deckTiers.reverse();
     underTiers.reverse();
@@ -12376,13 +13300,15 @@ window.addEventListener('beforeunload', function(e){
       var cells = rowKeys.map(function (r) {
         var key = b.bay + '|' + r + '|' + tier;
         var cell = b.cells[key];
-        var avail = !!cell || !!capSet[key];
+        if (!cell && evenCovered(b.bay, tier)) return '<div class="stow-cell blank" title="Covered by a 20 ft container"></div>';
+        var supported = baySupportsTier(b.bay, tier) && !evenCovered(b.bay, tier);
+        var avail = !!cell || (capKeys.length ? (!!capSet[key] && supported) : supported);
         return cellHtml(cell, colorFor((cell || { items: [{ opr: '', pol: '', pod: '', fe: '' }] }).items[0]), avail, r, key);
       }).join('');
       return '<div class="stow-row"><div class="stow-cells" style="grid-template-columns:repeat(' + rowKeys.length + ',44px)">' + cells + '</div><div class="stow-tier">' + esc(tier) + '</div></div>';
     }
     var html = headerRow();
-    html += '<div class="stow-deck">ON DECK Â· TIER 80+</div>';
+    html += '<div class="stow-deck">ON DECK · TIER 80+</div>';
     deckTiers.forEach(function (t) { html += tierRow(t); });
     html += '<div class="stow-deck">UNDER DECK</div>';
     underTiers.forEach(function (t) { html += tierRow(t); });
@@ -12406,7 +13332,7 @@ window.addEventListener('beforeunload', function(e){
       '<div class="stow-stat"><span>Positions</span><b>' + stats.pos + ' / ' + stats.est + ' est.</b></div>' +
       '<div class="stow-stat"><span>TEU</span><b>' + b.teu + '</b></div>' +
       '<div class="stow-stat"><span>Weight</span><b>' + b.weight.toFixed(2) + ' T</b></div>' +
-      '<div class="stow-stat"><span>Reefers</span><b>' + b.reefers + (b.missingTemp ? ' Â· ' + b.missingTemp + ' no temp' : '') + '</b></div>' +
+      '<div class="stow-stat"><span>Reefers</span><b>' + b.reefers + (b.missingTemp ? ' · ' + b.missingTemp + ' no temp' : '') + '</b></div>' +
       '<div class="stow-bar"><i style="width:' + Math.min(100, stats.util || 0) + '%;background:' + ((stats.util || 0) > 90 ? '#ef4444' : '#3b82f6') + '"></i></div></div>';
     var rowW = {};
     state.planned.forEach(function (c) { if (c.slot && c.slot.bay === state.selected && c.vgm != null) rowW[c.slot.row] = (rowW[c.slot.row] || 0) + c.vgm; });
@@ -12415,11 +13341,11 @@ window.addEventListener('beforeunload', function(e){
     var maxLimit = state.profile && state.profile.maxStackWeight ? state.profile.maxStackWeight : 0;
     weightEl.innerHTML = '<div class="stow-box"><h4>Row weight distribution</h4>' + (rows.length ? rows.map(function (r) {
       var w = rowW[r]; var over = maxLimit && w > maxLimit;
-      return '<div class="stow-stat"><span>Row ' + esc(r) + '</span><b class="' + (over ? 'stow-warn' : '') + '">' + w.toFixed(2) + ' T' + (over ? ' âš ' : '') + '</b></div><div class="stow-bar"><i style="width:' + (maxW ? Math.min(100, w / maxW * 100) : 0) + '%;background:' + (over ? '#ef4444' : '#3b82f6') + '"></i></div>';
+      return '<div class="stow-stat"><span>Row ' + esc(r) + '</span><b class="' + (over ? 'stow-warn' : '') + '">' + w.toFixed(2) + ' T' + (over ? ' ⚠' : '') + '</b></div><div class="stow-bar"><i style="width:' + (maxW ? Math.min(100, w / maxW * 100) : 0) + '%;background:' + (over ? '#ef4444' : '#3b82f6') + '"></i></div>';
     }).join('') : '<div class="stow-line">No weights.</div>') + (maxLimit ? '<div class="ops-note">Max stack ' + maxLimit + ' T (profile).</div>' : '') + '</div>';
     var reefers = state.planned.filter(function (c) { return c.slot && c.slot.bay === state.selected && c.reefer; });
     reeferEl.innerHTML = '<div class="stow-box"><h4>Reefers in bay ' + esc(b.bay) + '</h4>' + (reefers.length ? '<div class="stow-list">' + reefers.slice(0, 8).map(function (c) {
-      return '<div class="stow-line"><b>' + esc(c.ctnr || 'â€”') + '</b>' + esc(c.slot.row + '/' + c.slot.tier) + '<span class="' + (c.temp == null ? 'stow-amber' : '') + '">' + (c.temp == null ? 'no temp' : esc(c.temp) + 'Â°C') + '</span></div>';
+      return '<div class="stow-line"><b>' + esc(c.ctnr || '—') + '</b>' + esc(c.slot.row + '/' + c.slot.tier) + '<span class="' + (c.temp == null ? 'stow-amber' : '') + '">' + (c.temp == null ? 'no temp' : esc(c.temp) + '°C') + '</span></div>';
     }).join('') + '</div>' : '<div class="stow-line">No reefers.</div>') + '</div>';
     if (miss) statEl.innerHTML += '<div class="ops-note stow-amber">' + miss + ' reefer(s) in this bay have no temperature.</div>';
   }
@@ -12427,7 +13353,7 @@ window.addEventListener('beforeunload', function(e){
     var el = $('stowUnplanned'); if (!el) return;
     if (!state.unplanned.length) { el.innerHTML = ''; return; }
     el.innerHTML = '<h4>Unplanned / invalid slots (' + state.unplanned.length + ')</h4><div class="stow-list">' + state.unplanned.slice(0, 20).map(function (c) {
-      return '<div class="stow-line" data-stow-unplanned="' + (c.rid != null ? c.rid : '') + '"><b>' + esc(c.ctnr || 'â€”') + '</b>' + esc(c.opr || 'â€”') + ' / ' + esc(c.pod || 'â€”') + '<span class="stow-amber">' + esc(c.reason || 'no slot') + '</span></div>';
+      return '<div class="stow-line" data-stow-unplanned="' + (c.rid != null ? c.rid : '') + '"><b>' + esc(c.ctnr || '—') + '</b>' + esc(c.opr || '—') + ' / ' + esc(c.pod || '—') + '<span class="stow-amber">' + esc(c.reason || 'no slot') + '</span></div>';
     }).join('') + '</div>';
     el.querySelectorAll('[data-stow-unplanned]').forEach(function (row) {
       row.addEventListener('click', function () { var rid = Number(row.dataset.stowUnplanned); if (!isNaN(rid) && typeof openEditFromRid === 'function') openEditFromRid(rid); });
@@ -12440,12 +13366,13 @@ window.addEventListener('beforeunload', function(e){
     if ($('stowPlugs')) $('stowPlugs').value = p.reeferPlugs || '';
     if ($('stowStackMax')) $('stowStackMax').value = p.maxStackWeight || '';
     if ($('stowCaspInfo')) {
-      if (p.casp) setCaspInfo('CASP ASC: ' + p.casp.slots + ' slots Â· ' + p.casp.teu + ' TEU Â· ' + p.casp.bays + ' bays Â· ' + p.casp.reefers + ' reefer slots.' + (p.casp.source ? ' (' + p.casp.source + ')' : ''));
+      if (p.casp) setCaspInfo('CASP ASC: ' + p.casp.slots + ' slots · ' + p.casp.teu + ' TEU · ' + p.casp.bays + ' bays · ' + p.casp.reefers + ' reefer slots.' + (p.casp.source ? ' (' + p.casp.source + ')' : ''));
       else if (p.caspDef) setCaspInfo('CASP DEF: ' + (p.caspDef.name || p.caspDef.source) + '. Import the vessel .ASC for slot capacity.');
     }
   }
   function render() {
     ensureProfile();
+    renderCommand();
     renderKpis();
     renderBays();
     renderGrid();
@@ -12462,12 +13389,14 @@ window.addEventListener('beforeunload', function(e){
     var body = tierKeys.map(function (t) { return '<tr><td>' + esc(t) + '</td>' + rowKeys.map(function (r) { var cell = b.cells[b.bay + '|' + r + '|' + t]; return '<td>' + (cell ? esc(cell.items.map(function (x) { return x.ctnr; }).join(' / ')) : '') + '</td>'; }).join('') + '</tr>'; }).join('');
     var w = window.open('', '_blank'); if (!w) return;
     w.document.open();
-    w.document.write('<!doctype html><html><head><meta charset="utf-8"><title>Bay ' + esc(b.bay) + '</title><style>body{font-family:Arial;margin:14px}h1{font-size:16px}table{border-collapse:collapse;width:100%;font-size:9px}td,th{border:1px solid #999;padding:2px 4px}th{background:#eee}</style></head><body><h1>Bay ' + esc(b.bay) + ' Â· ' + esc(state.scope) + '</h1><p>' + b.containers + ' boxes Â· ' + b.teu + ' TEU Â· ' + b.weight.toFixed(2) + ' T</p><table>' + head + body + '</table></bo' + 'dy></html>');
+    w.document.write('<!doctype html><html><head><meta charset="utf-8"><title>Bay ' + esc(b.bay) + '</title><style>body{font-family:Arial;margin:14px}h1{font-size:16px}table{border-collapse:collapse;width:100%;font-size:9px}td,th{border:1px solid #999;padding:2px 4px}th{background:#eee}</style></head><body><h1>Bay ' + esc(b.bay) + ' · ' + esc(state.scope) + '</h1><p>' + b.containers + ' boxes · ' + b.teu + ' TEU · ' + b.weight.toFixed(2) + ' T</p><table>' + head + body + '</table></bo' + 'dy></html>');
     w.document.close(); setTimeout(function () { w.focus(); w.print(); }, 250);
   }
   function bind() {
     if (!$('opsStowagePane') || $('opsStowagePane').__stowBound) return;
     $('opsStowagePane').__stowBound = true;
+    document.querySelectorAll('[data-stow-view]').forEach(function (b) { b.addEventListener('click', function () { setView(b.dataset.stowView); }); });
+    if ($('stowAuto')) $('stowAuto').addEventListener('click', autoPlace);
     if ($('stowColor')) $('stowColor').addEventListener('change', function () { state.color = this.value; renderGrid(); });
     if ($('stowProfileBtn')) $('stowProfileBtn').addEventListener('click', function () { var p = $('stowProfile'); if (p) p.hidden = !p.hidden; renderProfile(); });
     if ($('stowProfileClose')) $('stowProfileClose').addEventListener('click', function () { $('stowProfile').hidden = true; });
@@ -12495,7 +13424,7 @@ window.addEventListener('beforeunload', function(e){
   window.Stowage = {
     refresh: refresh,
     print: printPlan,
-    _debug: { build: build, parseSlot: parseSlot, parseAscText: parseAscText, state: state, bayStats: bayStats }
+    _debug: { build: build, parseSlot: parseSlot, parseAscText: parseAscText, state: state, bayStats: bayStats, bayBase: bayBase, baySupportsTier: baySupportsTier, evenCovered: evenCovered }
   };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind);
   else bind();
