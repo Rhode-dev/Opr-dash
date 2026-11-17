@@ -1375,6 +1375,14 @@ body.shared-view #rcSection{display:none!important}
 #opsModal.ops-maximized .stow-mx-cell{height:30px;min-width:40px;font-size:8px}
 #opsModal.ops-maximized .stow-mx-cell.empty.available{font-size:11px}
 
+#opsModal.ops-maximized #opsStowagePane.stow-detail-view .stow-layout{grid-template-columns:1fr}
+#opsModal.ops-maximized #opsStowagePane.stow-detail-view .stow-plan{order:1}
+#opsModal.ops-maximized #opsStowagePane.stow-detail-view .stow-side{order:2;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+#opsModal.ops-maximized #opsStowagePane.stow-detail-view #stowGrid{width:max-content;margin:0 auto}
+#opsModal.ops-maximized #opsStowagePane.stow-detail-view .stow-cell{width:100%;height:34px}
+#opsModal.ops-maximized #opsStowagePane.stow-detail-view .stow-col{width:100%}
+@media(max-width:900px){#opsModal.ops-maximized #opsStowagePane.stow-detail-view .stow-side{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -12514,7 +12522,7 @@ window.addEventListener('beforeunload', function(e){
     SHG: '#115e59', PKL: '#7f1d1d', PEN: '#7c3aed', XTH: '#ef4444', KHI: '#84cc16',
     KSC: '#111827', OFT: '#f59e0b', NBO: '#14b8a6', MBA: '#0ea5e9', TZ: '#fb7185'
   };
-  var ROW_ORDER = ['12','10','08','06','04','02','01','03','05','07','09','11'];
+  var ROW_ORDER = ['14','12','10','08','06','04','02','01','03','05','07','09','11','13'];
   var CASP_VESSELS = [
     ["ABLE","EVER ABLE"],
     ["ACRD","UNI-ACCORD"],
@@ -13112,6 +13120,7 @@ window.addEventListener('beforeunload', function(e){
   }
   function setView(v) {
     state.view = v;
+    var pane = $('opsStowagePane'); if (pane) pane.classList.toggle('stow-detail-view', v === 'detail');
     document.querySelectorAll('[data-stow-view]').forEach(function (b) { b.classList.toggle('active', b.dataset.stowView === v); });
     if ($('stowPlanKicker')) $('stowPlanKicker').textContent = v === 'all' ? 'BAY PLAN · ALL BAYS' : 'BAY PLAN · DETAIL';
     renderGrid();
@@ -13274,7 +13283,10 @@ window.addEventListener('beforeunload', function(e){
     if ($('stowPlanSub')) $('stowPlanSub').textContent = state.scope;
     if ($('stowPlanMode')) $('stowPlanMode').textContent = 'Click a slot to add · click a container to edit';
     if (title) title.textContent = 'BAY ' + b.bay + ' · ' + (parseInt(b.bay, 10) % 2 === 1 ? '20 ft' : '40 ft') + ' · base ' + bayBase(b.bay) + ' · ' + b.containers + ' boxes · ' + b.teu + ' TEU · ' + b.weight.toFixed(2) + ' T';
+    var maxDetail = !!($('opsModal') && $('opsModal').classList.contains('ops-maximized'));
     var rowKeys = ROW_ORDER.slice();
+    var cellW = maxDetail ? 58 : 44;
+    var rowCols = 'grid-template-columns:repeat(' + rowKeys.length + ',' + cellW + 'px)';
     var capKeys = (state.profile && state.profile.casp && state.profile.casp.slotKeys) || [];
     var capSet = {};
     capKeys.forEach(function (k) { capSet[k] = 1; });
@@ -13293,7 +13305,7 @@ window.addEventListener('beforeunload', function(e){
     underTiers.reverse();
     renderLegend();
     function headerRow() {
-      return '<div class="stow-row stow-head"><div class="stow-cells" style="grid-template-columns:repeat(' + rowKeys.length + ',44px)">' +
+      return '<div class="stow-row stow-head"><div class="stow-cells" style="' + rowCols + '">' +
         rowKeys.map(function (r) { return '<div class="stow-col' + (r === '01' ? ' center-right' : '') + '">' + esc(r) + '</div>'; }).join('') + '</div><div class="stow-tier"></div></div>';
     }
     function tierRow(tier) {
@@ -13305,7 +13317,7 @@ window.addEventListener('beforeunload', function(e){
         var avail = !!cell || (capKeys.length ? (!!capSet[key] && supported) : supported);
         return cellHtml(cell, colorFor((cell || { items: [{ opr: '', pol: '', pod: '', fe: '' }] }).items[0]), avail, r, key);
       }).join('');
-      return '<div class="stow-row"><div class="stow-cells" style="grid-template-columns:repeat(' + rowKeys.length + ',44px)">' + cells + '</div><div class="stow-tier">' + esc(tier) + '</div></div>';
+      return '<div class="stow-row"><div class="stow-cells" style="' + rowCols + '">' + cells + '</div><div class="stow-tier">' + esc(tier) + '</div></div>';
     }
     var html = headerRow();
     html += '<div class="stow-deck">ON DECK · TIER 80+</div>';
@@ -13372,6 +13384,7 @@ window.addEventListener('beforeunload', function(e){
   }
   function render() {
     ensureProfile();
+    var pane = $('opsStowagePane'); if (pane) pane.classList.toggle('stow-detail-view', state.view === 'detail');
     renderCommand();
     renderKpis();
     renderBays();
